@@ -1,0 +1,64 @@
+import Image from "next/image"
+import { IoIosMore } from "react-icons/io";
+import { FaSuitcase } from "react-icons/fa";
+import { CgCalendarDates } from "react-icons/cg";
+import { FaListCheck } from "react-icons/fa6";
+import { HiLightBulb } from "react-icons/hi";
+import Button from "@/components/Button";
+
+const JobTitles = () => {
+    return (
+        <div className='space-y-5'>
+            <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center gap-2">
+                    <Image src={''} alt="" width={30} height={30} className="w-[20px] h-[20px] bg-neutral-200" />
+                    <h5 className="text-sm font-bold">Company name</h5>
+                </div>
+                <div className="w-[40px] h-[40px] flexcenter hover:bg-neutral-100 trans cursor-pointer rounded-full">
+                    <IoIosMore size={25} />
+                </div>
+            </div>
+
+            {/* job main details */}
+            <div className="space-y-3">
+                <h2>Full stack Developer</h2>
+                <h4 className="text-[var(--textBlur)]"> Chennai , Tamilnadu , India . 3 months Ago . (100 applicants)</h4>
+                <div className="flex flex-row gap-3 items-center">
+                    <FaSuitcase size={20} />
+                    <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">On Site</h5>
+                    <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">Full Time</h5>
+                </div>
+                <div className="flex flex-row gap-3 items-center">
+                    <CgCalendarDates size={25} />
+                    <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">1 - 100 Employees</h5>
+                </div>
+
+                <div className="flex flex-row gap-3 items-center">
+                    <FaListCheck size={20} />
+                    <h5>10 skills match your profile - you may be a good fit</h5>
+
+                    {/* skills */}
+                    {/* <div className="w-full h-[100px] bg-red-300">
+
+</div> */}
+                </div>
+
+                {/* premium */}
+                <div className="flex flex-row gap-3 items-center">
+                    <HiLightBulb size={25} />
+                    <h5>See how you compare to over 100 other applicants. Reactivate Premium</h5>
+                </div>
+
+                {/* buttons */}
+                <div className="flex flex-row items-center gap-3 mt-5">
+                    <Button isLoading={false}>Easy Apply</Button>
+                    <Button isLoading={false} variant="border">Save</Button>
+                </div>
+
+
+            </div>
+        </div>
+    )
+}
+
+export default JobTitles

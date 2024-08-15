@@ -1,7 +1,7 @@
 import FilterNavbar from '@/components/FilterNavbar/FilterNavbar'
 import React from 'react'
 import JobLists from './JobLists/JobLists'
-import JobDesc from './JobDesc/JobDesc'
+import JobDesc from './Job/Job'
 
 const Jobs = () => {
     return (

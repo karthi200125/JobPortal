@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --lighttext: rgba(0, 0, 0, 0.6);
+    --text: black;
+    --white: white;
+    --voilet: #850F8D;
+    --voilet2: #C738DB;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -66,6 +71,30 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  h1 {
+    @apply text-5xl
+  }
+
+  h2 {
+    @apply text-2xl font-bold
+  }
+
+  h3 {
+    @apply text-lg
+  }
+
+  h4 {
+    @apply text-sm
+  }
+
+  h5 {
+    @apply text-sm
+  }
+
+  h6 {
+    @apply text-xs
   }
 }
 
