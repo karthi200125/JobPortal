@@ -10,7 +10,7 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 
 const Navbar = () => {
     return (
-        <nav className="w-full h-[55px] border-b flex flex-row items-center justify-between">
+        <nav className=" w-full h-[55px] border-b flex flex-row items-center justify-between">
             <Logo />
             <Suspense fallback={<SearchSkeleton />}>
                 <Search />

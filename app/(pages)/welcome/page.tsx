@@ -1,7 +1,9 @@
 
 const Welcome = () => {
     return (
-        <div>Welcome</div>
+        <div className="w-full h-screen p-5">
+            welcome
+        </div>
     )
 }
 
