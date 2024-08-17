@@ -66,7 +66,7 @@ const FilterNavbar = () => {
     };
 
     return (
-        <div className="w-full h-[60px] shadow-md flex flex-row items-center gap-5 overflow-x-auto">
+        <div className=" w-full h-[60px] shadow-md flex flex-row items-center gap-5 overflow-x-auto">
             {filters.map((filter) => (
                 <DropdownMenu key={filter.id}>
                     <DropdownMenuTrigger className="trans text-sm font-semibold max-w-max rounded-full h-[35px] border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 px-3 flex items-center gap-2">

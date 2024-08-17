@@ -1,8 +1,13 @@
+'use client'
+
 import React from 'react'
 import { FaHome } from "react-icons/fa";
 import { RiMessage3Fill } from "react-icons/ri";
 import { IoNotifications } from "react-icons/io5";
-
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@radix-ui/react-tooltip';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import Icon from '../Icon';
 
 const NavIcons = () => {
 
@@ -39,19 +44,29 @@ const NavIcons = () => {
             title: "Job Status",
             href: "/status"
         },
+        {
+            id: 5,
+            icon: <FaHome size={25} />,
+            count: 10,
+            isCount: true,
+            title: "Job Status",
+            href: "/jobs"
+        },
     ]
 
+    const pathname = usePathname()
+
+
     return (
-        <div className='flex flex-xrow items-center gap-5 xl:gap-10'>
+        <div className='flex flex-xrow items-center gap-5'>
             {NavIcons.map((icon) => (
-                <div key={icon.id} className='relative cursor-pointer text-neutral-400 hover:text-black trans'>
-                    {icon.icon}
-                    {/* {icon.isCount === true &&
-                        <div className='absolute w-[20px] h-[20px] bg-red-600 rounded-full flex items-center justify-center top-[-10px] right-[-10px] text-white text-xs'>
-                            {icon.count}
-                        </div>
-                    } */}
-                </div>
+                <Icon
+                    key={icon?.id}
+                    href={icon?.href}
+                    icon={icon?.icon}
+                    title={icon?.title}
+                    isHover
+                    className={`${pathname === icon?.href && "!bg-white/10 !text-white"} hover:!bg-white/10 hover:!text-white !text-neutral-600`} />
             ))}
         </div>
     )

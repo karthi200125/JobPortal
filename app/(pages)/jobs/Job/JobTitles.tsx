@@ -5,6 +5,7 @@ import { CgCalendarDates } from "react-icons/cg";
 import { FaListCheck } from "react-icons/fa6";
 import { HiLightBulb } from "react-icons/hi";
 import Button from "@/components/Button";
+import Icon from "@/components/Icon";
 
 const JobTitles = () => {
     return (
@@ -14,9 +15,7 @@ const JobTitles = () => {
                     <Image src={''} alt="" width={30} height={30} className="w-[20px] h-[20px] bg-neutral-200" />
                     <h5 className="text-sm font-bold">Company name</h5>
                 </div>
-                <div className="w-[40px] h-[40px] flexcenter hover:bg-neutral-100 trans cursor-pointer rounded-full">
-                    <IoIosMore size={25} />
-                </div>
+                <Icon icon={<IoIosMore size={25} />} title="More" tooltipbg="white" isHover />
             </div>
 
             {/* job main details */}

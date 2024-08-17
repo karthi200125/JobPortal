@@ -1,5 +1,5 @@
 import React from 'react';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@radix-ui/react-tooltip';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { PiCrownFill, PiMedalFill } from 'react-icons/pi';
 
 interface BatchProps {

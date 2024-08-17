@@ -10,12 +10,12 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 
 const Navbar = () => {
     return (
-        <nav className=" w-full h-[55px] border-b flex flex-row items-center justify-between">
+        <nav className="sticky top-1 rounded-[10px] left-0 bg-black px-5 z-10 w-full h-[55px] border-b flex flex-row items-center justify-between">
             <Logo />
             <Suspense fallback={<SearchSkeleton />}>
                 <Search />
             </Suspense>
-            <div className="hidden sm:flex flex-row items-center gap-5 xl:gap-10">
+            <div className="hidden sm:flex flex-row items-center gap-5">
                 <Suspense fallback={<NavIconSkeleton />}>
                     <NavIcons />
                 </Suspense>

@@ -3,9 +3,15 @@ import { BsSuitcaseLg } from "react-icons/bs";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 
-const JobList = () => {
+interface JobListProps {
+    isActive?: boolean;
+    job?: any
+}
+
+const JobList = ({ isActive }: JobListProps) => {
+
     return (
-        <div className="relative w-full min-h-[120px] borderb px-5 py-3 flex flex-row items-start gap-5">
+        <div className={`${isActive && " border-black"} hover:bg-neutral-100 relative w-full min-h-[120px]  px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans hover:border-black`}>
 
             <div className="w-[60px] h-[60px] bg-neutral-200"></div>
 
