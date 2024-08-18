@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import WelcomeUserInfo from "./welcomeUserInfo"
-import WelcomeUserEducation from "./welcomeUserEducation"
+import WelcomeUserInfo from "./WelcomeUserInfo"
+import WelcomeUserEducation from "./WelcomeUserEducation"
 import WelcomeUserExperince from "./WelcomeUserExperince"
 
 const Welcome = () => {
@@ -25,7 +25,7 @@ const Welcome = () => {
     }
 
     return (
-        <div className="w-full h-screen flex items-center justify-start flex-col gap-10 py-5">
+        <div className="w-full min-h-screen flex items-center justify-start flex-col gap-10 py-5">
             <h1>Welcome to the Job Portal</h1>
             <div className="w-full h-full">
                 {renderStepContent()}

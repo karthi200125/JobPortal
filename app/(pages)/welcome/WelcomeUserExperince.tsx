@@ -1,7 +1,10 @@
 'use client'
 
+import { UserExperienceForm } from "@/app/Forms/UserExperienceForm"
 import Button from "@/components/Button"
+import Model from "@/components/Model"
 import { useState } from "react"
+import { FaPlus } from "react-icons/fa"
 
 const WelcomeUserExperince = ({ CurrentStep, onNext }: any) => {
 
@@ -20,7 +23,7 @@ const WelcomeUserExperince = ({ CurrentStep, onNext }: any) => {
         <div className='w-full h-full p-5 border rounded-[20px] space-y-5'>
             <h3>You Experince</h3>
 
-            <div>
+            {/* <div>
                 <h3>Select Your Expereince Level</h3>
                 <div className="flex flex-row items-center gap-5">
                     <div className="flex flex-row items-center gap-3">
@@ -32,16 +35,16 @@ const WelcomeUserExperince = ({ CurrentStep, onNext }: any) => {
                         <h4>Experinced</h4>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
-            <Button disabled={true} variant="border">Add Experince</Button>
-
-            {/* add experince form here */}
-            {exp === 'experinced' &&
-                <div>
-                    experice
-                </div>
-            }
+            <Model
+                bodyContent={<UserExperienceForm />}
+                title="Experience"
+                desc="Add you Experience details"
+                className="w-full md:w-[1000px]"
+            >
+                <Button variant="border" icon={<FaPlus size={20} />}>Add Experience</Button>
+            </Model>
 
             <div className='flex flex-row items-center justify-start gap-5'>
                 <Button variant='border' onClick={() => HandleClick('prev')}>previous</Button>
