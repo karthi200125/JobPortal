@@ -8,6 +8,7 @@ interface ButtonProps {
     isLoading?: boolean;
     variant?: 'border' | 'default';
     className?: String;
+    icon?: any;
 }
 
 const Button = ({
@@ -16,9 +17,10 @@ const Button = ({
     disabled = false,
     isLoading = false,
     variant = 'default',
-    className
+    className,
+    icon,
 }: ButtonProps) => {
-    const buttonClassNames = `${className} text-sm font-bold max-w-max h-[40px] flex flex-row items-center justify-center gap-3 px-5 rounded-full trans hover:opacity-80 ${variant === 'border'
+    const buttonClassNames = `${className} text-sm font-bold  h-[40px] flex flex-row items-center justify-center gap-3 px-5 rounded-full trans hover:opacity-80 ${variant === 'border'
         ? 'bg-[var(--white)] border-[1px] border-solid border-[var(--voilet)] text-[var(--voilet)]'
         : 'bg-[var(--voilet)] text-white'
         } ${isLoading || disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`;
@@ -29,6 +31,10 @@ const Button = ({
             disabled={isLoading || disabled}
             onClick={onClick}
         >
+            {!isLoading &&
+                <div>{icon}</div>
+            }
+
             {isLoading ? (
                 <div className={`flex flex-row items-center gap-2 font-bold ${variant === 'border' ? 'text-[var(--voilet)]' : 'text-[var(--white)]'}`}>
                     <Loader />

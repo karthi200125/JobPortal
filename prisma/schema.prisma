@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  username        String    @unique
+  firstname       String?
+  lastname        String?
+  email           String    @unique
+  password        String
+  role            Role      @default(CANDIDATE)
+  isPro           Boolean   @default(false)
+  userImage       String?
+  profileImage    String?
+  gender          String?
+  address         String?
+  city            String?
+  state           String?
+  phoneNo         String?
+  postalCode      String?
+  profession      String?
+
+  appliedJobs     Job[]     @relation("AppliedJobs")
+  savedJobs       Job[]     @relation("SavedJobs")
+  postedJobs      Job[]     @relation("PostedJobs")
+
+  followers       Int[]    
+  followings      Int[]    
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Job {
+  id          Int       @id @default(autoincrement())
+  jobTitle    String
+  jobDesc     String
+  experience  String
+  salary      String
+  city        String
+  state       String
+  country     String
+  type        String
+  isEasyApply Boolean   @default(false)
+  applyLink   String?
+
+  applicants  User[]    @relation("AppliedJobs")
+  savedBy     User[]    @relation("SavedJobs")
+
+  jobPosterId Int
+  jobPoster   User      @relation("PostedJobs", fields: [jobPosterId], references: [id], onDelete: Cascade)
+
+  companyId   Int
+  company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Company {
+  id              Int       @id @default(autoincrement())
+  name            String
+  address         String
+  city            String
+  state           String
+  country         String
+  website         String?
+  totalEmployees  Int?
+
+  jobs            Job[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum Role {
+  CANDIDATE
+  RECRUITER
+  ORGANIZATION
+}
