@@ -1,12 +1,10 @@
 'use client'
 
-import React from 'react'
-import { FaHome } from "react-icons/fa";
-import { RiMessage3Fill } from "react-icons/ri";
-import { IoNotifications } from "react-icons/io5";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@radix-ui/react-tooltip';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { FaHome, FaSuitcase } from "react-icons/fa";
+import { IoNotifications } from "react-icons/io5";
+import { MdDashboard } from "react-icons/md";
+import { RiMessage3Fill } from "react-icons/ri";
 import Icon from '../Icon';
 
 const NavIcons = () => {
@@ -14,7 +12,7 @@ const NavIcons = () => {
     const NavIcons = [
         {
             id: 1,
-            icon: <FaHome size={25} />,
+            icon: <FaHome size={20} />,
             count: '',
             isCount: false,
             title: "Home",
@@ -22,7 +20,7 @@ const NavIcons = () => {
         },
         {
             id: 2,
-            icon: <RiMessage3Fill size={25} />,
+            icon: <RiMessage3Fill size={20} />,
             count: 5,
             isCount: true,
             title: "Message",
@@ -30,7 +28,7 @@ const NavIcons = () => {
         },
         {
             id: 3,
-            icon: <IoNotifications size={25} />,
+            icon: <IoNotifications size={20} />,
             count: 5,
             isCount: true,
             title: "Notifications",
@@ -38,19 +36,19 @@ const NavIcons = () => {
         },
         {
             id: 4,
-            icon: <FaHome size={25} />,
+            icon: <FaSuitcase size={20} />,
             count: 10,
             isCount: true,
-            title: "Job Status",
-            href: "/status"
+            title: "Jobs",
+            href: "/jobs"
         },
         {
             id: 5,
-            icon: <FaHome size={25} />,
+            icon: <MdDashboard size={20} />,
             count: 10,
             isCount: true,
-            title: "Job Status",
-            href: "/jobs"
+            title: "Dashboard",
+            href: "/dashboard"
         },
     ]
 
@@ -66,6 +64,7 @@ const NavIcons = () => {
                     icon={icon?.icon}
                     title={icon?.title}
                     isHover
+                    tooltipbg='white'
                     className={`${pathname === icon?.href && "!bg-white/10 !text-white"} hover:!bg-white/10 hover:!text-white !text-neutral-600`} />
             ))}
         </div>

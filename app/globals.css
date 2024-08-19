@@ -116,7 +116,15 @@ input:focus {
   @apply flex items-center justify-center
 }
 
+
+
+
+
 /* other styles */
+
+.pro {
+  background: linear-gradient(to right, #f3e96f, #947303, #ceb349);
+}
 
 .jobsh {
   height: calc(100vh - 115px);

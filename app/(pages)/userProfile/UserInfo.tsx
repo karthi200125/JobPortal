@@ -1,8 +1,12 @@
 import Button from '@/components/Button'
+import Icon from '@/components/Icon'
+import Model from '@/components/Model/Model'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-
+import { GoPlus } from "react-icons/go";
+import { IoMdSend } from 'react-icons/io'
+import { LuPencil } from "react-icons/lu";
 
 const UserInfo = () => {
     return (
@@ -12,9 +16,22 @@ const UserInfo = () => {
             <div className='absolute top-0 left-0 w-full h-[200px]'>
                 <Image src={''} alt='' width={100} height={200} className='bg-neutral-200 w-full h-full' />
                 <Image src={''} alt='' width={150} height={150} className='bg-red-400 w-[150px] h-[150px] absolute bottom-[-40px] left-5 rounded-full border-[4px] border-solid border-[var(--white)]' />
+                <Model
+                    bodyContent={'body'}
+                    title='Edit Profile'
+                    className='w-[800px]'
+                    triggerCls='absolute top-3 right-3'
+                >
+                    <Icon
+                        className=''
+                        icon={<LuPencil size={20} />}
+                        isHover
+                        title='Edit Profile'
+                    />
+                </Model>
             </div>
 
-            <div className='mt-[250px] w-full h-[300px] p-5 space-y-2'>
+            <div className='relative mt-[250px] w-full h-[300px] p-5 space-y-2'>
                 <h2 className='font-bold'>Karthi Keyan</h2>
                 <h3 className='w-[70%]'>looking for Full Stack Developer role as fresher| React Js , Nextjs , Node.js , Mongo Db , MYSQL , Typescript , Tailwind | Express.js , Git , Redux</h3>
                 <h4>Chennai, Tamil Nadu, India </h4>
@@ -24,9 +41,22 @@ const UserInfo = () => {
                     <h4>200 Followings</h4>
                 </div>
                 <div className='flex flex-row items-center gap-5'>
-                    <Button variant='border'>Follow</Button>
-                    <Button variant='border'>Message</Button>
+                    <Button variant='border' icon={<GoPlus size={20} />}>Follow</Button>
+                    <Button variant='border' icon={<IoMdSend size={20} />}>Message</Button>
                 </div>
+                <Model
+                    bodyContent={'body'}
+                    title='Edit Profile'
+                    className='w-[800px]'
+                    triggerCls='absolute top-3 right-3'
+                >
+                    <Icon
+                        className=''
+                        icon={<LuPencil size={20} />}
+                        isHover
+                        title='Edit Profile'
+                    />
+                </Model>
             </div>
 
         </div>

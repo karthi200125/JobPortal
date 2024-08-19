@@ -10,10 +10,10 @@ const JobLists = () => {
         <h5 className="text-xs">100 Results</h5>
       </div>
 
-      <JobList />
-      <JobList />
-      <JobList />
-      <JobList />
+      <JobList isHover />
+      <JobList isHover />
+      <JobList isHover />
+      <JobList isHover />
     </div>
   )
 }
