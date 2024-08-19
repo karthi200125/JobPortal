@@ -1,21 +1,33 @@
-import { CiLocationOn } from "react-icons/ci";
+import CreateJobForm from "@/app/Forms/CreateJobForm";
+import DeleteJobForm from "@/app/Forms/DeleteJobForm";
+import Icon from "@/components/Icon";
+import Model from "@/components/Model/Model";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import { BsSuitcaseLg } from "react-icons/bs";
-import { MdOutlineCalendarMonth } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
+import { CiLocationOn } from "react-icons/ci";
+import { FaTrash } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
+import { MdEdit } from "react-icons/md";
 
 interface JobListProps {
     isActive?: boolean;
+    isHover?: boolean;
     job?: any
+    more?: boolean
 }
 
-const JobList = ({ isActive }: JobListProps) => {
+const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
 
     return (
-        <div className={`${isActive && " border-black"} hover:bg-neutral-100 relative w-full min-h-[120px]  px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans hover:border-black`}>
+        <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px]  px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
 
             <div className="w-[60px] h-[60px] bg-neutral-200"></div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 w-full">
                 <h3 className="text-lg font-bold">Full Stack Developer</h3>
                 <h5 className="text-sm font-semibold">Compnay name</h5>
                 <div className="flex flex-row gap-2 items-center">
@@ -37,12 +49,45 @@ const JobList = ({ isActive }: JobListProps) => {
                     <h5 className="text-xs">Easy Apply</h5>
                 </div>
 
-                {/* close */}
-                <div className="absolute top-2 right-3 w-[30px] h-[30px] flexcenter hover:bg-neutral-100 trans cursor-pointer rounded-full">
-                    <IoClose size={20} />
-                </div>
-
             </div>
+
+            {more &&
+                <Popover>
+                    <PopoverTrigger asChild className="absolute top-0 right-0">
+                        <button>
+                            <Icon
+                                icon={<IoIosMore size={20} />}
+                                isHover
+                                title="More"
+                            />
+                        </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="max-w-max flex flex-col gap-1">
+                        <Model
+                            bodyContent={<CreateJobForm />}
+                            title='Edit Job'
+                            className='w-[1000px]'
+                            desc="Edit Your Job Details"
+                        >
+                            <div className="flex flex-row items-center gap-3.5 hover:bg-neutral-100 trans py-2 px-5 trans cursor-pointer rounded-md">
+                                <MdEdit size={20} />
+                                Edit
+                            </div>
+                        </Model>
+                        <Model
+                            bodyContent={<DeleteJobForm />}
+                            title='Delete Job'
+                            className='w-[500px]'
+                            desc="Are you Sure Your want Delete This Job"
+                        >
+                            <div className="flex flex-row items-center justify-between gap-5 hover:bg-neutral-100 trans py-2 px-5 trans cursor-pointer rounded-md">
+                                <FaTrash size={15} />
+                                Delete
+                            </div>
+                        </Model>
+                    </PopoverContent>
+                </Popover>
+            }
 
         </div>
     )

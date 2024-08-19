@@ -13,8 +13,8 @@ const Batch = ({ type }: BatchProps) => {
 
     switch (type) {
         case 'premium':
-            icon = <PiCrownFill size={15} />;
-            clr = "bg-neutral-200";
+            icon = <PiCrownFill size={12} />;
+            clr = "pro";
             title = "premium"
             break;
         case 'recruiter':

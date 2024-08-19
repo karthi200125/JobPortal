@@ -13,16 +13,19 @@ import {
 interface ModelProps {
     children: React.ReactNode;
     className?: string;
+    triggerCls?: string;
     title?: string;
     desc?: string;
     bodyContent?: any;
 }
 
-const Model = ({ children, className, title, desc, bodyContent }: ModelProps) => {
+const Model = ({ children, className, title, desc, bodyContent, triggerCls }: ModelProps) => {
     return (
         <Dialog>
-            <DialogTrigger asChild>
-                {children}
+            <DialogTrigger asChild className={`${triggerCls}`}>
+                <button>
+                    {children}
+                </button>
             </DialogTrigger>
             <DialogContent className={`${className} max-h-screen md:max-h-[90vh] overflow-y-auto`}>
                 <DialogHeader className="borderb pb-3 sticky top-0 left-0 bg-white">

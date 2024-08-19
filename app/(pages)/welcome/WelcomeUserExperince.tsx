@@ -2,7 +2,7 @@
 
 import { UserExperienceForm } from "@/app/Forms/UserExperienceForm"
 import Button from "@/components/Button"
-import Model from "@/components/Model"
+import Model from "@/components/Model/Model"
 import { useState } from "react"
 import { FaPlus } from "react-icons/fa"
 

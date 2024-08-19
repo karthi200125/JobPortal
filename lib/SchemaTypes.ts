@@ -67,3 +67,44 @@ export const UserEducationSchema = z.object({
         message: "Percentage Date is required",
     }),
 })
+
+
+export const CreateJobSchema = z.object({
+    jobTitle: z.string().min(1, {
+        message: "Job Title is required",
+    }),
+    jobDesc: z.string().min(1, {
+        message: "Job Desc required",
+    }),
+    experience: z.string().min(1, {
+        message: "Job Experince required",
+    }),
+    salary: z.string().min(1, {
+        message: "Job Salary required",
+    }),
+    city: z.string().min(1, {
+        message: "Job City required",
+    }),
+    state: z.string().min(1, {
+        message: "Job State required",
+    }),
+    country: z.string().min(1, {
+        message: "Job Country required",
+    }),
+    type: z.string().min(1, {
+        message: "Job Type required",
+    }),
+    mode: z.string().min(1, {
+        message: "Job Mode required",
+    }),
+    company: z.string().min(1, {
+        message: "Select Company",
+    }),
+    isEasyApply: z.string().min(1, {
+        message: "Select this Job is EasyApply or not ",
+    }),
+    applyLink: z.string().min(1, {
+        message: "External Job Apply link",
+    }),
+})
+

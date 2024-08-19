@@ -6,6 +6,8 @@ import { FaListCheck } from "react-icons/fa6";
 import { HiLightBulb } from "react-icons/hi";
 import Button from "@/components/Button";
 import Icon from "@/components/Icon";
+import Model from "@/components/Model/Model";
+import EasyApply from "./EasyApply/EasyApply";
 
 const JobTitles = () => {
     return (
@@ -50,7 +52,14 @@ const JobTitles = () => {
 
                 {/* buttons */}
                 <div className="flex flex-row items-center gap-3 mt-5">
-                    <Button isLoading={false}>Easy Apply</Button>
+                    <Model
+                        bodyContent={<EasyApply />}
+                        title='Easy Apply'
+                        className='w-[1000px]'
+                        desc="Apply This Job"
+                    >
+                        <Button isLoading={false}>Easy Apply</Button>
+                    </Model>
                     <Button isLoading={false} variant="border">Save</Button>
                 </div>
 
