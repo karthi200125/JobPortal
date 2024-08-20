@@ -9,8 +9,11 @@ const Search = dynamic(() => import('../Search'), { suspense: true });
 const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: true });
 
 const Navbar = () => {
+
+    const user = false
+
     return (
-        <nav className="sticky top-1 rounded-[10px] left-0 bg-black px-5 z-10 w-full h-[55px] border-b flex flex-row items-center justify-between">
+        <nav className={`${user ? 'sticky top-1 rounded-[10px] left-0 bg-black px-5 z-10 w-full h-[55px] border-b flex flex-row items-center justify-between' : "hidden"}`}>
             <Logo />
             <Suspense fallback={<SearchSkeleton />}>
                 <Search />
