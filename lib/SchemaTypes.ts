@@ -108,3 +108,29 @@ export const CreateJobSchema = z.object({
     }),
 })
 
+export const RegisterSchema = z.object({
+    username: z.string().min(1, {
+        message: "Username is required",
+    }),
+    email: z.string().email({
+        message: "A valid email is required",
+    }),
+    password: z.string().min(6, {
+        message: "Password is required, with a minimum of 6 characters",
+    }),
+    role: z.string().min(1, {
+        message: "Selecting a role is required",
+    }),
+})
+
+export const LoginSchema = z.object({
+    email: z.string().email({
+        message: "A valid email is required",
+    }),
+    password: z.string().min(6, {
+        message: "Password is required, with a minimum of 6 characters",
+    }),
+    role: z.string().min(1, {
+        message: "Selecting a role is required",
+    }),
+})
