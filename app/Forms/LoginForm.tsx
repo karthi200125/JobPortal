@@ -40,7 +40,7 @@ const LoginForm = () => {
     const [isLoading, startTransition] = useTransition();
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
-        defaultValues: {            
+        defaultValues: {
             email: "",
             password: "",
             role: "",
@@ -65,7 +65,7 @@ const LoginForm = () => {
                                 <FormControl>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-solid border-white/10 placeholder:text-white/30">
-                                            <SelectValue placeholder="Select Role" />
+                                            <SelectValue placeholder="Select Role" className="placeholder:text-white/30" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -100,7 +100,7 @@ const LoginForm = () => {
                                 <FormControl>
                                     <div className="relative space-y-2">
                                         <Input {...field} className="bg-white/[0.02] border-[1px] border-solid border-white/10 placeholder:text-white/30" placeholder="Enter Password" type={showPass ? "text" : "password"} />
-                                        <div className="absolute top-[-8px] right-3 text-white/40 hover:text-white transition flex-center h-full cursor-pointer" onClick={() => setShowPass(!showPass)}>
+                                        <div className="absolute top-1 right-3 text-white/40 hover:text-white transition flex-center h-full cursor-pointer" onClick={() => setShowPass(!showPass)}>
                                             {showPass ? <FaLockOpen /> : <FaLock />}
                                         </div>
                                     </div>
