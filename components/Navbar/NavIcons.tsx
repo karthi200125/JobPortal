@@ -48,7 +48,7 @@ const NavIcons = () => {
             count: 10,
             isCount: true,
             title: "Dashboard",
-            href: "/dashboard"
+            href: "/dashboard" || "dashboard/jobCandidates"
         },
     ]
 

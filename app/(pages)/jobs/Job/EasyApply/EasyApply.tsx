@@ -54,7 +54,7 @@ const EasyApply = () => {
                 <h6>Submitting this application won’t change your LinkedIn profile.</h6>
                 <div className='flex flex-row items-center gap-5'>
                     {step !== 0 &&
-                        <Button variant='border' onClick={handlePreviousStep}>Previous</Button>
+                        <Button variant='border' onClick={handlePreviousStep}>Back</Button>
                     }
                     <Button onClick={step === 3 ? SubmitApplication : handleNextStep}>{step === 3 ? "Submit Application" : "Next"}</Button>
                 </div>
