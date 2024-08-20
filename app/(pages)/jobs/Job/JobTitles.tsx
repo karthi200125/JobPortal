@@ -54,9 +54,8 @@ const JobTitles = () => {
                 <div className="flex flex-row items-center gap-3 mt-5">
                     <Model
                         bodyContent={<EasyApply />}
-                        title='Easy Apply'
-                        className='w-[1000px]'
-                        desc="Apply This Job"
+                        title={`Apply to Talent Corner HR Services Pvt Ltd`}
+                        className='w-[1000px]'                        
                     >
                         <Button isLoading={false}>Easy Apply</Button>
                     </Model>
