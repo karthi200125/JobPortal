@@ -19,11 +19,11 @@ const JobStatus = () => {
 
             <div className="flex flex-row items-start gap-5">
                 <div className="w-[40%] h-screen overflow-y-auto">
-                    <JobList />
-                    <JobList />
-                    <JobList />
-                    <JobList />
-                    <JobList />
+                    <JobList isHover />
+                    <JobList isHover />
+                    <JobList isHover />
+                    <JobList isHover />
+                    <JobList isHover />
                 </div>
                 <div className="w-[60%] h-screen space-y-5">
                     <StatusSide />
