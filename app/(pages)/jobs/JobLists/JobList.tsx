@@ -38,15 +38,16 @@ const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
                     <BsSuitcaseLg size={12} />
                     <h5 className="text-xs">5 years</h5>
                 </div>
-                {/* <div className="flex flex-row gap-2 items-center">
-                    <MdOutlineCalendarMonth size={15} />
-                    <h5 className="text-xs">2 Months Ago</h5>
-                </div> */}
 
-                <div className="flex flex-row gap-2 items-center">
+                {/* <div className="flex flex-row gap-2 items-center">
                     <h5 className="text-xs">Promoted</h5>
                     <span className="w-2 h-2 rounded-full bg-black"></span>
                     <h5 className="text-xs">Easy Apply</h5>
+                </div> */}
+
+                <div className="flex flex-row gap-2 items-center justify-between">
+                    <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">10 Vacancies</h6>
+                    <h5 className="text-xs">2 Months Ago</h5>
                 </div>
 
             </div>
