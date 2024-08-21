@@ -10,7 +10,7 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 
 const Navbar = () => {
 
-    const user = false
+    const user = true
 
     return (
         <nav className={`${user ? 'sticky top-1 rounded-[10px] left-0 bg-black px-5 z-10 w-full h-[55px] border-b flex flex-row items-center justify-between' : "hidden"}`}>
