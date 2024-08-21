@@ -7,7 +7,7 @@ import Link from "next/link"
 const SignUpRightSide = () => {
 
     return (
-        <div className='flex flex-col items-center text-white justify-between h-screen w-full lg:w-[40%] py-5'>
+        <div className='flex flex-col items-center text-white justify-between h-screen w-[95%] sm:w-[50%] md:w-[40%] py-5'>
 
             <div className='bg-white/[0.05] h-[50px] flex items-center justify-center max-w-max rounded-full px-10'>
                 <h6>Create a New  account</h6>
@@ -33,7 +33,7 @@ const SignUpRightSide = () => {
                 </div>
             </div>
 
-            <h4 className='flex flex-row items-center gap-2'>
+            <h4 className='flex flex-row items-center gap-2 text-white/40'>
                 Already Have an Account?
                 <Link href={'/signin'} className='text-white cursor-pointer hover:opacity-50'>Sign In</Link>
             </h4>
