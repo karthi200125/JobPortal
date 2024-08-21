@@ -156,3 +156,9 @@ input:focus {
 .trans {
   transition: 0.3s ease-in-out all;
 }
+
+.authlogoleft {
+  box-shadow: var(--voilet) 0px 22px 70px 4px;
+  border: 1px solid var(--voilet);
+}
+
