@@ -10,8 +10,7 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { Label } from '@/components/ui/label';
 import Button from '@/components/Button';
-import { Role } from '@prisma/client'
-import { FaLock, FaLockOpen } from "react-icons/fa6";
+import { FaLockOpen } from "react-icons/fa6";
 import {
     Select,
     SelectContent,
@@ -25,16 +24,22 @@ import FormError from '@/components/ui/FormError';
 import FormSuccess from '@/components/ui/FormSuccess';
 import { RegisterSchema } from "@/lib/SchemaTypes";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { register } from "@/actions/auth/Register";
+import { FaLock } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 
 const RegisterForm = () => {
 
     const [showPass, setShowPass] = useState(false)
+    const [err, setErr] = useState("")
+    const [success, setSuccess] = useState("")
+    const router = useRouter()
 
     const options = [
-        Role.CANDIDATE,
-        Role.ORGANIZATION,
-        Role.RECRUITER,
+        "CANDIDATE",
+        "ORGANIZATION",
+        "RECRUITER",
     ]
 
     const [isLoading, startTransition] = useTransition();
@@ -49,8 +54,20 @@ const RegisterForm = () => {
     });
 
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        startTransition(() => {
-            console.log(values);
+        startTransition(() => {            
+            register(values)
+                .then((data) => {
+                    console.log(data)
+                    if (data?.success) {
+                        console.log(data?.success)
+                        setSuccess(data?.success)
+                        router.push('/welcome')
+                    }
+                    if (data?.error) {
+                        console.log(data?.error)
+                        setErr(data?.error)
+                    }
+                })
         })
     };
 
@@ -124,8 +141,8 @@ const RegisterForm = () => {
                     />
                 </div>
 
-                <FormError message="" />
-                <FormSuccess message="" />
+                <FormError message={err} />
+                <FormSuccess message={success} />
                 <Button isLoading={isLoading} className="w-full !bg-white !text-black">Register</Button>
             </form>
         </Form>
