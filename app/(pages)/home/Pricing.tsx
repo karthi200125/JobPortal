@@ -12,7 +12,7 @@ const Pricing = () => {
             id: 1,
             title: "Basic",
             price: "0",
-            icon: <FaCrown size={25} />,
+            icon: <FaCrown size={30} className="text-[var(--pro)]" />,
             btn: "Get Started",
             features: [
                 "5 job postings per month",
@@ -25,7 +25,7 @@ const Pricing = () => {
             id: 2,
             title: "Premium",
             price: "1000",
-            icon: <FaCrown size={25} />,
+            icon: <FaCrown size={30} className="text-[var(--pro)]" />,
             btn: "Upgrade Premium",
             features: [
                 "Unlimited job postings",
@@ -39,10 +39,10 @@ const Pricing = () => {
     ]
 
     return (
-        <div className="w-full max-h-max rounded-[30px] space-y-10 text-text bg-white/10 py-10">
+        <div className="w-full max-h-max rounded-[30px] space-y-10 text-text bg-white/[0.05] py-10">
             <div className="text-center w-[50%] mx-auto space-y-3 text-white">
                 <h1>Our Pricing Plans</h1>
-                <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate consequatur sunt odit id nam quia facilis voluptatum obcaecati?</h4>
+                <h4 className="text-white/20">Choose the plan that best fits your hiring needs. Whether you're a startup or a large enterprise, our plans are designed to help you find the right talent efficiently and effectively.</h4>
             </div>
 
             <div className="max-w-max mx-auto flex flex-row items-start gap-20">
@@ -67,7 +67,7 @@ const Pricing = () => {
 
                         <div className="flex flex-row items-end gap-1 w-full justify-center">
                             <h1>${card?.price}</h1>
-                            <h5 className="text-[var(--lighttext)]">/Month</h5>
+                            <h5 className="text-white/40">/Month</h5>
                         </div>
 
                         {card?.title === 'Basic' ?

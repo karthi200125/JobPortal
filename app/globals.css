@@ -5,6 +5,7 @@
 @layer base {
   :root {
     --lighttext: rgba(0, 0, 0, 0.6);
+    --pro: linear-gradient(to right, #f3e96f, #947303, #ceb349);
     --black: black;
     --white: white;
     --voilet: #850F8D;
@@ -161,4 +162,3 @@ input:focus {
   box-shadow: var(--voilet) 0px 22px 70px 4px;
   border: 1px solid var(--voilet);
 }
-
