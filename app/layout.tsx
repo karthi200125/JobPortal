@@ -5,6 +5,7 @@ import LpNavbar from "@/components/Navbar/LpNavbar";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { usePathname } from "next/navigation";
+import Navbar from "@/components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className={`w-full min-h-screen ${blackBg ? "bg-black" : "bg-white"} `}>
-          <div className="max-w-[1440px] min-h-screen mx-auto px-4 sm:px-6 md:px-8 lg:px-4 bg-black">
-            <LpNavbar />
+          <div className={`max-w-[1440px] min-h-screen mx-auto px-4 sm:px-6 md:px-8 lg:px-4 ${blackBg ? "bg-black" : "bg-white"}`}>
+            {(pathname !== '/signin' && pathname !== '/signUp') &&
+              (pathname === '/' ? <LpNavbar /> : <Navbar />)
+            }
             {children}
           </div>
         </div>
