@@ -9,8 +9,8 @@ export default function Home() {
     <div className="w-full min-h-screen text-white py-5 space-y-10 bg-black">
       <LandingPage />
       <LpAbout />
-      <LpLeadingCompanies />
       <Pricing />
+      <LpLeadingCompanies />
       <Footer />
     </div>
   );

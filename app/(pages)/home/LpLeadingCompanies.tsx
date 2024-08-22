@@ -1,28 +1,11 @@
 'use client'
 
-import Image from 'next/image'
-import nvidia from '../../../public/nvidia.png'
-import apple from '../../../public/apple.jpg'
-import netflix from '../../../public/netflix.png'
+import { Button } from '@/components/ui/button'
 
 
 const LpLeadingCompanies = () => {
     return (
         <div className="w-full space-y-20">
-            <div className="w-full flex flex-row items-center justify-between">
-                <span className="w-[30%] h-[1px] bg-white/20"></span>
-                <h2 className="uppercase">trusted by the Leading companies</h2>
-                <span className="w-[30%] h-[1px] bg-white/20"></span>
-            </div>
-
-            <div className="w-[85%] mx-auto bg-white/[0.05] px-10 rounded-[20px] h-[100px] flex flex-row items-center justify-between">
-                <Image src={netflix?.src} alt='' width={100} height={50} className='object-contain' />
-                <Image src={nvidia?.src} alt='' width={100} height={50} className='object-contain' />
-                <Image src={apple?.src} alt='' width={100} height={50} className='object-contain' />
-                <Image src={netflix?.src} alt='' width={100} height={50} className='object-contain' />
-                <Image src={nvidia?.src} alt='' width={100} height={50} className='object-contain' />
-            </div>
-
             <div className="space-y-20 w-[85%] mx-auto">
                 <div className="flex flex-row items-center gap-5">
                     <h1 className="flex-1">We Help You Get Your Dream Job</h1>
@@ -49,6 +32,14 @@ const LpLeadingCompanies = () => {
                     </div>
                 </div>
             </div>
+
+            {/* <div className="flex flex-row items-center gap-5 justify-between p-10 rounded-xl bg-[var(--voilet)]">
+                <h2>Find Best Opurtunies Today</h2>
+                <div className="flex flex-row items-center gap-5">
+                    <Button className='bg-white text-black'>Explore Jobs</Button>
+                    <Button className='bg-black'>Start My Journy</Button>
+                </div>
+            </div> */}
 
         </div>
     )
