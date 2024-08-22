@@ -5,11 +5,15 @@ import JobDesc from './Job/Job'
 
 const Jobs = () => {
     return (
-        <div className='w-full'>
+        <div className='w-full relative'>
             <FilterNavbar />
             <div className='w-full jobsh flex flex-row items-start'>
-                <JobLists />
-                <JobDesc />
+                <div className='w-full md:w-[40%] h-full'>
+                    <JobLists />
+                </div>
+                <div className='hidden md:block w-full md:w-[60%] h-full'>
+                    <JobDesc />
+                </div>
             </div>
         </div>
     )

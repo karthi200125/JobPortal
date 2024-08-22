@@ -34,7 +34,7 @@ const JobTitles = () => {
                     <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">1 - 100 Employees</h5>
                 </div>
 
-                <div className="flex flex-row gap-3 items-center">
+                <div className="flex flex-row gap-3 items-start md:items-center">
                     <FaListCheck size={20} />
                     <h5>10 skills match your profile - you may be a good fit</h5>
 
@@ -45,7 +45,7 @@ const JobTitles = () => {
                 </div>
 
                 {/* premium */}
-                <div className="flex flex-row gap-3 items-center">
+                <div className="flex flex-row gap-3 items-start md:items-center">
                     <HiLightBulb size={25} />
                     <h5>See how you compare to over 100 other applicants. Reactivate Premium</h5>
                 </div>
@@ -55,7 +55,7 @@ const JobTitles = () => {
                     <Model
                         bodyContent={<EasyApply />}
                         title={`Apply to Talent Corner HR Services Pvt Ltd`}
-                        className='w-[1000px]'                        
+                        className='w-[1000px]'
                     >
                         <Button isLoading={false}>Easy Apply</Button>
                     </Model>

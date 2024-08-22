@@ -2,6 +2,7 @@ import { NavIconSkeleton, PremiumSkeleton, SearchSkeleton, UserProfileSkeleton }
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Logo from '../Logo';
+import Menu from './Menu';
 
 const Premium = dynamic(() => import('./Premiem'), { suspense: true });
 const NavIcons = dynamic(() => import('./NavIcons'), { suspense: true });
@@ -13,7 +14,7 @@ const Navbar = () => {
     const user = true
 
     return (
-        <nav className={`${user ? 'sticky top-1 rounded-[10px] left-0 bg-black px-5 z-10 w-full h-[55px] border-b flex flex-row items-center justify-between' : "hidden"}`}>
+        <nav className={`${user ? 'sticky top-1 rounded-[10px] left-0 bg-black px-2 md:px-5 z-10 w-full h-[55px] border-b flex flex-row items-center justify-between' : "hidden"}`}>
             <Logo />
             <Suspense fallback={<SearchSkeleton />}>
                 <Search />
@@ -29,6 +30,7 @@ const Navbar = () => {
                     <Premium />
                 </Suspense>
             </div>
+            <Menu />
         </nav>
     );
 };

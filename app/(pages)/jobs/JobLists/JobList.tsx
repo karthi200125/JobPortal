@@ -23,11 +23,11 @@ interface JobListProps {
 const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
 
     return (
-        <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px]  px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
+        <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
 
             <div className="w-[60px] h-[60px] bg-neutral-200"></div>
 
-            <div className="space-y-1 w-full">
+            <div className="w-full flex flex-col gap-1 items-start">
                 <h3 className="text-lg font-bold">Full Stack Developer</h3>
                 <h5 className="text-sm font-semibold">Compnay name</h5>
                 <div className="flex flex-row gap-2 items-center">
