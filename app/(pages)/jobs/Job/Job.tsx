@@ -6,7 +6,7 @@ import JobRecruiter from "./JobRecruiter";
 
 const JobDesc = () => {
     return (
-        <div className="w-[60%] h-full overflow-y-auto p-5 space-y-5">
+        <div className="w-full h-full overflow-y-auto p-5 space-y-5">
             <JobTitles />
             <JobRecruiter />
             <JobDescription />
