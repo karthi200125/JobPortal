@@ -1,13 +1,65 @@
-import { CiSearch } from "react-icons/ci";
-import Button from "./Button";
+'use client'
 
-const Search = () => {
+import Button from "./Button"
+import { IoSearchOutline } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { useState } from "react";
+
+
+const Search = ({ onClose }: any) => {
+
+    const [searchOpen, setSearchOpen] = useState(false)
+
+    const HandleClose = () => {
+        setSearchOpen(true)
+        onClose(searchOpen)
+    }
+
     return (
-        <div className='max-w-max p-1 rounded-full h-[40px] flex flex-row  items-center gap-2 text-xs'>
-            <input type="text" className='hidden bg-white/10 text-white lg:block w-full h-full border rounded-full pl-5' placeholder='Title , Skill or Company' />
-            <input type="text" className='hidden bg-white/10 text-white lg:block w-full h-full rounded-full pl-5 border' placeholder='City , state' />
-            {/* <button className='max-w-max px-5 hover:bg-[var(--voilet2)] bg-[var(--voilet)] rounded-full h-full text-white'>Search</button> */}
-            <Button className='!h-[35px] !bg-white !text-black text-xs'>Search</Button>
+        <div className="w-full h-full flexcenter px-4 py-2">
+            <div className="w-full md:max-w-max mx-auto h-full text-white bg-white/10 rounded-xl md:rounded-full p-2 flex flex-col md:flex-row items-center gap-3">
+                <input
+                    type="text"
+                    className="bg-black text-white text-sm placeholder:text-white/40 w-full md:w-[300px] md:h-full rounded-full h-[50px] pl-5"
+                    placeholder="Title , Skill or Company"
+                />
+                <Select>
+                    <SelectTrigger className="w-full md:w-[300px] bg-black rounded-full h-[50px] md:h-full focus:outline-none">
+                        <SelectValue placeholder="Select Experince" className="text-white/40" />
+                    </SelectTrigger>
+                    <SelectContent className="">
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                    </SelectContent>
+                </Select>
+
+                <input
+                    type="text"
+                    className="bg-black text-white text-sm placeholder:text-white/40 w-full md:w-[300px] md:h-full rounded-full h-[50px] pl-5"
+                    placeholder="City , state"
+                />
+                <Button
+                    icon={<IoSearchOutline size={25} />}
+                    className="bg-white !text-black"
+                >
+                    Search
+                </Button>
+                <Button
+                    icon={<IoClose size={20} />}
+                    className="bg-black !text-red-400"
+                    onClick={HandleClose}
+                >
+                    Close
+                </Button>
+            </div>
         </div>
     )
 }
