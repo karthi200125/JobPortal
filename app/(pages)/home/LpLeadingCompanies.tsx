@@ -1,3 +1,10 @@
+'use client'
+
+import Image from 'next/image'
+import nvidia from '../../../public/nvidia.png'
+import apple from '../../../public/apple.jpg'
+import netflix from '../../../public/netflix.png'
+
 
 const LpLeadingCompanies = () => {
     return (
@@ -8,7 +15,12 @@ const LpLeadingCompanies = () => {
                 <span className="w-[30%] h-[1px] bg-white/20"></span>
             </div>
 
-            <div className="w-full rounded-[20px] bg-white/10 h-[100px]">
+            <div className="w-[85%] mx-auto bg-white/[0.05] px-10 rounded-[20px] h-[100px] flex flex-row items-center justify-between">
+                <Image src={netflix?.src} alt='' width={100} height={50} className='object-contain' />
+                <Image src={nvidia?.src} alt='' width={100} height={50} className='object-contain' />
+                <Image src={apple?.src} alt='' width={100} height={50} className='object-contain' />
+                <Image src={netflix?.src} alt='' width={100} height={50} className='object-contain' />
+                <Image src={nvidia?.src} alt='' width={100} height={50} className='object-contain' />
             </div>
 
             <div className="space-y-20 w-[85%] mx-auto">

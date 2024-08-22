@@ -10,10 +10,12 @@ const LpNavbar = () => {
     const router = useRouter()
 
     return (
-        <div className='sticky top-0 bg-black left-0  w-full text-white h-[60px] flex flex-row items-center justify-between px-10'>
-            <div className='flex flex-row items-center gap-20'>
+        <div className='sticky top-0 bg-black left-0  w-full text-white h-[60px] flex flex-row items-center justify-between'>
+
+            <LpNavLinks />
+
+            <div className='absolute left-0 top-0 w-full h-full flexcenter'>
                 <h2>logo</h2>
-                <LpNavLinks />
             </div>
 
             <div className='flex flex-row items-center gap-5'>
