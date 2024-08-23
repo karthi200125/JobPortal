@@ -7,11 +7,12 @@ import Pricing from "./(pages)/home/Pricing";
 export default function Home() {
   return (
     <div className="w-full min-h-screen text-white py-5 space-y-10 bg-black">
-      <LandingPage />
+      home
+      {/* <LandingPage />
       <LpAbout />
       <Pricing />
       <LpLeadingCompanies />
-      <Footer />
+      <Footer /> */}
     </div>
   );
 }

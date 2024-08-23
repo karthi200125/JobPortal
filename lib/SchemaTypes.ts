@@ -10,6 +10,14 @@ export const UserInfoSchema = z.object({
     firstname: z.string().min(1, {
         message: "Firstname is required",
     }),
+    userBio: z.string().min(50, {
+        message: "User Bio is required",
+    }).max(100, {
+        message: "Maximum 100 characters",
+    }),
+    website: z.string().url({
+        message: "Invalid website URL",
+    }).optional(),
     lastname: z.string().min(1, {
         message: "Lastname is required",
     }),
@@ -51,7 +59,7 @@ export const UserEducationSchema = z.object({
     degree: z.string().min(1, {
         message: "Degree is required",
     }),
-    fieldofstudy: z.string().min(1, {
+    fieldOfStudy: z.string().min(1, {
         message: "Degree is required",
     }),
     startDate: z.string().min(1, {
@@ -63,9 +71,9 @@ export const UserEducationSchema = z.object({
     percentage: z.string().min(1, {
         message: "Percentage Date is required",
     }),
-    educationDesc: z.string().min(1, {
-        message: "Percentage Date is required",
-    }),
+    // educationDesc: z.string().min(1, {
+    //     message: "Percentage Date is required",
+    // }),
 })
 
 

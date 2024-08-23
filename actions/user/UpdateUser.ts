@@ -15,15 +15,15 @@ export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: num
         
         const updatedUser = await db.user.update({
             where: {
-                id: id, 
+                id: id,
             },
             data: {
-                ...data, 
+                ...data,
             },
         });
 
         return { success: 'User updated successfully', data: updatedUser };
-    } catch (error) {        
+    } catch (error) {
         return { error: 'User update failed' };
     }
 };
