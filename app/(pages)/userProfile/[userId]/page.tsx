@@ -1,5 +1,5 @@
 import AboutMe from "../AboutMe"
-import Education from "../Education"
+import Education from "../Educations"
 import MoreProfiles from "../MoreProfiles"
 import UserInfo from "../UserInfo"
 

@@ -28,6 +28,8 @@ export function UserInfoForm() {
         resolver: zodResolver(UserInfoSchema),
         defaultValues: {
             username: user?.username || "",
+            userBio: user?.userBio || "",
+            website: user?.website || "",
             email: user?.email || "",
             firstname: user?.firstname || "",
             lastname: user?.lastname || "",
@@ -44,15 +46,14 @@ export function UserInfoForm() {
 
     const onSubmit = (values: z.infer<typeof UserInfoSchema>) => {
         startTransition(() => {
-            const id = user?.id
+            const id = user?.id            
             UserUpdate(values, id)
                 .then((data) => {
                     if (data?.success) {
                         setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))
                     }
-                    if (data?.error) {
-                        console.log(data?.error)
+                    if (data?.error) {                        
                         setErr(data?.error)
                     }
                 })
@@ -147,10 +148,25 @@ export function UserInfoForm() {
                         name="profession"
                         form={form}
                         label="Your Profession"
-                        placeholder="Your Profession"
+                        placeholder="Ex : software Developer"
                         isLoading={isLoading}
                     />
                 </div>
+                <CustomFormField
+                    name="userBio"
+                    form={form}
+                    label="User Bio"
+                    placeholder="Ex : Full Stack Developer in % yeas Exp"
+                    isLoading={isLoading}
+                    isTextarea
+                />
+                <CustomFormField
+                    name="website"
+                    form={form}
+                    label="User Personal Website"
+                    placeholder="Ex : https://exmaple.com"
+                    isLoading={isLoading}
+                />
 
                 <FormError message={err} />
                 <FormSuccess message={success} />

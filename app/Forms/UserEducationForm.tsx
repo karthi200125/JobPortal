@@ -4,32 +4,61 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { userEducationAction } from "@/actions/user/userEducationaction";
+import Button from "@/components/Button";
+import CustomFormField from "@/components/CustomFormField";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
 import { UserEducationSchema } from "@/lib/SchemaTypes";
-import CustomFormField from "@/components/CustomFormField";
-import { useTransition } from "react";
-import Button from "@/components/Button";
+import { useState, useTransition } from "react";
+import { useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
-export function UserEducationForm() {
+interface EducationProps {
+    education?: any,
+    edit?: boolean,
+}
+
+export function UserEducationForm({ education, edit }: EducationProps) {
+    const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
+    const [err, setErr] = useState("")
+    const [success, setSuccess] = useState("")
+    const queryClient = useQueryClient();
+
+    const { userId } = useParams()
+    const id = Number(userId)
+
     const form = useForm<z.infer<typeof UserEducationSchema>>({
         resolver: zodResolver(UserEducationSchema),
         defaultValues: {
-            instituteName: "",
-            degree: "",
-            fieldofstudy: "",
-            startDate: "",
-            endDate: "",
-            percentage: "",
-            educationDesc: "",
+            instituteName: edit ? education?.instituteName : "",
+            degree: edit ? education?.degree : "",
+            fieldOfStudy: edit ? education?.fieldOfStudy : "",
+            startDate: edit ? education?.startDate : "",
+            endDate: edit ? education?.endDate : "",
+            percentage: edit ? education?.percentage : "",
         },
     });
 
     const onSubmit = (values: z.infer<typeof UserEducationSchema>) => {
         startTransition(() => {
-            console.log(values);
+            const userId = user?.id
+            const eduId = education?.id
+            const isEdit = edit ? true : false
+
+            userEducationAction(values, userId, isEdit, eduId)
+                .then((data: any) => {
+                    if (data?.success) {
+                        setSuccess(data?.success)
+                        queryClient.invalidateQueries({ queryKey: ['getuserEducation', id] })
+                    }
+                    if (data?.error) {
+                        setErr(data?.error)
+                    }
+                })
         })
     };
 
@@ -50,13 +79,17 @@ export function UserEducationForm() {
                         label="Degree"
                         placeholder="Degree"
                         isLoading={isLoading}
+                        isSelect
+                        options={['bacholrs', 'diplamo']}
                     />
                     <CustomFormField
-                        name="fieldofstudy"
+                        name="fieldOfStudy"
                         form={form}
                         label="Field of Study"
                         placeholder="Field of Study"
                         isLoading={isLoading}
+                        isSelect
+                        options={['compeuet', 'eletricla']}
                     />
                     <CustomFormField
                         name="percentage"
@@ -79,22 +112,12 @@ export function UserEducationForm() {
                         label="End Date"
                         placeholder="End Date"
                         isLoading={isLoading}
-                    />                    
-
-
+                    />
                 </div>
-                <CustomFormField
-                    isTextarea
-                    name="educationDesc"
-                    form={form}
-                    label="Activities and societies"
-                    placeholder="Description"
-                    isLoading={isLoading}
-                />
 
-                <FormError message="" />
-                <FormSuccess message="" />
-                <Button isLoading={isLoading} className="!w-full" >Add Education</Button>
+                <FormError message={err} />
+                <FormSuccess message={success} />
+                <Button isLoading={isLoading} className="!w-full" >{edit ? "Edit Education" : "Add Education"}</Button>
             </form>
         </Form>
     );
