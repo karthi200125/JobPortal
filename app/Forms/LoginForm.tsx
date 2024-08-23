@@ -4,28 +4,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { useState, useTransition } from 'react';
-import { TiArrowRight } from "react-icons/ti";
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-import { Label } from '@/components/ui/label';
+import { login } from "@/actions/auth/login";
 import Button from '@/components/Button';
-import { FaLock, FaLockOpen } from "react-icons/fa6";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import FormError from '@/components/ui/FormError';
+import FormSuccess from '@/components/ui/FormSuccess';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import FormError from '@/components/ui/FormError';
-import FormSuccess from '@/components/ui/FormSuccess';
+    SelectValue
+} from "@/components/ui/select";
 import { LoginSchema } from "@/lib/SchemaTypes";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { login } from "@/actions/auth/login";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from 'react';
+import { FaLock, FaLockOpen } from "react-icons/fa6";
+import { loginRedux } from "../Redux/AuthSlice";
+import { useDispatch } from "react-redux";
 
 
 const LoginForm = () => {
@@ -34,6 +32,8 @@ const LoginForm = () => {
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
     const router = useRouter()
+
+    const dispatch = useDispatch();    
 
     const options = [
         "CANDIDATE",
@@ -53,14 +53,12 @@ const LoginForm = () => {
 
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
         startTransition(() => {
-            console.log(values);
             login(values)
                 .then((data) => {
-                    console.log(data)
-                    if (data?.success) {
-                        console.log(data?.success)
+                    if (data?.success) {                        
                         setSuccess(data?.success)
-                        router.push('/userProfile')
+                        dispatch(loginRedux(data?.data))                    
+                        // router.push('/userProfile')
                     }
                     if (data?.error) {
                         console.log(data?.error)

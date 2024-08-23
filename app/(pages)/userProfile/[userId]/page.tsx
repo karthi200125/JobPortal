@@ -1,7 +1,7 @@
-import AboutMe from "./AboutMe"
-import Education from "./Education"
-import MoreProfiles from "./MoreProfiles"
-import UserInfo from "./UserInfo"
+import AboutMe from "../AboutMe"
+import Education from "../Education"
+import MoreProfiles from "../MoreProfiles"
+import UserInfo from "../UserInfo"
 
 const UserProfile = () => {
   return (
