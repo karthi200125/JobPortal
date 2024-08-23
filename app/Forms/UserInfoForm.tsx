@@ -4,38 +4,59 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { UserUpdate } from "@/actions/user/UpdateUser";
+import Button from "@/components/Button";
+import CustomFormField from "@/components/CustomFormField";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
 import { UserInfoSchema } from "@/lib/SchemaTypes";
-import CustomFormField from "@/components/CustomFormField";
-import { useTransition } from "react";
-import Button from "@/components/Button";
+import { useState, useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRedux } from "../Redux/AuthSlice";
 
 export function UserInfoForm() {
+    const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
+
+    const [err, setErr] = useState("")
+    const [success, setSuccess] = useState("")
+
+    const dispatch = useDispatch();
+
     const form = useForm<z.infer<typeof UserInfoSchema>>({
         resolver: zodResolver(UserInfoSchema),
         defaultValues: {
-            username: "",
-            email: "",
-            firstname: "",
-            lastname: "",
-            gender: "",
-            address: "",
-            city: "",
-            state: "",
-            country: "",
-            phoneNo: "",
-            postalCode: "",
-            profession: "",
+            username: user?.username || "",
+            email: user?.email || "",
+            firstname: user?.firstname || "",
+            lastname: user?.lastname || "",
+            gender: user?.gender || "",
+            address: user?.address || "",
+            city: user?.city || "",
+            state: user?.state || "",
+            country: user?.country || "",
+            phoneNo: user?.phoneNo || "",
+            postalCode: user?.postalCode || "",
+            profession: user?.profession || "",
         },
     });
 
     const onSubmit = (values: z.infer<typeof UserInfoSchema>) => {
         startTransition(() => {
-            console.log(values);
-        })
+            const id = user?.id
+            UserUpdate(values, id)
+                .then((data) => {
+                    if (data?.success) {
+                        setSuccess(data?.success)
+                        dispatch(loginRedux(data?.data))
+                    }
+                    if (data?.error) {
+                        console.log(data?.error)
+                        setErr(data?.error)
+                    }
+                })
+        });
     };
 
     return (
@@ -46,14 +67,14 @@ export function UserInfoForm() {
                         name="username"
                         form={form}
                         label="User Name"
-                        placeholder="User Name"
+                        placeholder="Ex: John Doe"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="email"
                         form={form}
                         label="Email"
-                        placeholder="Email"
+                        placeholder="Ex: john.doe@gmail.com"
                         isLoading={isLoading}
                         type="email"
                     />
@@ -61,57 +82,55 @@ export function UserInfoForm() {
                         name="firstname"
                         form={form}
                         label="First Name"
-                        placeholder="First Name"
+                        placeholder="Ex: John"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="lastname"
                         form={form}
                         label="Last Name"
-                        placeholder="Last Name"
+                        placeholder="Ex: Doe"
                         isLoading={isLoading}
                     />
-
                     <CustomFormField
                         name="address"
                         form={form}
                         label="Your Address"
-                        placeholder="Address"
+                        placeholder="Ex: 123 Main St"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="city"
                         form={form}
                         label="City"
-                        placeholder="City"
+                        placeholder="Ex: Chennai"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="state"
                         form={form}
                         label="State"
-                        placeholder="State"
+                        placeholder="Ex: Tamil Nadu"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="country"
                         form={form}
                         label="Country"
-                        placeholder="Country"
+                        placeholder="Ex: India"
                         isLoading={isLoading}
                     />
-
                     <CustomFormField
                         name="postalCode"
                         form={form}
-                        label="postalCode"
-                        placeholder="postalCode"
+                        label="Postal Code"
+                        placeholder="Postal Code"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="phoneNo"
                         form={form}
-                        label="phone Number"
+                        label="Phone Number"
                         placeholder="Phone Number"
                         isLoading={isLoading}
                     />
@@ -122,28 +141,22 @@ export function UserInfoForm() {
                         label="Gender"
                         placeholder="Gender"
                         isLoading={isLoading}
-                        options={['Male', 'Female', "Others"]}
+                        options={['Male', 'Female', 'Others']}
                     />
                     <CustomFormField
                         name="profession"
                         form={form}
-                        label="Your Profession Name"
-                        placeholder="Your Profession Name"
+                        label="Your Profession"
+                        placeholder="Your Profession"
                         isLoading={isLoading}
                     />
                 </div>
-                {/* <CustomFormField
-                    isTextarea
-                    name="description"
-                    form={form}
-                    label="Write About You"
-                    placeholder="Write About You"
-                    isLoading={isLoading}
-                /> */}
 
-                <FormError message="" />
-                <FormSuccess message="" />
-                <Button isLoading={isLoading} className="!w-full" >Update</Button>
+                <FormError message={err} />
+                <FormSuccess message={success} />
+                <Button isLoading={isLoading} className="!w-full">
+                    Update
+                </Button>
             </form>
         </Form>
     );

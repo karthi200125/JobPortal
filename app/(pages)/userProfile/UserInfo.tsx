@@ -1,14 +1,32 @@
+'use client'
+
+import { getUserById } from '@/actions/auth/getUserById'
 import Button from '@/components/Button'
 import Icon from '@/components/Icon'
 import Model from '@/components/Model/Model'
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import React from 'react'
 import { GoPlus } from "react-icons/go";
 import { IoMdSend } from 'react-icons/io'
 import { LuPencil } from "react-icons/lu";
 
 const UserInfo = () => {
+
+    const params = useSearchParams()
+    const id = 5
+
+    console.log(params)
+
+    const { data, isPending } = useQuery({
+        queryKey: ['getuser', id],
+        queryFn: async () => await getUserById(id),
+    });
+
+    console.log(data)
+
     return (
         <div className=' relative w-full min-h-[200px] overflow-hidden rounded-[20px] border '>
 
