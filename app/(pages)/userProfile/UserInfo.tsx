@@ -14,6 +14,7 @@ import { GoPlus } from "react-icons/go";
 import { IoMdSend } from 'react-icons/io'
 import { LuPencil } from "react-icons/lu";
 import { UserInfoForm } from '@/app/Forms/UserInfoForm';
+import UserInfoSkeleton from '@/Skeletons/UserInfoSkeleton';
 
 const UserInfo = () => {
 
@@ -47,36 +48,40 @@ const UserInfo = () => {
                 </Model>
             </div>
 
-            <div className='relative mt-[250px] w-full max-h-max p-5 space-y-2'>
-                <h2 className='font-bold capitalize'>{data?.username}</h2>
-                <h3 className='w-[70%] text-lg text-[var(--lighttext)]'>{data?.userBio}</h3>
-                <h4 className='capitalize'>{data?.city}, {data?.state}, {data?.country} </h4>
-                <div className="flex flex-row items-center gap-2 text-[var(--voilet)] hover:underline trans">
-                    <a href={data?.website || ""} className='font-bold'>Personal Website</a>
-                    <VscLinkExternal size={15} />
-                </div>
-                <div className='flex flex-row items-center gap-5'>
-                    <h4>100 Followers</h4>
-                    <h4>200 Followings</h4>
-                </div>
-                <div className='flex flex-row items-center gap-5'>
-                    <Button variant='border' icon={<GoPlus size={20} />}>Follow</Button>
-                    <Button variant='border' icon={<IoMdSend size={20} />}>Message</Button>
-                </div>
-                <Model
-                    bodyContent={<UserInfoForm />}
-                    title='Edit Profile'
-                    className='w-[800px]'
-                    triggerCls='absolute top-3 right-3'
-                >
-                    <Icon
-                        className=''
-                        icon={<LuPencil size={20} />}
-                        isHover
+            {isPending ?
+                < UserInfoSkeleton />
+                :
+                <div className='relative mt-[250px] w-full max-h-max p-5 space-y-2'>
+                    <h2 className='font-bold capitalize'>{data?.username}</h2>
+                    <h3 className='w-[70%] text-lg text-[var(--lighttext)]'>{data?.userBio}</h3>
+                    <h4 className='capitalize'>{data?.city}, {data?.state}, {data?.country} </h4>
+                    <div className="flex flex-row items-center gap-2 text-[var(--voilet)] hover:underline trans">
+                        <a href={data?.website || ""} className='font-bold'>Personal Website</a>
+                        <VscLinkExternal size={15} />
+                    </div>
+                    <div className='flex flex-row items-center gap-5'>
+                        <h4 className='bg-neutral-100 rounded-md max-w-max p-3 flex flex-row items-center gap-5'><b className='font-bold'>100</b> Followers</h4>
+                        <h4 className='bg-neutral-100 rounded-md max-w-max p-3 flex flex-row items-center gap-5'><b className='font-bold'>200</b> Followings</h4>
+                    </div>
+                    <div className='flex flex-row items-center gap-5'>
+                        <Button variant='border' icon={<GoPlus size={20} />}>Follow</Button>
+                        <Button variant='border' icon={<IoMdSend size={20} />}>Message</Button>
+                    </div>
+                    <Model
+                        bodyContent={<UserInfoForm />}
                         title='Edit Profile'
-                    />
-                </Model>
-            </div>
+                        className='w-[800px]'
+                        triggerCls='absolute top-3 right-3'
+                    >
+                        <Icon
+                            className=''
+                            icon={<LuPencil size={20} />}
+                            isHover
+                            title='Edit Profile'
+                        />
+                    </Model>
+                </div>
+            }
 
         </div>
     )
