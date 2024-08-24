@@ -28,6 +28,7 @@ model User {
   postalCode      String?
   profession      String?
   website         String?  
+  skills          String[]  
 
   appliedJobs     Job[]     @relation("AppliedJobs")
   savedJobs       Job[]     @relation("SavedJobs")

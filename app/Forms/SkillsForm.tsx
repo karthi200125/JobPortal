@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useTransition, KeyboardEvent, ChangeEvent, FormEvent } from "react";
+import { userSkillAction } from "@/actions/user/userSkillsAction";
 import Button from "@/components/Button";
 import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
+import { useParams, usePathname } from "next/navigation";
+import { ChangeEvent, FormEvent, KeyboardEvent, useState, useTransition } from "react";
 import { IoCloseSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRedux } from "../Redux/AuthSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 const allSkills = [
     "JavaScript",
@@ -21,16 +26,37 @@ const allSkills = [
     "Firebase",
 ];
 
-export function SkillsForm() {
+interface SkillsFormProps {
+    isEdit?: boolean;
+    skillsData?: string[]
+}
+
+export function SkillsForm({ isEdit, skillsData }: SkillsFormProps) {
+    const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition();
-    const [skills, setSkills] = useState<string[]>([]);
+    const [skills, setSkills] = useState<string[]>(skillsData || []);
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
+    const dispatch = useDispatch();
+
+    const pathaname = usePathname()
+    const params = useParams()
+    const userId = pathaname === '/welcome' ? user?.id : Number(params.userId)
+    const queryClient = useQueryClient();
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
+        console.log(skills)
         startTransition(() => {
-            console.log(skills);
+            userSkillAction(skills, userId)
+                .then((data) => {
+                    if (data?.success) {
+                        queryClient.invalidateQueries({ queryKey: ['getuser', userId] })
+                        dispatch(loginRedux(data?.data))
+                    }
+                    if (data?.error) {
+                    }
+                })
         });
     };
 
@@ -70,7 +96,8 @@ export function SkillsForm() {
     const removeSkill = (skillToRemove: string) => {
         setSkills(skills.filter(skill => skill !== skillToRemove));
     };
-    
+
+
 
     return (
         <form onSubmit={onSubmit} className="space-y-10">
