@@ -16,15 +16,12 @@ import { LuPencil } from "react-icons/lu";
 import { UserInfoForm } from '@/app/Forms/UserInfoForm';
 import UserInfoSkeleton from '@/Skeletons/UserInfoSkeleton';
 
-const UserInfo = () => {
+interface ProfileUserProps {
+    profileUser?: any
+    isLoading?: boolean
+}
 
-    const { userId } = useParams()
-    const id = Number(userId)
-
-    const { data, isPending } = useQuery({
-        queryKey: ['getuser', id],
-        queryFn: async () => await getUserById(id),
-    });
+const UserInfo = ({ profileUser, isLoading }: ProfileUserProps) => {
 
     return (
         <div className=' relative w-full min-h-[200px] overflow-hidden rounded-[20px] border '>
@@ -48,15 +45,15 @@ const UserInfo = () => {
                 </Model>
             </div>
 
-            {isPending ?
+            {isLoading ?
                 < UserInfoSkeleton />
                 :
                 <div className='relative mt-[250px] w-full max-h-max p-5 space-y-2'>
-                    <h2 className='font-bold capitalize'>{data?.username}</h2>
-                    <h3 className='w-[70%] text-lg text-[var(--lighttext)]'>{data?.userBio}</h3>
-                    <h4 className='capitalize'>{data?.city}, {data?.state}, {data?.country} </h4>
+                    <h2 className='font-bold capitalize'>{profileUser?.username}</h2>
+                    <h3 className='w-[70%] text-lg text-[var(--lighttext)]'>{profileUser?.userBio}</h3>
+                    <h4 className='capitalize'>{profileUser?.city}, {profileUser?.state}, {profileUser?.country} </h4>
                     <div className="flex flex-row items-center gap-2 text-[var(--voilet)] hover:underline trans">
-                        <a href={data?.website || ""} className='font-bold'>Personal Website</a>
+                        <a href={profileUser?.website || ""} className='font-bold'>Personal Website</a>
                         <VscLinkExternal size={15} />
                     </div>
                     <div className='flex flex-row items-center gap-5'>

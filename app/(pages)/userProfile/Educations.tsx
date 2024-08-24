@@ -13,11 +13,14 @@ import { GoPlus } from 'react-icons/go'
 import { LuPencil } from 'react-icons/lu'
 import { CiTrash } from "react-icons/ci";
 import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
+import EducationsSkeleton from '@/Skeletons/EducationsSkeleton'
 
-const Educations = () => {
+interface EducationsProps {
+    userId?: any
+}
 
-    const params = useParams()
-    const userId = Number(params?.userId)
+const Educations = ({ userId }: EducationsProps) => {
+
     const { data, isPending } = useQuery({
         queryKey: ['getuserEducation', userId],
         queryFn: async () => await getUserEducation(userId),
@@ -36,51 +39,55 @@ const Educations = () => {
                     <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
                 </Model>
             </div>
-            {data?.data?.map((edu) => (
-                <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={edu?.id}>
-                    <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
-                    <div>
-                        <h4 className='capitalize font-bold'>{edu?.instituteName}</h4>
-                        <h5 className='capitalize'>{edu?.degree} in {edu?.fieldOfStudy}</h5>
-                        <h5 className='capitalize text-[var(--lighttext)]'>{edu?.startDate} - {edu?.endDate}</h5>
-                        <h5>Grade : {edu?.percentage}%</h5>
-                    </div>
 
-                    <div className='absolute top-3 right-3 flex flex-row items-center gap-5'>
-                        <Model
-                            bodyContent={
-                                <UserEducationForm
-                                    education={edu}
-                                    edit
+            {isPending ?
+                <EducationsSkeleton />
+                :
+                data?.data?.map((edu) => (
+                    <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={edu?.id}>
+                        <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
+                        <div>
+                            <h4 className='capitalize font-bold'>{edu?.instituteName}</h4>
+                            <h5 className='capitalize'>{edu?.degree} in {edu?.fieldOfStudy}</h5>
+                            <h5 className='capitalize text-[var(--lighttext)]'>{edu?.startDate} - {edu?.endDate}</h5>
+                            <h5>Grade : {edu?.percentage}%</h5>
+                        </div>
+
+                        <div className='absolute top-3 right-3 flex flex-row items-center gap-5'>
+                            <Model
+                                bodyContent={
+                                    <UserEducationForm
+                                        education={edu}
+                                        edit
+                                    />
+                                }
+                                title='Edit This Education'
+                                className='w-[1000px]'
+                                desc='Edit Your education details'
+                            >
+                                <Icon
+                                    className=''
+                                    icon={<LuPencil size={20} />}
+                                    isHover
+                                    title='Edit Education'
                                 />
-                            }
-                            title='Edit This Education'
-                            className='w-[1000px]'
-                            desc='Edit Your education details'
-                        >
-                            <Icon
-                                className=''
-                                icon={<LuPencil size={20} />}
-                                isHover
-                                title='Edit Education'
-                            />
-                        </Model>
-                        <Model
-                            bodyContent={<DeleteEducationForm edu={edu} />}
-                            title='Delete This Education'
-                            className='w-[400px]'
-                            desc='Are you Sure Delete Your education'
-                        >
-                            <Icon                                
-                                icon={<CiTrash size={20} />}
-                                isHover
-                                title='Delete Education'
-                            />
-                        </Model>
-                    </div>
+                            </Model>
+                            <Model
+                                bodyContent={<DeleteEducationForm edu={edu} />}
+                                title='Delete This Education'
+                                className='w-[400px]'
+                                desc='Are you Sure Delete Your education'
+                            >
+                                <Icon
+                                    icon={<CiTrash size={20} />}
+                                    isHover
+                                    title='Delete Education'
+                                />
+                            </Model>
+                        </div>
 
-                </div>
-            ))}
+                    </div>
+                ))}
 
         </div>
     )

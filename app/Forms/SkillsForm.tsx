@@ -4,12 +4,12 @@ import { userSkillAction } from "@/actions/user/userSkillsAction";
 import Button from "@/components/Button";
 import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
+import { useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
 import { ChangeEvent, FormEvent, KeyboardEvent, useState, useTransition } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
-import { useQueryClient } from "@tanstack/react-query";
 
 const allSkills = [
     "JavaScript",
@@ -146,7 +146,7 @@ export function SkillsForm({ isEdit, skillsData }: SkillsFormProps) {
 
             <FormError message="" />
             <FormSuccess message="" />
-            <Button isLoading={isLoading} className="!w-full">Add Skills</Button>
+            <Button isLoading={isLoading} className="!w-full">{pathaname === '/welcome' ? "Add Skills" : "Edit Skills"}</Button>
         </form>
     );
 }
