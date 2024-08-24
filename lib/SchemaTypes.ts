@@ -76,6 +76,20 @@ export const UserEducationSchema = z.object({
     // }),
 })
 
+export const UserProjectSchema = z.object({
+    proName: z.string().min(1, {
+        message: "Project Name is required",
+    }),
+    proLink: z.string().min(1, {
+        message: "Project Link is required",
+    }),
+    proDesc: z.string().min(1, {
+        message: "Project description id Rquired",
+    }),
+    proImage: z.string().min(1, {
+        message: "Project Image is required",
+    }),    
+})
 
 export const CreateJobSchema = z.object({
     jobTitle: z.string().min(1, {
