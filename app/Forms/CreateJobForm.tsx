@@ -4,18 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Editor } from '@tinymce/tinymce-react';
-import { Form } from "@/components/ui/form";
-import FormError from "@/components/ui/FormError";
-import FormSuccess from "@/components/ui/FormSuccess";
-import { CreateJobSchema } from "@/lib/SchemaTypes";
-import CustomFormField from "@/components/CustomFormField";
-import { useState, useTransition } from "react";
 import Button from "@/components/Button";
-
+import CustomFormField from "@/components/CustomFormField";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { experiences, getCities, getCountries, getStates, JobTypes, JobMode } from "@/getOptionsData";
+import { CreateJobSchema } from "@/lib/SchemaTypes";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useTransition } from "react";
+import { Switch } from "@/components/ui/switch";
 
 const CreateJobForm = () => {
-  const [description, setDescription] = useState('write Job description Here');
+  const [description, setDescription] = useState('');
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
   const [isLoading, startTransition] = useTransition();
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
@@ -26,20 +28,26 @@ const CreateJobForm = () => {
       state: "",
       country: "",
       salary: "",
-      isEasyApply: "",
+      isEasyApply: false,
       type: "",
       mode: "",
       applyLink: "",
       company: "",
+      jobDesc: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof CreateJobSchema>) => {
     startTransition(() => {
-      console.log(values);
+      console.log(values)
     })
   };
 
+  const { data: countries, isPending: countryLoading } = useQuery({ queryKey: ['getcountries'], queryFn: async () => await getCountries()});
+  const { data: states, isPending: statesLoading } = useQuery({ queryKey: ['getStates'], queryFn: async () => await getStates(country)});
+  const { data: cities, isPending: citiesLoading } = useQuery({ queryKey: ['getCities'], queryFn: async () => await getCities(country, state)});
+
+  console.log(countries)
 
   return (
     <Form {...form}>
@@ -59,7 +67,7 @@ const CreateJobForm = () => {
             placeholder="Ex: 0 - 5 or Fresher"
             isLoading={isLoading}
             isSelect
-            options={['software develper']}
+            options={experiences}
           />
           <CustomFormField
             name="salary"
@@ -69,32 +77,39 @@ const CreateJobForm = () => {
             isLoading={isLoading}
           />
           <CustomFormField
-            name="city"
-            form={form}
-            label="Job City"
-            placeholder="Ex: Chennai , Bangalore ..."
-            isLoading={isLoading}
-            isSelect
-            options={['salem']}
-          />
-          <CustomFormField
-            name="state"
-            form={form}
-            label="Job State"
-            placeholder="Ex: TamilNadu , Karnataka ..."
-            isLoading={isLoading}
-            isSelect
-            options={['tamilnadu']}
-          />
-          <CustomFormField
             name="country"
             form={form}
             label="Job Country"
             placeholder="Ex: India"
             isLoading={isLoading}
             isSelect
-            options={['india']}
+            options={countries}
+            onSelect={(d: any) => setCountry(d)}
           />
+          {country !== "" &&
+            <CustomFormField
+              name="state"
+              form={form}
+              label="Job State"
+              placeholder="Ex: TamilNadu , Karnataka ..."
+              isLoading={isLoading}
+              isSelect
+              options={states}
+              onSelect={(d: any) => setState(d)}
+            />
+          }
+          {state !== "" &&
+            <CustomFormField
+              name="city"
+              form={form}
+              label="Job City"
+              placeholder="Ex: Chennai , Bangalore ..."
+              isLoading={isLoading}
+              isSelect
+              options={cities}
+              onSelect={(d: any) => setCity(d)}
+            />
+          }
           <CustomFormField
             name="type"
             form={form}
@@ -102,7 +117,7 @@ const CreateJobForm = () => {
             placeholder="Ex: FullTime , Internship"
             isLoading={isLoading}
             isSelect
-            options={['FullTime']}
+            options={JobTypes}
           />
           <CustomFormField
             name="mode"
@@ -111,23 +126,7 @@ const CreateJobForm = () => {
             placeholder="Ex: Onsite , Hybrid"
             isLoading={isLoading}
             isSelect
-            options={['Hybrid']}
-          />
-          <CustomFormField
-            name="isEasyApply"
-            form={form}
-            label="Easy Apply"
-            placeholder="Ex: Yes or No"
-            isLoading={isLoading}
-            isSelect
-            options={['Yes', "No"]}
-          />
-          <CustomFormField
-            name="applyLink"
-            form={form}
-            label="External Job Apply Link"
-            placeholder="Ex: https://...."
-            isLoading={isLoading}
+            options={JobMode}
           />
           <CustomFormField
             name="company"
@@ -139,33 +138,45 @@ const CreateJobForm = () => {
             options={['Yes', "No"]}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="isEasyApply"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">
+                  Easy Apply
+                </FormLabel>
+                <FormDescription>
+                  Is This Easy Apply or External Link Apply
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <CustomFormField
+          name="applyLink"
+          form={form}
+          label="External Job Apply Link"
+          placeholder="Ex: https://...."
+          isLoading={isLoading}
+        />
+        <CustomFormField
+          name="jobDesc"
+          form={form}
+          label="Job Description"
+          placeholder="Ex: somthing about description"
+          isLoading={isLoading}
+          isTextarea
+        />
 
-        {/* job description */}
-        <div className="space-y-3">
-          <h3>Job Description</h3>
-          <Editor
-            apiKey="jxdcv7jbtd04p9z0re8cg3mb6cwe29xkryde3hnq7cs2k5bz"
-            value={description}
-            onEditorChange={(content) => setDescription(content)}
-            init={{
-              height: 500,
-              plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-              toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-              tinycomments_mode: 'embedded',
-              tinycomments_author: 'Author name',
-              mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
-              ],
-              ai_request: (request: any, respondWith: any) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-              content_css: '/path-to-your-custom-styles.css',
-            }}
-          />
-        </div>
-
-        <FormError message="" />
-        <FormSuccess message="" />
-        <Button isLoading={isLoading} className="!w-full" >Add Education</Button>
+        <Button isLoading={isLoading} className="!w-full" >Create Job</Button>
       </form>
     </Form>
   )

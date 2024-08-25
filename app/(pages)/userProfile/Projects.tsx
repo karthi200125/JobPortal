@@ -17,7 +17,7 @@ import { getUserProjects } from "@/actions/user/getUserProjects";
 import CarouselSkeleton from "@/Skeletons/CarouselSkeleton";
 
 interface ProjectsProps {
-    userId?: string;
+    userId?: any;
 }
 
 export default function Projects({ userId }: ProjectsProps) {
@@ -61,8 +61,12 @@ export default function Projects({ userId }: ProjectsProps) {
                             <div>No Projects Yet</div>
                         )}
                     </CarouselContent>
-                    <CarouselPrevious className="hidden md:flex" />
-                    <CarouselNext className="hidden md:flex" />
+                    {projects?.length >= 3 &&
+                        <>
+                            <CarouselPrevious className="hidden md:flex" />
+                            <CarouselNext className="hidden md:flex" />
+                        </>
+                    }
                 </Carousel>
             )}
         </div>

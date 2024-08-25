@@ -79,6 +79,7 @@ model Company {
   country         String
   website         String?
   totalEmployees  Int?
+  isVerified      Boolean   @default(false)
 
   jobs            Job[]
 

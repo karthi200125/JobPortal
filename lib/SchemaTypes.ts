@@ -88,7 +88,7 @@ export const UserProjectSchema = z.object({
     }),
     proImage: z.string().min(1, {
         message: "Project Image is required",
-    }),    
+    }),
 })
 
 export const CreateJobSchema = z.object({
@@ -122,8 +122,8 @@ export const CreateJobSchema = z.object({
     company: z.string().min(1, {
         message: "Select Company",
     }),
-    isEasyApply: z.string().min(1, {
-        message: "Select this Job is EasyApply or not ",
+    isEasyApply: z.boolean({
+        required_error: "Please select if this job is EasyApply or not",
     }),
     applyLink: z.string().min(1, {
         message: "External Job Apply link",
@@ -154,5 +154,29 @@ export const LoginSchema = z.object({
     }),
     role: z.string().min(1, {
         message: "Selecting a role is required",
+    }),
+})
+
+export const CreateCompanySchema = z.object({
+    name: z.string().min(1, {
+        message: "Job Title is required",
+    }),
+    address: z.string().min(1, {
+        message: "Job Desc required",
+    }),
+    city: z.string().min(1, {
+        message: "Job Desc required",
+    }),
+    state: z.string().min(1, {
+        message: "Job Desc required",
+    }),
+    country: z.string().min(1, {
+        message: "Job Desc required",
+    }),
+    website: z.string().min(1, {
+        message: "Job Desc required",
+    }),
+    totalEmployees: z.string().min(1, {
+        message: "Job Desc required",
     }),
 })
