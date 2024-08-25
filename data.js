@@ -1,3 +1,8 @@
+import { FaSuitcase } from "react-icons/fa";
+import { IoPersonOutline } from "react-icons/io5";
+import { MdDashboard } from "react-icons/md";
+import { PiSignOutBold } from "react-icons/pi";
+
 // Filter Options
 export const filterOptions = [
     {
@@ -16,7 +21,6 @@ export const filterOptions = [
         options: ['All Level', 'Internship', 'Entry level', 'Associate', 'Mid Senior Level', 'Director']
     },
 ];
-
 
 // Landing page navlinks
 export const LpNavJobs = [
@@ -58,6 +62,7 @@ export const LpNavJobs = [
     },
 ]
 
+// Landing page Navbar companies
 export const LpNavCompanies = [
     {
         id: 1,
@@ -94,6 +99,7 @@ export const LpNavCompanies = [
     },
 ];
 
+// Landing page Navbar services
 export const LpNavServices = [
     {
         id: 1,
@@ -133,3 +139,30 @@ export const LpNavServices = [
     },
 ];
 
+// profile card items
+export const profileCardItems = [
+    {
+        id: 1,
+        title: "Profile",
+        icon: <IoPersonOutline size={20} />,
+        href: "/userprofile"
+    },
+    {
+        id: 2,
+        title: "Jobs",
+        icon: <FaSuitcase size={20} />,
+        href: "/jobs"
+    },
+    {
+        id: 3,
+        title: "Dashboard",
+        icon: <MdDashboard size={20} />,
+        href: "/dashboard"
+    },
+    {
+        id: 4,
+        title: "Sign Out",
+        icon: <PiSignOutBold size={20} />,
+        href: "/"
+    },
+];

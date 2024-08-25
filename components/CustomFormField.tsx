@@ -7,17 +7,9 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import CustomSelect from "./CustomSelect";
 import { Textarea } from "./ui/textarea";
 
 interface CustomFormFieldProps<T extends FieldValues> {
@@ -31,6 +23,7 @@ interface CustomFormFieldProps<T extends FieldValues> {
     isLoading?: boolean;
     isSelect?: boolean;
     options?: string[];
+    onSelect?: (value: string) => void;
 }
 
 const CustomFormField = <T extends FieldValues>({
@@ -43,7 +36,8 @@ const CustomFormField = <T extends FieldValues>({
     isSelect,
     selectCls,
     options,
-    isLoading
+    isLoading,
+    onSelect
 }: CustomFormFieldProps<T>) => {
     return (
         <FormField
@@ -54,19 +48,14 @@ const CustomFormField = <T extends FieldValues>({
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
                         {isSelect ?
-                            <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
-                                <SelectTrigger className={`w-full ${selectCls}`}>
-                                    <SelectValue placeholder={placeholder} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {/* <SelectLabel>{label}</SelectLabel> */}
-                                        {options?.map((option) => (
-                                            <SelectItem key={option} value={option}>{option}</SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
+                            <CustomSelect
+                                field={field}
+                                placeholder={placeholder}
+                                options={options}
+                                isLoading={isLoading}
+                                selectCls={selectCls}
+                                onSelect={onSelect}
+                            />
                             :
                             isTextarea ?
                                 <Textarea {...field} placeholder={placeholder} id="message-2" disabled={isLoading} />

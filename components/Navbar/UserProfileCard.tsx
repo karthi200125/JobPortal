@@ -6,44 +6,15 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { profileCardItems } from "@/data";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaSuitcase } from "react-icons/fa";
-import { IoPersonOutline } from "react-icons/io5";
-import { MdDashboard } from "react-icons/md";
-import { PiSignOutBold } from "react-icons/pi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserProfileCard = () => {
+    const user = useSelector((state: any) => state.user.user)
     const router = useRouter();
     const dispatch = useDispatch();
-
-    const profileCardItems = [
-        {
-            id: 1,
-            title: "Profile",
-            icon: <IoPersonOutline size={20} />,
-            href: "/userprofile"
-        },
-        {
-            id: 2,
-            title: "Jobs",
-            icon: <FaSuitcase size={20} />,
-            href: "/jobs"
-        },
-        {
-            id: 3,
-            title: "Dashboard",
-            icon: <MdDashboard size={20} />,
-            href: "/dashboard"
-        },
-        {
-            id: 4,
-            title: "Sign Out",
-            icon: <PiSignOutBold size={20} />,
-            href: "/"
-        },
-    ];
 
     const handleClick = (item: any) => {
         if (item?.title === "Sign Out") {
@@ -77,9 +48,9 @@ const UserProfileCard = () => {
                         height={60}
                     />
                     <div className="w-[170px]">
-                        <h3>Karthikeyan</h3>
-                        <h4>test@gmail.com</h4>
-                        <h6 className="text-[var(--lighttext)]">Lorem, ipsum dolor sit amet consectetur adipisicing.</h6>
+                        <h4 className="capitalize font-bold">{user?.username}</h4>
+                        <h4>{user?.email}</h4>
+                        <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6>
                     </div>
                 </div>
                 <div>

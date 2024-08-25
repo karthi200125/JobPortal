@@ -21,15 +21,15 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-row items-start gap-5 py-5">
-      <div className="w-[70%] h-full space-y-5">
-        {/* <UserInfo profileUser={data} isLoading={isPending} /> */}
-        {/* <AboutMe profileUser={data} isLoading={isPending}/> */}
-        {/* <Education userId={userId} /> */}
+      {/* <div className="w-full md:w-[70%] h-full space-y-5">
+        <UserInfo profileUser={data} isLoading={isPending} />
+        <AboutMe profileUser={data} isLoading={isPending} />
+        <Education userId={userId} />
         <Projects userId={userId} />
       </div>
-      <div className="w-[30%] h-full">
-        {/* <MoreProfiles /> */}
-      </div>
+      <div className="hidden md:block md:w-[30%] h-full">
+        <MoreProfiles />
+      </div> */}
     </div>
   )
 }
