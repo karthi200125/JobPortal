@@ -143,15 +143,15 @@ export const CreateJobSchema = z.object({
     mode: z.string().min(1, {
         message: "Job Mode required",
     }),
-    company: z.string().min(1, {
-        message: "Select Company",
-    }),
+    // company: z.string().min(1, {
+    //     message: "Select Company",
+    // }),
     isEasyApply: z.boolean({
         required_error: "Please select if this job is EasyApply or not",
     }),
     applyLink: z.string().min(1, {
         message: "External Job Apply link",
-    }),
+    }).optional(),
 })
 
 export const RegisterSchema = z.object({

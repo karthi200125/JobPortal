@@ -36,7 +36,7 @@ model User {
 
   company         Company[]
   educations      Education[]
-  experiences     Experince[]
+  experiences     Experience[]
   projects        Project[]
 
   followers       Int[]
@@ -56,15 +56,15 @@ model Job {
   state       String
   country     String
   type        String
+  mode        String
   isEasyApply Boolean   @default(false)
   applyLink   String?
 
   applicants  User[]    @relation("AppliedJobs")
   savedBy     User[]    @relation("SavedJobs")
+  user        User      @relation("PostedJobs", fields: [userId], references: [id], onDelete: Cascade)
 
-  jobPosterId Int
-  jobPoster   User      @relation("PostedJobs", fields: [jobPosterId], references: [id], onDelete: Cascade)
-
+  userId      Int
   companyId   Int
   company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
@@ -85,7 +85,7 @@ model Company {
   companyIsVerified      Boolean   @default(false)
 
   userId                 Int   
-  user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   jobs                   Job[]
   
@@ -105,11 +105,11 @@ model Education {
   userId        Int   
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
-model Experince {
+model Experience {
   id            Int      @id @default(autoincrement())
   instituteName String
   degree        String
@@ -121,8 +121,8 @@ model Experince {
   userId        Int   
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Project {
@@ -135,8 +135,8 @@ model Project {
   userId        Int   
   user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 enum Role {

@@ -1,10 +1,9 @@
-
-let key = process.env.CUNTRY_STATE_CITY_KEY;
-let baseUrl = process.env.CUNTRY_STATE_CITY_BASEURL
+let key = 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==';
+let baseUrl = 'https://api.countrystatecity.in/v1';
 
 export const getCountries = async () => {
     try {
-        const url = `${baseUrl}/countriescountries`;
+        const url = `${baseUrl}/countries`;
 
         const response = await fetch(url, {
             method: 'GET',
@@ -15,16 +14,14 @@ export const getCountries = async () => {
         });
 
         const data = await response.json();
-
-        return data.map((country: any) => country.name);
+        return data;
     } catch (err) {
-        return "get countries error";
+        return `get countries error`;
     }
 };
 
 export const getStates = async (countryName: string) => {
     try {
-        console.log(countryName)
         const countries = await getCountries();
         const country = countries.find((c: any) => c.name.toLowerCase() === countryName.toLowerCase());
 
@@ -39,19 +36,18 @@ export const getStates = async (countryName: string) => {
         });
 
         const data = await response.json();
-
-        return data.map((state: any) => state.name);        
+        return data;
     } catch (err) {
-        return "get states error";
+        return `get states error`;
     }
 };
 
-export const getCities = async (countryName: string, stateName: string) => {
+export const getCities = async (country: string, state: string) => {
     try {
-        const states = await getStates(countryName);
-        const state = states.find((s: any) => s.name.toLowerCase() === stateName.toLowerCase());
+        const states = await getStates("India");
+        const stateO = states.find((s: any) => s.name.toLowerCase() === state.toLowerCase());
 
-        const url = `${baseUrl}/countries/${state.iso2}/states/${state.iso2}/cities`;
+        const url = `${baseUrl}/countries/${stateO.country_iso2}/states/${stateO.iso2}/cities`;
 
         const response = await fetch(url, {
             method: 'GET',
@@ -62,38 +58,41 @@ export const getCities = async (countryName: string, stateName: string) => {
         });
 
         const data = await response.json();
-        return data.map((city: any) => city.name).sort();
+        return data;
     } catch (err) {
-        return "get cities error";
+        return `get cities error`;
     }
 };
+
 
 // Experience levels
 export const experiences = [
     "Internship",
-    "Entry Level",
-    "Associate",
-    "Mid Senior",
+    "Fresher",
+    "1 year",
+    "2 year",
+    "3 year",
+    "4 year",
+    "5 year",
+    "6 year",
+    "7 year",
+    "8 year",
+    "Above 8 year",
+    "Senior",
     "Director",
     "Executive",
 ];
 
 // Job Type 
 export const JobTypes = [
-    "Internship",
-    "Entry Level",
-    "Associate",
-    "Mid Senior",
-    "Director",
-    "Executive",
+    "Full Time",
+    "Permanent",
+    "Contract",
 ];
 
 // Job Mode
 export const JobMode = [
-    "Internship",
-    "Entry Level",
-    "Associate",
-    "Mid Senior",
-    "Director",
-    "Executive",
+    "Hybrid",
+    "On Site",
+    "Remote",
 ];
