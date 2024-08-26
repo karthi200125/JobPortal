@@ -8,6 +8,7 @@ import UserInfo from "../UserInfo"
 import { useParams } from "next/navigation"
 import { useQuery } from '@tanstack/react-query'
 import { getUserById } from "@/actions/auth/getUserById"
+import Experiences from "../Experiences"
 
 const UserProfile = () => {
 
@@ -26,10 +27,11 @@ const UserProfile = () => {
         <AboutMe profileUser={data} isLoading={isPending} />
         <Education userId={userId} />
         <Projects userId={userId} />
-      </div>
-      <div className="hidden md:block md:w-[30%] h-full">
+        </div>
+        <div className="hidden md:block md:w-[30%] h-full">
         <MoreProfiles />
-      </div> */}
+        </div> */}
+        <Experiences userId={userId} />
     </div>
   )
 }

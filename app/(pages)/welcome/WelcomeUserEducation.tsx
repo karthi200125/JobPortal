@@ -1,37 +1,54 @@
 'use client'
 
-import { UserEducationForm } from "@/app/Forms/UserEducationForm"
-import Button from "@/components/Button"
-import Model from "@/components/Model/Model"
-import { useState } from "react"
-import { FaPlus } from "react-icons/fa6";
+import { getUserEducation } from "@/actions/user/getUserEducation";
+import Button from "@/components/Button";
+import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import Educations from "../userProfile/Educations";
 
-const WelcomeUserEducation = ({ CurrentStep, onNext }: any) => {
-
-    const [step, setStep] = useState(CurrentStep)
-
-    const HandleClick = (type: string) => {
-        setStep(type === 'next' ? step + 1 : step - 1)
-        onNext(step)
-    }
-
-    return (
-        <div className='w-full h-full p-5 border rounded-[20px] space-y-5'>
-            <h3>You Education</h3>
-            <Model
-                bodyContent={<UserEducationForm />}
-                title="Education"
-                desc="Add you education details"
-                className="w-full md:w-[1000px]"
-            >
-                <Button variant="border" icon={<FaPlus size={20} />}>Add</Button>
-            </Model>
-            <div className='flex flex-row items-center justify-end gap-5'>
-                <Button variant='border' onClick={() => HandleClick('prev')}>previous</Button>
-                <Button onClick={() => HandleClick('next')}>Continue</Button>
-            </div>
-        </div>
-    )
+interface Props {
+    currentStep?: number;
+    onNext?: (value: number) => void;
+    onBack?: (value: number) => void;
 }
 
-export default WelcomeUserEducation
+const WelcomeUserEducation = ({ currentStep = 2, onNext, onBack }: Props) => {
+    const user = useSelector((state: any) => state.user.user);
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['getUserEducation', user?.id],
+        queryFn: async () => await getUserEducation(user?.id),
+        enabled: !!user?.id,
+    });
+
+    const education = data?.data || []
+
+    const handleNext = () => {
+        if (education?.length < 1) {
+            console.log('Create education first');
+            return;
+        }
+        onNext?.(currentStep + 1);
+    };
+
+    const handleBack = () => {
+        onBack?.(currentStep - 1);
+    };
+
+    return (
+        <div className="w-full h-full space-y-5">
+            <Educations userId={user?.id} />
+            <div className="flex flex-row items-center justify-end gap-5">
+                <Button variant="border" onClick={handleBack}>Back</Button>
+                <Button
+                    disabled={education?.length > 0 ? false : true}
+                    onClick={handleNext}
+                >
+                    Next
+                </Button>
+            </div>
+        </div>
+    );
+}
+
+export default WelcomeUserEducation;
