@@ -22,7 +22,7 @@ interface CustomFormFieldProps<T extends FieldValues> {
     isTextarea?: boolean;
     isLoading?: boolean;
     isSelect?: boolean;
-    options?: string[];
+    options?: any;
     onSelect?: (value: string) => void;
 }
 

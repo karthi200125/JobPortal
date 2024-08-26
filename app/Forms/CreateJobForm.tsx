@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,8 +12,12 @@ import { CreateJobSchema } from "@/lib/SchemaTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
 import { Switch } from "@/components/ui/switch";
+import { getCompanies } from "@/actions/company/getCompanies";
+import { createJobAction } from "@/actions/job/createJobAction";
+import { useSelector } from "react-redux";
 
 const CreateJobForm = () => {
+  const user = useSelector((state: any) => state.user.user)
   const [description, setDescription] = useState('');
   const [country, setCountry] = useState('');
   const [state, setState] = useState('');
@@ -32,22 +36,47 @@ const CreateJobForm = () => {
       type: "",
       mode: "",
       applyLink: "",
-      company: "",
+      // company: "",
       jobDesc: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof CreateJobSchema>) => {
     startTransition(() => {
-      console.log(values)
-    })
+      const userId = 7
+      const companyId = 1
+      createJobAction(values, userId, companyId)
+        .then((data) => {
+          console.log(data)
+          if (data?.success) {
+            console.log(data)
+          }
+        })
+    });
   };
 
-  const { data: countries, isPending: countryLoading } = useQuery({ queryKey: ['getcountries'], queryFn: async () => await getCountries()});
-  const { data: states, isPending: statesLoading } = useQuery({ queryKey: ['getStates'], queryFn: async () => await getStates(country)});
-  const { data: cities, isPending: citiesLoading } = useQuery({ queryKey: ['getCities'], queryFn: async () => await getCities(country, state)});
+  // const { data: countries = [], isLoading: countryLoading } = useQuery({
+  //   queryKey: ['getCountries'],
+  //   queryFn: async () => await getCountries(),
+  // });
+  // const { data: states = [], isLoading: statesLoading } = useQuery({
+  //   queryKey: ['getStates', country],
+  //   queryFn: async () => await getStates("India"),
+  //   enabled: !!country,
+  // });
+  // const { data: cities = [], isLoading: citiesLoading } = useQuery({
+  //   queryKey: ['getCities', country, state],
+  //   queryFn: async () => await getCities(state),
+  //   enabled: !!state,
+  // });
+  const { data: companies = [], isLoading: companyLoading } = useQuery({
+    queryKey: ['getCompanies'],
+    queryFn: async () => await getCompanies(),
+  });
 
-  console.log(countries)
+  // const countriesOptions = countries.map((c: any) => c.name).sort();
+  // const statesOptions = states.length > 0 ? states.map((s: any) => s.name).sort() : [];
+  // const citiesOptions = cities.length > 0 ? cities.map((c: any) => c.name).sort() : [];
 
   return (
     <Form {...form}>
@@ -57,13 +86,13 @@ const CreateJobForm = () => {
             name="jobTitle"
             form={form}
             label="Job Title"
-            placeholder="Ex:Software Developer"
+            placeholder="Ex: Software Developer"
             isLoading={isLoading}
           />
           <CustomFormField
             name="experience"
             form={form}
-            label="Experince"
+            label="Experience"
             placeholder="Ex: 0 - 5 or Fresher"
             isLoading={isLoading}
             isSelect
@@ -72,7 +101,7 @@ const CreateJobForm = () => {
           <CustomFormField
             name="salary"
             form={form}
-            label="Salary For This Job"
+            label="Salary For This Job Per Annum"
             placeholder="Ex: 3 LPA"
             isLoading={isLoading}
           />
@@ -83,38 +112,36 @@ const CreateJobForm = () => {
             placeholder="Ex: India"
             isLoading={isLoading}
             isSelect
-            options={countries}
+            options={["India"]}
             onSelect={(d: any) => setCountry(d)}
           />
-          {country !== "" &&
-            <CustomFormField
-              name="state"
-              form={form}
-              label="Job State"
-              placeholder="Ex: TamilNadu , Karnataka ..."
-              isLoading={isLoading}
-              isSelect
-              options={states}
-              onSelect={(d: any) => setState(d)}
-            />
-          }
-          {state !== "" &&
+          <CustomFormField
+            name="state"
+            form={form}
+            label="Job State"
+            placeholder="Ex: TamilNadu, Karnataka ..."
+            isLoading={isLoading}
+            isSelect
+            options={['TamilNadu']}
+            onSelect={(d: any) => setState(d)}
+          />
+          {state && (
             <CustomFormField
               name="city"
               form={form}
               label="Job City"
-              placeholder="Ex: Chennai , Bangalore ..."
+              placeholder="Ex: Chennai, Bangalore ..."
               isLoading={isLoading}
               isSelect
-              options={cities}
+              options={["Chennai"]}
               onSelect={(d: any) => setCity(d)}
             />
-          }
+          )}
           <CustomFormField
             name="type"
             form={form}
             label="Job Type"
-            placeholder="Ex: FullTime , Internship"
+            placeholder="Ex: Full-Time, Internship"
             isLoading={isLoading}
             isSelect
             options={JobTypes}
@@ -123,20 +150,20 @@ const CreateJobForm = () => {
             name="mode"
             form={form}
             label="Job Mode"
-            placeholder="Ex: Onsite , Hybrid"
+            placeholder="Ex: Onsite, Hybrid"
             isLoading={isLoading}
             isSelect
             options={JobMode}
           />
-          <CustomFormField
+          {/* <CustomFormField
             name="company"
             form={form}
             label="Select Company"
             placeholder="Ex: Google"
             isLoading={isLoading}
             isSelect
-            options={['Yes', "No"]}
-          />
+            options={['Google']}
+          /> */}
         </div>
         <FormField
           control={form.control}
@@ -144,12 +171,8 @@ const CreateJobForm = () => {
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
-                <FormLabel className="text-base">
-                  Easy Apply
-                </FormLabel>
-                <FormDescription>
-                  Is This Easy Apply or External Link Apply
-                </FormDescription>
+                <FormLabel className="text-base">Easy Apply</FormLabel>
+                <FormDescription>Is This Easy Apply or External Link Apply</FormDescription>
               </div>
               <FormControl>
                 <Switch
@@ -171,15 +194,14 @@ const CreateJobForm = () => {
           name="jobDesc"
           form={form}
           label="Job Description"
-          placeholder="Ex: somthing about description"
+          placeholder="Ex: Something about the job description"
           isLoading={isLoading}
           isTextarea
         />
-
-        <Button isLoading={isLoading} className="!w-full" >Create Job</Button>
+        <Button isLoading={isLoading} className="!w-full">Create Job</Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default CreateJobForm
+export default CreateJobForm;
