@@ -7,15 +7,21 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
-import { UserEducationSchema } from "@/lib/SchemaTypes";
+import { UserExperienceSchema } from "@/lib/SchemaTypes";
 import CustomFormField from "@/components/CustomFormField";
 import { useTransition } from "react";
 import Button from "@/components/Button";
 
-export function UserExperienceForm() {
+interface ExperienceProps {
+    experience?: any,
+    edit?: boolean,
+}
+
+
+export function UserExperienceForm({ experience, edit }: ExperienceProps) {
     const [isLoading, startTransition] = useTransition();
-    const form = useForm<z.infer<typeof UserEducationSchema>>({
-        resolver: zodResolver(UserEducationSchema),
+    const form = useForm<z.infer<typeof UserExperienceSchema>>({
+        resolver: zodResolver(UserExperienceSchema),
         defaultValues: {
             title: "",
             EmployementType: "",
@@ -27,7 +33,7 @@ export function UserExperienceForm() {
         },
     });
 
-    const onSubmit = (values: z.infer<typeof UserEducationSchema>) => {
+    const onSubmit = (values: z.infer<typeof UserExperienceSchema>) => {
         startTransition(() => {
             console.log(values);
         })

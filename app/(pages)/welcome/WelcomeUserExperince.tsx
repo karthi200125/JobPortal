@@ -1,42 +1,44 @@
 'use client'
 
-import { UserExperienceForm } from "@/app/Forms/UserExperienceForm"
-import Button from "@/components/Button"
-import Model from "@/components/Model/Model"
-import { useState } from "react"
-import { FaPlus } from "react-icons/fa"
+import { getUserEducation } from "@/actions/user/getUserEducation";
+import Button from "@/components/Button";
+import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import Educations from "../userProfile/Educations";
+import { UserExperienceForm } from "@/app/Forms/UserExperienceForm";
 
-const WelcomeUserExperince = ({ CurrentStep, onNext }: any) => {
+interface Props {
+    currentStep?: number;
+    onNext?: (value: number) => void;
+    onBack?: (value: number) => void;
+}
 
-    const [step, setStep] = useState(CurrentStep)
+const WelcomeUserExperience = ({ currentStep = 2, onNext, onBack }: Props) => {
+    const user = useSelector((state: any) => state.user.user);
 
-    const HandleClick = (type: string) => {
-        setStep(type === 'next' ? step + 1 : step - 1)
-        onNext(step)
-    }
+    const { data, isLoading } = useQuery({
+        queryKey: ['getUserEducation', user?.id],
+        queryFn: async () => await getUserEducation(user?.id),
+        enabled: !!user?.id,
+    });
 
-    const [exp, setExp] = useState("fresher")
+    const education = data?.data || []
 
-    console.log(exp)
+    const handleNext = () => {
+        if (education?.length < 1) {
+            console.log('Create education first');
+            return;
+        }
+        onNext?.(currentStep + 1);
+    };
+
+    const handleBack = () => {
+        onBack?.(currentStep - 1);
+    };
 
     return (
-        <div className='w-full h-full p-5 border rounded-[20px] space-y-5'>
+        <div className='w-full h-full space-y-5'>
             <h3>You Experince</h3>
-
-            {/* <div>
-                <h3>Select Your Expereince Level</h3>
-                <div className="flex flex-row items-center gap-5">
-                    <div className="flex flex-row items-center gap-3">
-                        <input type="checkbox" value={exp} name="fresher" onChange={(e) => setExp("fresher")} />
-                        <h4>Frehser</h4>
-                    </div>
-                    <div className="flex flex-row items-center gap-3">
-                        <input type="checkbox" value={exp} name="experinced" onChange={(e) => setExp("experinced")} />
-                        <h4>Experinced</h4>
-                    </div>
-                </div>
-            </div> */}
-
             <Model
                 bodyContent={<UserExperienceForm />}
                 title="Experience"
@@ -45,14 +47,8 @@ const WelcomeUserExperince = ({ CurrentStep, onNext }: any) => {
             >
                 <Button variant="border" icon={<FaPlus size={20} />}>Add Experience</Button>
             </Model>
-
-            <div className='flex flex-row items-center justify-start gap-5'>
-                <Button variant='border' onClick={() => HandleClick('prev')}>previous</Button>
-                <Button onClick={() => HandleClick('next')}>Continue</Button>
-            </div>
-
         </div>
-    )
+    );
 }
 
-export default WelcomeUserExperince
+export default WelcomeUserExperience;

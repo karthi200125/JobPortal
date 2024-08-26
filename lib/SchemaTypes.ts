@@ -7,7 +7,7 @@ export const UserInfoSchema = z.object({
     email: z.string().email({
         message: "Invalid email address",
     }),
-    firstname: z.string().min(1, {
+    firstName: z.string().min(1, {
         message: "Firstname is required",
     }),
     userBio: z.string().min(50, {
@@ -18,7 +18,7 @@ export const UserInfoSchema = z.object({
     website: z.string().url({
         message: "Invalid website URL",
     }).optional(),
-    lastname: z.string().min(1, {
+    lastName: z.string().min(1, {
         message: "Lastname is required",
     }),
     gender: z.string().min(1, {
@@ -53,6 +53,30 @@ export const UserInfoSchema = z.object({
 });
 
 export const UserEducationSchema = z.object({
+    instituteName: z.string().min(1, {
+        message: "Institute Name is required",
+    }),
+    degree: z.string().min(1, {
+        message: "Degree is required",
+    }),
+    fieldOfStudy: z.string().min(1, {
+        message: "Degree is required",
+    }),
+    startDate: z.string().min(1, {
+        message: "Start Date is required",
+    }),
+    endDate: z.string().min(1, {
+        message: "Start Date is required",
+    }),
+    percentage: z.string().min(1, {
+        message: "Percentage Date is required",
+    }),
+    // educationDesc: z.string().min(1, {
+    //     message: "Percentage Date is required",
+    // }),
+})
+
+export const UserExperienceSchema = z.object({
     instituteName: z.string().min(1, {
         message: "Institute Name is required",
     }),
@@ -157,26 +181,29 @@ export const LoginSchema = z.object({
     }),
 })
 
-export const CreateCompanySchema = z.object({
-    name: z.string().min(1, {
-        message: "Job Title is required",
+export const CompanySchema = z.object({
+    companyName: z.string().min(1, {
+        message: "Company Name is required",
     }),
-    address: z.string().min(1, {
-        message: "Job Desc required",
+    companyImage: z.string().min(1, {
+        message: "Company Image URL is required",
     }),
-    city: z.string().min(1, {
-        message: "Job Desc required",
+    companyAddress: z.string().min(1, {
+        message: "Company Address is required",
     }),
-    state: z.string().min(1, {
-        message: "Job Desc required",
+    companyCity: z.string().min(1, {
+        message: "Company City is required",
     }),
-    country: z.string().min(1, {
-        message: "Job Desc required",
+    companyState: z.string().min(1, {
+        message: "Company State is required",
     }),
-    website: z.string().min(1, {
-        message: "Job Desc required",
+    companyCountry: z.string().min(1, {
+        message: "Company Country is required",
     }),
-    totalEmployees: z.string().min(1, {
-        message: "Job Desc required",
+    companyWebsite: z.string().min(1, {
+        message: "Company Website URL is required",
+    }).optional(),
+    companyTotalEmployees: z.string().min(1, {
+        message: "Total Employees must be at least 1",
     }),
-})
+});

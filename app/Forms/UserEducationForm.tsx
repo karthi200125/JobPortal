@@ -14,7 +14,7 @@ import { UserEducationSchema } from "@/lib/SchemaTypes";
 import { useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 interface EducationProps {
     education?: any,
@@ -27,6 +27,7 @@ export function UserEducationForm({ education, edit }: EducationProps) {
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
     const queryClient = useQueryClient();
+    const pathname = usePathname()
 
     const { userId } = useParams()
     const id = Number(userId)
@@ -117,7 +118,10 @@ export function UserEducationForm({ education, edit }: EducationProps) {
 
                 <FormError message={err} />
                 <FormSuccess message={success} />
-                <Button isLoading={isLoading} className="!w-full" >{edit ? "Edit Education" : "Add Education"}</Button>
+                <Button isLoading={isLoading} className="!w-full" >
+                    {pathname === '/welcome' ? "Next" :
+                        edit ? "Edit Education" : "Add Education"}
+                </Button>
             </form>
         </Form>
     );

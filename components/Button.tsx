@@ -36,7 +36,7 @@ const Button = ({
             }
 
             {isLoading ? (
-                <div className={`flex flex-row items-center gap-2 font-bold ${variant === 'border' ? 'text-[var(--voilet)]' : 'text-[var(--white)]'}`}>
+                <div className={`flex flex-row items-center gap-2 font-bold ${variant === 'border' ? 'text-[var(--voilet)]' : ''}`}>
                     <Loader />
                     <h4 >Loading</h4>
                 </div>

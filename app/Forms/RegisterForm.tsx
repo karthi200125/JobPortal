@@ -27,6 +27,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { register } from "@/actions/auth/Register";
 import { FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { loginRedux } from "../Redux/AuthSlice";
 
 
 const RegisterForm = () => {
@@ -35,6 +37,7 @@ const RegisterForm = () => {
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
     const router = useRouter()
+    const dispatch = useDispatch();
 
     const options = [
         "CANDIDATE",
@@ -54,17 +57,16 @@ const RegisterForm = () => {
     });
 
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        startTransition(() => {            
+        startTransition(() => {
             register(values)
                 .then((data) => {
                     console.log(data)
                     if (data?.success) {
-                        console.log(data?.success)
                         setSuccess(data?.success)
+                        dispatch(loginRedux(data?.data))
                         router.push('/welcome')
                     }
                     if (data?.error) {
-                        console.log(data?.error)
                         setErr(data?.error)
                     }
                 })

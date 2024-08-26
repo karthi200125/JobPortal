@@ -9,10 +9,10 @@ export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: num
         const validatedFields = UserInfoSchema.safeParse(values);
 
         if (!validatedFields.success) {
-            return { error: "Invalid fields", details: validatedFields.error.errors };
+            return { error: "Invalid fields" };
         }
         const data = validatedFields.data;
-        
+
         const updatedUser = await db.user.update({
             where: {
                 id: id,

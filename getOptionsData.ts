@@ -1,8 +1,10 @@
-let key = "NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==";
+
+let key = process.env.CUNTRY_STATE_CITY_KEY;
+let baseUrl = process.env.CUNTRY_STATE_CITY_BASEURL
 
 export const getCountries = async () => {
     try {
-        const url = "https://api.countrystatecity.in/v1/countries";
+        const url = `${baseUrl}/countriescountries`;
 
         const response = await fetch(url, {
             method: 'GET',
@@ -26,7 +28,7 @@ export const getStates = async (countryName: string) => {
         const countries = await getCountries();
         const country = countries.find((c: any) => c.name.toLowerCase() === countryName.toLowerCase());
 
-        const url = `https://api.countrystatecity.in/v1/countries/${country.iso2}/states`;
+        const url = `${baseUrl}/countries/${country.iso2}/states`;
 
         const response = await fetch(url, {
             method: 'GET',
@@ -38,8 +40,7 @@ export const getStates = async (countryName: string) => {
 
         const data = await response.json();
 
-        // return data.map((state: any) => state.name);
-        return "gdgd dgdgd dgdg"
+        return data.map((state: any) => state.name);        
     } catch (err) {
         return "get states error";
     }
@@ -50,7 +51,7 @@ export const getCities = async (countryName: string, stateName: string) => {
         const states = await getStates(countryName);
         const state = states.find((s: any) => s.name.toLowerCase() === stateName.toLowerCase());
 
-        const url = `https://api.countrystatecity.in/v1/countries/${state.iso2}/states/${state.iso2}/cities`;
+        const url = `${baseUrl}/countries/${state.iso2}/states/${state.iso2}/cities`;
 
         const response = await fetch(url, {
             method: 'GET',

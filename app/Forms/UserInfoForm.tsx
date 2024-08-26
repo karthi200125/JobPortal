@@ -14,11 +14,19 @@ import { UserInfoSchema } from "@/lib/SchemaTypes";
 import { useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
+import { usePathname } from "next/navigation";
 
-export function UserInfoForm() {
+interface UserInfoFormProps {
+    currentStep?: number;
+    onNext?: (value: number) => void;
+}
+
+export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
+    const pathname = usePathname()
 
+    const [statep, setStep] = useState(currentStep)
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
 
@@ -31,8 +39,8 @@ export function UserInfoForm() {
             userBio: user?.userBio || "",
             website: user?.website || "",
             email: user?.email || "",
-            firstname: user?.firstname || "",
-            lastname: user?.lastname || "",
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
             gender: user?.gender || "",
             address: user?.address || "",
             city: user?.city || "",
@@ -46,19 +54,23 @@ export function UserInfoForm() {
 
     const onSubmit = (values: z.infer<typeof UserInfoSchema>) => {
         startTransition(() => {
-            const id = user?.id            
+            const id = user?.id
             UserUpdate(values, id)
-                .then((data) => {
+                .then((data) => {                    
                     if (data?.success) {
                         setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))
+                        if (pathname === '/welcome' && onNext) {
+                            onNext(currentStep + 1);
+                        }
                     }
-                    if (data?.error) {                        
+                    if (data?.error) {
                         setErr(data?.error)
                     }
                 })
         });
     };
+
 
     return (
         <Form {...form}>
@@ -80,14 +92,14 @@ export function UserInfoForm() {
                         type="email"
                     />
                     <CustomFormField
-                        name="firstname"
+                        name="firstName"
                         form={form}
                         label="First Name"
                         placeholder="Ex: John"
                         isLoading={isLoading}
                     />
                     <CustomFormField
-                        name="lastname"
+                        name="lastName"
                         form={form}
                         label="Last Name"
                         placeholder="Ex: Doe"
@@ -171,7 +183,7 @@ export function UserInfoForm() {
                 <FormError message={err} />
                 <FormSuccess message={success} />
                 <Button isLoading={isLoading} className="!w-full">
-                    Update
+                    {pathname === '/welcome' ? "Next" : "Update"}
                 </Button>
             </form>
         </Form>

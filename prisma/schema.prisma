@@ -34,7 +34,9 @@ model User {
   savedJobs       Job[]     @relation("SavedJobs")
   postedJobs      Job[]     @relation("PostedJobs")
 
+  company         Company[]
   educations      Education[]
+  experiences     Experince[]
   projects        Project[]
 
   followers       Int[]
@@ -71,23 +73,43 @@ model Job {
 }
 
 model Company {
-  id              Int       @id @default(autoincrement())
-  name            String
-  address         String
-  city            String
-  state           String
-  country         String
-  website         String?
-  totalEmployees  Int?
-  isVerified      Boolean   @default(false)
+  id                     Int       @id @default(autoincrement())
+  companyName            String
+  companyImage           String
+  companyAddress         String
+  companyCity            String
+  companyState           String
+  companyCountry         String
+  companyWebsite         String?
+  companyTotalEmployees  String
+  companyIsVerified      Boolean   @default(false)
 
-  jobs            Job[]
+  userId                 Int   
+  user                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  jobs                   Job[]
+  
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 }
 
 model Education {
+  id            Int      @id @default(autoincrement())
+  instituteName String
+  degree        String
+  fieldOfStudy  String
+  startDate     String
+  endDate       String
+  percentage    String  
+
+  userId        Int   
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Experince {
   id            Int      @id @default(autoincrement())
   instituteName String
   degree        String
