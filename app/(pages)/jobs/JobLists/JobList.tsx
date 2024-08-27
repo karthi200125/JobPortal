@@ -22,21 +22,23 @@ interface JobListProps {
 
 const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
 
+    console.log(job)
+
     return (
         <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
 
             <div className="w-[60px] h-[60px] bg-neutral-200"></div>
 
             <div className="w-full flex flex-col gap-1 items-start">
-                <h3 className="text-lg font-bold">Full Stack Developer</h3>
+                <h3 className="text-lg font-bold">{job?.jobTitle}</h3>
                 <h5 className="text-sm font-semibold">Compnay name</h5>
                 <div className="flex flex-row gap-2 items-center">
                     <CiLocationOn size={15} />
-                    <h5 className="text-xs">Chennai , Tamilnadu , India (OnSite)</h5>
+                    <h5 className="text-xs">{job?.city} , {job?.state} , {job?.coutry} ({job?.mode})</h5>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
                     <BsSuitcaseLg size={12} />
-                    <h5 className="text-xs">5 years</h5>
+                    <h5 className="text-xs">{job?.experience}</h5>
                 </div>
 
                 {/* <div className="flex flex-row gap-2 items-center">
@@ -46,7 +48,7 @@ const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
                 </div> */}
 
                 <div className="flex flex-row gap-2 items-center justify-between">
-                    <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">10 Vacancies</h6>
+                    <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
                     <h5 className="text-xs">2 Months Ago</h5>
                 </div>
 

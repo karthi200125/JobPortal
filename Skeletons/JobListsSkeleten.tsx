@@ -1,0 +1,32 @@
+import { Skeleton } from '@/components/ui/skeleton';
+
+const JobListsSkeleton = () => {
+    return (
+        <div className='space-y-1'>
+            {Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className="relative w-full max-h-max overflow-hidden bg-neutral- px-2 md:px-5 py-3 flex flex-row items-start justify-between gap-5">
+                    <Skeleton className="w-[60px] h-[60px] bg-neutral-200" />
+                    <div className="w-full h-full flex flex-col gap-2 items-start justify-between">
+                        <Skeleton className='h-5 w-full bg-neutral-200' />
+                        <Skeleton className='h-4 w-[90%] bg-neutral-200' />
+                        <div className="flex flex-row gap-2 items-center justify-between">
+                            <Skeleton className='h-5 w-5 bg-neutral-200' />
+                            <Skeleton className='h-3 w-[150px] bg-neutral-200' />
+                        </div>
+
+                        <div className="flex flex-row gap-2 items-center justify-between">
+                            <Skeleton className='h-5 w-5 bg-neutral-200' />
+                            <Skeleton className='h-3 w-[150px] bg-neutral-200' />
+                        </div>
+                        <div className="flex flex-row gap-2 items-center justify-between">
+                            <Skeleton className='h-5 w-[100px] bg-neutral-200' />
+                            <Skeleton className='h-3 w-[100px] bg-neutral-200' />
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+export default JobListsSkeleton;

@@ -22,6 +22,7 @@ interface SelectProps {
     isLoading?: boolean;
     selectCls?: string;
     options?: string[];
+    optionsLoading?: boolean
     onSelect?: (value: string) => void;
 }
 
@@ -32,6 +33,7 @@ const CustomSelect: React.FC<SelectProps> = ({
     options = [],
     selectCls = '',
     onSelect,
+    optionsLoading
 }) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -86,17 +88,21 @@ const CustomSelect: React.FC<SelectProps> = ({
                     />
                 </div>
                 <SelectGroup>
-                    {filteredOptions.length > 0 ? (
-                        filteredOptions?.map(option => (
-                            <SelectItem key={option} value={option} className="capitalize">
-                                {option}
-                            </SelectItem>
-                        ))
-                    ) : (
-                        <h4 className="p-2 text-[var(--lighttext)] font-semibold">
-                            No options found
-                        </h4>
-                    )}
+                    {filteredOptions.length > 0 ?
+                        optionsLoading ?
+                            <h4>Loading.....</h4>
+                            :
+                            (
+                                filteredOptions?.map(option => (
+                                    <SelectItem key={option} value={option} className="capitalize">
+                                        {option}
+                                    </SelectItem>
+                                ))
+                            ) : (
+                            <h4 className="p-2 text-[var(--lighttext)] font-semibold">
+                                No options found
+                            </h4>
+                        )}
                 </SelectGroup>
             </SelectContent>
         </Select>

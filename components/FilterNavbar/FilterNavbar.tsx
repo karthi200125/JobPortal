@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sheet"
 
 import { IoMdArrowDropdown } from "react-icons/io";
+import { experiences, JobMode } from '@/getOptionsData';
 
 interface Filter {
     id: number;
@@ -35,16 +36,15 @@ const FilterNavbar = () => {
         {
             id: 2,
             title: "Experience Level",
-            options: ['Internship', 'Entry level', 'Associate', 'Mid Senior Level', 'Director']
+            options: experiences
         },
         {
             id: 3,
             title: "Type",
-            options: ['All', 'Remote', 'OnSite', 'Hybrid']
+            options: JobMode
         },
     ];
 
-    // State to hold the selected options and pending changes
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>(
         filters.reduce((acc, filter) => {
             acc[filter.title] = '';

@@ -39,12 +39,11 @@ const CompanyForm = () => {
 
     const onSubmit = (values: z.infer<typeof CompanySchema>) => {
         startTransition(() => {
-            console.log(values);
-            const userId = 7
+            const userId = 1
             createCompanyAction(values, userId)
                 .then((data) => {
+                    console.log(data)
                     if (data?.success) {
-                        console.log(data?.data)
                     }
                 })
         });

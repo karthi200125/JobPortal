@@ -4,17 +4,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { getCompanies } from "@/actions/company/getCompanies";
+import { createJobAction } from "@/actions/job/createJobAction";
 import Button from "@/components/Button";
 import CustomFormField from "@/components/CustomFormField";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { experiences, getCities, getCountries, getStates, JobTypes, JobMode } from "@/getOptionsData";
+import { Switch } from "@/components/ui/switch";
+import { experiences, getCities, getStates, JobMode, JobTypes } from "@/getOptionsData";
 import { CreateJobSchema } from "@/lib/SchemaTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
-import { Switch } from "@/components/ui/switch";
-import { getCompanies } from "@/actions/company/getCompanies";
-import { createJobAction } from "@/actions/job/createJobAction";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const CreateJobForm = () => {
   const user = useSelector((state: any) => state.user.user)
@@ -23,6 +24,8 @@ const CreateJobForm = () => {
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
   const [isLoading, startTransition] = useTransition();
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
     defaultValues: {
@@ -30,57 +33,49 @@ const CreateJobForm = () => {
       experience: "",
       city: "",
       state: "",
-      country: "",
+      country: "India",
       salary: "",
       isEasyApply: false,
       type: "",
       mode: "",
       applyLink: "",
-      // company: "",
+      company: "",
       jobDesc: "",
+      vacancies: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof CreateJobSchema>) => {
     startTransition(() => {
-      const userId = 7
-      const companyId = 1
-      createJobAction(values, userId, companyId)
+      const userId = 1
+      createJobAction(values, userId)
         .then((data) => {
-          console.log(data)
           if (data?.success) {
-            console.log(data)
+            router.push('/dashboard')
           }
         })
     });
   };
 
-  // const { data: countries = [], isLoading: countryLoading } = useQuery({
-  //   queryKey: ['getCountries'],
-  //   queryFn: async () => await getCountries(),
-  // });
-  // const { data: states = [], isLoading: statesLoading } = useQuery({
-  //   queryKey: ['getStates', country],
-  //   queryFn: async () => await getStates("India"),
-  //   enabled: !!country,
-  // });
-  // const { data: cities = [], isLoading: citiesLoading } = useQuery({
-  //   queryKey: ['getCities', country, state],
-  //   queryFn: async () => await getCities(state),
-  //   enabled: !!state,
-  // });
+  const { data: states = [], isLoading: statesLoading } = useQuery({
+    queryKey: ['getStates'],
+    queryFn: async () => await getStates(),
+  });
+  const { data: citiesOptions = [], isLoading: citiesLoading } = useQuery({
+    queryKey: ['getCities', state],
+    queryFn: async () => await getCities(state),
+  });
   const { data: companies = [], isLoading: companyLoading } = useQuery({
     queryKey: ['getCompanies'],
     queryFn: async () => await getCompanies(),
   });
 
-  // const countriesOptions = countries.map((c: any) => c.name).sort();
-  // const statesOptions = states.length > 0 ? states.map((s: any) => s.name).sort() : [];
-  // const citiesOptions = cities.length > 0 ? cities.map((c: any) => c.name).sort() : [];
+  const statesOptions = states.map((s: any) => s.name).sort()
+  const companiesOptions = companies?.map((company: any) => company?.companyName)
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <CustomFormField
             name="jobTitle"
@@ -119,10 +114,11 @@ const CreateJobForm = () => {
             name="state"
             form={form}
             label="Job State"
-            placeholder="Ex: TamilNadu, Karnataka ..."
+            placeholder="Ex: TamilNadu"
             isLoading={isLoading}
             isSelect
-            options={['TamilNadu']}
+            options={statesOptions}
+            optionsLoading={statesLoading}
             onSelect={(d: any) => setState(d)}
           />
           {state && (
@@ -130,10 +126,11 @@ const CreateJobForm = () => {
               name="city"
               form={form}
               label="Job City"
-              placeholder="Ex: Chennai, Bangalore ..."
+              placeholder="Ex: Chennai"
               isLoading={isLoading}
               isSelect
-              options={["Chennai"]}
+              options={citiesOptions}
+              optionsLoading={citiesLoading}
               onSelect={(d: any) => setCity(d)}
             />
           )}
@@ -155,16 +152,24 @@ const CreateJobForm = () => {
             isSelect
             options={JobMode}
           />
-          {/* <CustomFormField
-            name="company"
+          <CustomFormField
+            name="vacancies"
             form={form}
-            label="Select Company"
-            placeholder="Ex: Google"
+            label="Job vacancies"
+            placeholder="Ex: 10"
             isLoading={isLoading}
-            isSelect
-            options={['Google']}
-          /> */}
+          />
         </div>
+        <CustomFormField
+          name="company"
+          form={form}
+          label="Job Company "
+          placeholder="Ex: Googlr"
+          isLoading={isLoading}
+          isSelect
+          options={companiesOptions}
+          optionsLoading={companyLoading}
+        />
         <FormField
           control={form.control}
           name="isEasyApply"
@@ -187,7 +192,7 @@ const CreateJobForm = () => {
           name="applyLink"
           form={form}
           label="External Job Apply Link"
-          placeholder="Ex: https://...."
+          placeholder="Ex: https://google.com"
           isLoading={isLoading}
         />
         <CustomFormField

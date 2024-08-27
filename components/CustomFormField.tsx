@@ -23,6 +23,7 @@ interface CustomFormFieldProps<T extends FieldValues> {
     isLoading?: boolean;
     isSelect?: boolean;
     options?: any;
+    optionsLoading?: boolean;
     onSelect?: (value: string) => void;
 }
 
@@ -37,7 +38,8 @@ const CustomFormField = <T extends FieldValues>({
     selectCls,
     options,
     isLoading,
-    onSelect
+    onSelect,
+    optionsLoading
 }: CustomFormFieldProps<T>) => {
     return (
         <FormField
@@ -55,6 +57,7 @@ const CustomFormField = <T extends FieldValues>({
                                 isLoading={isLoading}
                                 selectCls={selectCls}
                                 onSelect={onSelect}
+                                optionsLoading={optionsLoading}
                             />
                             :
                             isTextarea ?
