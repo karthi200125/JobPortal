@@ -1,3 +1,5 @@
+'use client'
+
 import CreateJobForm from "@/app/Forms/CreateJobForm";
 import DeleteJobForm from "@/app/Forms/DeleteJobForm";
 import Icon from "@/components/Icon";
@@ -12,6 +14,10 @@ import { CiLocationOn } from "react-icons/ci";
 import { FaTrash } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
+import moment from 'moment';
+import { useQuery } from "@tanstack/react-query";
+import { getCompanyById } from "@/actions/company/getCompanyById";
+import Image from "next/image";
 
 interface JobListProps {
     isActive?: boolean;
@@ -22,34 +28,45 @@ interface JobListProps {
 
 const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
 
-    console.log(job)
+    const cId = job?.companyId
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['getCompany', cId],
+        queryFn: async () => await getCompanyById(cId),
+    });
 
     return (
         <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
 
-            <div className="w-[60px] h-[60px] bg-neutral-200"></div>
+            <Image src={data?.companyImage || ""} alt="" width={60} height={60} className="w-[60px] h-[60px] bg-neutral-200 object-contain" />
 
             <div className="w-full flex flex-col gap-1 items-start">
-                <h3 className="text-lg font-bold">{job?.jobTitle}</h3>
-                <h5 className="text-sm font-semibold">Compnay name</h5>
+                <h3 className="text-lg font-bold capitalize">{job?.jobTitle}</h3>
+                <h5 className="text-sm font-semibold capitalize">{data?.companyName}</h5>
                 <div className="flex flex-row gap-2 items-center">
                     <CiLocationOn size={15} />
                     <h5 className="text-xs">{job?.city} , {job?.state} , {job?.coutry} ({job?.mode})</h5>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
                     <BsSuitcaseLg size={12} />
-                    <h5 className="text-xs">{job?.experience}</h5>
+                    <h5 className="text-xs pl-1">{job?.experience}</h5>
                 </div>
 
                 {/* <div className="flex flex-row gap-2 items-center">
                     <h5 className="text-xs">Promoted</h5>
                     <span className="w-2 h-2 rounded-full bg-black"></span>
-                    <h5 className="text-xs">Easy Apply</h5>
+                    <h5 className="text-xs">{job?.isEastApply === true ? "Easy Apply" : "Apply On Company Site"}</h5>
                 </div> */}
 
-                <div className="flex flex-row gap-2 items-center justify-between">
-                    <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
-                    <h5 className="text-xs">2 Months Ago</h5>
+                <div className="w-full flex flex-row gap-2 items-center justify-between">
+                    <div className="flex flex-row gap-2 items-center">
+                        <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
+                        <div className="flex flex-row gap-2 items-center">
+                            <span className="w-2 h-2 rounded-full bg-black"></span>
+                            <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
+                        </div>
+                    </div>
+                    <h5 className="text-xs">{moment(job?.createdAt).fromNow()}</h5>
                 </div>
 
             </div>

@@ -1,14 +1,13 @@
 'use client'
 
-import React from 'react';
 import BottomDrawer from "@/components/BottomDrawer";
+import JobListsSkeleten from "@/Skeletons/JobListsSkeleten";
+import React from 'react';
 import JobDesc from "../Job/Job";
 import JobList from "./JobList";
-import JobListsSkeleten from "@/Skeletons/JobListsSkeleten";
-import { Job } from '@prisma/client';
 
 interface JobListsProps {
-  Jobs?: Job[];
+  Jobs?: any;
   isLoading?: boolean;
 }
 
@@ -34,7 +33,7 @@ const JobLists: React.FC<JobListsProps> = ({ Jobs, isLoading }) => {
         {isLoading ?
           <JobListsSkeleten />
           : Jobs && Jobs.length > 0 ?
-            Jobs.map((job) => (
+            Jobs.map((job: any) => (
               <JobList key={job.id} isHover job={job} />
             ))
             :
