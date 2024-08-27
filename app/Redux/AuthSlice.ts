@@ -45,11 +45,24 @@ const AuthSlice = createSlice({
                     localStorage.setItem('user', JSON.stringify(state.user));
                 }
             }
+        },
+        userFollow(state, action: PayloadAction<string>) {
+            if (state.user) {
+                const isFollowing = state.user.followings.includes(action.payload);
+                if (isFollowing) {
+                    state.user.followings = state.user.followings.filter((id: any) => id !== action.payload);
+                } else {
+                    state.user.followers = [...state.user.followers, action.payload];
+                }
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('user', JSON.stringify(state.user));
+                }
+            }
         }
 
     },
 });
 
-export const { loginRedux, logoutRedux, userSavedJobs } = AuthSlice.actions;
+export const { loginRedux, logoutRedux, userSavedJobs , userFollow } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

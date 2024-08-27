@@ -9,12 +9,15 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useTransition } from 'react'
 import { GoPlus } from "react-icons/go";
 import { IoMdSend } from 'react-icons/io'
 import { LuPencil } from "react-icons/lu";
 import { UserInfoForm } from '@/app/Forms/UserInfoForm';
 import UserInfoSkeleton from '@/Skeletons/UserInfoSkeleton';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserFollowAction } from '@/actions/user/UserFollowAction';
+import { userFollow } from '@/app/Redux/AuthSlice';
 
 interface ProfileUserProps {
     profileUser?: any
@@ -22,6 +25,29 @@ interface ProfileUserProps {
 }
 
 const UserInfo = ({ profileUser, isLoading }: ProfileUserProps) => {
+    const user = useSelector((state: any) => state.user?.user)
+    const dispatch = useDispatch()
+    const [isPending, startTransition] = useTransition()
+
+    const isFollowings = user?.followings.includes(profileUser?.id)
+    // UserFollowAction
+
+    const HandleFollow = () => {
+        startTransition(() => {
+            const currentUserId = user?.id
+            const userId = profileUser?.id
+            UserFollowAction(userId, currentUserId)
+                .then((data: any) => {
+                    console.log(data)
+                    if (data?.success) {
+                        dispatch(userFollow(userId))
+                    }
+                    if (data?.error) {
+                        console.log(data?.error)
+                    }
+                })
+        })
+    }
 
     return (
         <div className=' relative w-full min-h-[200px] overflow-hidden rounded-[20px] border '>
@@ -61,7 +87,9 @@ const UserInfo = ({ profileUser, isLoading }: ProfileUserProps) => {
                         <h4 className='bg-neutral-100 rounded-md max-w-max p-3 flex flex-row items-center gap-5'><b className='font-bold'>200</b> Followings</h4>
                     </div>
                     <div className='flex flex-row items-center gap-5'>
-                        <Button variant='border' icon={<GoPlus size={20} />}>Follow</Button>
+                        <Button variant='border' isLoading={isPending} onClick={HandleFollow} icon={<GoPlus size={20} />}>
+                            {isFollowings ? "Follow" : "Un Follow"}
+                        </Button>
                         <Button variant='border' icon={<IoMdSend size={20} />}>Message</Button>
                     </div>
                     <Model
