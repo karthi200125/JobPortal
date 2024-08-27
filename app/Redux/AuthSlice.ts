@@ -1,13 +1,12 @@
 'use client';
 
-import { User } from '@prisma/client';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
-    user: User | null;
+    user: any | null;
 }
 
-let userData: User | null = null;
+let userData: any | null = null;
 
 if (typeof window !== 'undefined') {
     const storedUser = localStorage.getItem('user');
@@ -34,9 +33,23 @@ const AuthSlice = createSlice({
                 localStorage.removeItem('user');
             }
         },
+        userSavedJobs(state, action: PayloadAction<string>) {
+            if (state.user) {
+                const isSaved = state.user.savedJobs.includes(action.payload);
+                if (isSaved) {
+                    state.user.savedJobs = state.user.savedJobs.filter((id: any) => id !== action.payload);
+                } else {
+                    state.user.savedJobs = [...state.user.savedJobs, action.payload];
+                }
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('user', JSON.stringify(state.user));
+                }
+            }
+        }
+
     },
 });
 
-export const { loginRedux, logoutRedux } = AuthSlice.actions;
+export const { loginRedux, logoutRedux, userSavedJobs } = AuthSlice.actions;
 
 export default AuthSlice.reducer;
