@@ -17,6 +17,7 @@ import { useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SavedJobAction } from "../../../../actions/user/SavedJobAction";
 import { userSavedJobs } from "@/app/Redux/AuthSlice";
+import noImage from '../../../../public/noImage.webp'
 
 const JobTitles = ({ job, company }: any) => {
     const user = useSelector((state: any) => state.user?.user)
@@ -46,7 +47,7 @@ const JobTitles = ({ job, company }: any) => {
         <div className='space-y-5'>
             <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
-                    <Image src={company?.companyImage} alt="" width={30} height={30} className="w-[20px] h-[20px] bg-neutral-200" />
+                    <Image src={company?.companyImage || noImage.src} alt="" width={30} height={30} className="w-[20px] h-[20px] bg-neutral-200" />
                     <h5 className="text-sm font-bold">{company?.companyName}</h5>
                 </div>
                 <Icon icon={<IoIosMore size={25} />} title="More" tooltipbg="white" isHover />

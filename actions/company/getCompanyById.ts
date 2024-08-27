@@ -3,9 +3,9 @@
 import { db } from "@/lib/db"
 
 export const getCompanyById = async (cId?: number) => {
-    // const user = await db.company.findUnique({
-    //     where: { id: cId }
-    // })
+    const company = await db.company.findFirst({
+        where: { id: cId }
+    })
 
-    return 'company'
+    return company
 }

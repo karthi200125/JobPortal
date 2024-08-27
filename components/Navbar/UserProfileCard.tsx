@@ -10,6 +10,7 @@ import { profileCardItems } from "@/data";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import noProfile from '../../public/noProfile.webp'
 
 const UserProfileCard = () => {
     const user = useSelector((state: any) => state.user.user)
@@ -30,7 +31,7 @@ const UserProfileCard = () => {
             <HoverCardTrigger asChild>
                 <button onClick={() => router.push('/userprofile')}>
                     <Image
-                        src="https://img.freepik.com/free-photo/young-adult-enjoying-virtual-date_23-2149328221.jpg?uid=R35344889&ga=GA1.1.1654768561.1721831904&semt=ais_hybrid"
+                        src={user?.userImage || noProfile.src}
                         alt="User profile"
                         className="w-[30px] h-[30px] rounded-full bg-white/10 cursor-pointer object-cover"
                         width={30}
@@ -41,7 +42,7 @@ const UserProfileCard = () => {
             <HoverCardContent className="space-y-3 min-w-[250px]">
                 <div className="flex flex-row items-start gap-5 border-b pb-3">
                     <Image
-                        src="https://img.freepik.com/free-photo/young-adult-enjoying-virtual-date_23-2149328221.jpg?uid=R35344889&ga=GA1.1.1654768561.1721831904&semt=ais_hybrid"
+                        src={user?.userImage || noProfile.src}
                         alt="User profile"
                         className="w-[60px] h-[60px] rounded-full bg-white/10 cursor-pointer object-cover"
                         width={60}
