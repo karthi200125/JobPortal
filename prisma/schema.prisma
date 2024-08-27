@@ -79,6 +79,7 @@ model Company {
   companyState           String
   companyCountry         String
   companyWebsite         String?
+  companyAbout           String
   companyTotalEmployees  String
   companyIsVerified      Boolean   @default(false)
 

@@ -24,9 +24,17 @@ const JobLists: React.FC<JobListsProps> = ({ Jobs, isLoading }) => {
 
       {/* Content */}
       <div className="md:hidden">
-        <BottomDrawer body={<JobDesc />}>
-          <JobList isHover />
-        </BottomDrawer>
+        {isLoading ?
+          <JobListsSkeleten />
+          : Jobs && Jobs.length > 0 ?
+            Jobs.map((job: any) => (
+              <BottomDrawer key={job.id} body={<JobDesc />}>
+                <JobList isHover job={job} />
+              </BottomDrawer>
+            ))
+            :
+            <h4>No Jobs Found</h4>
+        }
       </div>
 
       <div className="hidden md:block">

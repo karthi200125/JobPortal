@@ -3,7 +3,7 @@
 import { db } from "@/lib/db"
 
 export const getUserById = async (id?: number) => {
-    const user = await db.user.findUnique({
+    const user = await db.user.findFirst({
         where: { id }
     })
 

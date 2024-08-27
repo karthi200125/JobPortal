@@ -1,12 +1,12 @@
 'use client'
 
-import CompanyDetails from "./JobCompany";
-import JobPremium from "./JobPremium";
-import JobDescription from "./JobDescription";
-import JobTitles from "./JobTitles";
-import JobRecruiter from "./JobRecruiter";
-import { useQuery } from "@tanstack/react-query";
 import { getCompanyById } from "@/actions/company/getCompanyById";
+import { useQuery } from "@tanstack/react-query";
+import JobCompany from "./JobCompany";
+import JobDescription from "./JobDescription";
+import JobPremium from "./JobPremium";
+import JobRecruiter from "./JobRecruiter";
+import JobTitles from "./JobTitles";
 
 const JobDesc = ({ job }: any) => {
 
@@ -20,10 +20,10 @@ const JobDesc = ({ job }: any) => {
     return (
         <div className="w-full h-full overflow-y-auto p-5 space-y-5">
             <JobTitles job={job} company={data} />
-            <JobRecruiter />
-            <JobDescription />
+            <JobRecruiter job={job} company={data} />
+            <JobDescription job={job} />
             <JobPremium />
-            <CompanyDetails />
+            <JobCompany company={data} />
         </div>
     )
 }

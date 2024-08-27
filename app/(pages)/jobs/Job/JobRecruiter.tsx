@@ -1,16 +1,26 @@
-import Button from '@/components/Button'
-import Image from 'next/image'
-import React from 'react'
+'use client'
 
-const JobRecruiter = () => {
+import { getUserById } from '@/actions/auth/getUserById';
+import Button from '@/components/Button';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import noAvatar from '../../../../public/noProfile.webp'
+
+const JobRecruiter = ({ job, company }: any) => {
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['getUser', job?.userId],
+        queryFn: async () => await getUserById(job?.userId),
+    });
+
     return (
-        <div className='relative w-full border rounded-[10px] min-h-[100px] p-3 space-y-3'>
+        <div className='relative w-full border rounded-[10px] min-h-[100px] p-5 space-y-3'>
             <h3 className='font-bold'>Meet The Hiring Team</h3>
             <div className='flex flex-row items-start gap-5'>
-                <Image width={50} height={50} src={''} alt='Recruiter Image' className='bg-neutral-200 rounded-full' />
+                <Image width={50} height={50} src={data?.userImage || noAvatar.src} alt='Recruiter Image' className='bg-neutral-200 rounded-full object-cover' />
                 <div className='space-y-1'>
-                    <h4 className='font-bold'>Karthi keyan</h4>
-                    <h5>Sofeware develeopr At HCL technolgies</h5>
+                    <h4 className='font-bold'>{data?.username}</h4>
+                    <h5>{data?.profession || "Recruiter"} At {company?.companyName}</h5>
                     <h5>Technical recruiting</h5>
                     <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                 </div>

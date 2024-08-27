@@ -1,9 +1,11 @@
 import React from 'react'
 
-const JobDescription = () => {
+const JobDescription = ({ job }: any) => {
   return (
-    <div className='w-full border p-3 rounded-[10px]'>
+    <div className='w-full p-5 space-y-5'>
       <h3 className='font-bold'>About The Job</h3>
+
+      <p>{job?.desc}</p>
     </div>
   )
 }
