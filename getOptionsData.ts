@@ -20,10 +20,10 @@ export const getCountries = async () => {
     }
 };
 
-export const getStates = async (countryName: string) => {
+export const getStates = async () => {
     try {
         const countries = await getCountries();
-        const country = countries.find((c: any) => c.name.toLowerCase() === countryName.toLowerCase());
+        const country = countries.find((c: any) => c.name.toLowerCase() === 'india')
 
         const url = `${baseUrl}/countries/${country.iso2}/states`;
 
@@ -42,12 +42,15 @@ export const getStates = async (countryName: string) => {
     }
 };
 
-export const getCities = async (country: string, state: string) => {
+export const getCities = async (state: string) => {
     try {
-        const states = await getStates("India");
+        const states = await getStates();
         const stateO = states.find((s: any) => s.name.toLowerCase() === state.toLowerCase());
 
-        const url = `${baseUrl}/countries/${stateO.country_iso2}/states/${stateO.iso2}/cities`;
+        const countries = await getCountries();
+        const country = countries.find((c: any) => c.name.toLowerCase() === 'india')
+
+        const url = `${baseUrl}/countries/${country.iso2}/states/${stateO.iso2}/cities`;
 
         const response = await fetch(url, {
             method: 'GET',
@@ -58,7 +61,7 @@ export const getCities = async (country: string, state: string) => {
         });
 
         const data = await response.json();
-        return data;
+        return data.map((d: any) => d.name);
     } catch (err) {
         return `get cities error`;
     }

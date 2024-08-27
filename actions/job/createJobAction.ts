@@ -4,13 +4,23 @@ import { CreateJobSchema } from '@/lib/SchemaTypes';
 import { db } from '@/lib/db';
 import * as z from 'zod';
 import { getUserById } from '../auth/getUserById';
+import { getCompanies } from '../company/getCompanies';
 
-export const createJobAction = async (values: z.infer<typeof CreateJobSchema>, userId?: any, companyId?: any) => {
+export const createJobAction = async (
+    values: z.infer<typeof CreateJobSchema>,
+    userId?: any
+) => {
     try {
+        if (!userId) {
+            return { error: "User ID is required" };
+        }
+
         const user = await getUserById(userId);
 
-        if (user?.role !== "ORGANIZATION" && user?.role !== "RECRUITER") {
-            return { error: "You are not a recruiter or organization" };
+        console.log(userId)
+
+        if (!user || (user.role !== "ORGANIZATION" && user.role !== "RECRUITER")) {
+            return { error: "You are not allowed to create a job" };
         }
 
         const validatedFields = CreateJobSchema.safeParse(values);
@@ -19,15 +29,21 @@ export const createJobAction = async (values: z.infer<typeof CreateJobSchema>, u
             return { error: "Invalid fields", issues: validatedFields.error.format() };
         }
 
-        const data = validatedFields.data;
+        const { company, ...jobData } = validatedFields.data;
 
+        const companies = await getCompanies();
+        const uniqueCompany = companies?.find((c: any) => c.companyName === company);
+
+        if (!uniqueCompany) {
+            return { error: "Company not found" };
+        }
 
         const newJob = await db.job.create({
             data: {
-                ...data,
-                userId: user?.id,
-                companyId
-            }
+                ...jobData,
+                userId: user.id,
+                companyId: uniqueCompany.id
+            },
         });
 
         return { success: 'New job has been created successfully', data: newJob };

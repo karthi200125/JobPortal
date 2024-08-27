@@ -2,9 +2,26 @@ import React from 'react';
 import { LuUsers } from "react-icons/lu";
 import { LiaListSolid } from "react-icons/lia";
 import { MdOutlinePendingActions } from "react-icons/md";
+import { useQuery } from '@tanstack/react-query';
+import { getUserById } from '@/actions/auth/getUserById';
+import { useParams } from 'next/navigation';
 
 const AppliedCounts = () => {
-    const isRecruiter = false;
+
+    const params = useParams()
+    const userId = Number(params?.userId)
+
+    const { data: user, isPending } = useQuery({
+        queryKey: ['getuser', userId],
+        queryFn: async () => await getUserById(userId),
+    });
+
+    const isCandidate = user?.role === 'CANDIDATE'
+    const isOrganize = user?.role === 'ORGANIZATION'
+    const isRecruiter = user?.role === 'RECRUITER'
+
+    const jobsCount = ''
+    const jobsSubtitle = '"See jobs that you posted" : "See the jobs you applied to"'
 
     const Analysis = [
         {
@@ -17,9 +34,9 @@ const AppliedCounts = () => {
         {
             id: 2,
             icon: <LiaListSolid size={25} />,
-            title: isRecruiter ? "Posted Jobs" : "Applied Jobs",
-            count: 50,
-            subtitle: isRecruiter ? "See jobs that you posted" : "See the jobs you applied to",
+            title: isCandidate ? "Applied Jobs" : "Posted Jobs",
+            count: jobsCount,
+            subtitle: jobsSubtitle
         },
         {
             id: 3,
