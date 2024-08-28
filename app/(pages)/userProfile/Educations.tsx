@@ -14,30 +14,36 @@ import { LuPencil } from 'react-icons/lu'
 import { CiTrash } from "react-icons/ci";
 import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
 import EducationsSkeleton from '@/Skeletons/EducationsSkeleton'
+import { useSelector } from 'react-redux'
 
 interface EducationsProps {
-    userId?: any,    
+    userId?: any,
+    profileUser?: any,
 }
 
-const Educations = ({ userId}: EducationsProps) => {
-
+const Educations = ({ userId, profileUser }: EducationsProps) => {
+    const user = useSelector((state: any) => state.user?.user)
     const { data, isPending } = useQuery({
         queryKey: ['getuserEducation', userId],
         queryFn: async () => await getUserEducation(userId),
     });
-    
+
+    const isCurrentUser = user?.id === profileUser?.id
+
     return (
         <div className='relative w-full min-h-[100px] rounded-[20px] border p-5 space-y-5'>
             <div className='flex flex-row items-center justify-between'>
                 <h3 className='font-bold'>Education</h3>
-                <Model
-                    bodyContent={<UserEducationForm />}
-                    title='Add you Education'
-                    className='w-[1000px]'
-                    desc='Add you previus and current education details'
-                >
-                    <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
-                </Model>
+                {isCurrentUser &&
+                    <Model
+                        bodyContent={<UserEducationForm />}
+                        title='Add you Education'
+                        className='w-[1000px]'
+                        desc='Add you previus and current education details'
+                    >
+                        <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
+                    </Model>
+                }
             </div>
 
             {isPending ?
@@ -53,38 +59,40 @@ const Educations = ({ userId}: EducationsProps) => {
                             <h5>Grade : {edu?.percentage}%</h5>
                         </div>
 
-                        <div className='absolute top-3 right-3 flex flex-row items-center gap-5'>
-                            <Model
-                                bodyContent={
-                                    <UserEducationForm
-                                        education={edu}
-                                        edit
+                        {isCurrentUser &&
+                            <div className='absolute top-3 right-3 flex flex-row items-center gap-5'>
+                                <Model
+                                    bodyContent={
+                                        <UserEducationForm
+                                            education={edu}
+                                            edit
+                                        />
+                                    }
+                                    title='Edit This Education'
+                                    className='w-[1000px]'
+                                    desc='Edit Your education details'
+                                >
+                                    <Icon
+                                        className=''
+                                        icon={<LuPencil size={20} />}
+                                        isHover
+                                        title='Edit Education'
                                     />
-                                }
-                                title='Edit This Education'
-                                className='w-[1000px]'
-                                desc='Edit Your education details'
-                            >
-                                <Icon
-                                    className=''
-                                    icon={<LuPencil size={20} />}
-                                    isHover
-                                    title='Edit Education'
-                                />
-                            </Model>
-                            <Model
-                                bodyContent={<DeleteEducationForm edu={edu} />}
-                                title='Delete This Education'
-                                className='w-[400px]'
-                                desc='Are you Sure Delete Your education'
-                            >
-                                <Icon
-                                    icon={<CiTrash size={20} />}
-                                    isHover
-                                    title='Delete Education'
-                                />
-                            </Model>
-                        </div>
+                                </Model>
+                                <Model
+                                    bodyContent={<DeleteEducationForm edu={edu} />}
+                                    title='Delete This Education'
+                                    className='w-[400px]'
+                                    desc='Are you Sure Delete Your education'
+                                >
+                                    <Icon
+                                        icon={<CiTrash size={20} />}
+                                        isHover
+                                        title='Delete Education'
+                                    />
+                                </Model>
+                            </div>
+                        }
 
                     </div>
                 ))}

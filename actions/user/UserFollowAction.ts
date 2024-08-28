@@ -15,7 +15,6 @@ export const UserFollowAction = async (currentUserId: any, userId: any) => {
         const isFollowing = currentUser.followings.includes(userId);
 
         if (isFollowing) {
-            // Unfollow user
             await db.user.update({
                 where: { id: currentUserId },
                 data: {
@@ -34,7 +33,6 @@ export const UserFollowAction = async (currentUserId: any, userId: any) => {
             });
             return { success: "User has been unfollowed" };
         } else {
-            // Follow user
             await db.user.update({
                 where: { id: currentUserId },
                 data: {

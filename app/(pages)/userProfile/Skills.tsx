@@ -5,6 +5,7 @@ import SkillsSkeleton from '@/Skeletons/SkillsSkeleton'
 import React from 'react'
 import { LuPencil } from 'react-icons/lu'
 import { SlDiamond } from 'react-icons/sl'
+import { useSelector } from 'react-redux'
 
 interface SkillsProps {
     profileUser?: any
@@ -13,22 +14,27 @@ interface SkillsProps {
 
 
 const Skills = ({ profileUser, isLoading }: SkillsProps) => {
+    const user = useSelector((state: any) => state.user?.user)
+    const isCurrentUser = user?.id === profileUser?.id
+
     return (
         <div className='relative space-y-3 border rounded-[20px] p-5 mt-5'>
-            <Model
-                bodyContent={<SkillsForm skillsData={profileUser?.skills} />}
-                title='Add Your Skills'
-                desc='add your Technical & soft skills'
-                className='w-[800px]'
-                triggerCls='absolute top-3 right-3'
-            >
-                <Icon
-                    className=''
-                    icon={<LuPencil size={20} />}
-                    isHover
-                    title='Edit Profile'
-                />
-            </Model>
+            {isCurrentUser &&
+                <Model
+                    bodyContent={<SkillsForm skillsData={profileUser?.skills} />}
+                    title='Add Your Skills'
+                    desc='add your Technical & soft skills'
+                    className='w-[800px]'
+                    triggerCls='absolute top-3 right-3'
+                >
+                    <Icon
+                        className=''
+                        icon={<LuPencil size={20} />}
+                        isHover
+                        title='Edit Profile'
+                    />
+                </Model>
+            }
 
             <div className='flex flex-row items-center gap-3'>
                 <SlDiamond size={20} />
