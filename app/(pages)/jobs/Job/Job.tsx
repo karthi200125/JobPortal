@@ -12,18 +12,18 @@ const JobDesc = ({ job }: any) => {
 
     const cId = job?.companyId
 
-    const { data, isLoading } = useQuery({
+    const { data, isPending } = useQuery({
         queryKey: ['getCompany', cId],
         queryFn: async () => await getCompanyById(cId),
     });
 
     return (
         <div className="w-full h-full overflow-y-auto p-5 space-y-5">
-            <JobTitles job={job} company={data} />
+            <JobTitles job={job} company={data} isPending={isPending}/>
             <JobRecruiter job={job} company={data} />
-            <JobDescription job={job} />
+            <JobDescription job={job} isPending={isPending}/>
             <JobPremium />
-            <JobCompany company={data} />
+            <JobCompany company={data} isPending={isPending}/>
         </div>
     )
 }
