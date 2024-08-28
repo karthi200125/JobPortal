@@ -155,6 +155,12 @@ export const CreateJobSchema = z.object({
     vacancies: z.string().min(1, {
         message: "Give How many Vacnacies Your are Hiring",
     }),
+    // skills: z.array(z.string()).min(1, {
+    //     message: "Please provide at least one skill.",
+    // }),
+    // questions: z.array(z.string()).min(1, {
+    //     message: "Please provide at least one skill.",
+    // }).optional(),
 })
 
 export const RegisterSchema = z.object({
@@ -193,6 +199,9 @@ export const CompanySchema = z.object({
     }),
     companyAddress: z.string().min(1, {
         message: "Company Address is required",
+    }),
+    companyAbout: z.string().min(50, {
+        message: "Company Address is required minimum 50 words needed",
     }),
     companyCity: z.string().min(1, {
         message: "Company City is required",

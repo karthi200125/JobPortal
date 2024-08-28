@@ -8,7 +8,9 @@ import { getCompanies } from '../company/getCompanies';
 
 export const createJobAction = async (
     values: z.infer<typeof CreateJobSchema>,
-    userId?: any
+    userId?: any,
+    skills?: any,
+    questions?: any
 ) => {
     try {
         if (!userId) {
@@ -16,8 +18,6 @@ export const createJobAction = async (
         }
 
         const user = await getUserById(userId);
-
-        console.log(userId)
 
         if (!user || (user.role !== "ORGANIZATION" && user.role !== "RECRUITER")) {
             return { error: "You are not allowed to create a job" };
@@ -42,7 +42,9 @@ export const createJobAction = async (
             data: {
                 ...jobData,
                 userId: user.id,
-                companyId: uniqueCompany.id
+                companyId: uniqueCompany.id,
+                skills , 
+                questions
             },
         });
 

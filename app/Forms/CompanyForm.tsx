@@ -34,12 +34,13 @@ const CompanyForm = () => {
             companyCountry: "",
             companyWebsite: "",
             companyTotalEmployees: "",
+            companyAbout: "",
         },
     });
 
     const onSubmit = (values: z.infer<typeof CompanySchema>) => {
         startTransition(() => {
-            const userId = 1
+            const userId = user?.id
             createCompanyAction(values, userId)
                 .then((data) => {
                     console.log(data)
@@ -116,6 +117,14 @@ const CompanyForm = () => {
                         isLoading={isLoading}
                     />
                 </div>
+                <CustomFormField
+                    name="companyAbout"
+                    form={form}
+                    label="About Company"
+                    placeholder="Ex:write about company"
+                    isLoading={isLoading}
+                    isTextarea
+                />
 
                 <FormError message={err} />
                 <FormSuccess message={success} />
