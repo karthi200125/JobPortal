@@ -27,9 +27,9 @@ const UserProfile = () => {
         <UserInfo profileUser={data} isLoading={isPending} />
         <AboutMe profileUser={data} isLoading={isPending} />
         <Skills profileUser={data} isLoading={isPending} />
-        <Education userId={userId} />
-        <Projects userId={userId} />
-        <Experiences userId={userId} />
+        <Education userId={userId} profileUser={data}/>
+        <Projects userId={userId}  profileUser={data}/>
+        <Experiences userId={userId} profileUser={data}/>
       </div>
       <div className="hidden md:block md:w-[30%] h-full">
         <MoreProfiles />

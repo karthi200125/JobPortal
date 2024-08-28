@@ -19,6 +19,8 @@ import { SavedJobAction } from "../../../../actions/user/SavedJobAction";
 import { userSavedJobs } from "@/app/Redux/AuthSlice";
 import noImage from '../../../../public/noImage.webp'
 import JobTitlesSkeleton from "@/Skeletons/JobTitlesSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { checkSkills } from "@/actions/job/CompareSkills";
 
 const JobTitles = ({ job, company, isPending }: any) => {
     const user = useSelector((state: any) => state.user?.user)
@@ -43,6 +45,14 @@ const JobTitles = ({ job, company, isPending }: any) => {
         })
     }
 
+    const { data, isPending: perLoading } = useQuery({
+        queryKey: ['getSkillsPer', user, job],
+        queryFn: async () => checkSkills(user, job),
+    });
+
+
+    const Per = data?.per || 0
+    const message = data?.Msg
 
     return (
         <>
@@ -74,7 +84,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
 
                         <div className="flex flex-row gap-3 items-start md:items-center">
                             <FaListCheck size={20} />
-                            <h5>10 skills match your profile - you may be a good fit</h5>
+                            <h5><b>{Per}%</b> skills matched your profile - <span className={`${Per > 70 ? "text-green-400" : "text-orange-400"}`}>{message}</span></h5>
                         </div>
 
                         {/* premium */}

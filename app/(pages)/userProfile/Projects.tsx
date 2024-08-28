@@ -15,31 +15,37 @@ import { UserProjectForm } from "@/app/Forms/UserProjectForm";
 import { useQuery } from "@tanstack/react-query";
 import { getUserProjects } from "@/actions/user/getUserProjects";
 import CarouselSkeleton from "@/Skeletons/CarouselSkeleton";
+import { useSelector } from "react-redux";
 
 interface ProjectsProps {
     userId?: any;
+    profileUser?: any;
 }
 
-export default function Projects({ userId }: ProjectsProps) {
+export default function Projects({ userId, profileUser }: ProjectsProps) {
+    const user = useSelector((state: any) => state.user?.user)
     const { data, isLoading } = useQuery({
         queryKey: ['getUserProjects', userId],
         queryFn: () => getUserProjects(userId),
     });
 
     const projects = data?.data || [];
+    const isCurrentUser = user?.id === profileUser?.id
 
     return (
         <div className="relative rounded-[20px] border p-5 space-y-5">
             <div className="flex flex-row items-center justify-between">
-                <h3>Projects</h3>
-                <Model
-                    bodyContent={<UserProjectForm />}
-                    title="Add Project"
-                    desc="Add your project details"
-                    className="w-[800px]"
-                >
-                    <Button variant="border" icon={<GoPlus size={20} />}>Add Projects</Button>
-                </Model>
+                <h3 className="font-bold">Projects</h3>
+                {isCurrentUser &&
+                    <Model
+                        bodyContent={<UserProjectForm />}
+                        title="Add Project"
+                        desc="Add your project details"
+                        className="w-[800px]"
+                    >
+                        <Button variant="border" icon={<GoPlus size={20} />}>Add</Button>
+                    </Model>
+                }
             </div>
             {isLoading ? (
                 <CarouselSkeleton />
@@ -58,7 +64,8 @@ export default function Projects({ userId }: ProjectsProps) {
                                 </CarouselItem>
                             ))
                         ) : (
-                            <div>No Projects Yet</div>
+                            // <div>No Projects Yet</div>
+                            ""
                         )}
                     </CarouselContent>
                     {projects?.length >= 3 &&
