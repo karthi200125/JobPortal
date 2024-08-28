@@ -32,6 +32,8 @@ model User {
 
   postedJobs      Job[]       @relation("PostedJobs")
 
+  jobApplications JobApplication[] 
+
   company         Company[]
   educations      Education[]
   experiences     Experience[]
@@ -39,7 +41,7 @@ model User {
 
   followers       Int[]
   followings      Int[]
-  savedJobs       Int[]       // Array of integers to store saved job IDs
+  savedJobs       Int[]       
 
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
@@ -59,15 +61,38 @@ model Job {
   isEasyApply Boolean   @default(false)
   applyLink   String?
   vacancies   String
+  skills      String[]
+  questions   Json? 
 
   userId      Int
   user        User      @relation("PostedJobs", fields: [userId], references: [id], onDelete: Cascade)
+
+  jobApplications JobApplication[] 
 
   companyId   Int
   company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model JobApplication {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  jobId       Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  candidateEmail    String
+  candidateMobile   String
+  candidateResume   String 
+  candidatePhoneNo  String
+  answers           Json   
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, jobId])
 }
 
 model Company {

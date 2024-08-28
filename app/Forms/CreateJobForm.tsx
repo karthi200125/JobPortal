@@ -16,13 +16,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import JobSkills from "../(pages)/createJob/JobSkills";
+import JobQuestion from "../(pages)/createJob/JobQuestion";
 
 const CreateJobForm = () => {
   const user = useSelector((state: any) => state.user.user)
   const [description, setDescription] = useState('');
-  const [country, setCountry] = useState('');
+  const [skills, setSkills] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [skillsErr, setskillsErr] = useState("");
   const [state, setState] = useState('');
-  const [city, setCity] = useState('');
   const [isLoading, startTransition] = useTransition();
   const router = useRouter()
 
@@ -47,11 +50,23 @@ const CreateJobForm = () => {
 
   const onSubmit = (values: z.infer<typeof CreateJobSchema>) => {
     startTransition(() => {
-      const userId = 1
-      createJobAction(values, userId)
+      const userId = user?.id
+      if (skills?.length === 0) {
+        setskillsErr("Add atleast on Skill")
+        return;
+      }
+      const data = {
+        ...values,
+        skills,
+        questions
+      }
+      createJobAction(values, userId, skills, questions)
         .then((data) => {
           if (data?.success) {
             router.push('/dashboard')
+          }
+          if (data.error) {
+            console.log(data?.error)
           }
         })
     });
@@ -108,7 +123,6 @@ const CreateJobForm = () => {
             isLoading={isLoading}
             isSelect
             options={["India"]}
-            onSelect={(d: any) => setCountry(d)}
           />
           <CustomFormField
             name="state"
@@ -131,7 +145,6 @@ const CreateJobForm = () => {
               isSelect
               options={citiesOptions}
               optionsLoading={citiesLoading}
-              onSelect={(d: any) => setCity(d)}
             />
           )}
           <CustomFormField
@@ -170,31 +183,42 @@ const CreateJobForm = () => {
           options={companiesOptions}
           optionsLoading={companyLoading}
         />
-        <FormField
-          control={form.control}
-          name="isEasyApply"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Easy Apply</FormLabel>
-                <FormDescription>Is This Easy Apply or External Link Apply</FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <CustomFormField
-          name="applyLink"
-          form={form}
-          label="External Job Apply Link"
-          placeholder="Ex: https://google.com"
-          isLoading={isLoading}
-        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <FormField
+            control={form.control}
+            name="isEasyApply"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">Easy Apply</FormLabel>
+                  <FormDescription>Is This Easy Apply or External Link Apply</FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <CustomFormField
+            name="applyLink"
+            form={form}
+            label="External Job Apply Link"
+            placeholder="Ex: https://google.com"
+            isLoading={isLoading}
+          />
+        </div>
+
+        <div className="space-y-3">
+          <JobSkills onSkills={(skills: any) => setSkills(skills)} />
+          {skillsErr &&
+            <h4 className="text-red-500 font-semibold">{skillsErr}</h4>
+          }
+        </div>
+
         <CustomFormField
           name="jobDesc"
           form={form}
@@ -203,6 +227,8 @@ const CreateJobForm = () => {
           isLoading={isLoading}
           isTextarea
         />
+        <JobQuestion onQuestions={(question: any) => setQuestions(question)} />
+
         <Button isLoading={isLoading} className="!w-full">Create Job</Button>
       </form>
     </Form>

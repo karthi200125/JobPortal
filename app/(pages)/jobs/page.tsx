@@ -19,10 +19,10 @@ const Jobs: React.FC = () => {
         <div className='w-full relative'>
             <FilterNavbar />
             <div className='w-full flex flex-row items-start'>
-                <div className='w-full md:w-[40%] h-full'>
+                <div className='w-full md:w-[40%] jobsh overflow-y-auto'>
                     <JobLists Jobs={data} isLoading={isLoading} />
                 </div>
-                <div className='hidden md:block w-full md:w-[60%] h-full'>
+                <div className='hidden md:block w-full md:w-[60%] overflow-y-auto jobsh'>
                     <JobDesc job={job} />
                 </div>
             </div>

@@ -60,7 +60,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
 
                     {/* job main details */}
                     <div className="space-y-3">
-                        <h2>{job?.jobTitle}</h2>
+                        <h2 className="capitalize">{job?.jobTitle}</h2>
                         <h4 className="text-[var(--textBlur)]"> {job?.city} , {job?.state} , {job?.coutry} . {moment(job?.createdAt).fromNow()} . (100 applicants)</h4>
                         <div className="flex flex-row gap-3 items-center">
                             <FaSuitcase size={20} />
