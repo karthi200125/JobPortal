@@ -15,3 +15,17 @@ export const getCompanies = async () => {
         return { error: "Get companies failed" };
     }
 };
+
+// export const getCompaniesEmployees = async (companyId?: any) => {
+//     try {
+//         const companies: any = await db.user.findMany({
+//             where: {
+//                 company: companyId
+//             }
+//         });
+
+//         return companies
+//     } catch (err) {
+//         return { error: "Get companies failed" };
+//     }
+// };

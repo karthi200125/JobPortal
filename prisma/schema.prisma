@@ -17,6 +17,7 @@ model User {
   role            Role
   isPro           Boolean     @default(false)
   userBio         String?
+  userAbout       String?
   userImage       String?
   profileImage    String?
   gender          String?
@@ -97,14 +98,17 @@ model JobApplication {
 
 model Company {
   id                     Int       @id @default(autoincrement())
+  companyEmail           String    @unique
   companyName            String    @unique
   companyImage           String
+  companyBackImage       String
   companyAddress         String
   companyCity            String
   companyState           String
   companyCountry         String
   companyWebsite         String?
   companyAbout           String
+  companyBio             String
   companyTotalEmployees  String
   companyIsVerified      Boolean   @default(false)
 
