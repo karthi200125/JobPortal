@@ -38,7 +38,6 @@ const UserInfo = ({ profileUser, isLoading }: ProfileUserProps) => {
             const userId = profileUser?.id
             UserFollowAction(currentUserId, userId)
                 .then((data: any) => {
-                    console.log(data)
                     if (data?.success) {
                         dispatch(userFollow(userId))
                     }
