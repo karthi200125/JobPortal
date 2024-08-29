@@ -9,3 +9,11 @@ export const getCompanyById = async (cId?: number) => {
 
     return company
 }
+
+export const getCompanyByUserId = async (userId?: any) => {
+    const company = await db.company.findFirst({
+        where: { userId: userId }
+    })
+
+    return company
+}

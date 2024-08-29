@@ -10,6 +10,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserById } from "@/actions/auth/getUserById"
 import Experiences from "../Experiences"
 import Skills from "../Skills"
+import { getCompanyById, getCompanyByUserId } from "@/actions/company/getCompanyById"
+import CompanySlides from "../CompanySlides/CompanySlides"
 
 const UserProfile = () => {
 
@@ -21,18 +23,29 @@ const UserProfile = () => {
     queryFn: async () => await getUserById(userId),
   });
 
+  const isOrg = data?.role === "ORGANIZATION" ? true : false
+
+  const { data: company, isPending: companyLoading } = useQuery({
+    queryKey: ['getCompany', userId],
+    queryFn: async () => await getCompanyByUserId(userId),
+  });
+
   return (
     <div className="min-h-screen w-full flex flex-row items-start gap-5 py-5">
       <div className="w-full md:w-[70%] h-full space-y-5">
-        <UserInfo profileUser={data} isLoading={isPending} />
-        <AboutMe profileUser={data} isLoading={isPending} />
-        <Skills profileUser={data} isLoading={isPending} />
-        <Education userId={userId} profileUser={data}/>
-        <Projects userId={userId}  profileUser={data}/>
-        <Experiences userId={userId} profileUser={data}/>
+        <UserInfo profileUser={data} isLoading={isPending || companyLoading} company={company} isOrg={isOrg} />
+
+        {/* <AboutMe profileUser={data} isLoading={isPending || companyLoading} company={company} isOrg={isOrg} /> */}
+        {/* {!isOrg && <Skills profileUser={data} isLoading={isPending || companyLoading} />}
+        {!isOrg && <Education userId={userId} profileUser={data} />}
+        {!isOrg && <Projects userId={userId} profileUser={data} />}
+        {!isOrg && <Experiences userId={userId} profileUser={data} />} */}
+        {isOrg &&
+          <CompanySlides />
+        }
       </div>
       <div className="hidden md:block md:w-[30%] h-full">
-        <MoreProfiles />
+        {/* <MoreProfiles profileUser={data} userId={userId} /> */}
       </div>
 
     </div>
