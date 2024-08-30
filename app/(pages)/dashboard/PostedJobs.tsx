@@ -3,29 +3,29 @@
 import JobListsSkeleton from "@/Skeletons/JobListsSkeleten"
 import JobList from "../jobs/JobLists/JobList"
 
-const AppliedJobs = ({ aplliedJobs, isLoading }: any) => {
+const PostedJobs = ({ postedJobs, isLoading, user }: any) => {
     return (
         <div className="w-full space-y-2 border rounded-[20px] p-5 min-h-[100px]">
-            <h3 className="font-bold">Job You Applied ({aplliedJobs?.length || 0})</h3>
+            <h3 className="font-bold">Job You Posted ({postedJobs?.length || 0})</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 {isLoading ?
                     <JobListsSkeleton />
                     :
-                    aplliedJobs?.length > 0 ?
-                        aplliedJobs?.map((job: any) => (
+                    postedJobs?.length > 0 ?
+                        postedJobs?.map((job: any) => (
                             <div
                                 key={job?.id}
                                 className="border rounded-[20px] p-5 min-h-[100px]"
                             >
-                                <JobList job={job} />
+                                <JobList more job={job} />
                             </div>
                         ))
                         :
-                        <h4>No Jobs Applied yet</h4>
+                        <h4>No Jobs Posted yet</h4>
                 }
             </div>
         </div>
     )
 }
 
-export default AppliedJobs
+export default PostedJobs

@@ -1,41 +1,51 @@
-import React from 'react';
-import { LuUsers } from "react-icons/lu";
 import { LiaListSolid } from "react-icons/lia";
+import { LuUsers } from "react-icons/lu";
 import { MdOutlinePendingActions } from "react-icons/md";
-import { useQuery } from '@tanstack/react-query';
-import { getUserById } from '@/actions/auth/getUserById';
-import { useParams } from 'next/navigation';
 
-const AppliedCounts = () => {
+interface AppliedCountsProps {
+    appliedJobs?: any,
+    user?: any,
+}
 
-    const params = useParams()
-    const userId = Number(params?.userId)
-
-    const { data: user, isPending } = useQuery({
-        queryKey: ['getuser', userId],
-        queryFn: async () => await getUserById(userId),
-    });
+const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
 
     const isCandidate = user?.role === 'CANDIDATE'
-    const isOrganize = user?.role === 'ORGANIZATION'
+    const isOrg = user?.role === 'ORGANIZATION'
     const isRecruiter = user?.role === 'RECRUITER'
 
-    const jobsCount = ''
-    const jobsSubtitle = '"See jobs that you posted" : "See the jobs you applied to"'
+    let jobsSubtitle;
+    let jobsTitle;
+    let jobscount;
+
+    if (isCandidate) {
+        jobsTitle = "Applied Jobs"
+        jobscount = appliedJobs?.length || 0
+        jobsSubtitle = 'See the jobs you applied to'
+    }
+    if (isRecruiter) {
+        jobsTitle = 'Posted Jobs'
+        jobscount = user?.postedJobs?.length || 0
+        jobsSubtitle = 'See jobs that you posted'
+    }
+    if (isOrg) {
+        jobsTitle = 'Posted Jobs'
+        jobscount = user?.postedJobs?.length || 0
+        jobsSubtitle = 'See jobs that you posted'
+    }
 
     const Analysis = [
         {
             id: 1,
             icon: <LuUsers size={25} />,
             title: "Profile Views",
-            count: 100,
+            count: user?.ProfileViews?.length || 0,
             subtitle: "Discover who viewed your profile",
         },
         {
             id: 2,
             icon: <LiaListSolid size={25} />,
-            title: isCandidate ? "Applied Jobs" : "Posted Jobs",
-            count: jobsCount,
+            title: jobsTitle,
+            count: jobscount,
             subtitle: jobsSubtitle
         },
         {

@@ -97,7 +97,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
                         <div className="flex flex-row items-center gap-3 mt-5">
                             {job?.isEasyApply ?
                                 <Model
-                                    bodyContent={<EasyApply />}
+                                    bodyContent={<EasyApply job={job} />}
                                     title={`Apply to Talent Corner HR Services Pvt Ltd`}
                                     className='w-[1000px]'
                                 >
@@ -114,8 +114,6 @@ const JobTitles = ({ job, company, isPending }: any) => {
                                 {isSaved ? "Un Save" : "Save"}
                             </Button>
                         </div>
-
-
                     </div>
                 </div>
             }

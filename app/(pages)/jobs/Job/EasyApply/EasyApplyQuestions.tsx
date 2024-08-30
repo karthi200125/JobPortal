@@ -1,25 +1,31 @@
 'use client';
 
+import Button from "@/components/Button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
-const EasyApplyQuestions = () => {
+interface EasyApplyQuestionsProps {
+    job?: {
+        questions: {
+            id: number;
+            question: string;
+            type: 'input';
+        }[];
+    };
+    onAnswers?: (answers: { [key: number]: string }) => void;
+    onNext?: (step: number) => void;
+    onBack?: (step: number) => void;
+    currentStep?: number;
+}
+
+const EasyApplyQuestions = ({ job, currentStep = 0, onNext, onAnswers, onBack }: EasyApplyQuestionsProps) => {
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
     const [errors, setErrors] = useState<{ [key: number]: string }>({});
 
     const handleAnswerChange = (questionId: number, value: string) => {
         setAnswers({ ...answers, [questionId]: value });
 
-        // Remove error when an answer is provided
         if (value.trim() !== '') {
             setErrors((prevErrors) => {
                 const updatedErrors = { ...prevErrors };
@@ -29,54 +35,45 @@ const EasyApplyQuestions = () => {
         }
     };
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-
-        let hasError = false;
+    const validateAnswers = () => {
         const newErrors: { [key: number]: string } = {};
+        let isValid = true;
 
-        // Check for unanswered questions
-        questions.forEach((q) => {
+        job?.questions.forEach((q) => {
             if (!answers[q.id] || answers[q.id].trim() === '') {
-                newErrors[q.id] = q.type === 'input' ? 'Enter answer for this question' : 'Please Make Selection';
-                hasError = true;
+                newErrors[q.id] = 'Answer This Question';
+                isValid = false;
             }
         });
 
         setErrors(newErrors);
+        return isValid;
+    };
 
-        if (!hasError) {
-            console.log('Application submitted with answers:', answers);
+    const handleNext = () => {
+        if (validateAnswers()) {
+            if (onAnswers) {
+                onAnswers(answers);
+            }
+            console.log(answers)
+            if (onNext) {
+                onNext(currentStep + 1);
+            }
         }
     };
 
-    const questions = [
-        {
-            id: 1,
-            question: "How many years of work experience do you have with React?",
-            type: "select",
-            options: ['One', 'Two', 'Three'],
-        },
-        {
-            id: 2,
-            question: "Describe your experience with React",
-            type: "input",
-        },
-        {
-            id: 3,
-            question: "Are you based in Bengaluru?",
-            type: "select",
-            options: ["Yes", "No"],
-        },
-    ];
+    const handleBack = () => {
+        if (onBack) {
+            onBack(currentStep - 1);
+        }
+    };
 
     return (
         <div className="w-full border rounded-md p-5">
-            <form onSubmit={handleSubmit}>
-                {questions.map((q) => (
+            <form onSubmit={(e) => e.preventDefault()}>
+                {job?.questions.map((q) => (
                     <div key={q.id} className="mb-4 space-y-2">
                         <Label>{q.question} *</Label>
-
                         {q.type === 'input' && (
                             <div className="space-y-2">
                                 <Input
@@ -89,36 +86,13 @@ const EasyApplyQuestions = () => {
                                 )}
                             </div>
                         )}
-
-                        {q.type === 'select' && (
-                            <div className="space-y-2">
-                                <Select
-                                    onValueChange={(value) => handleAnswerChange(q.id, value)}
-                                >
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select an option" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            {q.options?.map((option) => (
-                                                <SelectItem key={option} value={option}>
-                                                    {option}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                                {errors[q.id] && (
-                                    <p className="text-red-400 text-sm">{errors[q.id]}</p>
-                                )}
-                            </div>
-                        )}
                     </div>
                 ))}
 
-                {/* <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-                    Submit Application
-                </button> */}
+                <div className="flex flex-row items-center gap-5">
+                    <Button variant="border" onClick={handleBack}>Back</Button>
+                    <Button onClick={handleNext}>Review</Button>
+                </div>
             </form>
         </div>
     );

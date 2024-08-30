@@ -22,21 +22,16 @@ const UserProfile = () => {
     queryKey: ['getuser', userId],
     queryFn: async () => await getUserById(userId),
   });
-
+  const company = data?.company[0]
   const isOrg = data?.role === "ORGANIZATION" ? true : false
-
-  const { data: company, isPending: companyLoading } = useQuery({
-    queryKey: ['getCompany', userId],
-    queryFn: async () => await getCompanyByUserId(userId),
-  });
 
   return (
     <div className="min-h-screen w-full flex flex-row items-start gap-5 py-5">
       <div className="w-full md:w-[70%] h-full space-y-5">
-        <UserInfo profileUser={data} isLoading={isPending || companyLoading} company={company} isOrg={isOrg} />
+        <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
 
-        {/* <AboutMe profileUser={data} isLoading={isPending || companyLoading} company={company} isOrg={isOrg} /> */}
-        {/* {!isOrg && <Skills profileUser={data} isLoading={isPending || companyLoading} />}
+        {/* <AboutMe profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} /> */}
+        {/* {!isOrg && <Skills profileUser={data} isLoading={isPending} />}
         {!isOrg && <Education userId={userId} profileUser={data} />}
         {!isOrg && <Projects userId={userId} profileUser={data} />}
         {!isOrg && <Experiences userId={userId} profileUser={data} />} */}

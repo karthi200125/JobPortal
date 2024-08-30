@@ -15,11 +15,14 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from 'react';
 import { createCompanyAction } from "@/actions/company/companyAction";
 import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { getCities, getStates } from "@/getOptionsData";
 
 const CompanyForm = () => {
     const user = useSelector((state: any) => state.user.user)
     const [err, setErr] = useState("");
     const [success, setSuccess] = useState("");
+    const [state, setState] = useState('');
     const router = useRouter();
     const [isLoading, startTransition] = useTransition();
 
@@ -28,6 +31,7 @@ const CompanyForm = () => {
         defaultValues: {
             companyName: "",
             companyImage: "",
+            companyBackImage: "",
             companyAddress: "",
             companyCity: "",
             companyState: "",
@@ -35,6 +39,7 @@ const CompanyForm = () => {
             companyWebsite: "",
             companyTotalEmployees: "",
             companyAbout: "",
+            companyBio: "",
         },
     });
 
@@ -45,10 +50,26 @@ const CompanyForm = () => {
                 .then((data) => {
                     console.log(data)
                     if (data?.success) {
+                        setSuccess(data?.success)
+                        router.push(`/userProfile/${user?.id}`)
+                    }
+                    if (data?.error) {
+                        setErr(data?.error)
                     }
                 })
         });
     };
+
+    const { data: states = [], isLoading: statesLoading } = useQuery({
+        queryKey: ['getStates'],
+        queryFn: async () => await getStates(),
+    });
+    const { data: citiesOptions = [], isLoading: citiesLoading } = useQuery({
+        queryKey: ['getCities', state],
+        queryFn: async () => await getCities(state),
+    });
+
+    const statesOptions = states.map((s: any) => s.name).sort()
 
     return (
         <Form {...form}>
@@ -69,6 +90,13 @@ const CompanyForm = () => {
                         isLoading={isLoading}
                     />
                     <CustomFormField
+                        name="companyBackImage"
+                        form={form}
+                        label="Company Back Image"
+                        placeholder="Ex: https://example.com/image.jpg"
+                        isLoading={isLoading}
+                    />
+                    <CustomFormField
                         name="companyAddress"
                         form={form}
                         label="Company Address"
@@ -82,26 +110,31 @@ const CompanyForm = () => {
                         placeholder="Ex: India"
                         isLoading={isLoading}
                         isSelect
-                        options={['India']}
+                        options={["India"]}
                     />
                     <CustomFormField
                         name="companyState"
                         form={form}
-                        label="Company State"
-                        placeholder="Ex: Tamil Nadu"
+                        label="Conoaby State"
+                        placeholder="Ex: TamilNadu"
                         isLoading={isLoading}
                         isSelect
-                        options={['Tamil Nadu']}
+                        options={statesOptions}
+                        optionsLoading={statesLoading}
+                        onSelect={(d: any) => setState(d)}
                     />
-                    <CustomFormField
-                        name="companyCity"
-                        form={form}
-                        label="Company City"
-                        placeholder="Ex: Bangalore"
-                        isLoading={isLoading}
-                        isSelect
-                        options={['Bangalore']}
-                    />
+                    {state && (
+                        <CustomFormField
+                            name="companyCity"
+                            form={form}
+                            label="Company City"
+                            placeholder="Ex: Chennai"
+                            isLoading={isLoading}
+                            isSelect
+                            options={citiesOptions}
+                            optionsLoading={citiesLoading}
+                        />
+                    )}
                     <CustomFormField
                         name="companyWebsite"
                         form={form}
@@ -117,6 +150,14 @@ const CompanyForm = () => {
                         isLoading={isLoading}
                     />
                 </div>
+                <CustomFormField
+                    name="companyBio"
+                    form={form}
+                    label="About Company Bio"
+                    placeholder="Ex:write about company Bio"
+                    isLoading={isLoading}
+                    isTextarea
+                />
                 <CustomFormField
                     name="companyAbout"
                     form={form}

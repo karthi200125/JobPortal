@@ -6,6 +6,7 @@ import {
     QueryClientProvider
 } from '@tanstack/react-query';
 import { Provider } from "react-redux";
+import { Toaster } from "sonner"
 
 interface ProvidersProps {
     children: React.ReactNode;
@@ -19,6 +20,7 @@ const Providers = ({ children }: ProvidersProps) => {
         <div>
             <Provider store={Store}>
                 <QueryClientProvider client={queryClient}>
+                    {/* <Toaster position="bottom-right" style={{ zIndex: '9999' }} /> */}
                     {children}
                 </QueryClientProvider>
             </Provider>

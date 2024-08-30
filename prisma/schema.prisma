@@ -43,6 +43,7 @@ model User {
   followers       Int[]
   followings      Int[]
   savedJobs       Int[]       
+  ProfileViews    Int[] 
 
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
@@ -63,7 +64,7 @@ model Job {
   applyLink   String?
   vacancies   String
   skills      String[]
-  questions   Json? 
+  questions   Json?   
 
   userId      Int
   user        User      @relation("PostedJobs", fields: [userId], references: [id], onDelete: Cascade)
@@ -78,27 +79,28 @@ model Job {
 }
 
 model JobApplication {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  jobId       Int
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  jobId              Int
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job                Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
-  candidateEmail    String
-  candidateMobile   String
-  candidateResume   String 
-  candidatePhoneNo  String
-  answers           Json   
+  candidateEmail     String
+  candidateMobile    String
+  candidateResume    String   
+  questionAndAnswers Json?
+
+  isApplicationViewed Boolean @default(false)
+  isResumeViewd       Boolean @default(false)
+  isSelected          Boolean @default(false)
   
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@unique([userId, jobId])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt  
 }
 
+
 model Company {
-  id                     Int       @id @default(autoincrement())
-  companyEmail           String    @unique
+  id                     Int       @id @default(autoincrement())  
   companyName            String    @unique
   companyImage           String
   companyBackImage       String

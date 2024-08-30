@@ -8,7 +8,15 @@ export const getUserById = async (id: number) => {
     }
 
     const user = await db.user.findUnique({
-        where: { id }
+        where: { id },
+        include: {
+            jobApplications: true,
+            postedJobs: true,
+            company: true,
+            educations: true,
+            experiences: true,
+            projects: true,
+        },
     })
 
     return user
