@@ -1,12 +1,14 @@
+'use server'
+
 import { db } from '@/lib/db';
 
 export async function applyForJob(
   userId: number,
   jobId: number,
   candidateEmail: string,
+  candidateMobile: string,
   candidateResume: string,
-  candidatePhoneNo: string,
-  answers: Record<string, any>
+  questionAndAnswers: any
 ) {
   try {
     await db.jobApplication.create({
@@ -14,25 +16,14 @@ export async function applyForJob(
         userId,
         jobId,
         candidateEmail,
+        candidateMobile,
         candidateResume,
-        candidatePhoneNo,
-        answers,
+        questionAndAnswers
       },
     });
 
-    console.log('Job applied successfully with additional data.');
+    return { success: "Job applied successfully with additional data." };
   } catch (error) {
-    console.error('Error applying for job:', error);
+    return { error: 'Error applying for job' }
   }
 }
-
-
-// Example usage:
-// applyForJob(
-//   1, // userId
-//   1, // jobId
-//   'candidate@example.com', // candidateEmail
-//   'https://example.com/resume.pdf', // candidateResume
-//   '1234567890', // candidatePhoneNo
-//   { question1: "Answer 1", question2: "Answer 2" } // answers in JSON format
-// );

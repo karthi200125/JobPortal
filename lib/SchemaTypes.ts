@@ -197,11 +197,17 @@ export const CompanySchema = z.object({
     companyImage: z.string().min(1, {
         message: "Company Image URL is required",
     }),
+    companyBackImage: z.string().min(1, {
+        message: "Company Back Image URL is required",
+    }),
     companyAddress: z.string().min(1, {
         message: "Company Address is required",
     }),
     companyAbout: z.string().min(50, {
         message: "Company Address is required minimum 50 words needed",
+    }),
+    companyBio: z.string().min(30, {
+        message: "Company Bio is required minimum 30 words needed",
     }),
     companyCity: z.string().min(1, {
         message: "Company City is required",

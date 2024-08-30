@@ -2,16 +2,18 @@
 
 import JobProgress from "./JobProgress"
 
-const StatusSide = () => {
+const StatusSide = ({ appliedjObs }: any) => {
 
     const currentStep = 2;
+
+    const job = appliedjObs?.data[0]
 
     return (
         <div className="w-full h-full p-5 space-y-5">
 
             <div className="space-y-2 borderb pb-5">
-                <h2>ReactJs Developer</h2>
-                <h3>Comapny Name</h3>
+                <h2>{job?.jobTitle}</h2>
+                <h3>{job?.company?.companyName}</h3>
             </div>
 
             <div className="space-y-2">

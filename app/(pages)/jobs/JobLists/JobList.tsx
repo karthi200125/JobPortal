@@ -1,5 +1,6 @@
 'use client'
 
+import { getCompanyById } from "@/actions/company/getCompanyById";
 import CreateJobForm from "@/app/Forms/CreateJobForm";
 import DeleteJobForm from "@/app/Forms/DeleteJobForm";
 import Icon from "@/components/Icon";
@@ -9,16 +10,15 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { useQuery } from "@tanstack/react-query";
+import moment from 'moment';
+import Image from "next/image";
 import { BsSuitcaseLg } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import { FaTrash } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
-import moment from 'moment';
-import { useQuery } from "@tanstack/react-query";
-import { getCompanyById } from "@/actions/company/getCompanyById";
-import Image from "next/image";
-import noImage from '../../../../public/noImage.webp'
+import noImage from '../../../../public/noImage.webp';
 
 interface JobListProps {
     isActive?: boolean;
@@ -30,11 +30,12 @@ interface JobListProps {
 const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
 
     const cId = job?.companyId
-
     const { data, isLoading } = useQuery({
         queryKey: ['getCompany', cId],
         queryFn: async () => await getCompanyById(cId),
     });
+
+    const isApplied =[]
 
     return (
         <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
@@ -62,6 +63,7 @@ const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
                 <div className="w-full flex flex-row gap-2 items-center justify-between">
                     <div className="flex flex-row gap-2 items-center">
                         <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
+                        <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
                         <div className="flex flex-row gap-2 items-center">
                             <span className="w-2 h-2 rounded-full bg-black"></span>
                             <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
