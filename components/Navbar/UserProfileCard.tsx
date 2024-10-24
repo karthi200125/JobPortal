@@ -64,6 +64,7 @@ const UserProfileCard = () => {
                     />
                     <div className="w-[170px]">
                         <h4 className="capitalize font-bold">{user?.username}</h4>
+                        <h4 className="text-xs text-neutral-400">{user?.email}</h4>
                         <h4>{user?.profession}</h4>
                         <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6>
                     </div>

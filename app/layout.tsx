@@ -4,11 +4,11 @@ import LpNavbar from "@/components/Navbar/LpNavbar";
 // import type { Metadata } from "next";
 import Navbar from "@/components/Navbar/Navbar";
 import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/toaster";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster"
-
+import ProtectedRoute from "@/lib/ProtectedRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +31,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <Toaster />
+          <ProtectedRoute />
           <div className={`w-full min-h-screen ${blackBg ? "bg-black" : "bg-white"} `}>
             <div className={`max-w-[1440px] min-h-screen mx-auto px-4 sm:px-6 md:px-8 lg:px-4 ${blackBg ? "bg-black" : "bg-white"}`}>
               {(pathname !== '/signin' && pathname !== '/signUp') &&

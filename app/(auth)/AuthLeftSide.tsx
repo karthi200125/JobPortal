@@ -1,8 +1,10 @@
-import Image from 'next/image'
-import React from 'react'
-import logo from '../../public/logo.png'
+
+import Image from 'next/image';
+import logo from '../../public/logo.png';
 
 const AuthLeftSide = () => {
+    
+
     return (
         <div className='w-full flex flex-row items-center justify-center gap-5'>
             <div className='w-[30%] h-screen flexcenter'>

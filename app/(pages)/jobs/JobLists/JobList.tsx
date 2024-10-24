@@ -19,6 +19,7 @@ import { FaTrash } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import noImage from '../../../../public/noImage.webp';
+import { useSelector } from "react-redux";
 
 interface JobListProps {
     isActive?: boolean;
@@ -28,19 +29,19 @@ interface JobListProps {
 }
 
 const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
-
+    const user = useSelector((state: any) => state.user?.user)
     const cId = job?.companyId
     const { data, isLoading } = useQuery({
         queryKey: ['getCompany', cId],
         queryFn: async () => await getCompanyById(cId),
     });
 
-    const isApplied =[]
-
+    const isApplied = job?.jobApplications?.some((application: any) => application?.userId === user?.id);
+    
     return (
         <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
 
-            <Image src={data?.companyImage || noImage.src} alt="" width={60} height={60} className="w-[60px] h-[60px] bg-neutral-200 object-contain" />
+            <Image src={data?.companyImage || noImage.src} alt="" width={60} height={60} className="w-[60px] h-[60px] object-contain" />
 
             <div className="w-full flex flex-col gap-1 items-start">
                 <h3 className="text-lg font-bold capitalize">{job?.jobTitle}</h3>
@@ -63,11 +64,14 @@ const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
                 <div className="w-full flex flex-row gap-2 items-center justify-between">
                     <div className="flex flex-row gap-2 items-center">
                         <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
-                        <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
-                        <div className="flex flex-row gap-2 items-center">
-                            <span className="w-2 h-2 rounded-full bg-black"></span>
-                            <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
-                        </div>
+                        {isApplied ?
+                            <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
+                            :
+                            <div className="flex flex-row gap-2 items-center">
+                                <span className="w-2 h-2 rounded-full bg-black"></span>
+                                <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
+                            </div>
+                        }
                     </div>
                     <h5 className="text-xs">{moment(job?.createdAt).fromNow()}</h5>
                 </div>

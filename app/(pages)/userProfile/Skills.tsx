@@ -12,7 +12,6 @@ interface SkillsProps {
     isLoading?: boolean
 }
 
-
 const Skills = ({ profileUser, isLoading }: SkillsProps) => {
     const user = useSelector((state: any) => state.user?.user)
     const isCurrentUser = user?.id === profileUser?.id
