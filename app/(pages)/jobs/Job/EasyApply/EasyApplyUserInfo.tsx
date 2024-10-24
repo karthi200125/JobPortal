@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import { useState } from "react"
 import { useSelector } from "react-redux"
+import noProfile from '../../../../../public/noProfile.webp'
 
 interface EasyApplyUserInfoProps {
     onUserdata?: (value: { email: string, phone: string }) => void,
@@ -34,7 +35,7 @@ const EasyApplyUserInfo = ({ onUserdata, onNext, currentStep = 0 }: EasyApplyUse
             <div className="space-y-2">
                 <h3>Contact Info</h3>
                 <div className="w-full border p-5 rounded-md flex flex-row items-start gap-5">
-                    <Image src={''} alt="User Image" height={80} width={80} className="rounded-md bg-neutral-200" />
+                    <Image src={user?.userImage || noProfile.src} alt="User Image" height={80} width={80} className="rounded-md bg-neutral-200" />
                     <div className="space-y-2">
                         <h4 className="font-bold">{user?.username}</h4>
                         <h5>{user?.userBio}</h5>

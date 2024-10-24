@@ -15,7 +15,7 @@ const JobCompany = ({ company, isPending }: any) => {
           <h3 className='font-bold'>About The Company</h3>
           <div className='flex flex-row items-start justify-between'>
             <div className='flex flex-row items-start gap-5'>
-              <Image src={company?.companyImage || noImage.src} alt='' width={100} height={100} className='bg-neutral-200 w-[100px] h-[100px] rounded-md' />
+              <Image src={company?.companyImage || noImage.src} alt='' width={100} height={100} className='w-[100px] h-[100px] rounded-md' />
               <div className='space-y-1'>
                 <h3 className='font-semibold capitalize'>{company?.companyName}</h3>
                 <h4 className='font-bold'>12000 follwers</h4>

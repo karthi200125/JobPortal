@@ -4,7 +4,11 @@ import { db } from "@/lib/db";
 
 export const getFilterAllJobs = async () => {
     try {
-        const allJobs: any = await db.job.findMany();
+        const allJobs: any = await db.job.findMany({
+            include: {
+                jobApplications: true,
+            }
+        });
 
         return allJobs
     } catch (err) {

@@ -28,7 +28,9 @@ const JobStatus = () => {
         queryKey: ['getUser', user?.id],
         queryFn: async () => await getUserById(user?.id),
     });
-    
+
+    console.log(data)
+
     return (
         <div className="w-full min-h-screen pt-5 space-y-5 ">
             <div className="flex flex-row items-center justify-between">
@@ -44,7 +46,7 @@ const JobStatus = () => {
                 <AppliedJobs aplliedJobs={appliedjObs?.data} isLoading={appliedJobsLoading} />
             }
             {!isCandidate &&
-                <PostedJobs postedJobs={user?.postedJobs} isLoading={appliedJobsLoading} user={data} />
+                <PostedJobs postedJobs={data?.postedJobs} isLoading={isPending} user={data} />
             }
         </div>
     )

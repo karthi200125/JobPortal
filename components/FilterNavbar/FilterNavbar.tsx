@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,9 +16,10 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-
 import { IoMdArrowDropdown } from "react-icons/io";
 import { experiences, JobMode } from '@/getOptionsData';
+import { useRouter } from 'next/navigation';
+import Filter from './Filter';
 
 interface Filter {
     id: number;
@@ -27,6 +28,8 @@ interface Filter {
 }
 
 const FilterNavbar = () => {
+    const router = useRouter();
+
     const filters: Filter[] = [
         {
             id: 1,
@@ -52,8 +55,9 @@ const FilterNavbar = () => {
         }, {} as Record<string, string>)
     );
     const [pendingFilters, setPendingFilters] = useState({ ...selectedFilters });
-    const [easyapply, setEasyapply] = useState(false)
+    const [easyapply, setEasyapply] = useState(false);
 
+    // Handle the filter change
     const handlePendingSelection = (filterTitle: string, option: string) => {
         setPendingFilters(prev => ({
             ...prev,
@@ -63,7 +67,36 @@ const FilterNavbar = () => {
 
     const applyChanges = () => {
         setSelectedFilters(pendingFilters);
+        updateUrlParams(pendingFilters, easyapply);
     };
+
+    // Update the URL parameters whenever filters are applied
+    const updateUrlParams = (filters: Record<string, string>, easyapply: boolean) => {
+        const searchParams = new URLSearchParams(window.location.search);
+
+        // Update filters in URL
+        Object.keys(filters).forEach(filterKey => {
+            if (filters[filterKey]) {
+                searchParams.set(filterKey.toLowerCase().replace(/ /g, ''), filters[filterKey]);
+            } else {
+                searchParams.delete(filterKey.toLowerCase().replace(/ /g, ''));
+            }
+        });
+
+        // Handle easy apply filter
+        if (easyapply) {
+            searchParams.set('easyApply', 'true');
+        } else {
+            searchParams.delete('easyApply');
+        }
+
+        // Push the updated query to the URL
+        router.push(`/jobs?${searchParams.toString()}`);
+    };
+
+    useEffect(() => {
+        updateUrlParams(selectedFilters, easyapply);
+    }, [easyapply]);
 
     return (
         <div className="whitespace-nowrap w-full h-[60px] shadow-md flex flex-row items-center gap-5 md:gap-5 overflow-x-auto">
@@ -102,30 +135,28 @@ const FilterNavbar = () => {
                 </DropdownMenu>
             ))}
 
-            {/*  Easy Apply*/}
-            <div className={`text-sm font-semibold max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 cursor-pointer trans ${easyapply === true && "bg-black text-white"}`} onClick={() => setEasyapply(!easyapply)}>
+            {/*  Easy Apply */}
+            <div
+                className={`text-sm font-semibold max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 cursor-pointer trans ${easyapply && "bg-black text-white"}`}
+                onClick={() => setEasyapply(!easyapply)}
+            >
                 Easy Apply
             </div>
 
             {/* Filter */}
             <Sheet>
                 <SheetTrigger className='trans font-semibold text-sm max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 cursor-pointer'>
-                    Filters
+                    All Filters
                 </SheetTrigger>
                 <SheetContent>
                     <SheetHeader>
-                        <SheetTitle>Are you absolutely sure?</SheetTitle>
-                        <SheetDescription>
-                            This action cannot be undone. This will permanently delete your account
-                            and remove your data from our servers.
-                        </SheetDescription>
+                        <SheetTitle>Filter</SheetTitle>
+                        <Filter />
                     </SheetHeader>
                 </SheetContent>
             </Sheet>
-
-
         </div>
     );
-}
+};
 
 export default FilterNavbar;

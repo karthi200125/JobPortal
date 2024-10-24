@@ -11,29 +11,33 @@ interface JobListsProps {
   isLoading?: boolean;
 }
 
-const JobLists: React.FC<JobListsProps> = ({ Jobs, isLoading }) => {
+const JobLists = ({ Jobs, isLoading }: JobListsProps) => {
+
+  const query = 'Reactjs Developer'
+  const queryCountry = 'India'
+
   return (
     <div className="w-full h-full overflow-y-auto">
       {/* Header */}
-      <div className="z-10 sticky top-0 left-0 w-full max-h-max bg-[var(--voilet)] text-white space-y-1 p-5">
+      <div className="z-[2] sticky top-0 left-0 w-full max-h-max bg-[var(--voilet)] text-white space-y-1 p-5">
         <h5 className="text-sm font-bold">
-          React js Developer <span className="font-normal text-xs">in</span> India
+          {query ? `${query} Jobs` : 'Jobs'}  <span className="font-normal text-xs">in</span> {queryCountry || 'India'}
         </h5>
-        <h5 className="text-xs">100 Results</h5>
+        <h5 className="text-xs">{Jobs.length || 0} Results</h5>
       </div>
 
       {/* Content */}
       <div className="md:hidden">
         {isLoading ?
           <JobListsSkeleten />
-          : Jobs && Jobs.length > 0 ?
-            Jobs.map((job: any) => (
+          : Jobs && Jobs?.length > 0 ?
+            Jobs?.map((job: any) => (
               <BottomDrawer key={job.id} body={<JobDesc />}>
                 <JobList isHover job={job} />
               </BottomDrawer>
             ))
             :
-            <h4>No Jobs Found</h4>
+            <h4 className="p-3">No Jobs Found</h4>
         }
       </div>
 

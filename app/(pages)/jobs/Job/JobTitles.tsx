@@ -54,6 +54,8 @@ const JobTitles = ({ job, company, isPending }: any) => {
     const Per = data?.per || 0
     const message = data?.Msg
 
+    const isApplied = job?.jobApplications?.some((application: any) => application?.userId === user?.id);
+
     return (
         <>
             {isPending ?
@@ -62,7 +64,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
                 <div className='space-y-5'>
                     <div className="flex flex-row items-center justify-between">
                         <div className="flex flex-row items-center gap-2">
-                            <Image src={company?.companyImage || noImage.src} alt="" width={30} height={30} className="w-[20px] h-[20px] bg-neutral-200" />
+                            <Image src={company?.companyImage || noImage.src} alt="" width={30} height={30} className="w-[20px] h-[20px]" />
                             <h5 className="text-sm font-bold">{company?.companyName}</h5>
                         </div>
                         <Icon icon={<IoIosMore size={25} />} title="More" tooltipbg="white" isHover />
@@ -71,7 +73,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
                     {/* job main details */}
                     <div className="space-y-3">
                         <h2 className="capitalize">{job?.jobTitle}</h2>
-                        <h4 className="text-[var(--textBlur)]"> {job?.city} , {job?.state} , {job?.coutry} . {moment(job?.createdAt).fromNow()} . (100 applicants)</h4>
+                        <h4 className="text-[var(--textBlur)]"> {job?.city} , {job?.state} , {job?.coutry} . {moment(job?.createdAt).fromNow()} . ({job?.jobApplications?.length || 0} applicants)</h4>
                         <div className="flex flex-row gap-3 items-center">
                             <FaSuitcase size={20} />
                             <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">{job?.mode}</h5>
@@ -90,30 +92,34 @@ const JobTitles = ({ job, company, isPending }: any) => {
                         {/* premium */}
                         <div className="flex flex-row gap-3 items-start md:items-center">
                             <HiLightBulb size={25} />
-                            <h5>See how you compare to over 100 other applicants. Reactivate Premium</h5>
+                            <h5>See how you compare to over {job?.jobApplications?.length || 0} other applicants. <span className="cursor-pointer font-bold">Activate Premium</span></h5>
                         </div>
 
                         {/* buttons */}
-                        <div className="flex flex-row items-center gap-3 mt-5">
-                            {job?.isEasyApply ?
-                                <Model
-                                    bodyContent={<EasyApply job={job} />}
-                                    title={`Apply to Talent Corner HR Services Pvt Ltd`}
-                                    className='w-[1000px]'
+                        {isApplied ?
+                            <Button className='bg-green-100 !text-green-500'>Applied</Button>
+                            :
+                            <div className="flex flex-row items-center gap-3 mt-5">
+                                {job?.isEasyApply ?
+                                    <Model
+                                        bodyContent={<EasyApply job={job} />}
+                                        title={`Apply to ${company?.companyName || 'Company'}`}
+                                        className='w-[1000px]'
+                                    >
+                                        <Button >Easy Apply</Button>
+                                    </Model>
+                                    :
+                                    <Button icon={<VscLinkExternal size={15} />} >Apply on Company Site</Button>
+                                }
+                                <Button
+                                    onClick={HandleSaveJob}
+                                    className={`${isSaved ? "!bg-black !text-white" : "!text-black !bg-white border"}`}
+                                    isLoading={isLoading}
                                 >
-                                    <Button >Easy Apply</Button>
-                                </Model>
-                                :
-                                <Button icon={<VscLinkExternal size={15} />} >Apply on Company Site</Button>
-                            }
-                            <Button
-                                onClick={HandleSaveJob}
-                                className={`${isSaved ? "!bg-black !text-white" : "!text-black !bg-white border"}`}
-                                isLoading={isLoading}
-                            >
-                                {isSaved ? "Un Save" : "Save"}
-                            </Button>
-                        </div>
+                                    {isSaved ? "Un Save" : "Save"}
+                                </Button>
+                            </div>
+                        }
                     </div>
                 </div>
             }
