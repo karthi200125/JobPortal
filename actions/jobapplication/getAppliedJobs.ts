@@ -32,6 +32,6 @@ export const getAppliedJobs = async (userId?: any) => {
         return { success: true, data: appliedJobs };
     } catch (error) {
         console.error(error);
-        return { success: false, error: "Failed to retrieve candidate's applied jobs." };
+        return { error: "Failed to retrieve candidate's applied jobs." };
     }
 };
