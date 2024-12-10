@@ -20,7 +20,7 @@ export const getSkills = async (q?: string): Promise<string[]> => {
         const result = await response.json();
         return Array.isArray(result) ? result : [];
     } catch (error) {
-        console.error('Error fetching skills:', error);
+        console.error('Error fetching skills : error);
         return [];
     }
 };
