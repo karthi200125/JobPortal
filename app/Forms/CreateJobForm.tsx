@@ -18,10 +18,11 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import JobSkills from "../(pages)/createJob/JobSkills";
 import JobQuestion from "../(pages)/createJob/JobQuestion";
+import JobDesc from "./JobDesc";
 
 const CreateJobForm = () => {
   const user = useSelector((state: any) => state.user.user)
-  const [description, setDescription] = useState('');
+  const [jobDesc, setJobDesc] = useState<string>("hello");;
   const [skills, setSkills] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [skillsErr, setskillsErr] = useState("");
@@ -43,7 +44,7 @@ const CreateJobForm = () => {
       mode: "",
       applyLink: "",
       company: "",
-      jobDesc: "",
+      // jobDesc: "",
       vacancies: "",
     },
   });
@@ -58,17 +59,20 @@ const CreateJobForm = () => {
       const data = {
         ...values,
         skills,
-        questions
+        questions,
+        jobDesc
       }
-      createJobAction(values, userId, skills, questions)
-        .then((data) => {
-          if (data?.success) {
-            router.push('/dashboard')
-          }
-          if (data.error) {
-            console.log(data?.error)
-          }
-        })
+
+      console.log(data)
+      // createJobAction(values, userId, skills, questions)
+      //   .then((data) => {
+      //     if (data?.success) {
+      //       router.push('/dashboard')
+      //     }
+      //     if (data.error) {
+      //       console.log(data?.error)
+      //     }
+      //   })
     });
   };
 
@@ -219,14 +223,19 @@ const CreateJobForm = () => {
           }
         </div>
 
-        <CustomFormField
+        {/* <CustomFormField
           name="jobDesc"
           form={form}
           label="Job Description"
           placeholder="Ex: Something about the job description"
           isLoading={isLoading}
           isTextarea
-        />
+        /> */}
+        <div className="space-y-2">
+          <h5 className="font-bold">JobDescription</h5>
+          <JobDesc onJobDesc={(d: string) => setJobDesc(d)} />
+        </div>
+
         <JobQuestion onQuestions={(question: any) => setQuestions(question)} />
 
         <Button isLoading={isLoading} className="!w-full">Create Job</Button>

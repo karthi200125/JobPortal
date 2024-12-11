@@ -119,9 +119,9 @@ export const CreateJobSchema = z.object({
     jobTitle: z.string().min(1, {
         message: "Job Title is required",
     }),
-    jobDesc: z.string().min(1, {
-        message: "Job Desc required",
-    }),
+    // jobDesc: z.string().min(1, {
+    //     message: "Job Desc required",
+    // }),
     experience: z.string().min(1, {
         message: "Job Experince required",
     }),
