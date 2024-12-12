@@ -42,7 +42,7 @@ const Pricing = () => {
         <div className="w-full max-h-max rounded-[30px] space-y-10 text-text bg-white/[0.05] py-10">
             <div className="text-center w-[50%] mx-auto space-y-3 text-white">
                 <h1>Our Pricing Plans</h1>
-                <h4 className="text-white/20">Choose the plan that best fits your hiring needs. Whether you're a startup or a large enterprise, our plans are designed to help you find the right talent efficiently and effectively.</h4>
+                <h4 className="text-white/20">Choose the plan that best fits your hiring needs. Whether you are a startup or a large enterprise, our plans are designed to help you find the right talent efficiently and effectively.</h4>
             </div>
 
             <div className="max-w-max mx-auto flex flex-row items-start gap-20">

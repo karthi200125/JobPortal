@@ -65,7 +65,7 @@ const EasyApply = ({ job }: any) => {
             </div>
 
             <div className='mt-5 w-full flex flex-row items-center justify-between gap-5 border rounded-md p-5'>
-                <h6>Submitting this application won't change your LinkedIn profile.</h6>
+                <h6>Submitting this application wont change your LinkedIn profile.</h6>
             </div>
         </div>
     );

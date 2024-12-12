@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import Educations from "../userProfile/Educations";
 import { UserExperienceForm } from "@/app/Forms/UserExperienceForm";
+import Model from "@/components/Model/Model";
+import { FaPlus } from "react-icons/fa";
 
 interface Props {
     currentStep?: number;
