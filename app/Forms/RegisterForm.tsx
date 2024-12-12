@@ -52,7 +52,7 @@ const RegisterForm = () => {
             username: "",
             email: "",
             password: "",
-            role: "",
+            role: "CANDIDATE",
         },
     });
 

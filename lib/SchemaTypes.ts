@@ -1,4 +1,5 @@
 import { z } from "zod";
+const RoleEnum = z.enum(['CANDIDATE', 'RECRUITER', 'ORGANIZATION']);
 
 export const UserInfoSchema = z.object({
     username: z.string().min(1, {
@@ -173,9 +174,7 @@ export const RegisterSchema = z.object({
     password: z.string().min(6, {
         message: "Password is required, with a minimum of 6 characters",
     }),
-    role: z.string().min(1, {
-        message: "Selecting a role is required",
-    }),
+    role: RoleEnum,
 })
 
 export const LoginSchema = z.object({
@@ -185,9 +184,7 @@ export const LoginSchema = z.object({
     password: z.string().min(6, {
         message: "Password is required, with a minimum of 6 characters",
     }),
-    role: z.string().min(1, {
-        message: "Selecting a role is required",
-    }),
+    role: RoleEnum,
 })
 
 export const CompanySchema = z.object({
