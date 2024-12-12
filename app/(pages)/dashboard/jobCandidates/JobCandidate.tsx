@@ -44,7 +44,7 @@ const JobCandidate = () => {
                 <h3 className="font-semibold text-sm">Additional Questions</h3>
                 <div className='space-y-2 border rounded-md p-5'>
                     <div>
-                        <h6 className='text-[var(--lighttext)]'>Have you completed the following level of education: Bachelor's Degree?</h6>
+                        <h6 className='text-[var(--lighttext)]'>Have you completed the following level of education: Bachelors Degree?</h6>
                         <h4>Yes</h4>
                     </div>
                 </div>
