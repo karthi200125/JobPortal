@@ -13,8 +13,7 @@ const Home = () => {
       <LandingPage />
       <LpAbout />      
       <Pricing />
-      <LpLeadingCompanies />
-      <LpLeadingCompanies />
+      <LpLeadingCompanies />      
       <Footer />
     </div>
   );
