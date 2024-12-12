@@ -47,7 +47,7 @@ const LoginForm = () => {
         defaultValues: {
             email: "",
             password: "",
-            role: "",
+            role: "CANDIDATE",
         },
     });
 
