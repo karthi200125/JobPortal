@@ -44,7 +44,8 @@ export const createJobAction = async (
                 userId: user.id,
                 companyId: uniqueCompany.id,
                 skills , 
-                questions
+                questions,
+                jobDesc: "Default job description"
             },
         });
 
