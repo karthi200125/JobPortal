@@ -4,7 +4,7 @@ import { GoArrowLeft } from "react-icons/go";
 import AuthLeftSide from "../AuthLeftSide"
 import SigninRightSide from "./SignInRightSide"
 import Link from "next/link";
-import { ProtectedRoute } from "@/lib/ProtectedRoute";
+// import { ProtectedRoute } from "@/lib/ProtectedRoute";
 
 const LoginPage = () => {
   return (
