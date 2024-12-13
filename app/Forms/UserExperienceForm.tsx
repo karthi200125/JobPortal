@@ -23,13 +23,11 @@ export function UserExperienceForm({ experience, edit }: ExperienceProps) {
     const form = useForm<z.infer<typeof UserExperienceSchema>>({
         resolver: zodResolver(UserExperienceSchema),
         defaultValues: {
-            title: "",
-            EmployementType: "",
             companyName: "",
+            position: "",            
             startDate: "",
-            endDate: "",
-            percentage: "",
-            educationDesc: "",
+            endDate: "",            
+            description: "",
         },
     });
 
@@ -44,33 +42,19 @@ export function UserExperienceForm({ experience, edit }: ExperienceProps) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <CustomFormField
-                        name="instituteName"
+                        name="companyName"
                         form={form}
-                        label="Institute Name"
+                        label="Company Name"
                         placeholder="Institute Name"
                         isLoading={isLoading}
                     />
                     <CustomFormField
-                        name="degree"
+                        name="position"
                         form={form}
-                        label="Degree"
+                        label="Job Position"
                         placeholder="Degree"
                         isLoading={isLoading}
-                    />
-                    <CustomFormField
-                        name="fieldofstudy"
-                        form={form}
-                        label="Field of Study"
-                        placeholder="Field of Study"
-                        isLoading={isLoading}
-                    />
-                    <CustomFormField
-                        name="percentage"
-                        form={form}
-                        label="Percentage"
-                        placeholder="Percentage"
-                        isLoading={isLoading}
-                    />
+                    />                                        
                     <CustomFormField
                         name="startDate"
                         form={form}
@@ -91,16 +75,16 @@ export function UserExperienceForm({ experience, edit }: ExperienceProps) {
                 </div>
                 <CustomFormField
                     isTextarea
-                    name="educationDesc"
+                    name="description"
                     form={form}
-                    label="Activities and societies"
+                    label="About Your Previous Job"
                     placeholder="Description"
                     isLoading={isLoading}
                 />
 
                 <FormError message="" />
                 <FormSuccess message="" />
-                <Button isLoading={isLoading} className="!w-full" >Add Education</Button>
+                <Button isLoading={isLoading} className="!w-full" >Add Experience</Button>
             </form>
         </Form>
     );

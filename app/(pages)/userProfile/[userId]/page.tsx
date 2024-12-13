@@ -33,8 +33,8 @@ const UserProfile = () => {
         {/* <AboutMe profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} /> */}
         {/* {!isOrg && <Skills profileUser={data} isLoading={isPending} />}
         {!isOrg && <Education userId={userId} profileUser={data} />}
-        {!isOrg && <Projects userId={userId} profileUser={data} />}
-        {!isOrg && <Experiences userId={userId} profileUser={data} />} */}
+        {!isOrg && <Projects userId={userId} profileUser={data} />}*/}
+        {!isOrg && <Experiences userId={userId} profileUser={data} />} 
         {isOrg &&
           <CompanySlides />
         }

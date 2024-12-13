@@ -78,14 +78,11 @@ export const UserEducationSchema = z.object({
 })
 
 export const UserExperienceSchema = z.object({
-    instituteName: z.string().min(1, {
-        message: "Institute Name is required",
+    companyName: z.string().min(1, {
+        message: "Company Name is required",
     }),
-    degree: z.string().min(1, {
-        message: "Degree is required",
-    }),
-    fieldOfStudy: z.string().min(1, {
-        message: "Degree is required",
+    position: z.string().min(1, {
+        message: "Position is required",
     }),
     startDate: z.string().min(1, {
         message: "Start Date is required",
@@ -93,12 +90,9 @@ export const UserExperienceSchema = z.object({
     endDate: z.string().min(1, {
         message: "Start Date is required",
     }),
-    percentage: z.string().min(1, {
-        message: "Percentage Date is required",
-    }),
-    // educationDesc: z.string().min(1, {
-    //     message: "Percentage Date is required",
-    // }),
+    description: z.string().min(1, {
+        message: "Description is required",
+    }),    
 })
 
 export const UserProjectSchema = z.object({

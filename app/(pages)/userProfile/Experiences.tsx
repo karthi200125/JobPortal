@@ -2,7 +2,6 @@
 
 import { getUserEducation } from '@/actions/user/getUserEducation'
 import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
-import { UserEducationForm } from '@/app/Forms/UserEducationForm'
 import { UserExperienceForm } from '@/app/Forms/UserExperienceForm'
 import Button from '@/components/Button'
 import Icon from '@/components/Icon'
@@ -35,7 +34,7 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                 <h3 className='font-bold'>Experiences</h3>
                 {isCurrentUser &&
                     <Model
-                        bodyContent={<UserEducationForm />}
+                        bodyContent={<UserExperienceForm />}
                         title='Add you Experience'
                         className='w-[1000px]'
                         desc='Add you previus and current Experience details'
