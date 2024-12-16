@@ -17,8 +17,8 @@ const AboutMe = ({ profileUser, isLoading, company, isOrg }: AboutMeProps) => {
                 <UserAboutMeSkeleton />
                 :
                 <>
-                    {/* <h5>Email : <b>{profileUser?.email}</b></h5>
-                    <h5>Phone No : <b>{profileUser?.phoneNo}</b></h5> */}
+                    <h5>Email : <b>{profileUser?.email}</b></h5>
+                    <h5>Phone No : <b>{profileUser?.phoneNo}</b></h5>
                     <p className='text-sm text-[var(--lighttext)] mt-5'>
                         {isOrg ? company?.companyAbout : profileUser?.userAbout}
                     </p>
