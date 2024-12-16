@@ -62,7 +62,7 @@ const UserInfo = ({ profileUser, isLoading, isOrg, company }: ProfileUserProps) 
             <div className='absolute top-0 left-0 w-full h-[200px]'>
                 <Image src={profileUser?.profileImage || ''} alt='' width={100} height={200} className='bg-neutral-200 w-full h-full' />
                 <Image src={isOrg ? company?.companyImage : profileUser?.userImage || noProfile.src} alt='' width={150} height={150} className='w-[150px] h-[150px] absolute bottom-[-40px] left-5 rounded-full border-[4px] border-solid border-[var(--white)]' />
-                {/* {isCurrentUser &&
+                {isCurrentUser &&
                     <Model
                         bodyContent={'body'}
                         title='Edit Profile'
@@ -76,7 +76,7 @@ const UserInfo = ({ profileUser, isLoading, isOrg, company }: ProfileUserProps) 
                             title='Edit Profile'
                         />
                     </Model>
-                } */}
+                }
             </div>
 
             {isLoading ?
