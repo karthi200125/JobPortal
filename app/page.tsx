@@ -9,11 +9,11 @@ const Home = () => {
 
   return (
     <div className="w-full min-h-screen text-white py-5 space-y-10 bg-black">      
-      <LandingPage />
+      {/* <LandingPage />
       <LpAbout />      
       <Pricing />
       <LpLeadingCompanies />      
-      <Footer />
+      <Footer /> */}
     </div>
   );
 }

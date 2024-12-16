@@ -5,7 +5,7 @@ const LandingPage = () => {
     return (
         <div className="relative w-full flexcenter h-[85vh] bg-white/[0.05] rounded-[30px] overflow-hidden">
             <Image
-                src={'https://img.freepik.com/premium-photo/modern-blue-office-chair-set-against-minimalist-background-ai-photo_1192063-14078.jpg?uid=R35344889&ga=GA1.1.1654768561.1721831904&semt=ais_hybrid'}
+                src={''}
                 alt=""
                 width={100}
                 height={100}
