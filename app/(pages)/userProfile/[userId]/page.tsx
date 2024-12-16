@@ -30,17 +30,17 @@ const UserProfile = () => {
       <div className="w-full md:w-[70%] h-full space-y-5">
         <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
 
-        {/* <AboutMe profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} /> */}
-        {/* {!isOrg && <Skills profileUser={data} isLoading={isPending} />}
+        <AboutMe profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
+        {!isOrg && <Skills profileUser={data} isLoading={isPending} />}
         {!isOrg && <Education userId={userId} profileUser={data} />}
-        {!isOrg && <Projects userId={userId} profileUser={data} />}*/}
+        {!isOrg && <Projects userId={userId} profileUser={data} />}
         {!isOrg && <Experiences userId={userId} profileUser={data} />} 
         {isOrg &&
           <CompanySlides />
         }
       </div>
       <div className="hidden md:block md:w-[30%] h-full">
-        {/* <MoreProfiles profileUser={data} userId={userId} /> */}
+        <MoreProfiles profileUser={data} userId={userId} />
       </div>
 
     </div>
