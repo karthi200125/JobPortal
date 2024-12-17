@@ -40,7 +40,7 @@ const UserProfile = () => {
         }
       </div>
       <div className="hidden md:block md:w-[30%] h-full">
-        <MoreProfiles profileUser={data} userId={userId} />
+        <MoreProfiles userId={userId} />
       </div>
 
     </div>

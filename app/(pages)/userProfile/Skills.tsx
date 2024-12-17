@@ -23,7 +23,7 @@ const Skills = ({ profileUser, isLoading }: SkillsProps) => {
                     bodyContent={<SkillsForm skillsData={profileUser?.skills} />}
                     title='Add Your Skills'
                     desc='add your Technical & soft skills'
-                    className='w-[800px]'
+                    className='min-w-[300px] lg:w-[800px]'
                     triggerCls='absolute top-3 right-3'
                 >
                     <Icon

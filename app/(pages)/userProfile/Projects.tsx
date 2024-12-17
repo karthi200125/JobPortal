@@ -41,7 +41,7 @@ export default function Projects({ userId, profileUser }: ProjectsProps) {
                         bodyContent={<UserProjectForm />}
                         title="Add Project"
                         desc="Add your project details"
-                        className="w-[800px]"
+                        className="min-w-[300px] lg:w-[800px]"
                     >
                         <Button variant="border" icon={<GoPlus size={20} />}>Add</Button>
                     </Model>

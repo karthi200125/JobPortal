@@ -66,7 +66,7 @@ const UserInfo = ({ profileUser, isLoading, isOrg, company }: ProfileUserProps) 
                     <Model
                         bodyContent={'body'}
                         title='Edit Profile'
-                        className='w-[800px]'
+                        className='w-[300px] md:w-[800px]'
                         triggerCls='absolute top-3 right-3'
                     >
                         <Icon
@@ -111,7 +111,7 @@ const UserInfo = ({ profileUser, isLoading, isOrg, company }: ProfileUserProps) 
                         <Model
                             bodyContent={<UserInfoForm />}
                             title='Edit Profile'
-                            className='w-[800px]'
+                            className='min-w-[300px] lg:w-[800px]'
                             triggerCls='absolute top-3 right-3'
                         >
                             <Icon
