@@ -14,19 +14,21 @@ import { UserProjectSchema } from "@/lib/SchemaTypes";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
 import { useSelector } from "react-redux";
+import { useCustomToast } from "@/lib/CustomToast";
 
 interface UserProjectProps {
     isEdit?: boolean;
     project?: any;
+    onClose?: any;
 }
 
-export function UserProjectForm({ isEdit, project }: UserProjectProps) {
+export function UserProjectForm({ isEdit, project, onClose }: UserProjectProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const queryClient = useQueryClient();
 
     const [err, setErr] = useState("")
-    const [success, setSuccess] = useState("")
+    const { showSuccessToast } = useCustomToast()
 
     const form = useForm<z.infer<typeof UserProjectSchema>>({
         resolver: zodResolver(UserProjectSchema),
@@ -43,11 +45,14 @@ export function UserProjectForm({ isEdit, project }: UserProjectProps) {
             const userId = user?.id
             const proId = project?.id
 
+
             userProjectAction(values, userId, isEdit, proId)
                 .then((data) => {
                     if (data?.success) {
-                        setSuccess(data?.success)
+                        showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getuserproject', userId] })
+                        queryClient.invalidateQueries({ queryKey: ['getuser', userId] })
+                        onClose()
                     }
                     if (data?.error) {
                         setErr(data?.error)
@@ -92,7 +97,6 @@ export function UserProjectForm({ isEdit, project }: UserProjectProps) {
                 />
 
                 <FormError message={err} />
-                <FormSuccess message={success} />
                 <Button isLoading={isLoading} className="!w-full">
                     {isEdit ? "Edit Project" : "Add Project"}
                 </Button>

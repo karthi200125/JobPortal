@@ -15,17 +15,19 @@ import { useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
+import { useCustomToast } from "@/lib/CustomToast";
 
 interface EducationProps {
     education?: any,
     edit?: boolean,
+    onClose?: any
 }
 
-export function UserEducationForm({ education, edit }: EducationProps) {
+export function UserEducationForm({ education, edit, onClose }: EducationProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const [err, setErr] = useState("")
-    const [success, setSuccess] = useState("")
+    const { showSuccessToast } = useCustomToast()
     const queryClient = useQueryClient();
     const pathname = usePathname()
 
@@ -53,8 +55,9 @@ export function UserEducationForm({ education, edit }: EducationProps) {
             userEducationAction(values, userId, isEdit, eduId)
                 .then((data: any) => {
                     if (data?.success) {
-                        setSuccess(data?.success)
+                        showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getuserEducation', id] })
+                        onClose()
                     }
                     if (data?.error) {
                         setErr(data?.error)
@@ -117,7 +120,6 @@ export function UserEducationForm({ education, edit }: EducationProps) {
                 </div>
 
                 <FormError message={err} />
-                <FormSuccess message={success} />
                 <Button isLoading={isLoading} className="!w-full" >
                     {pathname === '/welcome' ? "Next" :
                         edit ? "Edit Education" : "Add Education"}

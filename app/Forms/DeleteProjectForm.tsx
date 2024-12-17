@@ -2,14 +2,16 @@
 
 import { deleteProject } from "@/actions/user/deleteProject";
 import Button from "@/components/Button"
+import { useCustomToast } from "@/lib/CustomToast";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image"
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
 
-const DeleteProjectForm = ({ project }: any) => {
+const DeleteProjectForm = ({ project, onClose }: any) => {
     const [isLoading, startTransition] = useTransition();
     const queryClient = useQueryClient();
+    const { showSuccessToast, showErrorToast } = useCustomToast()
 
     const { userId } = useParams()
     const id = Number(userId)
@@ -20,9 +22,13 @@ const DeleteProjectForm = ({ project }: any) => {
                 .then((data: any) => {
                     if (data?.success) {
                         queryClient.invalidateQueries({ queryKey: ['getuserproject', id] })
+                        queryClient.invalidateQueries({ queryKey: ['getuser', id] })
+                        showSuccessToast(data?.success)
+                        onClose()
                     }
                     if (data?.error) {
-
+                        showErrorToast(data?.error)
+                        onClose()
                     }
                 })
         })
