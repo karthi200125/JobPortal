@@ -10,6 +10,7 @@ import { ChangeEvent, FormEvent, KeyboardEvent, useState, useTransition } from "
 import { IoCloseSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
+import { useCustomToast } from "@/lib/CustomToast";
 
 const allSkills = [
     "JavaScript",
@@ -28,10 +29,11 @@ const allSkills = [
 
 interface SkillsFormProps {
     isEdit?: boolean;
-    skillsData?: string[]
+    skillsData?: string[];
+    onClose?: any;
 }
 
-export function SkillsForm({ isEdit, skillsData }: SkillsFormProps) {
+export function SkillsForm({ isEdit, skillsData, onClose }: SkillsFormProps) {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition();
     const [skills, setSkills] = useState<string[]>(skillsData || []);
@@ -43,18 +45,22 @@ export function SkillsForm({ isEdit, skillsData }: SkillsFormProps) {
     const params = useParams()
     const userId = pathaname === '/welcome' ? user?.id : Number(params.userId)
     const queryClient = useQueryClient();
+    const { showSuccessToast } = useCustomToast()
+    const [err, setErr] = useState("")
 
     const onSubmit = (e: FormEvent) => {
         e.preventDefault();
-        console.log(skills)
         startTransition(() => {
             userSkillAction(skills, userId)
                 .then((data) => {
                     if (data?.success) {
                         queryClient.invalidateQueries({ queryKey: ['getuser', userId] })
                         dispatch(loginRedux(data?.data))
+                        showSuccessToast(data?.success)
+                        onClose()
                     }
                     if (data?.error) {
+                        setErr(data?.error)
                     }
                 })
         });
@@ -144,8 +150,7 @@ export function SkillsForm({ isEdit, skillsData }: SkillsFormProps) {
                 </div>
             )}
 
-            <FormError message="" />
-            <FormSuccess message="" />
+            <FormError message={err} />
             <Button isLoading={isLoading} className="!w-full">{pathaname === '/welcome' ? "Add Skills" : "Edit Skills"}</Button>
         </form>
     );

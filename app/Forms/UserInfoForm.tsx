@@ -16,21 +16,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
 import { usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { useCustomToast } from "@/lib/CustomToast";
 
 interface UserInfoFormProps {
     currentStep?: number;
     onNext?: (value: number) => void;
+    onClose?: any;
 }
 
-export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
+export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const pathname = usePathname()
     const queryClient = useQueryClient();
 
     const [statep, setStep] = useState(currentStep)
-    const [err, setErr] = useState("")
-    const [success, setSuccess] = useState("")
+    const [err, setErr] = useState("")    
+    const { showSuccessToast } = useCustomToast()
 
     const dispatch = useDispatch();
 
@@ -58,18 +60,18 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
         startTransition(() => {
             const id = user?.id
             UserUpdate(values, id)
-                .then((data) => {                    
-                    if (data?.success) {
-                        setSuccess(data?.success)
+                .then((data) => {
+                    if (data?.success) {                        
                         dispatch(loginRedux(data?.data))
                         queryClient.invalidateQueries({ queryKey: ['getuser', id] })
+                        showSuccessToast(data?.success)
+                        onClose()
                         if (pathname === '/welcome' && onNext) {
                             onNext(currentStep + 1);
-                            queryClient.invalidateQueries({ queryKey: ['getuser', id] })
                         }
                     }
                     if (data?.error) {
-                        setErr(data?.error)
+                        setErr(data?.error)                        
                     }
                 })
         });
@@ -184,8 +186,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
                     isLoading={isLoading}
                 />
 
-                <FormError message={err} />
-                <FormSuccess message={success} />
+                <FormError message={err} />                
                 <Button isLoading={isLoading} className="!w-full">
                     {pathname === '/welcome' ? "Next" : "Update"}
                 </Button>

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
     Dialog,
@@ -6,9 +6,9 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger
+    DialogTrigger,
 } from "@/components/ui/dialog";
-
+import React, { useState } from "react";
 
 interface ModelProps {
     children: React.ReactNode;
@@ -16,12 +16,26 @@ interface ModelProps {
     triggerCls?: string;
     title?: string;
     desc?: string;
-    bodyContent?: any;
+    bodyContent?: React.ReactNode;
+    onClose?: () => void; 
 }
 
-const Model = ({ children, className, title, desc, bodyContent, triggerCls }: ModelProps) => {
+const Model = ({ children, className, title, desc, bodyContent, triggerCls, onClose }: ModelProps) => {
+    const [open, setOpen] = useState(false);
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleSuccess = async () => {
+        if (onClose) {
+            await onClose(); 
+        }
+        handleClose(); 
+    };
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild className={`${triggerCls}`}>
                 <button>
                     {children}
@@ -35,11 +49,12 @@ const Model = ({ children, className, title, desc, bodyContent, triggerCls }: Mo
                     </DialogDescription>
                 </DialogHeader>
                 <div className="w-full max-h-max px-1 pb-6">
-                    {bodyContent}
+                    
+                    {React.cloneElement(bodyContent as React.ReactElement, { onClose: handleSuccess })}
                 </div>
             </DialogContent>
         </Dialog>
-    )
-}
+    );
+};
 
-export default Model
+export default Model;

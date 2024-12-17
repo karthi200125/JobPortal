@@ -2,28 +2,33 @@
 
 import { deleteEducation } from "@/actions/user/deleteEducation";
 import Button from "@/components/Button"
+import { useCustomToast } from "@/lib/CustomToast";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image"
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
 
-const DeleteEducationForm = ({ edu }: any) => {
+const DeleteEducationForm = ({ edu, onClose }: any) => {
 
     const [isLoading, startTransition] = useTransition();
     const queryClient = useQueryClient();
 
     const { userId } = useParams()
     const id = Number(userId)
+    const { showSuccessToast, showErrorToast } = useCustomToast()
 
     const HandleDelete = () => {
         startTransition(() => {
             deleteEducation(edu?.id)
                 .then((data: any) => {
                     if (data?.success) {
+                        showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getuserEducation', id] })
+                        onClose()
                     }
                     if (data?.error) {
-
+                        showErrorToast(data?.error)
+                        onClose()
                     }
                 })
         })

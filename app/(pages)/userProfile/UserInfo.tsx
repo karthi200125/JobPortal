@@ -109,10 +109,10 @@ const UserInfo = ({ profileUser, isLoading, isOrg, company }: ProfileUserProps) 
 
                     {isCurrentUser &&
                         <Model
-                            bodyContent={<UserInfoForm />}
+                            bodyContent={<UserInfoForm/>}
                             title='Edit Profile'
                             className='min-w-[300px] lg:w-[800px]'
-                            triggerCls='absolute top-3 right-3'
+                            triggerCls='absolute top-3 right-3'                                                        
                         >
                             <Icon
                                 className=''
