@@ -15,6 +15,7 @@ import { useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
 import { usePathname } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UserInfoFormProps {
     currentStep?: number;
@@ -25,6 +26,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const pathname = usePathname()
+    const queryClient = useQueryClient();
 
     const [statep, setStep] = useState(currentStep)
     const [err, setErr] = useState("")
@@ -60,8 +62,10 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
                     if (data?.success) {
                         setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))
+                        queryClient.invalidateQueries({ queryKey: ['getuser', id] })
                         if (pathname === '/welcome' && onNext) {
                             onNext(currentStep + 1);
+                            queryClient.invalidateQueries({ queryKey: ['getuser', id] })
                         }
                     }
                     if (data?.error) {

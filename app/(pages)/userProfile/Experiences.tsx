@@ -36,7 +36,7 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                     <Model
                         bodyContent={<UserExperienceForm />}
                         title='Add you Experience'
-                        className='w-[1000px]'
+                        className='min-w-[300px] lg:w-[1000px]'
                         desc='Add you previus and current Experience details'
                     >
                         <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
@@ -67,7 +67,7 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                                         />
                                     }
                                     title='Edit This Education'
-                                    className='w-[1000px]'
+                                    className='min-w-[300px] lg:w-[1000px]'
                                     desc='Edit Your education details'
                                 >
                                     <Icon
@@ -80,7 +80,7 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                                 <Model
                                     bodyContent={<DeleteEducationForm edu={exp} />}
                                     title='Delete This Education'
-                                    className='w-[400px]'
+                                    className='min-w-[300px] lg:w-[400px]'
                                     desc='Are you Sure Delete Your education'
                                 >
                                     <Icon

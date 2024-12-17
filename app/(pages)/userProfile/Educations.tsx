@@ -38,7 +38,7 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                     <Model
                         bodyContent={<UserEducationForm />}
                         title='Add you Education'
-                        className='w-[1000px]'
+                        className='min-w-[300px] lg:w-[1000px]'
                         desc='Add you previus and current education details'
                     >
                         <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
@@ -69,7 +69,7 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                                         />
                                     }
                                     title='Edit This Education'
-                                    className='w-[1000px]'
+                                    className='min-w-[300px] lg:w-[1000px]'
                                     desc='Edit Your education details'
                                 >
                                     <Icon
