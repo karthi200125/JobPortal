@@ -14,6 +14,7 @@ import MoreProfileSkeleton from '@/Skeletons/MoreProfileSkeleton';
 import Link from 'next/link';
 import { UserFollowAction } from '@/actions/user/UserFollowAction';
 import { userFollow } from '@/app/Redux/AuthSlice';
+import { useCustomToast } from '@/lib/CustomToast';
 
 interface ProfileUserProps {
     userId?: string | number;
@@ -63,6 +64,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
     const user = useSelector((state: any) => state.user.user);
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
+    const { showSuccessToast, showErrorToast } = useCustomToast()
 
     const isFollowings = user?.followings.includes(moreuser?.id);
     const [isPending, startTransition] = useTransition();
@@ -73,10 +75,11 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
             const userId = moreuser?.id;
             UserFollowAction(currentUserId, userId).then((data: any) => {
                 if (data?.success) {
+                    showSuccessToast(data?.success)
                     dispatch(userFollow(userId));
-                    queryClient.invalidateQueries({ queryKey: ['getuser', userId] })
+                    queryClient.invalidateQueries({ queryKey: ['getuser', user?.id] })
                 } else if (data?.error) {
-                    console.error(data.error);
+                    showErrorToast(data.error);
                 }
             });
         });

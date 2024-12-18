@@ -8,37 +8,37 @@ import JobLists from './JobLists/JobLists';
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);    
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchJobs = async () => {
-            setIsLoading(true); 
+            setIsLoading(true);
             try {
-                const jobsData = await getFilterAllJobs(); 
-                setJobs(jobsData); 
+                const jobsData = await getFilterAllJobs();
+                setJobs(jobsData);
             } catch (err) {
-                console.error('Error fetching jobs:', err);                
+                console.error('Error fetching jobs:', err);
             } finally {
-                setIsLoading(false); 
+                setIsLoading(false);
             }
         };
 
         fetchJobs();
     }, []);
 
-    const job = jobs[0] || {}; 
+    const job = jobs[0] || {};    
 
     return (
         <div className='w-full relative'>
             <FilterNavbar />
             <div className='w-full flex flex-row items-start'>
                 <div className='w-full md:w-[40%] jobsh overflow-y-auto'>
-                    <JobLists Jobs={jobs} isLoading={isLoading} /> 
+                    <JobLists Jobs={jobs} isLoading={isLoading} />
                 </div>
                 <div className='hidden md:block w-full md:w-[60%] overflow-y-auto jobsh'>
                     <JobDesc job={job} />
                 </div>
-            </div>            
+            </div>
         </div>
     );
 };

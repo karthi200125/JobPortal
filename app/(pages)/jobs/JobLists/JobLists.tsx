@@ -16,6 +16,8 @@ const JobLists = ({ Jobs, isLoading }: JobListsProps) => {
   const query = 'Reactjs Developer'
   const queryCountry = 'India'
 
+  const isActive = true
+
   return (
     <div className="w-full h-full overflow-y-auto">
       {/* Header */}
@@ -33,7 +35,7 @@ const JobLists = ({ Jobs, isLoading }: JobListsProps) => {
           : Jobs && Jobs?.length > 0 ?
             Jobs?.map((job: any) => (
               <BottomDrawer key={job.id} body={<JobDesc />}>
-                <JobList isHover job={job} />
+                <JobList isHover job={job} isActive={isActive} />
               </BottomDrawer>
             ))
             :
@@ -46,7 +48,7 @@ const JobLists = ({ Jobs, isLoading }: JobListsProps) => {
           <JobListsSkeleten />
           : Jobs && Jobs.length > 0 ?
             Jobs.map((job: any) => (
-              <JobList key={job.id} isHover job={job} />
+              <JobList key={job.id} isHover job={job} isActive={isActive} />
             ))
             :
             <h4>No Jobs Found</h4>
