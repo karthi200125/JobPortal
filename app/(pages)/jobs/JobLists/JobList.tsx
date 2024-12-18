@@ -37,9 +37,18 @@ const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
     });
 
     const isApplied = job?.jobApplications?.some((application: any) => application?.userId === user?.id);
-    
+
+    console.log("active jobs", isActive)
+
+
     return (
-        <div className={`${isActive && " border-black"} ${isHover && "hover:bg-neutral-100 hover:border-black"} relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `}>
+        <div
+            className={`
+            // ${isActive && " border-black"} 
+            // ${isHover && "hover:bg-neutral-100 hover:border-black"} 
+            relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `
+            }
+        >
 
             <Image src={data?.companyImage || noImage.src} alt="" width={60} height={60} className="w-[60px] h-[60px] object-contain" />
 
