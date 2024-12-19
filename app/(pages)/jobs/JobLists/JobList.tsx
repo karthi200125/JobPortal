@@ -27,9 +27,10 @@ interface JobListProps {
     job?: any
     more?: boolean
     selectedJob?: any
+    appliedJob?: any
 }
 
-const JobList = ({ isHover, job, more , selectedJob }: JobListProps) => {
+const JobList = ({ isHover, job, more, selectedJob , appliedJob }: JobListProps) => {
     const user = useSelector((state: any) => state.user?.user)
     const cId = job?.companyId
     const { data, isLoading } = useQuery({
@@ -40,11 +41,11 @@ const JobList = ({ isHover, job, more , selectedJob }: JobListProps) => {
     console.log(selectedJob)
 
     const isApplied = job?.jobApplications?.some((application: any) => application?.userId === user?.id);
-        
+
     return (
         <div
             className={`
-            ${job.id === selectedJob  && " !border-black bg-neutral-100"} 
+            ${job.id === selectedJob && " !border-black bg-neutral-100"} 
             ${isHover && "hover:bg-neutral-100 hover:!border-black"} 
             relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] trans border-white `
             }
@@ -73,7 +74,8 @@ const JobList = ({ isHover, job, more , selectedJob }: JobListProps) => {
                 <div className="w-full flex flex-row gap-2 items-center justify-between">
                     <div className="flex flex-row gap-2 items-center">
                         <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
-                        {isApplied ?
+                        {!appliedJob &&
+                            isApplied ?
                             <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
                             :
                             <div className="flex flex-row gap-2 items-center">

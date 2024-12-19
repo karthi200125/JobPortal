@@ -12,9 +12,10 @@ import { useCustomToast } from '@/lib/CustomToast'
 interface EasyApplySubmitProps {
     job?: any;
     data?: any;
+    onClose?: any;
 }
 
-const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
+const EasyApplySubmit = ({ data, job , onClose }: EasyApplySubmitProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
@@ -46,8 +47,9 @@ const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
             )
                 .then((data: any) => {
                     if (data?.success) {
-                        showSuccessToast(data?.success)
+                        showSuccessToast(data?.success)                        
                         queryClient.invalidateQueries({ queryKey: ['getFilterAllJobs'] })
+                        onClose()
                     }
                     if (data?.error) {
                         showErrorToast(data?.error)
