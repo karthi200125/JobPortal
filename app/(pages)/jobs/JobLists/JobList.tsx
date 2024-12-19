@@ -26,9 +26,10 @@ interface JobListProps {
     isHover?: boolean;
     job?: any
     more?: boolean
+    selectedJob?: any
 }
 
-const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
+const JobList = ({ isHover, job, more , selectedJob }: JobListProps) => {
     const user = useSelector((state: any) => state.user?.user)
     const cId = job?.companyId
     const { data, isLoading } = useQuery({
@@ -36,17 +37,16 @@ const JobList = ({ isActive, isHover, job, more }: JobListProps) => {
         queryFn: async () => await getCompanyById(cId),
     });
 
+    console.log(selectedJob)
+
     const isApplied = job?.jobApplications?.some((application: any) => application?.userId === user?.id);
-
-    console.log("active jobs", isActive)
-
-
+        
     return (
         <div
             className={`
-            // ${isActive && " border-black"} 
-            // ${isHover && "hover:bg-neutral-100 hover:border-black"} 
-            relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-white trans `
+            ${job.id === selectedJob  && " !border-black bg-neutral-100"} 
+            ${isHover && "hover:bg-neutral-100 hover:!border-black"} 
+            relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] trans border-white `
             }
         >
 

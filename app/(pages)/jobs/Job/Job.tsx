@@ -17,7 +17,7 @@ const JobDesc = ({ job }: any) => {
         queryFn: async () => await getCompanyById(cId),
     });
 
-    console.log("test job cid", cId)
+    // console.log("test job cid", cId)
 
     return (
         <div className="w-full h-full overflow-y-auto p-5 space-y-5">
