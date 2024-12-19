@@ -6,6 +6,7 @@ import StatusSide from "./StatusSide"
 import { getAppliedJobs } from "@/actions/jobapplication/getAppliedJobs";
 import { useSelector } from "react-redux";
 import { getUserById } from "@/actions/auth/getUserById";
+import Image from "next/image";
 
 const JobStatus = () => {
     const user = useSelector((state: any) => state.user.user)
@@ -41,9 +42,32 @@ const JobStatus = () => {
 
                 <div className="w-[40%] jobStatusHeight overflow-y-auto">
                     {appliedjObs?.data?.map((job) => (
+                        <div
+                            key={job?.id}
+                            className={`w-full min-h-[100px] border-b-[1px] border-solid border-neutral-300 flex flex-row items-start gap-5 p-2 hover:bg-neutral-200 trans cursor-pointer`}
+                        >
+                            <div className="w-[80px] h-[80px] rounded-md bg-neutral-100 relative">
+                                <Image src={''} fill alt="" className="absolute left-0 top-0 w-full h-full" />
+                            </div>
+                            <div className="space-y-2 w-full">
+                                <h3 className="text-lg font-bold capitalize">FUll stack developer</h3>
+                                <h5 className="text-sm font-semibold capitalize">Amazon</h5>
+                                <div className="flex flex-row justify-between items-start">
+                                    <h5>address city country</h5>
+                                    <h6>2 onths ago</h6>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                </div>
+
+                {/* <div className="w-[40%] jobStatusHeight overflow-y-auto">
+                    {appliedjObs?.data?.map((job) => (
                         <JobList isHover key={job?.id} job={job} />
                     ))}
-                </div>
+                    
+                </div> */}
 
                 <div className="w-[60%] jobStatusHeight space-y-5 overflow-y-auto">
                     <StatusSide appliedjObs={appliedjObs} />
