@@ -45,7 +45,7 @@ const JobProgress = ({ jobApplication }: any) => {
     return (
         <div className="w-full flex justify-between items-center overflow-x-auto">
             {steps.map((step) => (
-                <div className="flex-1 flex flex-col gap-2 items-start">
+                <div className="flex-1 flex flex-col gap-2 items-start" key={step?.id}>
                     <div className="flex items-center">
                         <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${step?.id <= currentStep ? 'bg-green-500 border-green-500' : 'bg-gray-200 border-gray-300'}`}>
                             {step?.id <= currentStep ? <CheckCircleIcon className="w-4 h-4 text-white" /> : <span className="text-gray-500">{step?.id}</span>}
