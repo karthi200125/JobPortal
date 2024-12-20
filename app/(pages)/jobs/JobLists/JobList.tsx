@@ -45,7 +45,7 @@ const JobList = ({ isHover, job, more, selectedJob , appliedJob }: JobListProps)
     return (
         <div
             className={`
-            ${job.id === selectedJob && " !border-black bg-neutral-100"} 
+            ${job?.id === selectedJob && " !border-black bg-neutral-100"} 
             ${isHover && "hover:bg-neutral-100 hover:!border-black"} 
             relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] trans border-white `
             }
