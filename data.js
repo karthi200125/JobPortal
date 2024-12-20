@@ -160,7 +160,7 @@ export const profileCardItems = [
         id: 1,
         title: "Profile",
         icon: <IoPersonOutline size={20} />,
-        href: "/userprofile"
+        href: "/userProfile"
     },
     {
         id: 2,
