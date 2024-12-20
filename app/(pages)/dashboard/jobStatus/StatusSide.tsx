@@ -1,15 +1,13 @@
 'use client'
 
-import JobProgress from "./JobProgress"
+import JobProgress from "./JobProgress";
 
-const StatusSide = ({ job }: any) => {
-
-    const currentStep = 2;
-
-    console.log("staus side", job)
+const StatusSide = ({ job, user }: any) => {
+    
+    const jobApplication = user?.jobApplications?.find((ja: any) => ja?.jobId === job?.id);    
 
     return (
-        <>        
+        <>
             <div className="w-full h-full p-5 space-y-5">
 
                 <div className="space-y-2 borderb pb-5">
@@ -20,7 +18,7 @@ const StatusSide = ({ job }: any) => {
                 <div className="space-y-2">
                     <h3>Application Status</h3>
                     <div className="w-full border p-5 overflow-x-auto rounded-md">
-                        <JobProgress currentStep={currentStep} />
+                        <JobProgress jobApplication={jobApplication}/>
                     </div>
                 </div>
 
@@ -29,12 +27,12 @@ const StatusSide = ({ job }: any) => {
                     <div className="max-w-max border p-5 rounded-md flex flex-row items-center gap-10">
                         <div>
                             <h4>Total Applicants for this job</h4>
-                            <h3 className="font-bold">1000</h3>
+                            <h3 className="font-bold">{user?.jobApplications?.length}</h3>
                         </div>
                         <span className="h-[40px] w-[1px] bg-neutral-200"></span>
                         <div className="">
                             <h4>Total Applicants for this job</h4>
-                            <h3 className="font-bold">1000</h3>
+                            <h3 className="font-bold">{user?.jobApplications?.length}</h3>
                         </div>
                     </div>
                 </div>

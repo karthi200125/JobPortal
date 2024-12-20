@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 const JobStatus = () => {
     const user = useSelector((state: any) => state.user.user);
 
-    const { data: appliedJobs, isLoading: appliedJobsLoading } = useQuery({
+    const { data, isLoading: appliedJobsLoading } = useQuery({
         queryKey: ['getAppliedJobs', user?.id],
         queryFn: async () => await getAppliedJobs(user?.id),
     });
@@ -23,17 +23,18 @@ const JobStatus = () => {
         queryFn: async () => await getUserById(user?.id),
     });
 
+    const appliedJobs: any = data || []
+
     const [selectedJob, setSelectedJob] = useState<number | null>(null);
     const [job, setJob] = useState<any>(null);
 
-    // Set the first job as default when the appliedJobs data is loaded
     useEffect(() => {
         if (appliedJobs?.data?.length > 0) {
             const firstJob = appliedJobs.data[0];
             setSelectedJob(firstJob.id);
             setJob(firstJob);
         }
-    }, [appliedJobs]);
+    }, [data]);
 
     const handleSelectJob = (job: any) => {
         setSelectedJob(job?.id);
@@ -98,7 +99,7 @@ const JobStatus = () => {
 
                 {/* Job Details */}
                 <div className="w-[60%] jobStatusHeight space-y-5 overflow-y-auto">
-                    {job ? <StatusSide job={job} /> : <div>Loading...</div>}
+                    {job ? <StatusSide job={job}  user={userData}/> : <div>Loading...</div>}
                 </div>
             </div>
         </div>
