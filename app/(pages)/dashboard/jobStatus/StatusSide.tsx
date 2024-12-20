@@ -2,11 +2,13 @@
 
 import JobProgress from "./JobProgress"
 
-const StatusSide = ({ appliedjObs }: any) => {
+const StatusSide = ({  job }: any) => {
 
     const currentStep = 2;
 
-    const job = appliedjObs?.data[0]
+    // const job = appliedjObs?.data[0]
+
+    console.log("staus side", job)
 
     return (
         <div className="w-full h-full p-5 space-y-5">

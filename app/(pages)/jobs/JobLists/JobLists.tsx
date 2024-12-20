@@ -22,9 +22,7 @@ const JobLists = ({ Jobs = [], isLoading = false, onSelectedJob }: JobListsProps
       setSelectedJob(Jobs[0].id);
     }
   }, [Jobs, selectedJob]);
-
-  console.log("in lists", selectedJob)
-
+  
   const handleSelectJob = (jobId: number) => {
     setSelectedJob(jobId);
     onSelectedJob?.(jobId);
