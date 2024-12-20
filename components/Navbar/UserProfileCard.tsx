@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/hover-card";
 import { profileCardItems } from "@/data";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import noProfile from '../../public/noProfile.webp';
 import { memo, useCallback, useMemo } from "react";
@@ -17,6 +17,10 @@ const UserProfileCard = () => {
     const user = useSelector((state: any) => state.user.user);
     const router = useRouter();
     const dispatch = useDispatch();
+
+    const pathname = usePathname()
+    const basePath = pathname.split('/').slice(0, 2).join('/');
+    console.log("payjhname", basePath)
 
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
@@ -31,7 +35,10 @@ const UserProfileCard = () => {
         return profileCardItems.map((item) => (
             <div
                 key={item.id}
-                className="flex flex-row items-center gap-5 w-full p-3 rounded-md hover:bg-neutral-100 cursor-pointer transition"
+                className={`
+                    ${basePath === item.href && 'bg-neutral-200'}
+                    flex flex-row items-center gap-5 w-full p-3 rounded-md hover:bg-neutral-100 cursor-pointer transition
+                    `}
                 onClick={() => handleClick(item)}
             >
                 {item.icon}
@@ -66,7 +73,7 @@ const UserProfileCard = () => {
                         <h4 className="capitalize font-bold">{user?.username}</h4>
                         <h4 className="text-xs text-neutral-400">{user?.email}</h4>
                         <h4>{user?.profession}</h4>
-                        <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6>
+                        {/* <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6> */}
                     </div>
                 </div>
                 <div>
