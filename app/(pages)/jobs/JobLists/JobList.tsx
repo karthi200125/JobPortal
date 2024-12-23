@@ -77,7 +77,7 @@ const JobList = ({ isHover, job, more, selectedJob, appliedJob }: JobListProps) 
                     <h5 className="text-xs">{job?.isEastApply === true ? "Easy Apply" : "Apply On Company Site"}</h5>
                 </div> */}
 
-                {!isAppliedJob &&
+                {!isAppliedJob ?
                     <div className="w-full flex flex-row gap-2 items-center justify-between">
                         <div className="flex flex-row gap-2 items-center">
                             <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
@@ -92,11 +92,12 @@ const JobList = ({ isHover, job, more, selectedJob, appliedJob }: JobListProps) 
                         </div>
                         <h5 className="text-xs">{moment(job?.createdAt).fromNow()}</h5>
                     </div>
+                    :
+                    <Link href={'/dashboard/jobStatus'} className="w-full bg-green-300 flex flex-row items-center justify-between px-2 py-1 rounded-md cursor-pointer trans hover:opacity-50 font-semibold">
+                        See Job Status
+                        <MdKeyboardDoubleArrowRight size={20} />
+                    </Link>
                 }
-                <Link href={'/dashboard/jobStatus'} className="w-full bg-green-300 flex flex-row items-center justify-between px-2 py-1 rounded-md cursor-pointer trans hover:opacity-50 font-semibold">
-                    See Job Status
-                    <MdKeyboardDoubleArrowRight size={20} />
-                </Link>
 
             </div>
 

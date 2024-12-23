@@ -1,12 +1,13 @@
 import Image from "next/image"
 import logo from '../public/logo.png'
+import Link from "next/link"
 
 const Logo = () => {
   return (
-    <div className="text-white font-bold flex flex-row items-center gap-3">
+    <Link href={'/jobs'} className="text-white font-bold flex flex-row items-center gap-3 trans cursor-pointer hover:opacity-50">
       <Image src={logo.src} alt="" width={40} height={40} className="object-contain" />
       <h3 className="hidden md:block font-bold">JOBIFY</h3>
-    </div>
+    </Link>
   )
 }
 
