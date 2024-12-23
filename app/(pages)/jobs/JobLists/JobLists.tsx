@@ -12,7 +12,7 @@ interface JobListsProps {
   onSelectedJob?: (jobId: number) => void;
 }
 
-const JobLists = ({ Jobs = [], isLoading = false, onSelectedJob }: JobListsProps) => {
+const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob }: JobListsProps) => {
   const query = 'Reactjs Developer';
   const queryCountry = 'India';
   const [selectedJob, setSelectedJob] = useState<number | null>(null);
@@ -22,11 +22,13 @@ const JobLists = ({ Jobs = [], isLoading = false, onSelectedJob }: JobListsProps
       setSelectedJob(Jobs[0].id);
     }
   }, [Jobs, selectedJob]);
-  
+
   const handleSelectJob = (jobId: number) => {
     setSelectedJob(jobId);
     onSelectedJob?.(jobId);
   };
+
+  console.log(isLoading)
 
   return (
     <div className="w-full h-full overflow-y-auto">
