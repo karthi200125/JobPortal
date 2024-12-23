@@ -28,8 +28,6 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob }: JobListsProps)
     onSelectedJob?.(jobId);
   };
 
-  console.log(isLoading)
-
   return (
     <div className="w-full h-full overflow-y-auto">
       {/* Header */}

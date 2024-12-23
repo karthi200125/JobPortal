@@ -6,6 +6,7 @@ import JobDesc from './Job/Job';
 import JobLists from './JobLists/JobLists';
 import { getFilterAllJobs } from '@/actions/job/getFilterAllJobs';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'next/navigation';
 
 const Jobs = () => {
     const [jobs, setJobs] = useState<any[]>([]);
@@ -14,6 +15,7 @@ const Jobs = () => {
 
     const user = useSelector((state: any) => state.user.user);
     const userId = user?.id
+    
 
     useEffect(() => {
         const fetchJobs = async () => {
