@@ -5,6 +5,7 @@ import CreateJobForm from "@/app/Forms/CreateJobForm";
 import DeleteJobForm from "@/app/Forms/DeleteJobForm";
 import Icon from "@/components/Icon";
 import Model from "@/components/Model/Model";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import {
     Popover,
     PopoverContent,
@@ -20,6 +21,8 @@ import { IoIosMore } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import noImage from '../../../../public/noImage.webp';
 import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface JobListProps {
     isActive?: boolean;
@@ -30,15 +33,18 @@ interface JobListProps {
     appliedJob?: any
 }
 
-const JobList = ({ isHover, job, more, selectedJob , appliedJob }: JobListProps) => {
+const JobList = ({ isHover, job, more, selectedJob, appliedJob }: JobListProps) => {
     const user = useSelector((state: any) => state.user?.user)
     const cId = job?.companyId
+
+    const pathname = usePathname()
+    const isAppliedJob = pathname === "/dashboard"
+
     const { data, isLoading } = useQuery({
         queryKey: ['getCompany', cId],
         queryFn: async () => await getCompanyById(cId),
     });
 
-    console.log(selectedJob)
 
     const isApplied = job?.jobApplications?.some((application: any) => application?.userId === user?.id);
 
@@ -71,21 +77,26 @@ const JobList = ({ isHover, job, more, selectedJob , appliedJob }: JobListProps)
                     <h5 className="text-xs">{job?.isEastApply === true ? "Easy Apply" : "Apply On Company Site"}</h5>
                 </div> */}
 
-                <div className="w-full flex flex-row gap-2 items-center justify-between">
-                    <div className="flex flex-row gap-2 items-center">
-                        <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
-                        {!appliedJob &&
-                            isApplied ?
-                            <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
-                            :
-                            <div className="flex flex-row gap-2 items-center">
-                                <span className="w-2 h-2 rounded-full bg-black"></span>
-                                <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
-                            </div>
-                        }
+                {!isAppliedJob &&
+                    <div className="w-full flex flex-row gap-2 items-center justify-between">
+                        <div className="flex flex-row gap-2 items-center">
+                            <h6 className="py-1 px-3 font-bold bg-neutral-200 rounded-[5px]">{job?.vacancies} Vacancies</h6>
+                            {isApplied ?
+                                <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
+                                :
+                                <div className="flex flex-row gap-2 items-center">
+                                    <span className="w-2 h-2 rounded-full bg-black"></span>
+                                    <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
+                                </div>
+                            }
+                        </div>
+                        <h5 className="text-xs">{moment(job?.createdAt).fromNow()}</h5>
                     </div>
-                    <h5 className="text-xs">{moment(job?.createdAt).fromNow()}</h5>
-                </div>
+                }
+                <Link href={'/dashboard/jobStatus'} className="w-full bg-green-300 flex flex-row items-center justify-between px-2 py-1 rounded-md cursor-pointer trans hover:opacity-50 font-semibold">
+                    See Job Status
+                    <MdKeyboardDoubleArrowRight size={20} />
+                </Link>
 
             </div>
 

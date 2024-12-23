@@ -16,8 +16,9 @@ const AppliedJobs = ({ aplliedJobs, isLoading }: any) => {
                             <div
                                 key={job?.id}
                                 className="border rounded-[20px] p-5 min-h-[100px]"
+                                onClick={() => { '' }}
                             >
-                                <JobList job={job} appliedJob={'hh'}/>
+                                <JobList job={job} appliedJob={'hh'} />
                             </div>
                         ))
                         :
