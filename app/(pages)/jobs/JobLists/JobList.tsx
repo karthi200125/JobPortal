@@ -51,15 +51,15 @@ const JobList = ({ isHover, job, more, selectedJob, appliedJob }: JobListProps) 
     return (
         <div
             className={`
-            ${job?.id === selectedJob && " !border-black bg-neutral-100"} 
+            ${job?.id === selectedJob && " md:!border-l-black bg-neutral-100"} 
             ${isHover && "hover:bg-neutral-100"} 
-            relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] trans border-white `
+            relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] trans border-b-[1px] border-white border-b-neutral-200`
             }
         >
 
             <Image src={data?.companyImage || noImage.src} alt="" width={60} height={60} className="w-[60px] h-[60px] object-contain" />
 
-            <div className="w-full flex flex-col gap-1 items-start">
+            <div className="w-full flex flex-col gap-1 items-start ">
                 <h3 className="text-lg font-bold capitalize">{job?.jobTitle}</h3>
                 <h5 className="text-sm font-semibold capitalize">{data?.companyName}</h5>
                 <div className="flex flex-row gap-2 items-center">
@@ -84,9 +84,9 @@ const JobList = ({ isHover, job, more, selectedJob, appliedJob }: JobListProps) 
                             {isApplied ?
                                 <h6 className="py-1 px-3 font-bold bg-green-200 text-green-600 rounded-[5px]">Applied</h6>
                                 :
-                                <div className="flex flex-row gap-2 items-center">
+                                <div className="hidden md:flex flex-row gap-2 items-center">
                                     <span className="w-2 h-2 rounded-full bg-black"></span>
-                                    <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply On Company Site"}</h5>
+                                    <h5 className="text-xs">{job?.isEasyApply ? "Easy Apply" : "Apply"}</h5>
                                 </div>
                             }
                         </div>
@@ -97,7 +97,7 @@ const JobList = ({ isHover, job, more, selectedJob, appliedJob }: JobListProps) 
                         See Job Status
                         <MdKeyboardDoubleArrowRight size={20} />
                     </Link>
-                }
+                }                
 
             </div>
 

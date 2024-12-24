@@ -17,14 +17,14 @@ interface BottomDrawerProps {
 
 const BottomDrawer = ({ children, body, className }: BottomDrawerProps) => {
     return (
-        <div className="w-full md:hidden relative">
-            <Drawer>
-                <DrawerTrigger asChild>
-                    <button>
+        <div className="!w-full md:hidden relative">
+            <Drawer >
+                <DrawerTrigger asChild className="w-full">
+                    <button className="w-full">
                         {children}
                     </button>
                 </DrawerTrigger>
-                <DrawerContent className="h-[90%]">
+                <DrawerContent className="h-[90%] w-full">
                     <div className="absolute top-2 right-3">
                         <DrawerClose>
                             <Icon icon={<IoClose size={20} />} isHover />
