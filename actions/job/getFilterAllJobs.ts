@@ -1,28 +1,74 @@
-'use server'
+'use server';
 
 import { db } from "@/lib/db";
 
-export const getFilterAllJobs = async (userId: any) => {
+export const getFilterAllJobs = async (userId: any, searchParams: any) => {
+    const { easyApply, dateposted, experiencelevel, type } = searchParams;
 
+    const ITEM_PER_PAGE = 10;
 
     try {
-        const allJobs:any = await db.job.findMany({
+        const filters: any = {};
+
+        // Easy Apply filter
+        if (easyApply) {
+            filters.isEasyApply = true;
+        }
+
+        // Date posted filter
+        if (dateposted) {
+            const now = new Date();
+            switch (dateposted) {
+                case 'Past 24 hours':
+                    filters.createdAt = { gte: new Date(now.getTime() - 24 * 60 * 60 * 1000) };
+                    break;
+                case 'Past 3 days':
+                    filters.createdAt = { gte: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000) };
+                    break;
+                case 'Past Week':
+                    filters.createdAt = { gte: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) };
+                    break;
+                case 'Past Month':
+                    filters.createdAt = { gte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000) };
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Job type filter
+        if (type) {
+            filters.mode = type;
+        }
+
+        // Experience level filter
+        if (experiencelevel) {
+            filters.experience = experiencelevel;
+        }
+
+        // Fetch filtered jobs
+        const allJobs: any = await db.job.findMany({
             where: {
-                NOT: {
-                    jobApplications: {
-                        some: {
-                            userId: userId,
+                AND: [
+                    filters,
+                    {
+                        NOT: {
+                            jobApplications: {
+                                some: { userId },
+                            },
                         },
                     },
-                },
+                ],
             },
             include: {
                 jobApplications: true,
             },
+            orderBy: { createdAt: 'desc' },
+            take: ITEM_PER_PAGE,
         });
 
         return allJobs;
     } catch (err) {
-        return { error: "Get All Jobs failed" };
+        return { error: "Failed to fetch jobs" };
     }
 };

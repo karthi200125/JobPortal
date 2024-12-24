@@ -7,10 +7,12 @@ import JobList from '../../jobs/JobLists/JobList';
 
 const CompanyJobProfile = () => {
 
-    const { data = [], isPending } = useQuery({
-        queryKey: ['getCompanyJobs'],
-        queryFn: async () => await getFilterAllJobs(),
-    });
+    // const { data = [], isPending } = useQuery({
+    //     queryKey: ['getCompanyJobs'],
+    //     queryFn: async () => await getFilterAllJobs(),
+    // });
+
+    const data:any = []
 
     return (
         <div className="w-full grid grid-cols-2 gap-5">
