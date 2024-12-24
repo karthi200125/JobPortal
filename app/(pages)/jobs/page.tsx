@@ -1,28 +1,26 @@
 'use client';
 
+import { getFilterAllJobs } from '@/actions/job/getFilterAllJobs';
 import FilterNavbar from '@/components/FilterNavbar/FilterNavbar';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import JobDesc from './Job/Job';
 import JobLists from './JobLists/JobLists';
-import { getFilterAllJobs } from '@/actions/job/getFilterAllJobs';
-import { useSelector } from 'react-redux';
-import { useSearchParams } from 'next/navigation';
 
-const Jobs = () => {
+const Jobs = ({ searchParams }: { searchParams: any }) => {
     const [jobs, setJobs] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedJob, setSelectedJob] = useState('');
 
     const user = useSelector((state: any) => state.user.user);
-    const userId = user?.id
-    
+    const userId = user?.id;
 
     useEffect(() => {
         const fetchJobs = async () => {
-            setIsLoading(true);
+            setIsLoading(true);            
             try {
-                const jobsData = await getFilterAllJobs(userId);
-                setJobs(jobsData);
+                const jobsData = await getFilterAllJobs(userId, searchParams);
+                setJobs(jobsData);                
             } catch (err) {
                 console.error('Error fetching jobs:', err);
             } finally {
@@ -30,9 +28,12 @@ const Jobs = () => {
             }
         };
         fetchJobs();
-    }, [userId]);
+    }, [userId, searchParams]);
 
-    const job = selectedJob ? jobs.find((job) => job?.id === selectedJob) : jobs[0];
+
+    const job = selectedJob ? jobs.find((job) => job?.id === selectedJob) : jobs[0];    
+
+    console.log(selectedJob)
 
     return (
         <div className="w-full relative">

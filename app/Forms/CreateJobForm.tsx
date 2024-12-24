@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import JobSkills from "../(pages)/createJob/JobSkills";
 import JobQuestion from "../(pages)/createJob/JobQuestion";
 import JobDesc from "./JobDesc";
+import { useCustomToast } from "../../lib/CustomToast";
 
 const CreateJobForm = () => {
   const user = useSelector((state: any) => state.user.user)
@@ -29,6 +30,7 @@ const CreateJobForm = () => {
   const [state, setState] = useState('');
   const [isLoading, startTransition] = useTransition();
   const router = useRouter()
+  const {showErrorToast , showSuccessToast} = useCustomToast()
 
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
@@ -62,17 +64,17 @@ const CreateJobForm = () => {
         questions,
         jobDesc
       }
-
-      console.log(data)
-      // createJobAction(values, userId, skills, questions)
-      //   .then((data) => {
-      //     if (data?.success) {
-      //       router.push('/dashboard')
-      //     }
-      //     if (data.error) {
-      //       console.log(data?.error)
-      //     }
-      //   })
+      
+      createJobAction(values, userId, skills, questions)
+        .then((data) => {
+          if (data?.success) {
+            router.push('/dashboard')
+            showSuccessToast(data?.success)
+          }
+          if (data.error) {
+            showErrorToast(data?.error)
+          }
+        })
     });
   };
 
