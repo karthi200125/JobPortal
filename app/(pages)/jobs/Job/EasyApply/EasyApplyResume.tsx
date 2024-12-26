@@ -57,7 +57,7 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
                 onChange={handleResumeUpload}
             />
 
-            <div className="flex flex-row items-start justify-between">
+            <div className="flex flex-col md:flex-row gap-5 items-start justify-between">
                 <div className="space-y-2">
                     <h3 className="font-bold">Resume</h3>
                     <h5>Be sure to include an updated resume *</h5>
@@ -82,7 +82,7 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
                         <iframe
                             src={resumeUrl}
                             title="Resume Preview"
-                            className="w-full h-[800px]"
+                            className="w-full h-[400vh] md:h-[800px]"
                         />
                     </div>
                 )}

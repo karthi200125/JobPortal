@@ -15,7 +15,7 @@ interface EasyApplySubmitProps {
     onClose?: any;
 }
 
-const EasyApplySubmit = ({ data, job , onClose }: EasyApplySubmitProps) => {
+const EasyApplySubmit = ({ data, job, onClose }: EasyApplySubmitProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
@@ -47,7 +47,7 @@ const EasyApplySubmit = ({ data, job , onClose }: EasyApplySubmitProps) => {
             )
                 .then((data: any) => {
                     if (data?.success) {
-                        showSuccessToast(data?.success)                        
+                        showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getFilterAllJobs'] })
                         onClose()
                     }
@@ -68,9 +68,11 @@ const EasyApplySubmit = ({ data, job , onClose }: EasyApplySubmitProps) => {
             <div className='space-y-5'>
                 <div className="space-y-2">
                     <h3 className="font-semibold text-sm">Contact Info</h3>
-                    <div className="w-full border p-5 rounded-md flex flex-row items-start gap-5">
-                        <Image src={user?.userImage || noProfile.src} alt="" height={80} width={80} className="rounded-md bg-neutral-200" />
-                        <div className="w-full flex flex-row items-start justify-between">
+                    <div className="w-full border p-2 md:p-5 rounded-md flex flex-col md:flex-row items-start gap-2 md:gap-5">
+                        <div className="h-[80px] w-[80px] relative">
+                            <Image src={user?.userImage || noProfile.src} alt="" fill className="rounded-md bg-neutral-200 absolute top-0 left-0 w-full h-full" />
+                        </div>
+                        <div className="w-full flex flex-col md:flex-row items-start justify-between">
                             <div className="space-y-2">
                                 <h4 className="font-bold">{user?.username}</h4>
                                 <h5>{user?.profession}</h5>

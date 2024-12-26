@@ -104,7 +104,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
                                     <Model
                                         bodyContent={<EasyApply job={job} />}
                                         title={`Apply to ${company?.companyName || 'Company'}`}
-                                        className='w-[1000px]'
+                                        className='w-full md:w-[1000px]'
                                     >
                                         <Button >Easy Apply</Button>
                                     </Model>

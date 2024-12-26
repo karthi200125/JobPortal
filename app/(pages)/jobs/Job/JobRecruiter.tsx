@@ -29,7 +29,7 @@ const JobRecruiter = ({ job, company }: any) => {
                             <h5>Technical recruiting</h5>
                             <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                         </div>
-                        <Button className='absolute top-3 right-3' variant='border'>Message</Button>
+                        <Button className='absolute top-3 right-3 hidden md:block' variant='border'>Message</Button>
                     </div>
                 </div>
             }
