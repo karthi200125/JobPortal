@@ -6,6 +6,9 @@ import noImage from '../../../../public/noImage.webp'
 import JobCompanySkeleton from '@/Skeletons/JobCompanySkeleton'
 
 const JobCompany = ({ company, isPending }: any) => {
+
+  // console.log(company)
+
   return (
     <>
       {isPending ?
@@ -22,7 +25,7 @@ const JobCompany = ({ company, isPending }: any) => {
                 <h6>{company?.companyTotalEmployees} Employees</h6>
               </div>
             </div>
-            <Button variant='border' icon={<GoPlus />}>Follow</Button>
+            <Button variant='border' className='hidden md:block' icon={<GoPlus />}>Follow</Button>
           </div>
           <h4 className='text-[var(--lighttext)]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio maxime sit quas obcaecati pariatur aspernatur corrupti commodi odio reprehenderit culpa deserunt hic quae tempora quam sint, corporis atque magnam possimus, quod quaerat soluta quasi illum optio. Voluptates consequuntur ad, fugiat provident sapiente architecto enim debitis, quidem similique accusantium dolorum. Hic!</h4>
         </div>
