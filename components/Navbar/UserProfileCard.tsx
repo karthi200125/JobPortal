@@ -19,8 +19,7 @@ const UserProfileCard = () => {
     const dispatch = useDispatch();
 
     const pathname = usePathname()
-    const basePath = pathname.split('/').slice(0, 2).join('/');
-    console.log("payjhname", basePath)
+    const basePath = pathname.split('/').slice(0, 2).join('/');    
 
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
