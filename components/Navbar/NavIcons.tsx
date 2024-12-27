@@ -31,8 +31,8 @@ const NavIcons = () => {
             icon: <IoNotifications size={20} />,
             count: 5,
             isCount: true,
-            title: "Notifications",
-            href: "/notifications"
+            title: "Companies",
+            href: "/companies"
         },
         {
             id: 4,
@@ -48,7 +48,7 @@ const NavIcons = () => {
             count: 10,
             isCount: true,
             title: "Dashboard",
-            href: "/dashboard" || "dashboard/jobCandidates"
+            href: "/dashboard"
         },
     ]
 
