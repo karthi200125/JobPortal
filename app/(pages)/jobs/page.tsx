@@ -33,8 +33,6 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
 
     const job = selectedJob ? jobs.find((job) => job?.id === selectedJob) : jobs[0];    
 
-    console.log(selectedJob)
-
     return (
         <div className="w-full relative">
             <FilterNavbar />

@@ -44,7 +44,7 @@ const Menu = () => {
                 <SheetContent className="w-[90%] h-screen space-y-5">
                     {/*  profile detals*/}
                     <div className="flex flex-row items-start gap-3">
-                        <Image src={'' || noAvatar.src} alt="" className="w-[60px] h-[60px] rounded-full bg-neutral-200" />
+                        <Image src={user?.userImage || noAvatar.src} alt="" width={60} height={60} className="rounded-full bg-neutral-200" />
                         <div className="space-y-1">
                             <h4 className="capitalize font-bold">{user?.username}</h4>
                             <h4 className="text-xs text-neutral-400">{user?.email}</h4>
