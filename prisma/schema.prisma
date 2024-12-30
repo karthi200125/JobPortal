@@ -112,6 +112,7 @@ model Company {
   companyAbout           String
   companyBio             String
   companyTotalEmployees  String
+  companyEmployees       Int[]   
   companyIsVerified      Boolean   @default(false)
 
   userId                 Int   
