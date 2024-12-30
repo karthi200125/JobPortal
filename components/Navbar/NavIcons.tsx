@@ -6,6 +6,7 @@ import { IoNotifications } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { RiMessage3Fill } from "react-icons/ri";
 import Icon from '../Icon';
+import { BsFillBuildingsFill } from "react-icons/bs";
 
 const NavIcons = () => {
 
@@ -28,7 +29,7 @@ const NavIcons = () => {
         },
         {
             id: 3,
-            icon: <IoNotifications size={20} />,
+            icon: <BsFillBuildingsFill size={20} />,
             count: 5,
             isCount: true,
             title: "Companies",

@@ -36,7 +36,7 @@ const UserProfile = () => {
         {!isOrg && <Projects userId={userId} profileUser={data} />}
         {!isOrg && <Experiences userId={userId} profileUser={data} />} 
         {isOrg &&
-          <CompanySlides />
+          <CompanySlides company={company}/>
         }
       </div>
       <div className="hidden md:block md:w-[30%] h-full">

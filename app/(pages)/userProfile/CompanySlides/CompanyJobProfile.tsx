@@ -1,18 +1,16 @@
 'use client'
 
-import { getFilterAllJobs } from '@/actions/job/getFilterAllJobs';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react'
 import JobList from '../../jobs/JobLists/JobList';
+import { getCompanyJobs } from '@/actions/company/getCompanyJobs';
 
-const CompanyJobProfile = () => {
+const CompanyJobProfile = ({ company }: any) => {
 
-    // const { data = [], isPending } = useQuery({
-    //     queryKey: ['getCompanyJobs'],
-    //     queryFn: async () => await getFilterAllJobs(),
-    // });
-
-    const data:any = []
+    const { data, isPending } = useQuery({
+        queryKey: ['getCompanyJobs', company?.id],
+        queryFn: async () => await getCompanyJobs(company?.id),
+    });
 
     return (
         <div className="w-full grid grid-cols-2 gap-5">
