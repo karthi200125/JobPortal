@@ -5,7 +5,7 @@ import AboutCompanyProfile from './AboutCompanyProfile'
 import CompanyEmployees from './CompanyEmployees'
 import CompanyJobProfile from './CompanyJobProfile'
 
-const CompanySlides = () => {
+const CompanySlides = ({ company }: any) => {
     const [tab, setTab] = useState("Home")
 
     const companySlides = [
@@ -31,7 +31,7 @@ const CompanySlides = () => {
         tabContent = <CompanyEmployees />
     }
     if (tab === "Jobs") {
-        tabContent = <CompanyJobProfile />
+        tabContent = <CompanyJobProfile company={company} />
     }
 
     return (
