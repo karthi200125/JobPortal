@@ -12,7 +12,11 @@ export const getUserById = async (id: number) => {
         include: {
             jobApplications: true,
             postedJobs: true,
-            company: true,
+            company: {
+                include: {
+                    jobs: true
+                }
+            },
             educations: true,
             experiences: true,
             projects: true,

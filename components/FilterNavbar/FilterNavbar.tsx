@@ -17,9 +17,10 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { IoMdArrowDropdown } from "react-icons/io";
-import { experiences, JobMode } from '@/getOptionsData';
+import { experiences, getStates, JobMode } from '@/getOptionsData';
 import { useRouter } from 'next/navigation';
 import Filter from './Filter';
+import { useQuery } from '@tanstack/react-query';
 
 interface Filter {
     id: number;
@@ -29,6 +30,13 @@ interface Filter {
 
 const FilterNavbar = () => {
     const router = useRouter();
+
+    const { data: states = [], isLoading: statesLoading } = useQuery({
+        queryKey: ['getStates'],
+        queryFn: async () => await getStates(),
+    });
+
+    const locations = states.map((state: any) => state.name)
 
     const filters: Filter[] = [
         {
@@ -45,6 +53,11 @@ const FilterNavbar = () => {
             id: 3,
             title: "Type",
             options: JobMode
+        },
+        {
+            id: 4,
+            title: "Location",
+            options: locations
         },
     ];
 
@@ -108,7 +121,7 @@ const FilterNavbar = () => {
                     </DropdownMenuTrigger>
 
                     {/* Dropdown content */}
-                    <DropdownMenuContent className="relative min-w-[300px] min-h-[100px] p-5 flex flex-col">
+                    <DropdownMenuContent className="relative min-w-[300px] max-h-[400px] p-2 md:p-5 flex flex-col overflow-scroll">
                         {filter.options.map((opt) => (
                             <div key={opt} className="w-full flex flex-row items-center gap-3 p-3">
                                 <input

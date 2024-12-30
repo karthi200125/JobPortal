@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 
 export const getFilterAllJobs = async (userId: any, searchParams: any) => {
-    const { easyApply, dateposted, experiencelevel, type } = searchParams;
+    const { easyApply, dateposted, experiencelevel, type, location } = searchParams;
 
     const ITEM_PER_PAGE = 10;
 
@@ -44,6 +44,11 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
         // Experience level filter
         if (experiencelevel) {
             filters.experience = experiencelevel;
+        }
+
+        // Experience level filter
+        if (location) {
+            filters.state = location;
         }
 
         // Fetch filtered jobs
