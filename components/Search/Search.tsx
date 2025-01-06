@@ -1,6 +1,6 @@
 'use client'
 
-import Button from "./Button"
+import Button from "../Button"
 import { IoSearchOutline } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import {
@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { experiences } from "@/getOptionsData";
 import SearchSkills from "./searchSkills";
+import SearchLocation from "./SearchLocation";
 
 
 const Search = ({ onClose }: any) => {
@@ -38,12 +39,9 @@ const Search = ({ onClose }: any) => {
                         ))}
                     </SelectContent>
                 </Select>
-
-                <input
-                    type="text"
-                    className="bg-black text-white text-sm placeholder:text-white/40 w-full md:w-[300px] md:h-full rounded-full h-[50px] pl-5"
-                    placeholder="City , state"
-                />
+                
+                <SearchLocation />
+                
                 <Button
                     icon={<IoSearchOutline size={25} />}
                     className="bg-white !text-black"

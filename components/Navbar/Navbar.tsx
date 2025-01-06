@@ -9,7 +9,7 @@ import { IoSearchOutline } from "react-icons/io5";
 
 const Premium = dynamic(() => import('./Premiem'), { suspense: true });
 const NavIcons = dynamic(() => import('./NavIcons'), { suspense: true });
-const Search = dynamic(() => import('../Search'), { suspense: true });
+const Search = dynamic(() => import('../Search/Search'), { suspense: true });
 const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: true });
 
 const Navbar = () => {
