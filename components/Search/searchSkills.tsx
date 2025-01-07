@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 const allSkills: string[] = [
     "JavaScript",
@@ -17,6 +17,9 @@ const allSkills: string[] = [
     "Framer Motion",
     "Firebase",
 ];
+
+const allComapanies = []
+const allJobTitles = []
 
 const SearchSkills: React.FC = () => {
     const [query, setQuery] = useState<string>('');

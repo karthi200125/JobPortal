@@ -1,11 +1,11 @@
 'use client'
 
-import { NavIconSkeleton, PremiumSkeleton, SearchSkeleton, UserProfileSkeleton } from '@/Skeletons/NavbarSkeletons';
+import { NavIconSkeleton, PremiumSkeleton, UserProfileSkeleton } from '@/Skeletons/NavbarSkeletons';
 import dynamic from 'next/dynamic';
 import { Suspense, useState } from 'react';
 import Logo from '../Logo';
 import Menu from './Menu';
-import { IoSearchOutline } from "react-icons/io5";
+import { useSelector } from 'react-redux';
 
 const Premium = dynamic(() => import('./Premiem'), { suspense: true });
 const NavIcons = dynamic(() => import('./NavIcons'), { suspense: true });
@@ -14,7 +14,7 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 
 const Navbar = () => {
 
-    const user = true
+    const user = useSelector((state: any) => state.user.user);
 
     const [searchOpen, setSearchOpen] = useState(false)
 
@@ -26,14 +26,7 @@ const Navbar = () => {
             >
                 <Logo />
 
-                {!searchOpen &&
-                    <div className='relative w-[200px] md:w-[300px] h-[40px] bg-white/10 overflow-hidden rounded-full flex flex-row items-center gap-2 p-1' onClick={() => setSearchOpen(!searchOpen)}>
-                        <input type="text" className='w-[90%] h-full pl-5 placeholder:text-white/40 bg-transparent text-xs' placeholder='search jobs here' />
-                        <div className='w-[35px] h-[35px] rounded-full flexcenter bg-white cursor-pointer text-black'>
-                            <IoSearchOutline size={20} />
-                        </div>
-                    </div>
-                }
+                <Search />
 
                 <div className="hidden sm:flex flex-row items-center gap-5">
                     <Suspense fallback={<NavIconSkeleton />}>
@@ -48,7 +41,7 @@ const Navbar = () => {
                 </div>
                 <Menu />
             </nav>
-            {searchOpen &&
+            {/* {searchOpen &&
                 <div
                     className={`absolute top-[55px] left-0 w-full bg-black z-10 max-h-max md:h-[80px]`}
                     style={{ borderBottomRightRadius: "10px", borderBottomLeftRadius: "10px" }}
@@ -57,7 +50,7 @@ const Navbar = () => {
                         <Search onClose={(d: any) => setSearchOpen(d)} />
                     </Suspense>
                 </div>
-            }
+            } */}
         </div>
     );
 };

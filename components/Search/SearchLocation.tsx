@@ -8,8 +8,8 @@ const SearchLocation = () => {
                 placeholder="City"        
             />
         </div>
-    )\
-    
+    )
+
 }
 
 export default SearchLocation

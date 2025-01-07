@@ -3,12 +3,20 @@
 import { db } from "@/lib/db";
 
 export const getFilterAllJobs = async (userId: any, searchParams: any) => {
-    const { easyApply, dateposted, experiencelevel, type, location } = searchParams;
+    const { easyApply, dateposted, experiencelevel, type, location, q } = searchParams;
 
     const ITEM_PER_PAGE = 10;
 
+    console.log(searchParams)
+
     try {
         const filters: any = {};
+
+        // Job title filter
+        if (q) {
+            if (filters.jobTitle.toLowerCase().includes(q.toLowerCase())) {
+            }
+        }
 
         // Easy Apply filter
         if (easyApply) {
