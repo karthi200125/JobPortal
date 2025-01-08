@@ -27,3 +27,23 @@ export async function applyForJob(
     return { error: 'Error applying for job' }
   }
 }
+
+
+export const getJobTitles = async (search: string) => {
+  try {
+    const jobTitles = await db.job.findMany({
+      where: {
+        jobTitle: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        jobTitle: true,
+      },
+    });
+    return jobTitles;
+  } catch (err) {
+    return 'Failed to fetch job titles';
+  }
+};

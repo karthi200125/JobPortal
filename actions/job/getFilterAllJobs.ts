@@ -7,15 +7,14 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
 
     const ITEM_PER_PAGE = 10;
 
-    console.log(searchParams)
-
     try {
         const filters: any = {};
 
-        // Job title filter
         if (q) {
-            if (filters.jobTitle.toLowerCase().includes(q.toLowerCase())) {
-            }
+            filters.jobTitle = {
+                contains: q,
+                mode: 'insensitive',
+            };
         }
 
         // Easy Apply filter

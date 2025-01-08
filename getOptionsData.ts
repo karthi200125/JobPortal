@@ -1,4 +1,3 @@
-import { db } from "./lib/db";
 
 let key = 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==';
 let baseUrl = 'https://api.countrystatecity.in/v1';
@@ -66,25 +65,6 @@ export const getCities = async (state: string) => {
         return data.map((d: any) => d.name);
     } catch (err) {
         return `get cities error`;
-    }
-};
-
-export const getJobTitles = async (search: string) => {
-    try {
-        const jobTitles = await db.job.findMany({
-            where: {
-                jobTitle: {
-                    contains: search,
-                    mode: 'insensitive',
-                },
-            },
-            select: {
-                jobTitle: true,
-            },
-        });
-        return jobTitles;
-    } catch (err) {
-        return 'Failed to fetch job titles';
     }
 };
 

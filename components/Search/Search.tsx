@@ -4,7 +4,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
-import { getJobTitles } from "@/getOptionsData";
+import { getJobTitles } from "@/actions/job/ApplyJob";
+import { Skeleton } from "../ui/skeleton";
 
 const Search = () => {
     const [query, setQuery] = useState<string>('');
@@ -13,16 +14,15 @@ const Search = () => {
     const [filteredJobTitles, setFilteredJobTitles] = useState<string[]>([]);
     const router = useRouter();
 
-    // Debounce implementation: Update `debouncedQuery` after a delay
+    // Debounce input
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedQuery(query);
-        }, 500); // Delay in milliseconds (e.g., 500ms)
-
-        return () => clearTimeout(handler); // Cleanup timeout
+        }, 500);
+        return () => clearTimeout(handler);
     }, [query]);
 
-    // Fetch job titles using the debounced query
+    // Fetch job titles using react-query
     const { data: allJobTitles = [], isLoading } = useQuery({
         queryKey: ['getJobTitles', debouncedQuery],
         queryFn: async () => {
@@ -31,10 +31,10 @@ const Search = () => {
             }
             return [];
         },
-        enabled: !!debouncedQuery, // Only run query if debouncedQuery is not empty
+        enabled: !!debouncedQuery,
     });
 
-    // Filter job titles and update suggestions
+    // Update filtered job titles based on query
     useEffect(() => {
         if (debouncedQuery && Array.isArray(allJobTitles)) {
             const matchedJobTitles = allJobTitles.filter((job) =>
@@ -47,6 +47,7 @@ const Search = () => {
         }
     }, [debouncedQuery, allJobTitles]);
 
+    // Update search params and navigate
     const updateSearchParams = (value: string) => {
         const params = new URLSearchParams(window.location.search);
         params.set('q', value);
@@ -71,22 +72,31 @@ const Search = () => {
     };
 
     return (
-        <div className='relative w-[200px] md:w-[300px] h-[40px] bg-white/10 overflow-hidden rounded-full flex flex-row items-center gap-2 p-1'>
+        <div className='relative w-[200px] md:w-[300px] h-[40px] bg-white/10 rounded-md flex flex-row items-center gap-2 p-1'>
             <input
                 type="text"
-                className='w-[90%] h-full pl-5 placeholder:text-white/40 bg-transparent text-xs'
+                className='w-[90%] h-full pl-5 placeholder:text-white/40 bg-transparent text-xs text-white'
                 placeholder="Title, job title, or company"
                 value={query}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
             />
-            <div className='w-[35px] h-[35px] rounded-full flex-center bg-white cursor-pointer text-black'>
+            <div
+                className='w-[35px] h-[35px] rounded-md flexcenter bg-white cursor-pointer text-black'
+                onClick={() => handleSelectJobTitle(debouncedQuery)}
+            >
                 <IoSearchOutline size={20} />
             </div>
 
             {openSuggestion && (
-                <div className='absolute top-[55px] left-0 w-full bg-white p-5 rounded-xl shadow-xl max-h-[300px] overflow-y-auto'>
-                    {filteredJobTitles.length > 0 ? (
+                <div className='absolute top-[55px] left-0 w-full bg-white p-3 rounded-xl shadow-xl max-h-[300px] overflow-y-auto'>
+                    {isLoading ? (
+                        <div className="space-y-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                                <Skeleton className="bg-neutral-100 h-8 px-3" key={i} />
+                            ))}
+                        </div>
+                    ) : filteredJobTitles.length > 0 ? (
                         filteredJobTitles.map((jobTitle: string) => (
                             <h4
                                 key={jobTitle}

@@ -14,7 +14,8 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 
 const Navbar = () => {
 
-    const user = useSelector((state: any) => state.user.user);
+    const user = true
+    // const user = useSelector((state: any) => state.user.user);
 
     const [searchOpen, setSearchOpen] = useState(false)
 
