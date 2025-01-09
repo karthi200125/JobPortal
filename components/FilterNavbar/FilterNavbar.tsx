@@ -17,10 +17,11 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { IoMdArrowDropdown } from "react-icons/io";
-import { experiences, getStates, JobMode } from '@/getOptionsData';
+import { DatePosted, experiences, getStates, JobMode } from '@/getOptionsData';
 import { useRouter } from 'next/navigation';
 import Filter from './Filter';
 import { useQuery } from '@tanstack/react-query';
+import { getCompanies } from '@/actions/company/getCompanies';
 
 interface Filter {
     id: number;
@@ -31,18 +32,35 @@ interface Filter {
 const FilterNavbar = () => {
     const router = useRouter();
 
+    const resetFilter = () => {
+        const params = new URLSearchParams(window.location.search);        
+        params.forEach((_, key) => {
+            params.delete(key);
+        });
+      
+        const newUrl = `${window.location.pathname}`;
+        window.history.replaceState({}, '', newUrl);
+    };
+
     const { data: states = [], isLoading: statesLoading } = useQuery({
         queryKey: ['getStates'],
         queryFn: async () => await getStates(),
     });
 
+    const { data: companies = [], isLoading: companyLoading } = useQuery({
+        queryKey: ['getCompanies'],
+        queryFn: async () => await getCompanies(),
+    });
+
+    const companiesOptions = companies?.map((company: any) => company?.companyName)
     const locations = states.map((state: any) => state.name)
+
 
     const filters: Filter[] = [
         {
             id: 1,
             title: "Date Posted",
-            options: ['All Time', 'Past 24 hours', 'Past 3 days', 'Past Week', 'Past Month']
+            options: DatePosted
         },
         {
             id: 2,
@@ -58,6 +76,11 @@ const FilterNavbar = () => {
             id: 4,
             title: "Location",
             options: locations
+        },
+        {
+            id: 5,
+            title: "Company",
+            options: companiesOptions
         },
     ];
 
@@ -168,6 +191,14 @@ const FilterNavbar = () => {
                     </SheetHeader>
                 </SheetContent>
             </Sheet>
+
+            {/* RESET */}
+            <div
+                className="text-neutral-600 font-semibold cursor-pointer trans"
+                onClick={() => resetFilter()}
+            >
+                Reset
+            </div>
         </div>
     );
 };

@@ -99,3 +99,5 @@ export const JobMode = [
     "On Site",
     "Remote",
 ];
+
+export const DatePosted = ['All Time', 'Past 24 hours', 'Past 3 days', 'Past Week', 'Past Month']

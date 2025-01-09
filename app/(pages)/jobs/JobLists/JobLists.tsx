@@ -5,6 +5,7 @@ import JobListsSkeleten from '@/Skeletons/JobListsSkeleten';
 import React, { useEffect, useState } from 'react';
 import JobDesc from '../Job/Job';
 import JobList from './JobList';
+import { useSearchParams } from 'next/navigation';
 
 interface JobListsProps {
   Jobs?: any[];
@@ -13,9 +14,12 @@ interface JobListsProps {
 }
 
 const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob }: JobListsProps) => {
-  const query = 'Reactjs Developer';
-  const queryCountry = 'India';
+  const searchParams = useSearchParams()
+
+  const query = searchParams.get('q');
+  const queryCountry = searchParams.get('location') || 'India';
   const [selectedJob, setSelectedJob] = useState<number | null>(null);
+
 
   useEffect(() => {
     if (Jobs.length > 0 && selectedJob === null) {
