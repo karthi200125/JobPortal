@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 
 export const getFilterAllJobs = async (userId: any, searchParams: any) => {
-    const { easyApply, dateposted, experiencelevel, type, location, q } = searchParams;
+    const { easyApply, dateposted, experiencelevel, type, location, q, company } = searchParams;
 
     const ITEM_PER_PAGE = 10;
 
@@ -20,6 +20,16 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
         // Easy Apply filter
         if (easyApply) {
             filters.isEasyApply = true;
+        }
+
+        // Company filter
+        if (company) {
+            filters.company = {
+                companyName: {
+                    contains: company,
+                    mode: 'insensitive',
+                }
+            };
         }
 
         // Date posted filter

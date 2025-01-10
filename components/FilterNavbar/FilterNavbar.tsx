@@ -180,7 +180,7 @@ const FilterNavbar = () => {
             </div>
 
             {/* Filter */}
-            <Sheet>
+            {/* <Sheet>
                 <SheetTrigger className='trans font-semibold text-sm max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 cursor-pointer'>
                     All Filters
                 </SheetTrigger>
@@ -190,7 +190,7 @@ const FilterNavbar = () => {
                         <Filter />
                     </SheetHeader>
                 </SheetContent>
-            </Sheet>
+            </Sheet> */}
 
             {/* RESET */}
             <div

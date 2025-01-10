@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query"
 import { getAppliedJobs } from "@/actions/jobapplication/getAppliedJobs"
 import { getUserById } from "@/actions/auth/getUserById"
 import PostedJobs from "./PostedJobs"
+import { IoIosPeople } from "react-icons/io";
+
 
 const JobStatus = () => {
     const user = useSelector((state: any) => state.user.user)
@@ -29,17 +31,22 @@ const JobStatus = () => {
         queryFn: async () => await getUserById(user?.id),
     });
 
-    console.log(data)
-
     return (
         <div className="w-full min-h-screen pt-5 space-y-5 ">
             <div className="flex flex-row items-center justify-between">
                 <h2 className="">Dashboard</h2>
-                {isCandidate || isORG &&
-                    <Button variant="border" onClick={() => router.push('/createJob')} icon={<GoPlus size={20} />}>
-                        Create Job
-                    </Button>
-                }
+                <div className="flex flex-row items-center gap-5">
+                    {isORG &&
+                        <Button variant="border" onClick={() => router.push('/dashboard/employees')} icon={<IoIosPeople size={20} />}>
+                            Employees
+                        </Button>
+                    }
+                    {isCandidate || isORG &&
+                        <Button variant="border" onClick={() => router.push('/createJob')} icon={<GoPlus size={20} />}>
+                            Create Job
+                        </Button>
+                    }
+                </div>
             </div>
             <AppliedCounts appliedJobs={appliedjObs?.data} user={data} />
             {!isORG &&
