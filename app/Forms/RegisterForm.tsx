@@ -59,8 +59,7 @@ const RegisterForm = () => {
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         startTransition(() => {
             register(values)
-                .then((data) => {
-                    console.log(data)
+                .then((data) => {                    
                     if (data?.success) {
                         setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))

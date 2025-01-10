@@ -9,7 +9,7 @@ const PostedJobs = ({ postedJobs, isLoading, user }: any) => {
             <h3 className="font-bold">Job You Posted ({postedJobs?.length || 0})</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 {isLoading ?
-                    <JobListsSkeleton />
+                    <JobListsSkeleton isDash />
                     :
                     postedJobs?.length > 0 ?
                         postedJobs?.map((job: any) => (

@@ -37,7 +37,7 @@ const WelcomeUserEducation = ({ currentStep = 2, onNext, onBack }: Props) => {
 
     return (
         <div className="w-full h-full space-y-5">
-            <Educations userId={user?.id} />
+            <Educations userId={user?.id} profileUser={user}/>
             <div className="flex flex-row items-center justify-end gap-5">
                 <Button variant="border" onClick={handleBack}>Back</Button>
                 <Button

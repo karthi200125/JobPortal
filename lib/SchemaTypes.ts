@@ -19,6 +19,7 @@ export const UserInfoSchema = z.object({
     website: z.string().url({
         message: "Invalid website URL",
     }).optional(),
+    currentCompany: z.string().optional(),
     lastName: z.string().min(1, {
         message: "Lastname is required",
     }),
@@ -92,7 +93,7 @@ export const UserExperienceSchema = z.object({
     }),
     description: z.string().min(1, {
         message: "Description is required",
-    }),    
+    }),
 })
 
 export const UserProjectSchema = z.object({

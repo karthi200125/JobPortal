@@ -21,6 +21,9 @@ const JobStatus = () => {
     const isCandidate = user?.role === 'CANDIDATE'
     const isORG = user?.role === "ORGANIZATION"
 
+    console.log(isRecruiter)
+    console.log(isRecruiter || isORG)
+
     const { data: appliedjObs, isPending: appliedJobsLoading } = useQuery({
         queryKey: ['getAppliedJobs', user?.id],
         queryFn: async () => await getAppliedJobs(user?.id),
@@ -41,7 +44,7 @@ const JobStatus = () => {
                             Employees
                         </Button>
                     }
-                    {isCandidate || isORG &&
+                    {(isRecruiter || isORG) &&
                         <Button variant="border" onClick={() => router.push('/createJob')} icon={<GoPlus size={20} />}>
                             Create Job
                         </Button>

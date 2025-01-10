@@ -11,12 +11,9 @@ import Button from "@/components/Button"
 
 const Welcome = () => {
     const user = useSelector((state: any) => state.user.user)
+    const [step, setStep] = useState(1)
 
-    const isOrg = user?.role === "ORGANIZATION"
-
-    let totalSteps = 3
-
-    const [step, setStep] = useState(4)
+    const isOrg = user?.role === "ORGANIZATION"    
 
     const renderStepContent = () => {
         switch (step) {
@@ -24,7 +21,6 @@ const Welcome = () => {
                 return <UserInfoForm currentStep={step} onNext={(n: number) => setStep(n)} />
             case 2:
                 return <WelcomeUserEducation currentStep={step} onNext={(n: number) => setStep(n)} onBack={(n: number) => setStep(n)} />
-
             case 3:
                 return <WelcomeUserExperince currentStep={step} onNext={(n: number) => setStep(n)} onBack={(n: number) => setStep(n)} />
             default:
@@ -35,7 +31,6 @@ const Welcome = () => {
     const HandleBack = () => {
         setStep(prevStep => prevStep - 1)
     }
-    
 
     return (
         <div className="w-full max-h-max flex items-center justify-start flex-col gap-10 my-5 p-5 border rounded-[20px]">
@@ -48,14 +43,14 @@ const Welcome = () => {
                     :
                     renderStepContent()}
             </div>
-            <div className='w-full flex flex-row items-center justify-end gap-5'>
+            {/* <div className='w-full flex flex-row items-center justify-end gap-5'>
                 {isOrg ?
                     ""
                     :
                     step !== 1 &&
                     <Button variant="border" onClick={HandleBack}>Back</Button>
                 }
-            </div>
+            </div> */}
         </div>
     )
 }

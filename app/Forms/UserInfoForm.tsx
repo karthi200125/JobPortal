@@ -15,8 +15,9 @@ import { useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
 import { usePathname } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCustomToast } from "@/lib/CustomToast";
+import { getCompanies } from "@/actions/company/getCompanies";
 
 interface UserInfoFormProps {
     currentStep?: number;
@@ -30,11 +31,19 @@ export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormP
     const pathname = usePathname()
     const queryClient = useQueryClient();
 
-    const [statep, setStep] = useState(currentStep)
-    const [err, setErr] = useState("")    
+    const isRec = user?.role === "RECRUITER"
+
+    const [err, setErr] = useState("")
     const { showSuccessToast } = useCustomToast()
 
     const dispatch = useDispatch();
+
+    const { data: companies = [], isLoading: companyLoading } = useQuery({
+        queryKey: ['getCompanies'],
+        queryFn: async () => await getCompanies(),
+    });
+
+    const companiesOptions = companies?.map((company: any) => company?.companyName)
 
     const form = useForm<z.infer<typeof UserInfoSchema>>({
         resolver: zodResolver(UserInfoSchema),
@@ -53,25 +62,32 @@ export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormP
             phoneNo: user?.phoneNo || "",
             postalCode: user?.postalCode || "",
             profession: user?.profession || "",
+            currentCompany: user?.currentCompany || "",
         },
     });
 
     const onSubmit = (values: z.infer<typeof UserInfoSchema>) => {
         startTransition(() => {
             const id = user?.id
+            if (isRec) {
+                if (!values.currentCompany) {
+                    setErr("Select company")                    
+                }
+                setErr('')
+            }            
             UserUpdate(values, id)
                 .then((data) => {
-                    if (data?.success) {                        
+                    if (data?.success) {
                         dispatch(loginRedux(data?.data))
                         queryClient.invalidateQueries({ queryKey: ['getuser', id] })
                         showSuccessToast(data?.success)
-                        onClose()
                         if (pathname === '/welcome' && onNext) {
                             onNext(currentStep + 1);
                         }
+                        // onClose()
                     }
                     if (data?.error) {
-                        setErr(data?.error)                        
+                        setErr(data?.error)
                     }
                 })
         });
@@ -185,8 +201,20 @@ export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormP
                     placeholder="Ex : https://exmaple.com"
                     isLoading={isLoading}
                 />
+                {isRec &&
+                    <CustomFormField
+                        name="currentCompany"
+                        form={form}
+                        label="Select Your Current Company, we will send a verification request to the company"
+                        placeholder="Ex: Google"
+                        isLoading={isLoading}
+                        isSelect
+                        options={companiesOptions}
+                        optionsLoading={companyLoading}
+                    />
+                }
 
-                <FormError message={err} />                
+                <FormError message={err} />
                 <Button isLoading={isLoading} className="!w-full">
                     {pathname === '/welcome' ? "Next" : "Update"}
                 </Button>
