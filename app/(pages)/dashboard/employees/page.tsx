@@ -11,19 +11,13 @@ const Employees = () => {
     const user = useSelector((state: any) => state.user.user);
 
     const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
-        queryKey: ['getCompanyEmps'],
-        queryFn: async () => {
-            if (!user?.employees?.length) return [];
-            return await getCompaniesEmployees(user.employees);
-        },
+        queryKey: ['getCompanyEmps', user.employees],
+        queryFn: async () => await getCompaniesEmployees(user.employees)
     });
 
     const { data: verificationEmps = [], isLoading: verifyEmpsIsLoading } = useQuery({
-        queryKey: ['getVerificationEmps'],
-        queryFn: async () => {
-            if (!user?.verifyEmps?.length) return [];
-            return await getCompanyVerifyEmployees(user.verifyEmps);
-        },
+        queryKey: ['getVerificationEmps', user.verifyEmps],
+        queryFn: async () => await getCompanyVerifyEmployees(user.verifyEmps)
     });
 
     return (

@@ -35,8 +35,8 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
             employeeAccept(empId, userId)
                 .then((data: any) => {
                     if (data?.success) {
-                        queryClient.invalidateQueries({ queryKey: ['getCompanyEmps'] });
-                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps'] });
+                        queryClient.invalidateQueries({ queryKey: ['getCompanyEmps', currentUser.employees] });
+                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps', currentUser.verifyEmps] });
                         showSuccessToast(data?.success);
                         dispatch(loginRedux(data?.data))
                     }
@@ -52,7 +52,7 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
             employeeReject(empId, userId)
                 .then((data: any) => {
                     if (data?.success) {
-                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps'] });
+                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps', currentUser.verifyEmps] });
                         showSuccessToast(data?.success);
                         dispatch(loginRedux(data?.data))
                     }
