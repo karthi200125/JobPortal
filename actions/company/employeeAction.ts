@@ -36,7 +36,7 @@ export const employeeAccept = async (empId: any, userId: any) => {
             },
         });
 
-        return { success: "Employee Verified Successfully" };
+        return { success: "Employee Verified Successfully", data: user };
     } catch (err) {
         return { error: "Employee verification failed" };
     }
@@ -63,7 +63,7 @@ export const employeeReject = async (empId: any, userId: any) => {
             },
         });
 
-        return { success: "Employee verification rejected" };
+        return { success: "Employee verification rejected", data: user };
     } catch (err) {
         return { error: "Employee rejection failed" };
     }

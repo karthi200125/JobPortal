@@ -4,7 +4,7 @@ import Batch from "@/components/Batch";
 import Image from "next/image";
 import Link from "next/link";
 import noAvatar from "../../../../public/noImage.webp";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCompaniesEmployees } from "@/actions/getCompanyEmployees";
 import Button from "@/components/Button";
@@ -15,9 +15,13 @@ import { getCompanyVerifyEmployees } from "@/actions/company/getCompanyVerifyEmp
 import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton";
 import { employeeAccept, employeeReject } from "@/actions/company/employeeAction";
 import { useCustomToast } from "@/lib/CustomToast";
+import { useTransition } from "react";
+import { loginRedux } from "@/app/Redux/AuthSlice";
 
 const Employees = () => {
     const user = useSelector((state: any) => state.user.user);
+
+    console.log(user)
 
     const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
         queryKey: ['getCompanyEmps'],
@@ -88,35 +92,47 @@ export const Employee = ({ user, isVerify }: EmployeeProps) => {
     const userId = currentUser?.id;
     const empId = user?.id;
     const queryClient = useQueryClient();
+    const [isAcceptPending, startAcceptTransition] = useTransition()
+    const [isRejectPending, startRejectTransition] = useTransition()
+    const dispatch = useDispatch();
 
     const { showErrorToast, showSuccessToast } = useCustomToast();
 
-    const AcceptEmp = async () => {
-        try {
-            const empAccept = await employeeAccept(empId, userId);
-            queryClient.invalidateQueries({ queryKey: ['getCompanyEmps'] });
-            queryClient.invalidateQueries({ queryKey: ['getVerificationEmps'] });
-            showSuccessToast(empAccept?.success || "Employee accepted successfully");
-        } catch (err) {
-            showErrorToast("Failed to accept employee");
-            console.error(err);
-        }
+    const AcceptEmp = () => {        
+        startAcceptTransition(() => {
+            employeeAccept(empId, userId)
+                .then((data: any) => {
+                    if (data?.success) {
+                        queryClient.invalidateQueries({ queryKey: ['getCompanyEmps'] });
+                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps'] });
+                        showSuccessToast(data?.success);
+                        dispatch(loginRedux(data?.data))
+                    }
+                    if (data?.error) {
+                        showErrorToast(data?.error);
+                    }
+                })
+        })
     };
 
-    const RejectEmp = async () => {
-        try {
-            const empReject = await employeeReject(empId, userId);
-            queryClient.invalidateQueries({ queryKey: ['getVerificationEmps'] });
-            showSuccessToast(empReject?.success || "Employee rejected successfully");
-        } catch (err) {
-            showErrorToast("Failed to reject employee");
-            console.error(err);
-        }
+    const RejectEmp = () => {        
+        startRejectTransition(() => {
+            employeeReject(empId, userId)
+                .then((data: any) => {
+                    if (data?.success) {
+                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps'] });
+                        showSuccessToast(data?.success);
+                        dispatch(loginRedux(data?.data))
+                    }
+                    if (data?.error) {
+                        showErrorToast(data?.error);
+                    }
+                })
+        })
     };
 
     return (
-        <Link
-            href={`/userProfile/${user?.id}`}
+        <div
             className="flex flex-row items-start gap-5 p-2 md:p-5 border-[1px] border-solid border-neutral-200 rounded-lg overflow-hidden"
         >
             <Image
@@ -128,7 +144,7 @@ export const Employee = ({ user, isVerify }: EmployeeProps) => {
             />
             <div className="space-y-2">
                 <div className="flex flex-row items-center gap-2">
-                    <div className="font-bold cursor-pointer">{user?.username}</div>
+                    <Link href={`/userProfile/${user?.id}`} className="font-bold cursor-pointer">{user?.username}</Link>
                     {user?.isPro && <Batch type="premium" />}
                 </div>
                 <h5 className="text-neutral-500">{user?.profession}</h5>
@@ -139,6 +155,7 @@ export const Employee = ({ user, isVerify }: EmployeeProps) => {
                             icon={<FaCheckCircle size={15} className="text-green-400" />}
                             className="!h-[30px] !border-green-400 text-green-500 !pl-2"
                             onClick={AcceptEmp}
+                            isLoading={isAcceptPending}
                         >
                             Accept
                         </Button>
@@ -147,12 +164,13 @@ export const Employee = ({ user, isVerify }: EmployeeProps) => {
                             icon={<MdCancel size={15} className="text-red-500" />}
                             className="!h-[30px] !border-red-500 text-red-500 !pl-2"
                             onClick={RejectEmp}
+                            isLoading={isRejectPending}
                         >
                             Reject
                         </Button>
                     </div>
                 )}
             </div>
-        </Link>
+        </div>
     );
 };
