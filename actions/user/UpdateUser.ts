@@ -13,6 +13,33 @@ export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: num
         }
         const data = validatedFields.data;
 
+        if (data?.currentCompany) {
+            // Get the company userId based on currentCompany
+            const company = await db.company.findUnique({
+                where: {
+                    companyName: data?.currentCompany
+                },
+                select: {
+                    userId: true
+                }
+            });
+            
+            // Update the user record and push the id into verifyEmps array
+            if (company?.userId) {
+                await db.user.update({
+                    where: {
+                        id: company.userId,
+                    },
+                    data: {
+                        verifyEmps: {
+                            push: id,  
+                        },
+                    },
+                });
+            }
+        }
+
+        // Update the user with the new information
         const updatedUser = await db.user.update({
             where: {
                 id: id,

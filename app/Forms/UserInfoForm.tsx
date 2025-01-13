@@ -84,7 +84,7 @@ export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormP
                         if (pathname === '/welcome' && onNext) {
                             onNext(currentStep + 1);
                         }
-                        // onClose()
+                        onClose()
                     }
                     if (data?.error) {
                         setErr(data?.error)

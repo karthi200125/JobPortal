@@ -1,6 +1,7 @@
 'use client'
 
 import CreateJobForm from '@/app/Forms/CreateJobForm'
+import { redirect } from 'next/navigation'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
@@ -9,6 +10,11 @@ const Page = () => {
 
     const isRecruiter = user?.role === 'RECRUITER'
     const isOrg = user?.role === 'ORGANIZATION'
+    const isCandidate = user?.role === 'CANDIDATE'
+
+    if (isCandidate) {
+        redirect('/dashboard')
+    }
 
     const canCreateJob = isRecruiter ? user?.currentCompany : isOrg
 
