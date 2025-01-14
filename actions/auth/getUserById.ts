@@ -7,7 +7,7 @@ export const getUserById = async (id: number) => {
         throw new Error("User ID is required")
     }
 
-    const user = await db.user.findUnique({
+    const user: any = await db.user.findUnique({
         where: { id },
         include: {
             jobApplications: true,

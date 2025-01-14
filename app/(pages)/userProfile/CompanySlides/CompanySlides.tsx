@@ -28,7 +28,7 @@ const CompanySlides = ({ company }: any) => {
         tabContent = <AboutCompanyProfile />
     }
     if (tab === "Employees") {
-        tabContent = <CompanyEmployees />
+        tabContent = <CompanyEmployees company={company} />
     }
     if (tab === "Jobs") {
         tabContent = <CompanyJobProfile company={company} />

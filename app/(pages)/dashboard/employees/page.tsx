@@ -23,7 +23,7 @@ const Employees = () => {
     return (
         <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">
             {/* Company Employees */}
-            <div className="flex-1 h-full w-full space-y-5">
+            <div className="flex-1 min-h-screen w-full space-y-5 border-r-[1px] border-solid border-neutral-200 ">
                 <h3>Company Employees ({user?.employees?.length || 0})</h3>
                 {companyEmpIsLoading ? (
                     <EmployeesSkeleton />
@@ -34,7 +34,7 @@ const Employees = () => {
                                 <Employee user={emp} key={emp.id} isVerify={false} />
                             ))
                         ) : (
-                            <h3>No Employees yet!</h3>
+                            <h3 className="text-neutral-500 text-sm">No Employees yet!</h3>
                         )}
                     </div>
                 )}
@@ -52,7 +52,7 @@ const Employees = () => {
                                 <Employee user={emp} key={emp.id} isVerify={true} />
                             ))
                         ) : (
-                            <h3>No Verification Employees yet!</h3>
+                            <h3 className="text-neutral-500 text-sm">No Verification Employees yet!</h3>
                         )}
                     </div>
                 )}
