@@ -22,7 +22,7 @@ import noImage from "../../../../public/noImage.webp";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 interface JobListProps {
     isHover?: boolean;
@@ -32,7 +32,7 @@ interface JobListProps {
     appliedJob?: any;
 }
 
-const JobList = React.memo(({ isHover, job, more, selectedJob }: JobListProps) => {
+const JobList = ({ isHover, job, more, selectedJob }: JobListProps) => {
     const user = useSelector((state: any) => state.user?.user);
     const pathname = usePathname();
     const isAppliedJob = pathname === "/dashboard";
@@ -131,6 +131,8 @@ const JobList = React.memo(({ isHover, job, more, selectedJob }: JobListProps) =
             )}
         </div>
     );
-});
+};
 
-export default JobList;
+export default memo(JobList);
+
+JobList.displayName = "JobList";
