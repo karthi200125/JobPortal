@@ -6,6 +6,7 @@ import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import Employee from "./Employee";
+import { Suspense } from "react";
 
 const Employees = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -61,5 +62,11 @@ const Employees = () => {
     );
 };
 
-export default Employees;
+// Wrap the Employees component in Suspense for data fetching
+const SuspendedEmployees = () => (
+    <Suspense fallback={<EmployeesSkeleton />}>
+        <Employees />
+    </Suspense>
+);
 
+export default SuspendedEmployees;
