@@ -1,65 +1,60 @@
-'use client'
+'use client';
 
-import Button from "@/components/Button"
-import { useRouter } from "next/navigation"
-import { GoPlus } from "react-icons/go"
-import AppliedCounts from "./AppliedCounts"
-import AppliedJobs from "./AppliedJobs"
-import { useSelector } from "react-redux"
-import { useQuery } from "@tanstack/react-query"
-import { getAppliedJobs } from "@/actions/jobapplication/getAppliedJobs"
-import { getUserById } from "@/actions/auth/getUserById"
-import PostedJobs from "./PostedJobs"
-import { IoIosPeople } from "react-icons/io";
+import { getCompanyVerifyEmployees } from "@/actions/company/getCompanyVerifyEmployees";
+import { getCompaniesEmployees } from "@/actions/getCompanyEmployees";
+import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import Employee from "./employees/Employee";
 
-
-const JobStatus = () => {
-    const user = useSelector((state: any) => state.user.user)
-
-    const router = useRouter()
-    const isRecruiter = user?.role === 'RECRUITER'
-    const isCandidate = user?.role === 'CANDIDATE'
-    const isORG = user?.role === "ORGANIZATION"
-
-    console.log(isRecruiter)
-    console.log(isRecruiter || isORG)
-
-    const { data: appliedjObs, isPending: appliedJobsLoading } = useQuery({
-        queryKey: ['getAppliedJobs', user?.id],
-        queryFn: async () => await getAppliedJobs(user?.id),
+const Employees = ({ user }: { user: any }) => {
+    const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
+        queryKey: ['getCompanyEmps', user?.employees],
+        queryFn: async () => user?.employees ? await getCompaniesEmployees(user.employees) : [],
+        enabled: !!user?.employees,
     });
 
-    const { data, isPending } = useQuery({
-        queryKey: ['getUser', user?.id],
-        queryFn: async () => await getUserById(user?.id),
+    const { data: verificationEmps = [], isLoading: verifyEmpsIsLoading } = useQuery({
+        queryKey: ['getVerificationEmps', user?.verifyEmps],
+        queryFn: async () => user?.verifyEmps ? await getCompanyVerifyEmployees(user.verifyEmps) : [],
+        enabled: !!user?.verifyEmps,
     });
 
     return (
-        <div className="w-full min-h-screen pt-5 space-y-5 ">
-            <div className="flex flex-row items-center justify-between">
-                <h2 className="">Dashboard</h2>
-                <div className="flex flex-row items-center gap-5">
-                    {isORG &&
-                        <Button variant="border" onClick={() => router.push('/dashboard/employees')} icon={<IoIosPeople size={20} />}>
-                            Employees
-                        </Button>
-                    }
-                    {(isRecruiter || isORG) &&
-                        <Button variant="border" onClick={() => router.push('/createJob')} icon={<GoPlus size={20} />}>
-                            Create Job
-                        </Button>
-                    }
-                </div>
+        <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">
+            <div className="flex-1 min-h-screen w-full space-y-5 border-r-[1px] border-solid border-neutral-200">
+                <h3>Company Employees ({user?.employees?.length || 0})</h3>
+                {companyEmpIsLoading ? (
+                    <EmployeesSkeleton />
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
+                        {companyEmps?.length > 0 ? (
+                            companyEmps.map((emp: any) => (
+                                <Employee user={emp} key={emp.id} isVerify={false} />
+                            ))
+                        ) : (
+                            <h3 className="text-neutral-500 text-sm">No Employees yet!</h3>
+                        )}
+                    </div>
+                )}
             </div>
-            <AppliedCounts appliedJobs={appliedjObs?.data} user={data} />
-            {!isORG &&
-                <AppliedJobs aplliedJobs={appliedjObs?.data} isLoading={appliedJobsLoading} />
-            }
-            {!isCandidate &&
-                <PostedJobs postedJobs={data?.postedJobs} isLoading={isPending} user={data} />
-            }
+            <div className="flex-1 h-full w-full space-y-5">
+                <h3>Employees Verifications ({user?.verifyEmps?.length || 0})</h3>
+                {verifyEmpsIsLoading ? (
+                    <EmployeesSkeleton />
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
+                        {verificationEmps?.length > 0 ? (
+                            verificationEmps.map((emp: any) => (
+                                <Employee user={emp} key={emp.id} isVerify={true} />
+                            ))
+                        ) : (
+                            <h3 className="text-neutral-500 text-sm">No Verification Employees yet!</h3>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default JobStatus
+export default Employees;
