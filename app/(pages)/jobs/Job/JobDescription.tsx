@@ -1,3 +1,5 @@
+'use client'
+
 import JobDescriptionSkeleton from '@/Skeletons/JobDescriptionSkeleton'
 
 const JobDescription = ({ job, isPending }: any) => {

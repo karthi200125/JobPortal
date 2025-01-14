@@ -7,7 +7,7 @@ import { useCustomToast } from "@/lib/CustomToast";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useTransition } from "react";
+import { memo, useTransition } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,4 +107,4 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
     );
 };
 
-export default Employee;
+export default memo(Employee);

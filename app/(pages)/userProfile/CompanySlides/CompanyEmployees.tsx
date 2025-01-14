@@ -5,6 +5,7 @@ import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton"
 import { useQuery } from "@tanstack/react-query"
 import Employee from "../../dashboard/employees/Employee"
 import { getUserById } from "@/actions/auth/getUserById"
+import { memo } from "react"
 
 const CompanyEmployees = ({ company }: { company: any }) => {
 
@@ -19,7 +20,7 @@ const CompanyEmployees = ({ company }: { company: any }) => {
   });
 
   return (
-    <div>
+    <div className="p-2 md:p-5 border rounded-[10px]">
       {(userPending || isPending) ? (
         <EmployeesSkeleton />
       ) : (
@@ -29,7 +30,7 @@ const CompanyEmployees = ({ company }: { company: any }) => {
               <Employee user={emp} key={emp.id} isVerify={false} />
             ))
           ) : (
-            <h3>No Employees yet!</h3>
+            <h3 className="text-neutral-500 text-sm">No Employees yet!</h3>
           )}
         </div>
       )}
@@ -37,4 +38,4 @@ const CompanyEmployees = ({ company }: { company: any }) => {
   )
 }
 
-export default CompanyEmployees
+export default memo(CompanyEmployees)

@@ -120,7 +120,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                         variant="border"
                         icon={<IoMdSend size={15} />}
                         className="!h-[30px]"
-                        disabled={user?.isPro}
+                        disabled={true}
                     >
                         Message
                     </Button>

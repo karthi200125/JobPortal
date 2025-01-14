@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react';
 import JobList from '../../jobs/JobLists/JobList';
 
 const CompanyJobProfile = ({ company }: any) => {
@@ -15,4 +16,4 @@ const CompanyJobProfile = ({ company }: any) => {
     )
 }
 
-export default CompanyJobProfile
+export default memo(CompanyJobProfile)

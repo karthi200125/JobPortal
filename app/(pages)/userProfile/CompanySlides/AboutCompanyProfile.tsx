@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 const AboutCompanyProfile = () => {
   return (
@@ -10,4 +10,4 @@ const AboutCompanyProfile = () => {
   )
 }
 
-export default AboutCompanyProfile
+export default memo(AboutCompanyProfile)

@@ -14,7 +14,7 @@ interface ButtonProps {
 const Button = ({
     children,
     onClick,
-    disabled = false,
+    disabled,
     isLoading = false,
     variant = 'default',
     className,
@@ -23,7 +23,7 @@ const Button = ({
     const buttonClassNames = `${className} text-sm font-bold  h-[40px] flex flex-row items-center justify-center gap-2 px-5 rounded-full trans hover:opacity-80 ${variant === 'border'
         ? 'bg-[var(--white)] border-[1px] border-solid border-[var(--voilet)] text-[var(--voilet)]'
         : 'bg-[var(--voilet)] text-white'
-        } ${isLoading || disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`;
+        } ${(isLoading || disabled) ? 'cursor-not-allowed opacity-50 hover:opacity-50' : 'cursor-pointer'}`;
 
     return (
         <button

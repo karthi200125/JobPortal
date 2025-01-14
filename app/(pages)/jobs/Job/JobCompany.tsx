@@ -1,3 +1,5 @@
+'use client'
+
 import Button from '@/components/Button'
 import Image from 'next/image'
 import React from 'react'
@@ -6,8 +8,6 @@ import noImage from '../../../../public/noImage.webp'
 import JobCompanySkeleton from '@/Skeletons/JobCompanySkeleton'
 
 const JobCompany = ({ company, isPending }: any) => {
-
-  // console.log(company)
 
   return (
     <>
