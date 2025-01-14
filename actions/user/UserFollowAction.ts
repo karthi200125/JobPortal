@@ -19,7 +19,7 @@ export const UserFollowAction = async (currentUserId: any, userId: any) => {
                 where: { id: currentUserId },
                 data: {
                     followings: {
-                        set: currentUser.followings.filter(id => id !== userId),
+                        set: currentUser.followings.filter((id: any) => id !== userId),
                     },
                 },
             });
@@ -27,7 +27,7 @@ export const UserFollowAction = async (currentUserId: any, userId: any) => {
                 where: { id: userId },
                 data: {
                     followers: {
-                        set: user.followers.filter(id => id !== currentUserId),
+                        set: user.followers.filter((id: any) => id !== currentUserId),
                     },
                 },
             });
