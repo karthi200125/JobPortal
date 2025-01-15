@@ -4,16 +4,17 @@ import Button from "@/components/Button";
 import { useCustomToast } from "@/lib/CustomToast";
 import Image from "next/image";
 import React, { useState, useTransition } from "react";
-import { useSelector } from "react-redux";
-import noAvatar from '../../public/noProfile.webp'
+import { useDispatch, useSelector } from "react-redux";
+import noAvatar from '../../public/noProfile.webp';
+import { updateImages } from "@/actions/user/updateImages";
+import { loginRedux } from "../Redux/AuthSlice";
 
-const UserBackImageForm: React.FC = () => {
+const UserBackImageForm = () => {
     const user = useSelector((state: any) => state.user.user);
+    const dispatch = useDispatch()
 
-    const [backImage, setBackImage] = useState<string | null>(user?.profileImage || null);
-    const [proImage, setProImage] = useState<string | null>(user?.profileImage || null);
-    const [selectedBackImage, setSelectedBackImage] = useState<File | null>(null);
-    const [selectedProImage, setSelectedProImage] = useState<File | null>(null);
+    const [backImage, setBackImage] = useState<string | null>(user?.profileImage);
+    const [proImage, setProImage] = useState<string | null>(user?.userImage);
 
     const { showErrorToast, showSuccessToast } = useCustomToast();
     const [isPending, startTransition] = useTransition();
@@ -24,10 +25,8 @@ const UserBackImageForm: React.FC = () => {
             const fileURL = URL.createObjectURL(file);
 
             if (type === 'back') {
-                setSelectedBackImage(file);
                 setBackImage(fileURL);
             } else {
-                setSelectedProImage(file);
                 setProImage(fileURL);
             }
         }
@@ -36,27 +35,30 @@ const UserBackImageForm: React.FC = () => {
     const handleDeleteImage = (type: 'back' | 'profile') => {
         if (type === 'back') {
             setBackImage(null);
-            setSelectedBackImage(null);
         } else {
             setProImage(null);
-            setSelectedProImage(null);
         }
         showSuccessToast("Image deleted");
     };
 
     const handleUpdateImage = () => {
         startTransition(() => {
-            if (selectedBackImage) {
-                console.log("Updating back image:", selectedBackImage);
-            }
-            if (selectedProImage) {
-                console.log("Updating profile image:", selectedProImage);
-            }
-            showSuccessToast("Image updated successfully");
+            const userId = user.id;
+            const userImage = proImage;
+            const profileImage = backImage;
+
+            updateImages(userId, userImage, profileImage)
+                .then((response) => {
+                    if (response.success) {
+                        dispatch(loginRedux(response.data));
+                        showSuccessToast(response.success);
+                    }
+                    if (response.error) {
+                        showErrorToast(response.error);
+                    }
+                })
         });
     };
-
-    const isUpdateButtonVisible = !!selectedBackImage || !!selectedProImage;
 
     return (
         <div className="w-full max-h-screen space-y-8">
@@ -99,11 +101,11 @@ const UserBackImageForm: React.FC = () => {
                     <Image
                         src={proImage || noAvatar?.src}
                         alt="Profile Image"
-                        className="absolute top-0 left-0 w-full h-full object-contain bg-neutral-100"
+                        className="absolute top-0 left-0 w-full h-full object-cover bg-neutral-100"
                         fill
                     />
                 </div>
-                <div className="w-full flex flex-row md:flex-col justify-between md:justify-center items-center gap-3">
+                <div className="flex flex-row md:flex-col justify-between md:justify-center items-center gap-3">
                     <input
                         type="file"
                         id="proImageFile"
@@ -127,13 +129,11 @@ const UserBackImageForm: React.FC = () => {
             </div>
 
             {/* Update Button */}
-            {isUpdateButtonVisible && (
-                <div className="flex justify-end mt-5">
-                    <Button className="!py-2" onClick={handleUpdateImage} isLoading={isPending}>
-                        {isPending ? "Please wait..." : "Update"}
-                    </Button>
-                </div>
-            )}
+            <div className="flex justify-end mt-5">
+                <Button className="!py-2" onClick={handleUpdateImage} isLoading={isPending}>
+                    {isPending ? "Please wait..." : "Update"}
+                </Button>
+            </div>
         </div>
     );
 };
