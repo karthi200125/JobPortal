@@ -8,7 +8,7 @@ import Loader from '@/components/Loader/Loader';
 const GoogleAuth = () => {
     const pathname = usePathname();
 
-    const isLoading = true;
+    const isLoading = false;
 
     return (
         <button

@@ -33,7 +33,7 @@ const LoginForm = () => {
     const [success, setSuccess] = useState("")
     const router = useRouter()
 
-    const dispatch = useDispatch();    
+    const dispatch = useDispatch();
 
     const options = [
         "CANDIDATE",
@@ -55,9 +55,9 @@ const LoginForm = () => {
         startTransition(() => {
             login(values)
                 .then((data) => {
-                    if (data?.success) {                        
+                    if (data?.success) {
                         setSuccess(data?.success)
-                        dispatch(loginRedux(data?.data))                    
+                        dispatch(loginRedux(data?.data))
                         setErr("")
                         // router.push('/userProfile')
                     }
@@ -125,6 +125,10 @@ const LoginForm = () => {
                             </FormItem>
                         )}
                     />
+                </div>
+
+                <div className="flex justify-end w-full">
+                    <h5 className="text-white/50 text-xs hover:text-white trans cursor-pointer">Forget Password?</h5>
                 </div>
 
                 <FormError message={err} />
