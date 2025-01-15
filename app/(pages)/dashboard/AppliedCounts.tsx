@@ -45,14 +45,14 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             id: 2,
             icon: <LiaListSolid size={25} />,
             title: jobsTitle,
-            count: jobscount,
+            count: jobscount || 0,
             subtitle: jobsSubtitle
         },
         {
             id: 3,
             icon: <MdOutlinePendingActions size={25} />,
             title: "Actions Taken",
-            count: 10,
+            count: 10 ,
             subtitle: "Review the jobs that took action",
         },
     ];

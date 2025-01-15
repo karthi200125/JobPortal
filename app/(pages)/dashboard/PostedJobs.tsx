@@ -7,11 +7,11 @@ const PostedJobs = ({ postedJobs, isLoading, user }: any) => {
     return (
         <div className="w-full space-y-2 border rounded-[20px] p-5 min-h-[100px]">
             <h3 className="font-bold">Job You Posted ({postedJobs?.length || 0})</h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                {isLoading ?
-                    <JobListsSkeleton isDash />
-                    :
-                    postedJobs?.length > 0 ?
+            {isLoading ?
+                <JobListsSkeleton isDash />
+                :
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {postedJobs?.length > 0 ?
                         postedJobs?.map((job: any) => (
                             <div
                                 key={job?.id}
@@ -22,8 +22,9 @@ const PostedJobs = ({ postedJobs, isLoading, user }: any) => {
                         ))
                         :
                         <h4>No Jobs Posted yet</h4>
-                }
-            </div>
+                    }
+                </div>
+            }
         </div>
     )
 }

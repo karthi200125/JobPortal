@@ -2,7 +2,7 @@ import './Loader.css'
 
 const Loader = () => {
     return (
-        <span className="loader"></span>
+        <span className="loader "></span>
     )
 }
 

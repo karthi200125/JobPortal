@@ -1,8 +1,8 @@
 'use client'
 
 import RegisterForm from "@/app/Forms/RegisterForm"
+import GoogleAuth from "@/app/(auth)/GoogleAuth"
 import Link from "next/link"
-
 
 const SignUpRightSide = () => {
 
@@ -24,14 +24,7 @@ const SignUpRightSide = () => {
             </div>
 
             {/* optional auth google and github */}
-            <div className='flex flex-row items-center justify-center gap-5'>
-                <div className='w-[50px] h-[50px] flex items-center justify-center rounded-[15px] bg-white/[0.05] hover:bg-[var(--white)] cursor-pointer group trans'>
-                    {/* <Image src={google.src} alt='' width={30} height={30} className='object-contain filter group-hover:invert trans' /> */}
-                </div>
-                <div className='w-[50px] h-[50px] flex items-center justify-center rounded-[15px] bg-white/[0.05] hover:bg-[var(--white)] cursor-pointer group trans'>
-                    {/* <Image src={github.src} alt='' width={30} height={30} className='object-contain filter group-hover:invert trans' /> */}
-                </div>
-            </div>
+            <GoogleAuth />
 
             <h4 className='flex flex-row items-center gap-2 text-white/40'>
                 Already Have an Account?
