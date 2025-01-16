@@ -1,6 +1,6 @@
 'use client';
 
-import { moreProfileUsers } from '@/actions/moreProfileUsers';
+import { moreProUsers } from '@/actions/moreProfileUsers';
 import Batch from '@/components/Batch';
 import Button from '@/components/Button';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -22,12 +22,10 @@ interface ProfileUserProps {
 
 const MoreProfiles = ({ userId }: ProfileUserProps) => {
     const user = useSelector((state: any) => state.user.user);
-
-    const id = user?.id === userId ? user?.id : userId;
-
+    
     const { data = [], isLoading } = useQuery({
-        queryKey: ['getMoreProfiles', id, user?.id],
-        queryFn: async () => moreProfileUsers(id, user?.id === userId, user?.id),
+        queryKey: ['getMoreProfiles', user, userId],
+        queryFn: async () => moreProUsers(user, userId),
     });
 
     return (

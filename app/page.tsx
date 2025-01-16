@@ -1,4 +1,5 @@
-// import { ProtectedRoute } from "@/lib/ProtectedRoute";
+'use client'
+
 import LandingPage from "./(pages)/home/LandingPage";
 import LpAbout from "./(pages)/home/LpAbout";
 import Pricing from "./(pages)/home/Pricing";
@@ -8,12 +9,12 @@ import Footer from "./(pages)/home/Footer";
 const Home = () => {
 
   return (
-    <div className="w-full min-h-screen text-white py-5 space-y-10 bg-black">      
-      {/* <LandingPage />
-      <LpAbout />      
+    <div className="w-full min-h-screen text-white py-5 space-y-10 bg-black">
+      <LandingPage />
+      <LpAbout />
       <Pricing />
-      <LpLeadingCompanies />      
-      <Footer /> */}
+      <LpLeadingCompanies />
+      <Footer />
     </div>
   );
 }
