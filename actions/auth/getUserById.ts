@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db"
 
-export const getUserById = async (id: number) => {
+export const getUserById = async (id: any) => {
     if (!id) {
         throw new Error("User ID is required")
     }

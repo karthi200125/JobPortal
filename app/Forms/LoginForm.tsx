@@ -51,6 +51,8 @@ const LoginForm = () => {
         },
     });
 
+    console.log(form.getValues("role"));
+
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
         startTransition(() => {
             login(values)
