@@ -19,7 +19,7 @@ const UserProfileCard = () => {
     const dispatch = useDispatch();
 
     const pathname = usePathname()
-    const basePath = pathname.split('/').slice(0, 2).join('/');    
+    const basePath = pathname.split('/').slice(0, 2).join('/');
 
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
@@ -69,7 +69,7 @@ const UserProfileCard = () => {
                         height={60}
                     />
                     <div className="w-[170px]">
-                        <h4 className="capitalize font-bold">{user?.username}</h4>
+                        <h4 className="capitalize font-bold">{user?.username}{user?.id}</h4>
                         <h4 className="text-xs text-neutral-400">{user?.email}</h4>
                         <h4>{user?.profession}</h4>
                         {/* <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6> */}

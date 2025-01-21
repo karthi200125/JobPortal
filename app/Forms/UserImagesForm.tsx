@@ -1,141 +1,100 @@
-'use client';
+'use client'
 
-import Button from "@/components/Button";
-import { useCustomToast } from "@/lib/CustomToast";
-import Image from "next/image";
-import React, { useState, useTransition } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import noAvatar from '../../public/noProfile.webp';
 import { updateImages } from "@/actions/user/updateImages";
+import Button from "@/components/Button"
+import { Progress } from "@/components/ui/progress"
+import { useCustomToast } from "@/lib/CustomToast";
+import { useUpload } from "@/lib/Uploadfile";
+import { ChangeEvent, useState, useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
 
-const UserBackImageForm = () => {
+const UserImagesForm = () => {
+
     const user = useSelector((state: any) => state.user.user);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const [backImage, setBackImage] = useState<string | null>(user?.profileImage);
-    const [proImage, setProImage] = useState<string | null>(user?.userImage);
+    const [file, setFile] = useState<File | null>(null);
+    const [showImage, setShowImage] = useState<string | null>(user?.profileImage || null);
 
-    const { showErrorToast, showSuccessToast } = useCustomToast();
     const [isPending, startTransition] = useTransition();
+    const { showErrorToast, showSuccessToast } = useCustomToast();
+    const { per, UploadFile, downloadUrl } = useUpload({ file });
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'back' | 'profile') => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const fileURL = URL.createObjectURL(file);
+    const handleDeleteImage = () => {
+        setShowImage(null);
+        showSuccessToast("Image deleted");
+    }
 
-            if (type === 'back') {
-                setBackImage(fileURL);
-            } else {
-                setProImage(fileURL);
-            }
+    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const selectedFile = e.target.files[0];
+            setFile(selectedFile);
+            setShowImage(URL.createObjectURL(selectedFile));
         }
     };
 
-    const handleDeleteImage = (type: 'back' | 'profile') => {
-        if (type === 'back') {
-            setBackImage(null);
-        } else {
-            setProImage(null);
+    const handleUpload = () => {
+        if (file) {
+            UploadFile();
         }
-        showSuccessToast("Image deleted");
     };
 
     const handleUpdateImage = () => {
-        startTransition(() => {
-            const userId = user.id;
-            const userImage = proImage;
-            const profileImage = backImage;
+        const userId = user.id;
+        const profileImage = downloadUrl;
 
-            updateImages(userId, userImage, profileImage)
-                .then((response) => {
-                    if (response.success) {
-                        dispatch(loginRedux(response.data));
-                        showSuccessToast(response.success);
-                    }
-                    if (response.error) {
-                        showErrorToast(response.error);
-                    }
-                })
-        });
+        updateImages(userId, profileImage)
+            .then((response) => {
+                if (response.success) {
+                    dispatch(loginRedux(response.data));
+                    showSuccessToast(response.success);
+                }
+                if (response.error) {
+                    showErrorToast(response.error);
+                }
+            })
     };
 
     return (
-        <div className="w-full max-h-screen space-y-8">
-            {/* Background Image Section */}
-            <div className="flex flex-col">
-                <div className="relative w-full h-[150px] md:h-[200px] rounded-md overflow-hidden">
-                    <Image
-                        src={backImage || ""}
-                        alt="Background Image"
-                        className="absolute top-0 left-0 w-full h-full object-contain bg-neutral-100"
-                        fill
-                    />
-                </div>
-                <div className="flex items-center justify-between mt-3">
-                    <h3
-                        className="text-sm font-bold text-red-500 cursor-pointer"
-                        onClick={() => handleDeleteImage('back')}
-                    >
-                        Delete Image
-                    </h3>
-                    <input
-                        type="file"
-                        id="backImageFile"
-                        hidden
-                        onChange={(e) => handleFileChange(e, 'back')}
-                        accept="image/*"
-                    />
-                    <label
-                        htmlFor="backImageFile"
-                        className="rounded-full py-2 px-5 border cursor-pointer hover:opacity-75 text-sm font-bold"
-                    >
-                        Change Image
-                    </label>
-                </div>
+        <div className="space-y-5" >
+            <div className="relative h-[200px] rounded-lg border overflow-hidden">
+                <img
+                    src={showImage || ''}
+                    alt=""
+                    className="w-full h-full object-cover bg-neutral-100 absolute top-0 left-0"
+                />
+                <input type="file" accept="image/*" className="hidden" id="imageupload" onChange={handleImageUpload} />
+                <label htmlFor="imageupload" className="absolute top-0 left-0 w-full h-full opacity-70 z-1 flexcenter cursor-pointer trans bg-black">
+                    <div className='space-y-3'>
+                        <img src="" alt="" />
+                        <h3 className="text-blue-400 z-10">select image</h3>
+                    </div>
+                </label>
             </div>
-
-            {/* Profile Image Section */}
-            <div className="flex flex-col md:flex-row items-center gap-5">
-                <div className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
-                    <Image
-                        src={proImage || noAvatar?.src}
-                        alt="Profile Image"
-                        className="absolute top-0 left-0 w-full h-full object-cover bg-neutral-100"
-                        fill
-                    />
+            {per &&
+                <div className="space-y-3">
+                    <h3>{downloadUrl ? "Completed" : "Uploading..."}</h3>
+                    <Progress value={Number(per)} className="w-full" />
                 </div>
-                <div className="flex flex-row md:flex-col justify-between md:justify-center items-center gap-3">
-                    <input
-                        type="file"
-                        id="proImageFile"
-                        hidden
-                        onChange={(e) => handleFileChange(e, 'profile')}
-                        accept="image/*"
-                    />
-                    <label
-                        htmlFor="proImageFile"
-                        className="rounded-full py-2 px-5 border cursor-pointer hover:opacity-75 text-sm font-bold"
-                    >
-                        Change Image
-                    </label>
-                    <h3
-                        className="text-sm font-bold text-red-500 cursor-pointer"
-                        onClick={() => handleDeleteImage('profile')}
-                    >
-                        Delete Image
-                    </h3>
-                </div>
-            </div>
-
-            {/* Update Button */}
-            <div className="flex justify-end mt-5">
-                <Button className="!py-2" onClick={handleUpdateImage} isLoading={isPending}>
-                    {isPending ? "Please wait..." : "Update"}
+            }
+            <div className="flex flex-row items-center justify-between">
+                <h3
+                    className="text-sm font-bold text-red-500 cursor-pointer py-2 px-5 border rounded-full"
+                    onClick={() => handleDeleteImage()}
+                >
+                    Delete Image
+                </h3>
+                <Button
+                    className="!py-2"
+                    onClick={downloadUrl ? handleUpdateImage : handleUpload}
+                    isLoading={isPending}
+                >
+                    {downloadUrl ? "Update Image" : "Upload Image"}
                 </Button>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default UserBackImageForm;
+export default UserImagesForm
