@@ -17,7 +17,8 @@ export const deleteImages = async (userId: any, image?: 'pro' | 'user') => {
                     profileImage: null
                 },
             });
-        } else {
+        }
+        if (image === 'user') {
             updatedUser = await db.user.update({
                 where: { id: userId },
                 data: {
@@ -28,6 +29,7 @@ export const deleteImages = async (userId: any, image?: 'pro' | 'user') => {
 
         return { success: 'Image deleted successfully', data: updatedUser };
     } catch (error: any) {
+        console.log(error)
         return { error: `Image delete failed: ${error.message}` };
     }
 };
