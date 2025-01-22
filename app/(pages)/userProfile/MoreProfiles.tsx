@@ -64,7 +64,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
     const queryClient = useQueryClient();
     const { showSuccessToast, showErrorToast } = useCustomToast()
 
-    const isFollowings = user?.followings.includes(moreuser?.id);
+    const isFollowings = user?.followings?.includes(moreuser?.id);
     const [isPending, startTransition] = useTransition();
 
     const handleFollow = () => {

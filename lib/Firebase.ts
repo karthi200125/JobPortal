@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCmdXYoG_f1lx5Y2Hx8TVpYEX2use-F0x8",
-    authDomain: "dexons-cb27f.firebaseapp.com",
-    projectId: "dexons-cb27f",
-    storageBucket: "dexons-cb27f.appspot.com",
-    messagingSenderId: "1090175755814",
-    appId: "1:1090175755814:web:f070eefff87daef87968e7"
+    apiKey: "AIzaSyDuEyjlErbGVek_imMyTm7peCFuIRXokQY",
+    authDomain: "dealsdray-e2592.firebaseapp.com",
+    projectId: "dealsdray-e2592",
+    storageBucket: "dealsdray-e2592.appspot.com",
+    messagingSenderId: "205238897615",
+    appId: "1:205238897615:web:f41c8be6b6b46717e7a0ba"
 };
 
 const app = initializeApp(firebaseConfig);

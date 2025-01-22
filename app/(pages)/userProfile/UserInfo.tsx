@@ -60,14 +60,14 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
             {/* Image Container */}
             <div className='absolute top-0 left-0 w-full h-[100px] md:h-[200px]'>
                 <Image
-                    src={profileUser?.profileImage || ''}
+                    src={isCurrentUser ? user?.profileImage : (profileUser?.profileImage || '')}
                     alt='Profile Background'
                     width={100}
                     height={200}
                     className='bg-neutral-200 w-full h-full object-cover'
                 />
                 <Image
-                    src={isOrg ? company?.companyImage : profileUser?.userImage || noProfile.src}
+                    src={isCurrentUser ? user?.userImage : (profileUser?.userImage || noProfile.src)}
                     alt='Profile'
                     width={150}
                     height={150}

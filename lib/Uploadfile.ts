@@ -12,7 +12,6 @@ export const useUpload = ({ image, file }: UploadProps) => {
     const [per, setPer] = useState<string | null>(null);
     const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
-    console.log(image, file)
 
     const UploadFile = () => {
         try {
@@ -53,6 +52,6 @@ export const useUpload = ({ image, file }: UploadProps) => {
             console.error('Error uploading file:', error);
         }
     }
-
+   
     return { per, UploadFile, downloadUrl };
 }
