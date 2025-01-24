@@ -23,15 +23,15 @@ import { useCustomToast } from "../../lib/CustomToast";
 
 const CreateJobForm = () => {
   const user = useSelector((state: any) => state.user.user)
-  const [jobDesc, setJobDesc] = useState<string>("hello");;
+  const [jobDesc, setJobDesc] = useState<string>("");;
   const [skills, setSkills] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [skillsErr, setskillsErr] = useState("");
   const [state, setState] = useState('');
   const [isLoading, startTransition] = useTransition();
   const router = useRouter()
-  const {showErrorToast , showSuccessToast} = useCustomToast()
-
+  const { showErrorToast, showSuccessToast } = useCustomToast()
+  
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
     defaultValues: {
@@ -58,23 +58,30 @@ const CreateJobForm = () => {
         setskillsErr("Add atleast on Skill")
         return;
       }
+      if (!jobDesc) {
+        showErrorToast("add Job Desciption")
+        return;
+      }
+
       const data = {
         ...values,
         skills,
         questions,
         jobDesc
       }
-      
-      createJobAction(values, userId, skills, questions)
-        .then((data) => {
-          if (data?.success) {
-            router.push('/dashboard')
-            showSuccessToast(data?.success)
-          }
-          if (data.error) {
-            showErrorToast(data?.error)
-          }
-        })
+
+      console.log(data)
+
+      // createJobAction(values, userId, skills, questions, jobDesc)
+      //   .then((data) => {
+      //     if (data?.success) {
+      //       router.push('/dashboard')
+      //       showSuccessToast(data?.success)
+      //     }
+      //     if (data.error) {
+      //       showErrorToast(data?.error)
+      //     }
+      //   })
     });
   };
 

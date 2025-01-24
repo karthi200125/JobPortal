@@ -10,7 +10,8 @@ export const createJobAction = async (
     values: z.infer<typeof CreateJobSchema>,
     userId?: any,
     skills?: any,
-    questions?: any
+    questions?: any,
+    jobDesc?: string,
 ) => {
     try {
         if (!userId) {
@@ -43,7 +44,7 @@ export const createJobAction = async (
                 ...jobData,
                 userId: user.id,
                 companyId: uniqueCompany.id,
-                skills , 
+                skills,
                 questions,
                 jobDesc: "Default job description"
             },
