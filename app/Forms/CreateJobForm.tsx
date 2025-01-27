@@ -63,14 +63,14 @@ const CreateJobForm = () => {
         return;
       }
 
-      const data = {
-        ...values,
-        skills,
-        questions,
-        jobDesc
-      }
+      // const data = {
+      //   ...values,
+      //   skills,
+      //   questions,
+      //   jobDesc
+      // }
 
-      console.log(data)
+      // console.log(data)
 
       // createJobAction(values, userId, skills, questions, jobDesc)
       //   .then((data) => {
