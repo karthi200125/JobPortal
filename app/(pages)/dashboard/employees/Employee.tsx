@@ -35,8 +35,8 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
             employeeAccept(empId, userId)
                 .then((data: any) => {
                     if (data?.success) {
-                        queryClient.invalidateQueries({ queryKey: ['getCompanyEmps', currentUser.employees] });
-                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps', currentUser.verifyEmps] });
+                        queryClient.invalidateQueries({ queryKey: ['getCompanyEmps', currentUser?.employees] });
+                        queryClient.invalidateQueries({ queryKey: ['getVerificationEmps', currentUser?.verifyEmps] });
                         showSuccessToast(data?.success);
                         dispatch(loginRedux(data?.data))
                     }

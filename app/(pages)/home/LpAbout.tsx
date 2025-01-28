@@ -2,6 +2,7 @@ import Image from "next/image"
 import nvidia from '../../../public/nvidia.png'
 import apple from '../../../public/apple.jpg'
 import netflix from '../../../public/netflix.png'
+import m1 from '../../../public/m1.png'
 
 
 const LpAbout = () => {
@@ -44,8 +45,8 @@ const LpAbout = () => {
                 <Image src={nvidia?.src} alt='' width={100} height={50} className='object-contain' />
             </div>
 
-            <div className="bg-white/10 rounded-[20px] w-[85%] h-[500px]">
-
+            <div className="bg-white/10 rounded-[20px] w-[85%] max-h-max overflow-hidden" style={{ borderTopRightRadius: '20px', borderTopLeftRadius: "20px" }}>
+                <img src={m1.src} alt="" className="w-full h-full" />
             </div>
 
 
