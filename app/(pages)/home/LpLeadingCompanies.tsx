@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 const LpLeadingCompanies = () => {
     return (
-        <div className="w-full space-y-20">
+        <div className="w-full space-y-20 py-20">
             <div className="space-y-20 w-full mx-auto">
                 <div className="flex flex-row items-center gap-5">
                     <h1 className="flex-1">We Help You Get Your Dream Job</h1>

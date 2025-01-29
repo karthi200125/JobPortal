@@ -39,15 +39,16 @@ const Footer = () => {
     ]
 
     return (
-        <div className="w-full min-h-[50vh] bg-white/[0.05] p-2 md:p-10 space-y-5 md:space-y-10 rounded-[20px]">
-            <div className="flex flex-col md:flex-row items-center gap-5 justify-between p-5 md:p-10 rounded-[20px] bg-black">
+        <div className="w-full min-h-[50vh] space-y-5 md:space-y-10 rounded-[20px]">
+            
+            <div className="flex bg-white flex-col md:flex-row items-center gap-5 justify-between p-5 md:p-10 rounded-[20px] text-black">
                 <h2 className="">Find Best Opurtunies Today</h2>
                 <div className="flex flex-row items-center gap-5">
                     <Button className='bg-white text-black'>Explore Jobs</Button>
                     <Button className='bg-black'>Start My Journy</Button>
                 </div>
             </div>
-            <div className="w-full bg-black rounded-[20px] h-full p-5 md:p-10 space-y-5 md:space-y-10">
+            <div className="w-full bg-white/[0.05] rounded-[20px] h-full p-5 md:p-10 space-y-5 md:space-y-10">
                 <div className="flex flex-col md:flex-row items-start justify-between gap-10">
                     <div className="w-full md:w-[200px] flex flex-col items-center md:items-start justify-center gap-3">
                         <Image src={logo.src} alt="" width={40} height={40} className="object-contain" />

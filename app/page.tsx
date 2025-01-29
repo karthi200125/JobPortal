@@ -6,6 +6,7 @@ import Pricing from "./(pages)/home/Pricing";
 import LpLeadingCompanies from "./(pages)/home/LpLeadingCompanies";
 import Footer from "./(pages)/home/Footer";
 import mainImage from '../public/main.svg'
+import LpJobs from "./(pages)/home/LpJobs";
 
 const Home = () => {
 
@@ -18,8 +19,9 @@ const Home = () => {
       />
       <LandingPage />
       <LpAbout />
+      {/* <LpLeadingCompanies /> */}
+      <LpJobs />
       <Pricing />
-      <LpLeadingCompanies />
       <Footer />
     </div>
   );
