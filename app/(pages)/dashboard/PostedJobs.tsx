@@ -5,7 +5,7 @@ import JobList from "../jobs/JobLists/JobList"
 
 const PostedJobs = ({ postedJobs, isLoading, user }: any) => {
     return (
-        <div className="w-full space-y-2 border rounded-[20px] p-5 min-h-[100px]">
+        <div className="w-full space-y-2 min-h-[100px]">
             <h3 className="font-bold">Job You Posted ({postedJobs?.length || 0})</h3>
             {isLoading ?
                 <JobListsSkeleton isDash />

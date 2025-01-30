@@ -11,8 +11,9 @@ export const createJobAction = async (
     userId?: any,
     skills?: any,
     questions?: any,
-    jobDesc?: string,
+    jobDesc?: any,
 ) => {
+
     try {
         if (!userId) {
             return { error: "User ID is required" };
@@ -46,7 +47,7 @@ export const createJobAction = async (
                 companyId: uniqueCompany.id,
                 skills,
                 questions,
-                jobDesc: "Default job description"
+                jobDesc
             },
         });
 
