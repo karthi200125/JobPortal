@@ -75,7 +75,7 @@
   }
 
   h1 {
-    @apply text-5xl
+    @apply text-lg md:text-xl lg:text-3xl xl:text-5xl
   }
 
   h2 {
@@ -83,7 +83,7 @@
   }
 
   h3 {
-    @apply text-lg
+    @apply text-sm md:text-[15px] lg:text-lg
   }
 
   h4 {

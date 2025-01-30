@@ -23,8 +23,8 @@ const SigninRightSide = () => {
                 <span className='w-[40%] h-[1px] bg-neutral-700'></span>
             </div>
 
-            {/* optional auth google and github */}            
-            <GoogleAuth />            
+            {/* optional auth google and github */}
+            <GoogleAuth />
 
             <h4 className='flex flex-row items-center gap-2 text-white/40'>
                 Create a new Account?

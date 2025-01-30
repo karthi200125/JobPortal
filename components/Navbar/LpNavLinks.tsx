@@ -13,7 +13,7 @@ import {
 export function LpNavLinks() {
     return (
         <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className='hidden lg:flex'>
 
                 <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent">Jobs</NavigationMenuTrigger>

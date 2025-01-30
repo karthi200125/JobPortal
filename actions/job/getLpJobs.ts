@@ -8,6 +8,7 @@ export const GetLpJobs = async () => {
             include: {
                 company: true
             },            
+            take: 6,
         });
         return allJobs;
     } catch (err) {

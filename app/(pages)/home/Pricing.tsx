@@ -39,15 +39,15 @@ const Pricing = () => {
     ]
 
     return (
-        <div className="w-full max-h-max rounded-[30px] space-y-20 text-text bg-white/[0.05] py-20">
-            <div className="text-center w-[50%] mx-auto space-y-3 text-white">
+        <div className="w-full max-h-max rounded-[30px] space-y-10 md:space-y-20  bg-white/[0.05] py-10 md:py-20 px-2">
+            <div className="text-center w-full lg:w-[50%] mx-auto space-y-3 text-white">
                 <h1>Our Pricing Plans</h1>
                 <h4 className="text-white/20">Choose the plan that best fits your hiring needs. Whether you are a startup or a large enterprise, our plans are designed to help you find the right talent efficiently and effectively.</h4>
             </div>
 
-            <div className="max-w-max mx-auto flex flex-row items-start gap-20">
+            <div className="max-w-max mx-auto flex flex-col md:flex-row items-center md:items-start gap-10 lg:gap-20">
                 {cards?.map((card) => (
-                    <div key={card?.id} className="w-[400px] max-h-max rounded-[30px] p-10  bg-black space-y-10">
+                    <div key={card?.id} className="w-full md:w-[400px] max-h-max rounded-[30px] p-5 lg:p-10  bg-black space-y-10">
                         <div className="flex flex-row items-center gap-5 ">
                             <div className="w-[100px] h-[100px] rounded-full bg-white/[0.05] flexcenter">
                                 {card?.icon}

@@ -42,7 +42,7 @@ const LpAbout = () => {
     ]
 
     return (
-        <div className="w-full max-h-max py-20 flex flex-col justify-center items-center gap-20">
+        <div className="w-full max-h-max py-10 lg:py-20 flex flex-col justify-center items-center gap-10 lg:gap-20">
             {/* Image Marquee */}
             <Marquee
                 speed={50}
@@ -50,7 +50,7 @@ const LpAbout = () => {
                 pauseOnHover
                 gradientWidth={100}
                 gradientColor="black"
-                className="!w-[85%] h-[200px] "
+                className="w-full md:!w-[85%] h-[100px] lg:h-[200px]"
             >
                 <div className="flex flex-row items-center gap-32 px-10">
                     {images.map((img, index) => (
@@ -61,9 +61,9 @@ const LpAbout = () => {
 
 
             {/* Stats Section */}
-            <div className="w-[85%] p-10 rounded-[30px] flex flex-row items-center justify-between bg-white/[0.05]">
+            <div className="w-full lg:w-[85%] p-10 rounded-[30px] flex flex-col md:flex-row items-center justify-between bg-white/[0.05] gap-10">
                 {AboutWhatWeDid.map((about) => (
-                    <div key={about.id} className="text-center w-[200px] space-y-2">
+                    <div key={about.id} className="text-center w-full md:w-[200px] space-y-2">
                         <h2>{about.percentage}</h2>
                         <h3 className="text-neutral-600">{about.title}</h3>
                         <h5 className="text-white/20">{about.desc}</h5>

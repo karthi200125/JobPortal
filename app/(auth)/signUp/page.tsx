@@ -5,7 +5,7 @@ import Link from "next/link"
 
 const RegisterPage = () => {
   return (
-    <main className=" w-full h-screen flex flex-row items-center bg-[var(--black)]">
+    <main className=" w-full min-h-screen sm:h-screen flex flex-row items-center bg-[var(--black)]">
       <div className="hidden w-full lg:w-[40%] h-full lg:flex items-center justify-center">
         <AuthLeftSide />
       </div>

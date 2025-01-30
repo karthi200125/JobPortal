@@ -15,7 +15,7 @@ const LpNavbar = () => {
 
             <LpNavLinks />
 
-            <div className='absolute left-0 top-0 w-full h-full flexcenter'>
+            <div className='absolute left-0 top-0 w-full h-full flex items-center justify-start lg:justify-center'>
                 <Logo />
             </div>
 
