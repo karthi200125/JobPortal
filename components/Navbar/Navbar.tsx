@@ -16,13 +16,11 @@ const Navbar = () => {
 
     const user = true
     // const user = useSelector((state: any) => state.user.user);
-
-    const [searchOpen, setSearchOpen] = useState(false)
-
+    
     return (
         <div className={`rounded-[10px] bg-black relative top-1 max-h-max`}>
             <nav
-                className={`${user ? `sticky top-1 ${!searchOpen && "rounded-[10px]"} left-0 bg-black px-2 md:px-5 z-10 w-full h-[55px] flex flex-row items-center justify-between` : "hidden"}`}
+                className={`${user ? `sticky top-1 left-0 bg-black px-2 md:px-5 z-10 w-full h-[55px] flex flex-row items-center justify-between` : "hidden"}`}
                 style={{ borderTopRightRadius: "10px", borderTopLeftRadius: "10px" }}
             >
                 <Logo />
@@ -42,16 +40,6 @@ const Navbar = () => {
                 </div>
                 <Menu />
             </nav>
-            {/* {searchOpen &&
-                <div
-                    className={`absolute top-[55px] left-0 w-full bg-black z-10 max-h-max md:h-[80px]`}
-                    style={{ borderBottomRightRadius: "10px", borderBottomLeftRadius: "10px" }}
-                >
-                    <Suspense fallback={<SearchSkeleton />}>
-                        <Search onClose={(d: any) => setSearchOpen(d)} />
-                    </Suspense>
-                </div>
-            } */}
         </div>
     );
 };

@@ -2,12 +2,38 @@
 
 import Button from '@/components/Button'
 import Image from 'next/image'
-import React from 'react'
+import React, { useTransition } from 'react'
 import { GoPlus } from 'react-icons/go'
 import noImage from '../../../../public/noImage.webp'
 import JobCompanySkeleton from '@/Skeletons/JobCompanySkeleton'
+import { useDispatch, useSelector } from 'react-redux'
+import { useQueryClient } from '@tanstack/react-query'
+import { userFollow } from '@/app/Redux/AuthSlice'
+import { UserFollowAction } from '@/actions/user/UserFollowAction'
 
 const JobCompany = ({ company, isPending }: any) => {
+
+  const user = useSelector((state: any) => state.user?.user);
+  const dispatch = useDispatch();
+  const [isLoading, startTransition] = useTransition();
+  const queryClient = useQueryClient();
+
+  const isFollowings = user?.followings?.includes(company?.userId);
+
+  const handleFollow = async () => {
+    if (!user?.id || !company?.userId) return;
+
+    startTransition(() => {
+      UserFollowAction(user.id, company?.userId).then((data: any) => {
+        if (data?.success) {
+          dispatch(userFollow(company?.userId));
+          queryClient.invalidateQueries({ queryKey: ['getuser', company?.userId] });
+        } else if (data?.error) {
+          console.error(data.error);
+        }
+      });
+    });
+  };
 
   return (
     <>
@@ -25,9 +51,17 @@ const JobCompany = ({ company, isPending }: any) => {
                 <h6>{company?.companyTotalEmployees} Employees</h6>
               </div>
             </div>
-            <Button variant='border' className='hidden md:block' icon={<GoPlus />}>Follow</Button>
+            <Button
+              variant="border"
+              isLoading={isLoading}
+              className={isFollowings ? '!bg-[var(--voilet)] text-white' : ''}
+              onClick={handleFollow}
+              icon={!isFollowings && <GoPlus size={20} />}
+            >
+              {isFollowings ? 'Unfollow' : 'Follow'}
+            </Button>
           </div>
-          <h4 className='text-[var(--lighttext)]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio maxime sit quas obcaecati pariatur aspernatur corrupti commodi odio reprehenderit culpa deserunt hic quae tempora quam sint, corporis atque magnam possimus, quod quaerat soluta quasi illum optio. Voluptates consequuntur ad, fugiat provident sapiente architecto enim debitis, quidem similique accusantium dolorum. Hic!</h4>
+          <h4 className='text-[var(--lighttext)]'>{company?.companyAbout}</h4>
         </div>
       }
     </>

@@ -6,8 +6,11 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import noAvatar from '../../../../public/noProfile.webp'
 import JobRecruiterSkeleton from '@/Skeletons/JobRecruiterSkeleton';
+import { useSelector } from 'react-redux';
 
 const JobRecruiter = ({ job, company }: any) => {
+
+    const user = useSelector((state: any) => state.user.user);
 
     const { data, isLoading } = useQuery({
         queryKey: ['getUser', job?.userId],
@@ -29,7 +32,7 @@ const JobRecruiter = ({ job, company }: any) => {
                             <h5>Technical recruiting</h5>
                             <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                         </div>
-                        <Button className='absolute top-3 right-3 hidden md:block' variant='border'>Message</Button>
+                        <Button disabled={!user?.isPro} className='absolute top-3 right-3 hidden md:block' variant='border'>Message</Button>
                     </div>
                 </div>
             }

@@ -25,7 +25,6 @@ import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { loginRedux } from "../Redux/AuthSlice";
 import { useDispatch } from "react-redux";
 
-
 const LoginForm = () => {
 
     const [showPass, setShowPass] = useState(false)
@@ -50,9 +49,7 @@ const LoginForm = () => {
             role: "CANDIDATE",
         },
     });
-
-    console.log(form.getValues("role"));
-
+    
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
         startTransition(() => {
             login(values)

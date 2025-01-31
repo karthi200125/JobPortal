@@ -1,26 +1,38 @@
 'use client'
 
 import Button from '@/components/Button';
-import React, { useState } from 'react';
+import { Progress } from '@/components/ui/progress';
+import { useCustomToast } from '@/lib/CustomToast';
+import { useUpload } from '@/lib/Uploadfile';
+import React, { useCallback, useEffect, useState } from 'react';
 import { IoMdCloudUpload } from "react-icons/io";
 import { useSelector } from 'react-redux';
 
 interface EasyApplyUserResumeProps {
-    onResume?: (value: { name: string, url: string }) => void,
+    onResume?: (value: { name: any, url: any }) => void,
     onNext?: (value: number) => void,
     onBack?: (value: number) => void,
     currentStep?: number
 }
 
 const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyApplyUserResumeProps) => {
+
     const user = useSelector((state: any) => state.user.user);
+    const defaultResumeName = 'Resume'
+    const { showErrorToast } = useCustomToast()
+
+    const [file, setFile] = useState<File | null>(null);
+
+    const { per, UploadFile, downloadUrl } = useUpload({ file });
 
     const [resumeName, setResumeName] = useState('');
-    const [resumeUrl, setResumeUrl] = useState(user?.resume || '');
+    const [resumeUrl, setResumeUrl] = useState(user?.resume || (downloadUrl || ''));
+
 
     const handleResumeUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+            setFile(file)
             const fileName = file.name;
             const fileUrl = URL.createObjectURL(file);
 
@@ -29,12 +41,16 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
         }
     };
 
+    useEffect(() => {
+        UploadFile();
+    }, [file])
+
     const handleNext = () => {
         if (!resumeUrl) {
-            return console.log("select resume first")
+            return showErrorToast("select resume first")
         }
         if (onResume) {
-            onResume({ name: resumeName, url: resumeUrl });
+            onResume({ name: resumeName, url: downloadUrl });
         }
         if (onNext) {
             onNext(currentStep + 1);
@@ -88,9 +104,17 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
                 )}
             </div>
 
+            {per !== null && (
+                <div className="space-y-3">
+                    <h3>{downloadUrl ? "Completed" : "Uploading..."}</h3>
+                    <Progress value={Number(per)} className="w-full" />
+                </div>
+            )}
+
+
             <div className="flex flex-row items-center gap-5">
                 <Button variant="border" onClick={handleBack}>Back</Button>
-                <Button onClick={handleNext}>Next</Button>
+                <Button disabled={!resumeUrl} onClick={handleNext}>Next</Button>
             </div>
         </div>
     );

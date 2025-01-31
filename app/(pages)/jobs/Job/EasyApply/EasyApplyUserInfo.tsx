@@ -27,7 +27,6 @@ const EasyApplyUserInfo = ({ onUserdata, onNext, currentStep = 0 }: EasyApplyUse
         if (onNext) {
             onNext(currentStep + 1)
         }
-        console.log(email, phone)
     }
 
     return (
@@ -64,7 +63,7 @@ const EasyApplyUserInfo = ({ onUserdata, onNext, currentStep = 0 }: EasyApplyUse
                             required
                         />
                     </div>
-                    <Button >Next</Button>
+                    <Button disabled={(!email || !phone)}>Next</Button>
                 </form>
             </div>
         </div>

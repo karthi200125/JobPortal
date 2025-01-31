@@ -20,7 +20,7 @@ const EasyApplySubmit = ({ data, job, onClose }: EasyApplySubmitProps) => {
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
     const { showSuccessToast, showErrorToast } = useCustomToast();
-
+    
     const joinedArray = job?.questions?.map((q: any) => ({
         id: q.id,
         question: q.question,
@@ -34,7 +34,7 @@ const EasyApplySubmit = ({ data, job, onClose }: EasyApplySubmitProps) => {
                 jobId: job?.id,
                 candidateEmail: data?.userData?.email,
                 candidateMobile: data?.userData?.phone,
-                candidateResume: "resume url",
+                candidateResume: data?.resume?.url,
                 questionAndAnswers: joinedArray
             }
             applyForJob(
