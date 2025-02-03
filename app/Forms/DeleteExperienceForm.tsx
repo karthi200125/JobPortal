@@ -1,16 +1,16 @@
 'use client'
 
-import { deleteEducation } from "@/actions/user/deleteEducation";
 import Button from "@/components/Button"
 import { useCustomToast } from "@/lib/CustomToast";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image"
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
-import { closeModal } from "../Redux/ModalSlice";
 import { useDispatch } from "react-redux";
+import { closeModal } from "../Redux/ModalSlice";
+import { deleteExperience } from "@/actions/user/deleteExperience";
 
-const DeleteEducationForm = ({ edu }: any) => {
+const DeleteExperienceForm = ({ exp }: any) => {
 
     const [isLoading, startTransition] = useTransition();
     const queryClient = useQueryClient();
@@ -23,11 +23,11 @@ const DeleteEducationForm = ({ edu }: any) => {
 
     const HandleDelete = () => {
         startTransition(() => {
-            deleteEducation(edu?.id)
+            deleteExperience(exp?.id)
                 .then((data: any) => {
                     if (data?.success) {
                         showSuccessToast(data?.success)
-                        queryClient.invalidateQueries({ queryKey: ['getuserEducation', id] })
+                        queryClient.invalidateQueries({ queryKey: ['getuserExperience', id] })
                         dispatch(closeModal('userDeleteExpModal'))
                     }
                     if (data?.error) {
@@ -40,18 +40,18 @@ const DeleteEducationForm = ({ edu }: any) => {
 
     return (
         <div className="w-full">
-            <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={edu?.id}>
+            <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={exp?.id}>
                 <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
                 <div>
-                    <h4 className='capitalize font-bold'>{edu?.instituteName}</h4>
-                    <h5 className='capitalize'>{edu?.degree} in {edu?.fieldOfStudy}</h5>
-                    <h5 className='capitalize text-[var(--lighttext)]'>{edu?.startDate} - {edu?.endDate}</h5>
-                    <h5>Grade : {edu?.percentage}%</h5>
+                    <h4 className='capitalize font-bold'>{exp?.companyName}</h4>
+                    <h5 className='capitalize'>{exp?.position}</h5>
+                    <h5 className='capitalize text-[var(--lighttext)]'>{exp?.startDate} - {exp?.endDate}</h5>
+                    <h5>{exp?.description}%</h5>
                 </div>
             </div>
-            <Button className='w-full' isLoading={isLoading} onClick={HandleDelete}>Delete Education</Button>
+            <Button className='w-full' isLoading={isLoading} onClick={HandleDelete}>Delete experience</Button>
         </div>
     )
 }
 
-export default DeleteEducationForm
+export default DeleteExperienceForm

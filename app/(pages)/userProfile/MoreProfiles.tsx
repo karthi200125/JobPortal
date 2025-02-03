@@ -22,7 +22,7 @@ interface ProfileUserProps {
 
 const MoreProfiles = ({ userId }: ProfileUserProps) => {
     const user = useSelector((state: any) => state.user.user);
-    
+
     const { data = [], isLoading } = useQuery({
         queryKey: ['getMoreProfiles', user, userId],
         queryFn: async () => moreProUsers(user, userId),
@@ -96,7 +96,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                 <div className="flex flex-row items-center gap-3">
                     <Link
                         href={`/userProfile/${moreuser?.id}`}
-                        className="font-bold cursor-pointer trans"
+                        className="font-bold cursor-pointer trans capitalize"
                     >
                         {moreuser?.username}
                     </Link>

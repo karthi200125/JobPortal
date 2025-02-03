@@ -18,14 +18,14 @@ import { usePathname } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCustomToast } from "@/lib/CustomToast";
 import { getCompanies } from "@/actions/company/getCompanies";
+import { closeModal } from "../Redux/ModalSlice";
 
 interface UserInfoFormProps {
     currentStep?: number;
-    onNext?: (value: number) => void;
-    onClose?: any;
+    onNext?: (value: number) => void;    
 }
 
-export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormProps) {
+export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const pathname = usePathname()
@@ -83,8 +83,8 @@ export function UserInfoForm({ currentStep = 1, onNext, onClose }: UserInfoFormP
                         showSuccessToast(data?.success)
                         if (pathname === '/welcome' && onNext) {
                             onNext(currentStep + 1);
-                        }
-                        onClose()
+                        }                        
+                        dispatch(closeModal('userInfoFormModal'))
                     }
                     if (data?.error) {
                         setErr(data?.error)

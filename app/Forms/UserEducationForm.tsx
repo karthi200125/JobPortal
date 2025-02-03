@@ -12,24 +12,25 @@ import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
 import { UserEducationSchema } from "@/lib/SchemaTypes";
 import { useState, useTransition } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
 import { useCustomToast } from "@/lib/CustomToast";
+import { closeModal } from "../Redux/ModalSlice";
 
 interface EducationProps {
     education?: any,
     edit?: boolean,
-    onClose?: any
 }
 
-export function UserEducationForm({ education, edit, onClose }: EducationProps) {
+export function UserEducationForm({ education, edit }: EducationProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const [err, setErr] = useState("")
     const { showSuccessToast } = useCustomToast()
     const queryClient = useQueryClient();
     const pathname = usePathname()
+    const dispatch = useDispatch()
 
     const { userId } = useParams()
     const id = Number(userId)
@@ -57,7 +58,7 @@ export function UserEducationForm({ education, edit, onClose }: EducationProps) 
                     if (data?.success) {
                         showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getuserEducation', id] })
-                        onClose()
+                        dispatch(closeModal(isEdit ? 'userEditEduModal' : 'userEduModal'))
                     }
                     if (data?.error) {
                         setErr(data?.error)

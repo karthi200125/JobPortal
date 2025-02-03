@@ -6,17 +6,49 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { profileCardItems } from "@/data";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import noProfile from '../../public/noProfile.webp';
 import { memo, useCallback, useMemo } from "react";
+import { IoPersonOutline } from "react-icons/io5";
+import { FaSuitcase } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
+import { PiSignOutBold } from "react-icons/pi";
 
-const UserProfileCard = () => {
+ const UserProfileCard = () => {
+    
     const user = useSelector((state: any) => state.user.user);
     const router = useRouter();
     const dispatch = useDispatch();
+
+    const profileCardItems = [
+        {
+            id: 1,
+            title: "Profile",
+            icon: <IoPersonOutline size={20} />,
+            href: `/userProfile/${user?.id}`
+        },
+        {
+            id: 2,
+            title: "Jobs",
+            icon: <FaSuitcase size={20} />,
+            href: "/jobs"
+        },
+        {
+            id: 3,
+            title: "Dashboard",
+            icon: <MdDashboard size={20} />,
+            href: "/dashboard"
+        },
+        {
+            id: 4,
+            title: "Sign Out",
+            icon: <PiSignOutBold size={20} />,
+            href: "/"
+        },
+    ];
+    
 
     const pathname = usePathname()
     const basePath = pathname.split('/').slice(0, 2).join('/');
@@ -35,7 +67,7 @@ const UserProfileCard = () => {
             <div
                 key={item.id}
                 className={`
-                    ${basePath === item.href && 'bg-neutral-200'}
+                    ${basePath === item.href && 'bg-neutral-100'}
                     flex flex-row items-center gap-5 w-full p-3 rounded-md hover:bg-neutral-100 cursor-pointer transition
                     `}
                 onClick={() => handleClick(item)}

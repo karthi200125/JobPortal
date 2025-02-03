@@ -3,7 +3,7 @@ import Loader from './Loader/Loader';
 
 interface ButtonProps {
     children: React.ReactNode;
-    onClick?: () => void;
+    onClick?: any;
     disabled?: boolean;
     isLoading?: boolean;
     variant?: 'border' | 'default';

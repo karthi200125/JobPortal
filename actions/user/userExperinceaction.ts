@@ -1,17 +1,17 @@
 'use server';
 
-import { UserEducationSchema } from '@/lib/SchemaTypes';
+import { UserExperienceSchema } from '@/lib/SchemaTypes';
 import { db } from '@/lib/db';
 import * as z from 'zod';
 
-export const userEducationAction = async (
-    values: z.infer<typeof UserEducationSchema>,
+export const userExperienceAction = async (
+    values: z.infer<typeof UserExperienceSchema>,
     userId?: any,
     isEdit: boolean = false,
-    eduId?: number
+    expId?: number
 ) => {
     try {
-        const validatedFields = UserEducationSchema.safeParse(values);
+        const validatedFields = UserExperienceSchema.safeParse(values);
 
         if (!validatedFields.success) {
             return { error: 'Invalid fields', issues: validatedFields.error.issues };
@@ -19,19 +19,19 @@ export const userEducationAction = async (
 
         const data = validatedFields.data;
 
-        let education;
+        let Experience;
 
         if (!isEdit) {
-            education = await db.education.create({
+            Experience = await db.experience.create({
                 data: {
                     ...data,
                     userId,
                 },
             });
         } else {
-            education = await db.education.update({
+            Experience = await db.experience.update({
                 where: {
-                    id: eduId,
+                    id: expId,
                 },
                 data: {
                     ...data,
@@ -40,8 +40,8 @@ export const userEducationAction = async (
             });
         }
 
-        return { success: !isEdit ? "User Education Created Successfully" : 'User Education Edited Successfully', data: education };
+        return { success: !isEdit ? "User Experience Created Successfully" : 'User Experience Edited Successfully', data: Experience };
     } catch (error) {
-        return { error: !isEdit ? "User Education Created failed" : 'User Education Edited failed' };
+        return { error: !isEdit ? "User Experience Created failed" : 'User Experience Edited failed' };
     }
 };

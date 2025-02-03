@@ -14,7 +14,9 @@ import { LuPencil } from 'react-icons/lu'
 import { CiTrash } from "react-icons/ci";
 import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
 import EducationsSkeleton from '@/Skeletons/EducationsSkeleton'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { openModal } from '@/app/Redux/ModalSlice'
+import noImage from '../../../public/noImage.webp'
 
 interface EducationsProps {
     userId?: any,
@@ -23,6 +25,8 @@ interface EducationsProps {
 
 const Educations = ({ userId, profileUser }: EducationsProps) => {
     const user = useSelector((state: any) => state.user?.user)
+    const dispatch = useDispatch()
+
     const { data, isPending } = useQuery({
         queryKey: ['getuserEducation', userId],
         queryFn: async () => await getUserEducation(userId),
@@ -37,11 +41,12 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                 {isCurrentUser &&
                     <Model
                         bodyContent={<UserEducationForm />}
+                        modalId="userEduModal"
                         title='Add you Education'
                         className='min-w-[300px] lg:w-[1000px]'
                         desc='Add you previus and current education details'
                     >
-                        <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
+                        <Button variant='border' onClick={() => dispatch(openModal('userEduModal'))} icon={<GoPlus size={20} />}>Add</Button>
                     </Model>
                 }
             </div>
@@ -51,7 +56,7 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                 :
                 data?.data?.map((edu) => (
                     <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={edu?.id}>
-                        <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
+                        <Image src={noImage.src || ''} alt='' width={50} height={50} className='bg-neutral-200' />
                         <div>
                             <h4 className='capitalize font-bold'>{edu?.instituteName}</h4>
                             <h5 className='capitalize'>{edu?.degree} in {edu?.fieldOfStudy}</h5>
@@ -68,6 +73,7 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                                             edit
                                         />
                                     }
+                                    modalId="userEditEduModal"
                                     title='Edit This Education'
                                     className='min-w-[300px] lg:w-[1000px]'
                                     desc='Edit Your education details'
@@ -77,10 +83,12 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                                         icon={<LuPencil size={20} />}
                                         isHover
                                         title='Edit Education'
+                                        onClick={() => dispatch(openModal('userEditEduModal'))}
                                     />
                                 </Model>
                                 <Model
                                     bodyContent={<DeleteEducationForm edu={edu} />}
+                                    modalId="userDeleteEduModal"
                                     title='Delete This Education'
                                     className='w-[400px]'
                                     desc='Are you Sure Delete Your education'
@@ -89,6 +97,7 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                                         icon={<CiTrash size={20} />}
                                         isHover
                                         title='Delete Education'
+                                        onClick={() => dispatch(openModal('userDeleteEduModal'))}
                                     />
                                 </Model>
                             </div>

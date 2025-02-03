@@ -1,11 +1,12 @@
 import { SkillsForm } from '@/app/Forms/SkillsForm'
+import { openModal } from '@/app/Redux/ModalSlice'
 import Icon from '@/components/Icon'
 import Model from '@/components/Model/Model'
 import SkillsSkeleton from '@/Skeletons/SkillsSkeleton'
 import React from 'react'
 import { LuPencil } from 'react-icons/lu'
 import { SlDiamond } from 'react-icons/sl'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface SkillsProps {
     profileUser?: any
@@ -15,12 +16,14 @@ interface SkillsProps {
 const Skills = ({ profileUser, isLoading }: SkillsProps) => {
     const user = useSelector((state: any) => state.user?.user)
     const isCurrentUser = user?.id === profileUser?.id
+    const dispatch = useDispatch()
 
     return (
         <div className='relative space-y-3 border rounded-[20px] p-5 mt-5'>
             {isCurrentUser &&
                 <Model
                     bodyContent={<SkillsForm skillsData={profileUser?.skills} />}
+                    modalId="userSkillsModal"
                     title='Add Your Skills'
                     desc='add your Technical & soft skills'
                     className='min-w-[300px] lg:w-[800px]'
@@ -31,6 +34,7 @@ const Skills = ({ profileUser, isLoading }: SkillsProps) => {
                         icon={<LuPencil size={20} />}
                         isHover
                         title='Edit Profile'
+                        onClick={() => dispatch(openModal('userSkillsModal'))}
                     />
                 </Model>
             }

@@ -15,7 +15,8 @@ import { UserProjectForm } from "@/app/Forms/UserProjectForm";
 import { useQuery } from "@tanstack/react-query";
 import { getUserProjects } from "@/actions/user/getUserProjects";
 import CarouselSkeleton from "@/Skeletons/CarouselSkeleton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openModal } from "@/app/Redux/ModalSlice";
 
 interface ProjectsProps {
     userId?: any;
@@ -24,6 +25,8 @@ interface ProjectsProps {
 
 export default function Projects({ userId, profileUser }: ProjectsProps) {
     const user = useSelector((state: any) => state.user?.user)
+    const dispatch = useDispatch()
+
     const { data, isLoading } = useQuery({
         queryKey: ['getUserProjects', userId],
         queryFn: () => getUserProjects(userId),
@@ -39,11 +42,12 @@ export default function Projects({ userId, profileUser }: ProjectsProps) {
                 {isCurrentUser &&
                     <Model
                         bodyContent={<UserProjectForm />}
+                        modalId="userProjectModal"
                         title="Add Project"
                         desc="Add your project details"
                         className="min-w-[300px] lg:w-[800px]"
                     >
-                        <Button variant="border" icon={<GoPlus size={20} />}>Add</Button>
+                        <Button variant="border" onClick={() => dispatch(openModal('userProjectModal'))} icon={<GoPlus size={20} />}>Add</Button>
                     </Model>
                 }
             </div>

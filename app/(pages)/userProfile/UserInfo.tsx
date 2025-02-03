@@ -20,6 +20,7 @@ import UserInfoSkeleton from '@/Skeletons/UserInfoSkeleton';
 import UserBackImage from '@/app/Forms/UserBackImage';
 import UserProfileImage from './UserProfileImage';
 import noProfile from '../../../public/noProfile.webp';
+import { openModal } from '@/app/Redux/ModalSlice';
 
 interface ProfileUserProps {
     profileUser?: any;
@@ -98,8 +99,9 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
             title="Edit Profile"
             className="min-w-[300px] lg:w-[800px]"
             triggerCls="absolute top-3 right-3"
+            modalId="userInfoFormModal"
         >
-            <Icon icon={<LuPencil size={20} />} isHover title="Edit Profile" />
+            <Icon icon={<LuPencil size={20} />} isHover title="Edit Profile" onClick={() => dispatch(openModal('userInfoFormModal'))} />
         </Model>
     );
 
@@ -134,8 +136,9 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                         title="Edit Images"
                         className="w-full md:w-[800px]"
                         triggerCls="absolute top-3 right-3"
+                        modalId="UserBackImageModal"
                     >
-                        <Icon icon={<LuPencil size={20} />} isHover title="Edit Profile" />
+                        <Icon icon={<LuPencil size={20} />} className='bg-white hover:opacity-50' isHover title="Edit Profile" onClick={() => dispatch(openModal('UserBackImageModal'))} />
                     </Model>
                 )}
             </div>

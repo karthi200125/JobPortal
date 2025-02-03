@@ -1,8 +1,9 @@
 'use client'
 
-import { getUserEducation } from '@/actions/user/getUserEducation'
-import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
+import { getUserExperience } from '@/actions/user/getUserExperience'
+import DeleteExperienceForm from '@/app/Forms/DeleteExperienceForm'
 import { UserExperienceForm } from '@/app/Forms/UserExperienceForm'
+import { openModal } from '@/app/Redux/ModalSlice'
 import Button from '@/components/Button'
 import Icon from '@/components/Icon'
 import Model from '@/components/Model/Model'
@@ -12,7 +13,8 @@ import Image from 'next/image'
 import { CiTrash } from "react-icons/ci"
 import { GoPlus } from 'react-icons/go'
 import { LuPencil } from 'react-icons/lu'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import noImage from '../../../public/noImage.webp'
 
 interface ExperiencesProps {
     userId?: any,
@@ -21,9 +23,11 @@ interface ExperiencesProps {
 
 const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
     const user = useSelector((state: any) => state.user?.user)
+    const dispatch = useDispatch()
+
     const { data, isPending } = useQuery({
-        queryKey: ['getuserEducation', userId],
-        queryFn: async () => await getUserEducation(userId),
+        queryKey: ['getuserExperience', userId],
+        queryFn: async () => await getUserExperience(userId),
     });
 
     const isCurrentUser = user?.id === profileUser?.id
@@ -35,11 +39,12 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                 {isCurrentUser &&
                     <Model
                         bodyContent={<UserExperienceForm />}
+                        modalId="userExpModal"
                         title='Add you Experience'
                         className='min-w-[300px] lg:w-[1000px]'
                         desc='Add you previus and current Experience details'
                     >
-                        <Button variant='border' icon={<GoPlus size={20} />}>Add</Button>
+                        <Button variant='border' icon={<GoPlus size={20} />} onClick={() => dispatch(openModal('userExpModal'))}>Add</Button>
                     </Model>
                 }
             </div>
@@ -47,14 +52,14 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
             {isPending ?
                 <ExperiencesSkeleton />
                 :
-                data?.data?.map((exp) => (
+                data?.data?.map((exp: any) => (
                     <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={exp?.id}>
-                        <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
+                        <Image src={noImage.src || ''} alt='' width={50} height={50} className='bg-neutral-200' />
                         <div>
-                            <h4 className='capitalize font-bold'>{exp?.instituteName}</h4>
-                            <h5 className='capitalize'>{exp?.degree} in {exp?.fieldOfStudy}</h5>
+                            <h4 className='capitalize font-bold'>{exp?.companyName}</h4>
                             <h5 className='capitalize text-[var(--lighttext)]'>{exp?.startDate} - {exp?.endDate}</h5>
-                            <h5>Grade : {exp?.percentage}%</h5>
+                            <h5 className='capitalize'>{exp?.position}</h5>
+                            <h5 className='text-neutral-400'>{exp?.description}</h5>
                         </div>
 
                         {isCurrentUser &&
@@ -66,6 +71,7 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                                             edit
                                         />
                                     }
+                                    modalId="userEditExpModal"
                                     title='Edit This Education'
                                     className='min-w-[300px] lg:w-[1000px]'
                                     desc='Edit Your education details'
@@ -75,18 +81,21 @@ const Experiences = ({ userId, profileUser }: ExperiencesProps) => {
                                         icon={<LuPencil size={20} />}
                                         isHover
                                         title='Edit Education'
+                                        onClick={() => dispatch(openModal('userEditExpModal'))}
                                     />
                                 </Model>
                                 <Model
-                                    bodyContent={<DeleteEducationForm edu={exp} />}
-                                    title='Delete This Education'
+                                    bodyContent={<DeleteExperienceForm exp={exp} />}
+                                    modalId="userDeleteExpModal"
+                                    title='Delete This Experience'
                                     className='min-w-[300px] lg:w-[400px]'
-                                    desc='Are you Sure Delete Your education'
+                                    desc='Are you Sure Delete Your experience'
                                 >
                                     <Icon
                                         icon={<CiTrash size={20} />}
                                         isHover
-                                        title='Delete Education'
+                                        title='Delete Experience'
+                                        onClick={() => dispatch(openModal('userDeleteExpModal'))}
                                     />
                                 </Model>
                             </div>

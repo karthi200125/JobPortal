@@ -14,7 +14,7 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
     const [selectedJob, setSelectedJob] = useState('');
 
     const user = useSelector((state: any) => state.user.user);
-    const userId = user?.id;
+    const userId = user?.id;    
 
     useEffect(() => {
         const fetchJobs = async () => {

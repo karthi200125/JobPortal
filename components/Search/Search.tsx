@@ -1,13 +1,17 @@
 'use client';
 
 import { IoSearchOutline } from "react-icons/io5";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { getJobTitles } from "@/actions/job/ApplyJob";
 import { Skeleton } from "../ui/skeleton";
 
 const Search = () => {
+
+    const searchParams = useSearchParams()
+    const searchQuery = searchParams.get('q')
+
     const [query, setQuery] = useState<string>('');
     const [debouncedQuery, setDebouncedQuery] = useState<string>('');
     const [openSuggestion, setOpenSuggestion] = useState<boolean>(false);
@@ -38,7 +42,7 @@ const Search = () => {
     useEffect(() => {
         if (debouncedQuery && Array.isArray(allJobTitles)) {
             const matchedJobTitles = allJobTitles.filter((job) =>
-                job.jobTitle.toLowerCase().startsWith(debouncedQuery.toLowerCase())
+                job.jobTitle.toLowerCase().includes(debouncedQuery.toLowerCase())
             );
             setFilteredJobTitles(matchedJobTitles.map((job) => job.jobTitle));
             setOpenSuggestion(matchedJobTitles.length > 0);

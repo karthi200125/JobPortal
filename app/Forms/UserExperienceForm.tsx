@@ -9,8 +9,14 @@ import FormError from "@/components/ui/FormError";
 import FormSuccess from "@/components/ui/FormSuccess";
 import { UserExperienceSchema } from "@/lib/SchemaTypes";
 import CustomFormField from "@/components/CustomFormField";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import Button from "@/components/Button";
+import { useCustomToast } from "@/lib/CustomToast";
+import { useDispatch, useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { userExperienceAction } from "@/actions/user/userExperinceaction";
+import { closeModal } from "../Redux/ModalSlice";
 
 interface ExperienceProps {
     experience?: any,
@@ -19,21 +25,46 @@ interface ExperienceProps {
 
 
 export function UserExperienceForm({ experience, edit }: ExperienceProps) {
+    const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
+    const [err, setErr] = useState("")
+
+    const { showErrorToast, showSuccessToast } = useCustomToast()
+    const queryClient = useQueryClient();
+    const dispatch = useDispatch()
+
+    const { userId } = useParams()
+    const id = Number(userId)
+
     const form = useForm<z.infer<typeof UserExperienceSchema>>({
         resolver: zodResolver(UserExperienceSchema),
         defaultValues: {
-            companyName: "",
-            position: "",            
-            startDate: "",
-            endDate: "",            
-            description: "",
+            companyName: edit ? experience?.companyName : "",
+            position: edit ? experience?.position : "",
+            startDate: edit ? experience?.startDate : "",
+            endDate: edit ? experience?.endDate : "",
+            description: edit ? experience?.description : "",
         },
     });
 
     const onSubmit = (values: z.infer<typeof UserExperienceSchema>) => {
         startTransition(() => {
-            console.log(values);
+            const userId = user?.id
+            const expId = experience?.id
+            const isEdit = edit ? true : false
+
+            userExperienceAction(values, userId, isEdit, expId)
+                .then((data: any) => {
+                    if (data.success) {
+                        showSuccessToast(data?.success)
+                        queryClient.invalidateQueries({ queryKey: ['getuserExperience', id] })
+                        dispatch(closeModal(isEdit ? 'userEditExpModal' : 'userExpModal'))
+                    }
+                    if (data.error) {
+                        setErr(data?.error)
+                        showErrorToast(data.error);
+                    }
+                })
         })
     };
 
@@ -45,16 +76,16 @@ export function UserExperienceForm({ experience, edit }: ExperienceProps) {
                         name="companyName"
                         form={form}
                         label="Company Name"
-                        placeholder="Institute Name"
+                        placeholder="Company Name"
                         isLoading={isLoading}
                     />
                     <CustomFormField
                         name="position"
                         form={form}
                         label="Job Position"
-                        placeholder="Degree"
+                        placeholder="Job Position"
                         isLoading={isLoading}
-                    />                                        
+                    />
                     <CustomFormField
                         name="startDate"
                         form={form}
@@ -82,8 +113,7 @@ export function UserExperienceForm({ experience, edit }: ExperienceProps) {
                     isLoading={isLoading}
                 />
 
-                <FormError message="" />
-                <FormSuccess message="" />
+                <FormError message={err} />
                 <Button isLoading={isLoading} className="!w-full" >Add Experience</Button>
             </form>
         </Form>

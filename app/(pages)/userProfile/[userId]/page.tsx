@@ -1,17 +1,16 @@
 'use client'
 
+import { getUserById } from "@/actions/auth/getUserById"
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from "next/navigation"
 import AboutMe from "../AboutMe"
+import CompanySlides from "../CompanySlides/CompanySlides"
 import Education from "../Educations"
+import Experiences from "../Experiences"
 import MoreProfiles from "../MoreProfiles"
 import Projects from "../Projects"
-import UserInfo from "../UserInfo"
-import { useParams } from "next/navigation"
-import { useQuery } from '@tanstack/react-query'
-import { getUserById } from "@/actions/auth/getUserById"
-import Experiences from "../Experiences"
 import Skills from "../Skills"
-import { getCompanyById, getCompanyByUserId } from "@/actions/company/getCompanyById"
-import CompanySlides from "../CompanySlides/CompanySlides"
+import UserInfo from "../UserInfo"
 
 const UserProfile = () => {
 

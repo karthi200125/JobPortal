@@ -9,6 +9,7 @@ import { useUpload } from "@/lib/Uploadfile";
 import { ChangeEvent, useState, useTransition, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
+import { closeModal } from "../Redux/ModalSlice";
 
 const UserBackImage = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -26,6 +27,7 @@ const UserBackImage = () => {
         const response = await deleteImages(userId, "pro");
         if (response.success) {
             dispatch(loginRedux(response.data));
+            dispatch(closeModal());
             showSuccessToast(response.success);
             setShowImage(null);
         } else if (response.error) {
@@ -39,7 +41,7 @@ const UserBackImage = () => {
             setFile(selectedFile);
             const newImage = URL.createObjectURL(selectedFile);
             if (newImage !== showImage) {
-                setShowImage(newImage);  // Only update if the image is different
+                setShowImage(newImage); 
             }
         }
     }, [showImage]);

@@ -8,18 +8,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
 import { IoMdArrowDropdown } from "react-icons/io";
 import { DatePosted, experiences, getStates, JobMode } from '@/getOptionsData';
 import { useRouter } from 'next/navigation';
-import Filter from './Filter';
 import { useQuery } from '@tanstack/react-query';
 import { getCompanies } from '@/actions/company/getCompanies';
 
@@ -32,68 +23,36 @@ interface Filter {
 const FilterNavbar = () => {
     const router = useRouter();
 
-    const resetFilter = () => {
-        const params = new URLSearchParams(window.location.search);        
-        params.forEach((_, key) => {
-            params.delete(key);
-        });
-      
-        const newUrl = `${window.location.pathname}`;
-        window.history.replaceState({}, '', newUrl);
-    };
-
-    const { data: states = [], isLoading: statesLoading } = useQuery({
+    const { data: states = [] } = useQuery({
         queryKey: ['getStates'],
         queryFn: async () => await getStates(),
     });
 
-    const { data: companies = [], isLoading: companyLoading } = useQuery({
+    const { data: companies = [] } = useQuery({
         queryKey: ['getCompanies'],
         queryFn: async () => await getCompanies(),
     });
 
-    const companiesOptions = companies?.map((company: any) => company?.companyName)
-    const locations = states.map((state: any) => state.name)
-
+    const companiesOptions = companies?.map((company: any) => company?.companyName) || [];
+    const locations = states.map((state: any) => state.name) || [];
 
     const filters: Filter[] = [
-        {
-            id: 1,
-            title: "Date Posted",
-            options: DatePosted
-        },
-        {
-            id: 2,
-            title: "Experience Level",
-            options: experiences
-        },
-        {
-            id: 3,
-            title: "Type",
-            options: JobMode
-        },
-        {
-            id: 4,
-            title: "Location",
-            options: locations
-        },
-        {
-            id: 5,
-            title: "Company",
-            options: companiesOptions
-        },
+        { id: 1, title: "Date Posted", options: DatePosted },
+        { id: 2, title: "Experience Level", options: experiences },
+        { id: 3, title: "Type", options: JobMode },
+        { id: 4, title: "Location", options: locations },
+        { id: 5, title: "Company", options: companiesOptions },
     ];
 
-    const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>(
-        filters.reduce((acc, filter) => {
-            acc[filter.title] = '';
-            return acc;
-        }, {} as Record<string, string>)
-    );
-    const [pendingFilters, setPendingFilters] = useState({ ...selectedFilters });
+    const defaultFilters = filters.reduce((acc, filter) => {
+        acc[filter.title] = '';
+        return acc;
+    }, {} as Record<string, string>);
+
+    const [selectedFilters, setSelectedFilters] = useState(defaultFilters);
+    const [pendingFilters, setPendingFilters] = useState({ ...defaultFilters });
     const [easyapply, setEasyapply] = useState(false);
 
-    // Handle the filter change
     const handlePendingSelection = (filterTitle: string, option: string) => {
         setPendingFilters(prev => ({
             ...prev,
@@ -106,27 +65,26 @@ const FilterNavbar = () => {
         updateUrlParams(pendingFilters, easyapply);
     };
 
-    // Update the URL parameters whenever filters are applied
-    const updateUrlParams = (filters: Record<string, string>, easyapply: boolean) => {
-        const searchParams = new URLSearchParams(window.location.search);
+    const resetFilter = () => {
+        setSelectedFilters(defaultFilters);
+        setPendingFilters(defaultFilters);
+        setEasyapply(false);
+        router.push(`/jobs`); // Reset to default jobs list
+    };
 
-        // Update filters in URL
+    const updateUrlParams = (filters: Record<string, string>, easyapply: boolean) => {
+        const searchParams = new URLSearchParams();
+
         Object.keys(filters).forEach(filterKey => {
             if (filters[filterKey]) {
                 searchParams.set(filterKey.toLowerCase().replace(/ /g, ''), filters[filterKey]);
-            } else {
-                searchParams.delete(filterKey.toLowerCase().replace(/ /g, ''));
             }
         });
 
-        // Handle easy apply filter
         if (easyapply) {
             searchParams.set('easyApply', 'true');
-        } else {
-            searchParams.delete('easyApply');
         }
 
-        // Push the updated query to the URL
         router.push(`/jobs?${searchParams.toString()}`);
     };
 
@@ -143,7 +101,6 @@ const FilterNavbar = () => {
                         <IoMdArrowDropdown size={20} />
                     </DropdownMenuTrigger>
 
-                    {/* Dropdown content */}
                     <DropdownMenuContent className="relative min-w-[300px] max-h-[400px] p-2 md:p-5 flex flex-col overflow-scroll">
                         {filter.options.map((opt) => (
                             <div key={opt} className="w-full flex flex-row items-center gap-3 p-3">
@@ -179,23 +136,10 @@ const FilterNavbar = () => {
                 Easy Apply
             </div>
 
-            {/* Filter */}
-            {/* <Sheet>
-                <SheetTrigger className='trans font-semibold text-sm max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 cursor-pointer'>
-                    All Filters
-                </SheetTrigger>
-                <SheetContent>
-                    <SheetHeader>
-                        <SheetTitle>Filter</SheetTitle>
-                        <Filter />
-                    </SheetHeader>
-                </SheetContent>
-            </Sheet> */}
-
             {/* RESET */}
             <div
                 className="text-neutral-600 font-semibold cursor-pointer trans"
-                onClick={() => resetFilter()}
+                onClick={resetFilter}
             >
                 Reset
             </div>
