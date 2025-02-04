@@ -27,7 +27,7 @@ const UserBackImage = () => {
         const response = await deleteImages(userId, "pro");
         if (response.success) {
             dispatch(loginRedux(response.data));
-            dispatch(closeModal());
+            dispatch(closeModal("UserBackImageModal"));
             showSuccessToast(response.success);
             setShowImage(null);
         } else if (response.error) {
@@ -41,7 +41,7 @@ const UserBackImage = () => {
             setFile(selectedFile);
             const newImage = URL.createObjectURL(selectedFile);
             if (newImage !== showImage) {
-                setShowImage(newImage); 
+                setShowImage(newImage);
             }
         }
     }, [showImage]);
@@ -63,6 +63,7 @@ const UserBackImage = () => {
             const response = await updateImages(userId, null, downloadUrl);
             if (response.success) {
                 dispatch(loginRedux(response.data));
+                dispatch(closeModal("UserBackImageModal"));
                 showSuccessToast(response.success);
             } else if (response.error) {
                 showErrorToast(response.error);

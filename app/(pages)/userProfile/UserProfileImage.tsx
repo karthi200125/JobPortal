@@ -10,6 +10,8 @@ import { ChangeEvent, useState, useTransition, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "@/app/Redux/AuthSlice";
 import Image from "next/image";
+import noProfile from '../../../public/noProfile.webp'
+import { closeModal } from "@/app/Redux/ModalSlice";
 
 const UserProfileImage = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -31,6 +33,7 @@ const UserProfileImage = () => {
         if (response.success) {
             dispatch(loginRedux(response.data));
             showSuccessToast(response.success);
+            dispatch(closeModal("profileImageModal"));
             setShowImage(null);
         } else if (response.error) {
             showErrorToast(response.error);
@@ -63,6 +66,7 @@ const UserProfileImage = () => {
             const response = await updateImages(userId, downloadUrl, null);
             if (response.success) {
                 dispatch(loginRedux(response.data));
+                dispatch(closeModal("profileImageModal"));
                 showSuccessToast(response.success);
             } else if (response.error) {
                 showErrorToast(response.error);
@@ -75,7 +79,7 @@ const UserProfileImage = () => {
             <div className="flexcenter">
                 <div className="relative w-[300px] h-[300px] rounded-full border overflow-hidden">
                     <Image
-                        src={showImage || ""}
+                        src={showImage || noProfile.src}
                         alt="User profile"
                         fill
                         className="w-full h-full object-cover bg-neutral-100 absolute top-0 left-0"

@@ -13,7 +13,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface ModelProps {
-    modalId: string; 
+    modalId: string;
     children: React.ReactNode;
     className?: string;
     triggerCls?: string;
@@ -24,14 +24,14 @@ interface ModelProps {
 
 const Model = ({ modalId, children, className, title, desc, bodyContent, triggerCls }: ModelProps) => {
     const dispatch = useDispatch();
-    const isOpen = useSelector((state: any) => state.modal.modals[modalId] || false); 
+    const isOpen = useSelector((state: any) => state.modal.modals[modalId] || false);
 
     const handleClose = () => {
         dispatch(closeModal(modalId));
     };
 
     const handleOpen = () => {
-        dispatch(openModal(modalId)); 
+        dispatch(openModal(modalId));
     };
 
     return (
@@ -43,7 +43,7 @@ const Model = ({ modalId, children, className, title, desc, bodyContent, trigger
             </DialogTrigger>
             <DialogContent className={`${className} max-h-screen md:max-h-[90vh] overflow-y-auto`}>
                 <DialogHeader className="borderb pb-3 sticky top-0 left-0 bg-white">
-                    <DialogTitle>{title}</DialogTitle>
+                    <DialogTitle className="capitalize">{title}</DialogTitle>
                     <DialogDescription>{desc}</DialogDescription>
                 </DialogHeader>
                 <div className="w-full max-h-max px-1 pb-6">

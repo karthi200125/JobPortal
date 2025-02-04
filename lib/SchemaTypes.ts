@@ -105,10 +105,7 @@ export const UserProjectSchema = z.object({
     }),
     proDesc: z.string().min(1, {
         message: "Project description id Rquired",
-    }),
-    proImage: z.string().min(1, {
-        message: "Project Image is required",
-    }),
+    }),    
 })
 
 export const CreateJobSchema = z.object({

@@ -9,26 +9,31 @@ import Button from "@/components/Button";
 import CustomFormField from "@/components/CustomFormField";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/ui/FormError";
-import FormSuccess from "@/components/ui/FormSuccess";
+import { useCustomToast } from "@/lib/CustomToast";
 import { UserProjectSchema } from "@/lib/SchemaTypes";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState, useTransition } from "react";
-import { useSelector } from "react-redux";
-import { useCustomToast } from "@/lib/CustomToast";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "../Redux/ModalSlice";
+import { useUpload } from "@/lib/Uploadfile";
+import { Progress } from "@/components/ui/progress";
 
 interface UserProjectProps {
     isEdit?: boolean;
     project?: any;
-    onClose?: any;
 }
 
-export function UserProjectForm({ isEdit, project, onClose }: UserProjectProps) {
+export function UserProjectForm({ isEdit, project }: UserProjectProps) {
     const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
     const queryClient = useQueryClient();
 
     const [err, setErr] = useState("")
-    const { showSuccessToast } = useCustomToast()
+    const dispatch = useDispatch()
+    const [file, setFile] = useState<File | null>(null);
+    const [showImage, setShowImage] = useState<string | null>(project?.proImage || null);
+    const { showErrorToast, showSuccessToast } = useCustomToast();
+    const { per, UploadFile, downloadUrl } = useUpload({ file });
 
     const form = useForm<z.infer<typeof UserProjectSchema>>({
         resolver: zodResolver(UserProjectSchema),
@@ -36,23 +41,38 @@ export function UserProjectForm({ isEdit, project, onClose }: UserProjectProps) 
             proName: isEdit ? project?.proName : "",
             proDesc: isEdit ? project?.proDesc : "",
             proLink: isEdit ? project?.proLink : "",
-            proImage: isEdit ? project?.proImage : "",
         },
     });
+
+    const handleImageUpload = useCallback((e: any) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            const newImage = URL.createObjectURL(selectedFile);
+            if (newImage !== showImage) {
+                setShowImage(newImage);
+            }
+        }
+    }, [showImage]);
+
+    useEffect(() => {
+        UploadFile();
+    }, [file])
+
 
     const onSubmit = (values: z.infer<typeof UserProjectSchema>) => {
         startTransition(() => {
             const userId = user?.id
             const proId = project?.id
+            const proImage = downloadUrl
 
-
-            userProjectAction(values, userId, isEdit, proId)
+            userProjectAction(values, userId, isEdit, proId, proImage)
                 .then((data) => {
                     if (data?.success) {
                         showSuccessToast(data?.success)
-                        queryClient.invalidateQueries({ queryKey: ['getuserproject', userId] })
+                        queryClient.invalidateQueries({ queryKey: ['getUserProjects', userId] })
                         queryClient.invalidateQueries({ queryKey: ['getuser', userId] })
-                        onClose()
+                        dispatch(closeModal(isEdit ? "projectEditModal" : 'userProjectModal'))
                     }
                     if (data?.error) {
                         setErr(data?.error)
@@ -87,14 +107,35 @@ export function UserProjectForm({ isEdit, project, onClose }: UserProjectProps) 
                     isTextarea
                 />
 
-                <CustomFormField
-                    name="proImage"
-                    form={form}
-                    label="Project Image"
-                    placeholder="Ex : image"
-                    isLoading={isLoading}
-                    isTextarea
-                />
+                <div className="relative h-[200px] rounded-lg border overflow-hidden">
+                    <img
+                        src={showImage || ""}
+                        alt="User profile"
+                        className="w-full h-full object-cover bg-neutral-100 absolute top-0 left-0"
+                    />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        id="imageupload"
+                        onChange={handleImageUpload}
+                    />
+                    <label
+                        htmlFor="imageupload"
+                        className="absolute top-0 left-0 w-full h-full opacity-70 z-10 flex items-center justify-center cursor-pointer transition bg-black"
+                    >
+                        <div className="space-y-3 text-center">
+                            <img src="" alt="" />
+                            <h3 className="text-blue-400 z-10">Select Image</h3>
+                        </div>
+                    </label>
+                </div>
+                {per !== null && (
+                    <div className="space-y-3">
+                        <h3>{downloadUrl ? "Completed" : "Uploading..."}</h3>
+                        <Progress value={Number(per)} className="w-full" />
+                    </div>
+                )}
 
                 <FormError message={err} />
                 <Button isLoading={isLoading} className="!w-full">

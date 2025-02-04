@@ -1,88 +1,79 @@
 "use client";
 
+import { getSkills } from "@/actions/getSkills";
 import { userSkillAction } from "@/actions/user/userSkillsAction";
 import Button from "@/components/Button";
 import FormError from "@/components/ui/FormError";
-import FormSuccess from "@/components/ui/FormSuccess";
-import { useQueryClient } from "@tanstack/react-query";
+import { useCustomToast } from "@/lib/CustomToast";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
-import { ChangeEvent, FormEvent, KeyboardEvent, useState, useTransition } from "react";
+import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useState, useTransition } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
-import { useCustomToast } from "@/lib/CustomToast";
-
-const allSkills = [
-    "JavaScript",
-    "Java",
-    "jungle",
-    "TypeScript",
-    "React",
-    "Next.js",
-    "Node.js",
-    "MongoDB",
-    "PostgreSQL",
-    "Tailwind CSS",
-    "Framer Motion",
-    "Firebase",
-];
 
 interface SkillsFormProps {
-    isEdit?: boolean;
     skillsData?: string[];
-    onClose?: any;
+    onClose?: () => void;
 }
 
-export function SkillsForm({ isEdit, skillsData, onClose }: SkillsFormProps) {
-    const user = useSelector((state: any) => state.user.user)
-    const [isLoading, startTransition] = useTransition();
-    const [skills, setSkills] = useState<string[]>(skillsData || []);
-    const [searchTerm, setSearchTerm] = useState<string>("");
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+export function SkillsForm({ skillsData = [], onClose }: SkillsFormProps) {
+    const user = useSelector((state: any) => state.user.user);
     const dispatch = useDispatch();
-
-    const pathaname = usePathname()
-    const params = useParams()
-    const userId = pathaname === '/welcome' ? user?.id : Number(params.userId)
     const queryClient = useQueryClient();
-    const { showSuccessToast } = useCustomToast()
-    const [err, setErr] = useState("")
+    const { showSuccessToast } = useCustomToast();
 
-    const onSubmit = (e: FormEvent) => {
+    const [isLoading, startTransition] = useTransition();
+    const [skills, setSkills] = useState<string[]>(skillsData);
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 500);
+
+        return () => clearTimeout(handler);
+    }, [searchTerm]);
+
+    const pathname = usePathname();
+    const params = useParams();
+    const userId = pathname === "/welcome" ? user?.id : Number(params.userId);
+
+    const { data: allSkills = [], isFetching } = useQuery<string[]>({
+        queryKey: ["getSkills", debouncedSearchTerm],
+        queryFn: async () => getSkills(debouncedSearchTerm),
+        enabled: !!debouncedSearchTerm,
+    });
+
+    const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
         startTransition(() => {
             userSkillAction(skills, userId)
                 .then((data) => {
                     if (data?.success) {
-                        queryClient.invalidateQueries({ queryKey: ['getuser', userId] })
-                        dispatch(loginRedux(data?.data))
-                        showSuccessToast(data?.success)
-                        onClose()
+                        queryClient.invalidateQueries({ queryKey: ["getuser", userId] });
+                        dispatch(loginRedux(data?.data));
+                        showSuccessToast(data?.success);
+                        onClose?.();
                     }
                     if (data?.error) {
-                        setErr(data?.error)
+                        setError(data.error);
                     }
                 })
+                .catch(() => setError("Something went wrong!"));
         });
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setSearchTerm(value);
-
-        if (value.trim() !== "") {
-            const filteredSuggestions = allSkills.filter(skill =>
-                skill.toLowerCase().startsWith(value.toLowerCase())
-            );
-            setSuggestions(filteredSuggestions);
-        } else {
-            setSuggestions([]);
-        }
+        setSearchTerm(e.target.value);
     };
 
     const handleSelectSuggestion = (suggestion: string) => {
         if (!skills.includes(suggestion)) {
-            setSkills([...skills, suggestion]);
+            setSkills((prev) => [...prev, suggestion]);
         }
         setSearchTerm("");
         setSuggestions([]);
@@ -91,8 +82,8 @@ export function SkillsForm({ isEdit, skillsData, onClose }: SkillsFormProps) {
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            if (searchTerm.trim() !== "" && !skills.includes(searchTerm)) {
-                setSkills([...skills, searchTerm.trim()]);
+            if (searchTerm.trim() && !skills.includes(searchTerm)) {
+                setSkills((prev) => [...prev, searchTerm.trim()]);
             }
             setSearchTerm("");
             setSuggestions([]);
@@ -100,10 +91,8 @@ export function SkillsForm({ isEdit, skillsData, onClose }: SkillsFormProps) {
     };
 
     const removeSkill = (skillToRemove: string) => {
-        setSkills(skills.filter(skill => skill !== skillToRemove));
+        setSkills((prev) => prev.filter((skill) => skill !== skillToRemove));
     };
-
-
 
     return (
         <form onSubmit={onSubmit} className="space-y-10">
@@ -112,22 +101,26 @@ export function SkillsForm({ isEdit, skillsData, onClose }: SkillsFormProps) {
                 <input
                     type="text"
                     value={searchTerm}
-                    placeholder="Enter Your skill"
+                    placeholder="Enter your skill"
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     className="w-full border rounded-md py-2 px-5 placeholder:text-sm"
                 />
-                {suggestions.length > 0 && (
-                    <div className=" border rounded-md mt-2 max-h-40 overflow-y-auto ">
-                        {suggestions.map((suggestion) => (
-                            <div
-                                key={suggestion}
-                                className="cursor-pointer py-2 px-5 hover:bg-neutral-100 text-sm"
-                                onClick={() => handleSelectSuggestion(suggestion)}
-                            >
-                                {suggestion}
-                            </div>
-                        ))}
+                {allSkills.length > 0 && (
+                    <div className="border rounded-md mt-2 max-h-40 overflow-y-auto">
+                        {isFetching ? (
+                            <h4>Loading...</h4>
+                        ) : (
+                            allSkills.map((suggestion) => (
+                                <div
+                                    key={suggestion}
+                                    className="cursor-pointer py-2 px-5 hover:bg-neutral-100 text-sm"
+                                    onClick={() => handleSelectSuggestion(suggestion)}
+                                >
+                                    {suggestion}
+                                </div>
+                            ))
+                        )}
                     </div>
                 )}
             </div>
@@ -150,8 +143,10 @@ export function SkillsForm({ isEdit, skillsData, onClose }: SkillsFormProps) {
                 </div>
             )}
 
-            <FormError message={err} />
-            <Button isLoading={isLoading} className="!w-full">{pathaname === '/welcome' ? "Add Skills" : "Edit Skills"}</Button>
+            <FormError message={error} />
+            <Button isLoading={isLoading} className="!w-full">
+                {pathname === "/welcome" ? "Add Skills" : "Edit Skills"}
+            </Button>
         </form>
     );
 }

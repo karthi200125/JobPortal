@@ -2,25 +2,27 @@
 
 import Image from 'next/image'
 import React, { useTransition } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import noProfile from '../../../../../public/noProfile.webp'
 import Button from '@/components/Button'
 import { applyForJob } from '@/actions/job/ApplyJob'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCustomToast } from '@/lib/CustomToast'
+import { closeModal } from '@/app/Redux/ModalSlice'
 
 interface EasyApplySubmitProps {
     job?: any;
     data?: any;
-    onClose?: any;
 }
 
-const EasyApplySubmit = ({ data, job, onClose }: EasyApplySubmitProps) => {
+const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
     const { showSuccessToast, showErrorToast } = useCustomToast();
-    
+
+    const dispatch = useDispatch()
+
     const joinedArray = job?.questions?.map((q: any) => ({
         id: q.id,
         question: q.question,
@@ -49,7 +51,7 @@ const EasyApplySubmit = ({ data, job, onClose }: EasyApplySubmitProps) => {
                     if (data?.success) {
                         showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getFilterAllJobs'] })
-                        onClose()
+                        dispatch(closeModal('easyapplyModal'))
                     }
                     if (data?.error) {
                         showErrorToast(data?.error)

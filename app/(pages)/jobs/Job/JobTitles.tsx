@@ -19,6 +19,7 @@ import noImage from "../../../../public/noImage.webp";
 import JobTitlesSkeleton from "@/Skeletons/JobTitlesSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { checkSkills } from "@/actions/job/CompareSkills";
+import { openModal } from "@/app/Redux/ModalSlice";
 
 const JobTitles = ({ job, company, isPending }: any) => {
     const user = useSelector((state: any) => state.user?.user);
@@ -126,8 +127,9 @@ const JobTitles = ({ job, company, isPending }: any) => {
                                     bodyContent={<EasyApply job={job} />}
                                     title={`Apply to ${company?.companyName || "Company"}`}
                                     className="w-full md:w-[1000px]"
+                                    modalId="easyapplyModal"
                                 >
-                                    <Button>Easy Apply</Button>
+                                    <Button onClick={() => dispatch(openModal('easyapplyModal'))}>Easy Apply</Button>
                                 </Model>
                             ) : (
                                 <Button icon={<VscLinkExternal size={15} />}>Apply on Company Site</Button>

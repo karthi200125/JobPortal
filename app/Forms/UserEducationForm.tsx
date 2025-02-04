@@ -17,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
 import { useCustomToast } from "@/lib/CustomToast";
 import { closeModal } from "../Redux/ModalSlice";
+import { education_levels, fields_of_study } from "@/data";
 
 interface EducationProps {
     education?: any,
@@ -85,7 +86,7 @@ export function UserEducationForm({ education, edit }: EducationProps) {
                         placeholder="Degree"
                         isLoading={isLoading}
                         isSelect
-                        options={['bacholrs', 'diplamo']}
+                        options={education_levels}
                     />
                     <CustomFormField
                         name="fieldOfStudy"
@@ -94,7 +95,7 @@ export function UserEducationForm({ education, edit }: EducationProps) {
                         placeholder="Field of Study"
                         isLoading={isLoading}
                         isSelect
-                        options={['compeuet', 'eletricla']}
+                        options={fields_of_study}
                     />
                     <CustomFormField
                         name="percentage"

@@ -181,3 +181,38 @@ export const profileCardItems = [
         href: "/"
     },
 ];
+
+// education levels
+export const education_levels = [
+    "10th",
+    "12th",
+    "Diploma",
+    "Bachelor's Degree",
+    "Master's Degree",
+    "Doctorate (Ph.D.)",
+    "Post Doctorate"
+]
+
+export const fields_of_study = [
+    "Arts",
+    "Science",
+    "Commerce",
+    "Engineering",
+    "Medical",
+    "Law",
+    "Management",
+    "Pharmacy",
+    "Education",
+    "Architecture",
+    "Agriculture",
+    "Design",
+    "Journalism & Mass Communication",
+    "Hospitality & Tourism",
+    "Computer Applications",
+    "Social Sciences",
+    "Fine Arts",
+    "Performing Arts",
+    "Vocational Studies"
+];
+
+

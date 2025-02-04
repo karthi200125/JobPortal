@@ -109,27 +109,29 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
         <div className="relative w-full min-h-[200px] overflow-hidden rounded-[20px] border">
             {/* Image Container */}
             <div className="absolute top-0 left-0 w-full h-[100px] md:h-[200px]">
-                <Image
+                <img
                     src={profileUser?.profileImage || 'https://img.freepik.com/free-photo/abstract-smooth-empty-grey-studio-well-use-as-backgroundbusiness-reportdigitalwebsite-templatebackdrop_1258-90252.jpg?semt=ais_hybrid'}
                     alt="Profile Background"
-                    width={100}
-                    height={200}
+                    // width={100}
+                    // height={200}
                     className="bg-neutral-200 w-full h-full object-cover"
                 />
-                {/* <Model
+                <Model
                     bodyContent={<UserProfileImage />}
                     title="Edit Images"
                     className="w-full md:w-[800px]"
                     triggerCls="absolute bottom-[-40px] left-5"
+                    modalId='profileImageModal'
                 >
-                    <Image
-                        src={isCurrentUser ? user?.userImage : profileUser?.userImage || noProfile.src}
+                    <img
+                        src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}
                         alt="Profile"
-                        width={150}
-                        height={150}
-                        className="w-[150px] h-[150px] rounded-full border-[4px] border-solid border-[var(--white)] object-cover"
+                        // width={150}
+                        // height={150}
+                        className="w-[150px] h-[150px] rounded-full border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans"
+                        onClick={() => dispatch(openModal('profileImageModal'))}
                     />
-                </Model> */}
+                </Model>
                 {isCurrentUser && (
                     <Model
                         bodyContent={<UserBackImage />}

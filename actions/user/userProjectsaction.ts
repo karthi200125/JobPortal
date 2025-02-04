@@ -8,7 +8,8 @@ export const userProjectAction = async (
     values: z.infer<typeof UserProjectSchema>,
     userId?: any,
     isEdit: boolean = false,
-    proId?: any
+    proId?: any,
+    proImage?: any
 ) => {
     try {
         const validatedFields = UserProjectSchema.safeParse(values);
@@ -26,6 +27,7 @@ export const userProjectAction = async (
                 data: {
                     ...data,
                     userId,
+                    proImage
                 },
             });
         } else {
@@ -36,6 +38,7 @@ export const userProjectAction = async (
                 data: {
                     ...data,
                     userId,
+                    proImage
                 },
             });
         }
