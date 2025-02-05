@@ -1,5 +1,6 @@
 'use client'
 
+import { userResumeUpdate } from '@/actions/user/updateResume';
 import Button from '@/components/Button';
 import { Progress } from '@/components/ui/progress';
 import { useCustomToast } from '@/lib/CustomToast';
@@ -19,15 +20,14 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
 
     const user = useSelector((state: any) => state.user.user);
     const defaultResumeName = 'Resume'
-    const { showErrorToast } = useCustomToast()
+    const { showErrorToast, showSuccessToast } = useCustomToast()
 
     const [file, setFile] = useState<File | null>(null);
 
     const { per, UploadFile, downloadUrl } = useUpload({ file });
 
     const [resumeName, setResumeName] = useState('');
-    const [resumeUrl, setResumeUrl] = useState(user?.resume || (downloadUrl || ''));
-
+    const [resumeUrl, setResumeUrl] = useState((user?.resume || downloadUrl) || '');
 
     const handleResumeUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -41,9 +41,24 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
         }
     };
 
+    const resumeUpdate = async () => {
+        await userResumeUpdate(user?.id, downloadUrl)
+            .then((data) => {
+                if (data?.success) {
+                    showSuccessToast(data?.success)
+                }
+            })
+    }
+
     useEffect(() => {
         UploadFile();
     }, [file])
+
+    useEffect(() => {
+        if (downloadUrl) {
+            resumeUpdate();
+        }
+    }, [downloadUrl])
 
     const handleNext = () => {
         if (!resumeUrl) {

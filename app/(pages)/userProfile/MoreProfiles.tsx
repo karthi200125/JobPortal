@@ -85,13 +85,14 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
 
     return (
         <div className="flex flex-row items-start gap-5 border-b py-5">
-            <Image
-                src={moreuser?.userImage || noAvatar.src}
-                alt={moreuser?.username || 'No Avatar'}
-                width={50}
-                height={50}
-                className="bg-neutral-200 rounded-full object-cover"
-            />
+            <div className='relative w-[40px] h-[40px] overflow-hidden rounded-full'>
+                <Image
+                    src={moreuser?.userImage || noAvatar.src}
+                    alt={moreuser?.username || 'No Avatar'}
+                    fill
+                    className="bg-neutral-200 rounded-full object-cover absolute top-0 left-0 w-full h-full"
+                />
+            </div>
             <div className="space-y-2">
                 <div className="flex flex-row items-center gap-3">
                     <Link

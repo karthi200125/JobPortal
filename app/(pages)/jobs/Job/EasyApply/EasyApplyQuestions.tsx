@@ -91,7 +91,7 @@ const EasyApplyQuestions = ({ job, currentStep = 0, onNext, onAnswers, onBack }:
 
                 <div className="flex flex-row items-center gap-5">
                     <Button variant="border" onClick={handleBack}>Back</Button>
-                    <Button onClick={handleNext}>Review</Button>
+                    <Button onClick={handleNext} disabled={!answers}>Review</Button>
                 </div>
             </form>
         </div>

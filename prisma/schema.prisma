@@ -30,6 +30,7 @@ model User {
   profession      String?
   website         String?
   currentCompany  String?
+  resume          String?
   skills          String[]
 
   postedJobs      Job[]       @relation("PostedJobs")

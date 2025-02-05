@@ -16,8 +16,8 @@ import { FaSuitcase } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
 
- const UserProfileCard = () => {
-    
+const UserProfileCard = () => {
+
     const user = useSelector((state: any) => state.user.user);
     const router = useRouter();
     const dispatch = useDispatch();
@@ -48,10 +48,9 @@ import { PiSignOutBold } from "react-icons/pi";
             href: "/"
         },
     ];
-    
 
     const pathname = usePathname()
-    const basePath = pathname.split('/').slice(0, 2).join('/');
+    const basePath = pathname.startsWith('/userProfile') ? pathname.split('/').slice(0, 3).join('/') : pathname.split('/').slice(0, 2).join('/')
 
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
