@@ -90,7 +90,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                 alt={moreuser?.username || 'No Avatar'}
                 width={50}
                 height={50}
-                className="bg-neutral-200 rounded-full"
+                className="bg-neutral-200 rounded-full object-cover"
             />
             <div className="space-y-2">
                 <div className="flex flex-row items-center gap-3">

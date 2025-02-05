@@ -52,7 +52,7 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             id: 3,
             icon: <MdOutlinePendingActions size={25} />,
             title: "Actions Taken",
-            count: 10 ,
+            count: 0 ,
             subtitle: "Review the jobs that took action",
         },
     ];
