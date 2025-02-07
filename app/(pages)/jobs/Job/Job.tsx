@@ -8,7 +8,7 @@ import JobPremium from "./JobPremium";
 import JobRecruiter from "./JobRecruiter";
 import JobTitles from "./JobTitles";
 
-const JobDesc = ({ job }: any) => {
+const JobDesc = ({ job, refetchJobs }: any) => {
 
     const cId = job?.companyId
 
@@ -19,11 +19,11 @@ const JobDesc = ({ job }: any) => {
 
     return (
         <div className="w-full h-full overflow-y-auto p-5 space-y-5">
-            <JobTitles job={job} company={data} isPending={isPending}/>
+            <JobTitles job={job} company={data} isPending={isPending} refetchJobs={refetchJobs} />
             <JobRecruiter job={job} company={data} />
-            <JobDescription job={job} isPending={isPending}/>
+            <JobDescription job={job} isPending={isPending} />
             <JobPremium />
-            <JobCompany company={data} isPending={isPending}/>
+            <JobCompany company={data} isPending={isPending} />
         </div>
     )
 }

@@ -51,7 +51,7 @@ const AuthSlice = createSlice({
                 const isFollowing = state.user.followings.includes(action.payload);
                 console.log('this is action payload', action.payload);
                 console.log('this is isFollowing', isFollowing);
-        
+
                 if (isFollowing) {
                     state.user.followings = state.user.followings.filter((id: any) => id !== action.payload);
                 } else {
@@ -62,7 +62,6 @@ const AuthSlice = createSlice({
                 }
             }
         }
-        
 
     },
 });

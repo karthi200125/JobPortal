@@ -13,9 +13,10 @@ import { closeModal } from '@/app/Redux/ModalSlice'
 interface EasyApplySubmitProps {
     job?: any;
     data?: any;
+    refetchJobs?: any;
 }
 
-const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
+const EasyApplySubmit = ({ data, job, refetchJobs }: EasyApplySubmitProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
@@ -52,6 +53,7 @@ const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
                         showSuccessToast(data?.success)
                         queryClient.invalidateQueries({ queryKey: ['getFilterAllJobs'] })
                         dispatch(closeModal('easyapplyModal'))
+                        refetchJobs()
                     }
                     if (data?.error) {
                         showErrorToast(data?.error)

@@ -10,6 +10,7 @@ import { ChangeEvent, useState, useTransition, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
 import { closeModal } from "../Redux/ModalSlice";
+import bg_gray from '../../public/backgray.jpg'
 
 const UserBackImage = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -75,7 +76,7 @@ const UserBackImage = () => {
         <div className="space-y-5">
             <div className="relative h-[200px] rounded-lg border overflow-hidden">
                 <img
-                    src={showImage || ""}
+                    src={showImage || bg_gray.src}
                     alt="User profile"
                     className="w-full h-full object-cover bg-neutral-100 absolute top-0 left-0"
                 />

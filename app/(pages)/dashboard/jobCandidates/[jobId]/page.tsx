@@ -1,7 +1,9 @@
+'use client'
+
 import { FaSuitcase, FaUsers } from "react-icons/fa"
 import { FaListCheck } from "react-icons/fa6"
-import JobDescription from "../../jobs/Job/JobDescription"
-import Candidates from "./Candidates"
+import JobDescription from "../../../jobs/Job/JobDescription"
+import Candidates from "../Candidates"
 import {
     Select,
     SelectContent,
@@ -11,6 +13,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { useParams } from "next/navigation"
+import { useQuery } from "@tanstack/react-query"
+import { getJobUsingId } from "@/actions/job/getJobUsingId"
 
 const JobCandidates = () => {
 
@@ -19,9 +24,13 @@ const JobCandidates = () => {
         'Top Applicants',
     ]
 
-    const HandleChange = () => {
+    const params = useParams()
+    const jobId = Number(params.jobId)
 
-    }
+    const { data: job, isPending } = useQuery({
+        queryKey: ['getJob', jobId],
+        queryFn: async () => await getJobUsingId(jobId),
+    });
 
     return (
         <div className="p-5 w-full h-screen relative flex flex-row items-start gap-5">
@@ -40,7 +49,7 @@ const JobCandidates = () => {
                     <h5>10 skills match your profile - you may be a good fit</h5>
                 </div>
 
-                <JobDescription />
+                <JobDescription job={job} isPending={isPending} />
 
             </div>
 
@@ -59,14 +68,14 @@ const JobCandidates = () => {
                         <SelectContent>
                             <SelectGroup>
                                 {options?.map((option) => (
-                                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                                    <SelectItem defaultValue={'EaryApplicants'} key={option} value={option}>{option}</SelectItem>
                                 ))}
                             </SelectGroup>
                         </SelectContent>
                     </Select>
 
                 </div>
-                <Candidates />
+                <Candidates job={job} jobId={jobId} />
             </div>
 
         </div>

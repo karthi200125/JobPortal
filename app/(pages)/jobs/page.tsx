@@ -6,7 +6,7 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import JobDesc from './Job/Job';
 import JobLists from './JobLists/JobLists';
-import { Suspense } from 'react'
+import { Suspense } from 'react';
 
 const Jobs = ({ searchParams }: { searchParams: any }) => {
     const [jobs, setJobs] = useState<any[]>([]);
@@ -14,20 +14,21 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
     const [selectedJob, setSelectedJob] = useState('');
 
     const user = useSelector((state: any) => state.user.user);
-    const userId = user?.id;    
+    const userId = user?.id;
+
+    const fetchJobs = async () => {
+        setIsLoading(true);
+        try {
+            const jobsData = await getFilterAllJobs(userId, searchParams);
+            setJobs(jobsData);
+        } catch (err) {
+            console.error('Error fetching jobs:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchJobs = async () => {
-            setIsLoading(true);
-            try {
-                const jobsData = await getFilterAllJobs(userId, searchParams);
-                setJobs(jobsData);
-            } catch (err) {
-                console.error('Error fetching jobs:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
         fetchJobs();
     }, [userId, searchParams]);
 
@@ -53,7 +54,10 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
                     </Suspense>
                 </div>
                 <div className="hidden md:block w-full md:w-[60%] overflow-y-auto jobsh">
-                    <JobDesc job={job} />
+                    <JobDesc
+                        job={job}
+                        refetchJobs={fetchJobs}
+                    />
                 </div>
             </div>
         </div>

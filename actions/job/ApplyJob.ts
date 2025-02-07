@@ -22,7 +22,7 @@ export async function applyForJob(
       },
     });
 
-    return { success: "Job applied successfully with additional data." };
+    return { success: "Job applied successfully" };
   } catch (error) {
     return { error: 'Error applying for job' }
   }

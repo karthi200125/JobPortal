@@ -61,10 +61,10 @@ const RegisterForm = () => {
             register(values)
                 .then((data) => {                    
                     if (data?.success) {
-                        setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))
+                        setSuccess(data?.success)
+                        !router.push('/welcome')
                         setErr("")
-                        router.push('/welcome')
                     }
                     if (data?.error) {
                         setErr(data?.error)

@@ -1,7 +1,7 @@
 'use client'
 
 import Button from "@/components/Button"
-import m1 from '../../../public/m1.png'
+import m1 from '../../../public/mainimg.webp'
 
 const LandingPage = () => {
     return (

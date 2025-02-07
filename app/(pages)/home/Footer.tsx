@@ -44,7 +44,7 @@ const Footer = () => {
             <div className="flex bg-white flex-col md:flex-row items-center gap-5 justify-between p-5 md:p-10 rounded-[20px] text-black">
                 <h2 className="w-full text-center md:text-start">Find Best Opurtunies Today</h2>
                 <div className="flex flex-row items-center gap-5">
-                    <Button className='bg-white text-black'>Explore Jobs</Button>
+                    <Button className="border bg-white text-black hover:!bg-transparent">Explore Jobs</Button>
                     <Button className='bg-black'>Start My Journy</Button>
                 </div>
             </div>

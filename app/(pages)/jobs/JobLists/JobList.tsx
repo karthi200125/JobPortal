@@ -19,10 +19,11 @@ import { FaTrash } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { MdEdit, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import noImage from "../../../../public/noImage.webp";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { memo, useMemo } from "react";
+import { openModal } from "@/app/Redux/ModalSlice";
 
 interface JobListProps {
     isHover?: boolean;
@@ -30,12 +31,15 @@ interface JobListProps {
     more?: boolean;
     selectedJob?: any;
     appliedJob?: any;
+    app_or_pos?: "applied" | "posted";
+    border?: boolean;
 }
 
-const JobList = ({ isHover, job, more, selectedJob }: JobListProps) => {
+const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }: JobListProps) => {
     const user = useSelector((state: any) => state.user?.user);
     const pathname = usePathname();
     const isAppliedJob = pathname === "/dashboard";
+    const dispatch = useDispatch()
 
     const { companyId, jobTitle, city, state, country, mode, experience, vacancies, jobApplications, createdAt, isEasyApply } = job || {};
 
@@ -55,7 +59,8 @@ const JobList = ({ isHover, job, more, selectedJob }: JobListProps) => {
             className={`
         ${job?.id === selectedJob ? "md:!border-l-black bg-neutral-100" : ""}
         ${isHover ? "hover:bg-neutral-100" : ""}
-        relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-b-[1px] border-white border-b-neutral-200
+        relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] 
+        ${border ? "border-b-[1px] border-white border-b-neutral-200" : ""}
       `}
         >
             <Image src={companyImage} alt="" width={60} height={60} className="w-[60px] h-[60px] object-contain" />
@@ -89,47 +94,61 @@ const JobList = ({ isHover, job, more, selectedJob }: JobListProps) => {
                         <h5 className="text-xs">{moment(createdAt).fromNow()}</h5>
                     </div>
                 ) : (
-                    <Link href="/dashboard/jobStatus" className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold">
-                        See Job Status
-                        <MdKeyboardDoubleArrowRight size={20} />
-                    </Link>
+                    <>
+                        {app_or_pos === 'posted' &&
+                            <Link href={`/dashboard/jobCandidates/${job?.id}`} className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold">
+                                See applied Candidates
+                                <MdKeyboardDoubleArrowRight size={20} />
+                            </Link>
+                        }
+                        {app_or_pos === 'applied' &&
+                            <Link href="/dashboard/jobStatus" className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold">
+                                See Job Status
+                                <MdKeyboardDoubleArrowRight size={20} />
+                            </Link>
+                        }
+                    </>
                 )}
             </div>
 
-            {more && (
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <button>
-                            <Icon icon={<IoIosMore size={20} />} isHover title="More" />
-                        </button>
-                    </PopoverTrigger>
-                    <PopoverContent className="max-w-max flex flex-col gap-1">
-                        <Model
-                            bodyContent={<CreateJobForm />}
-                            title="Edit Job"
-                            className="w-[1000px]"
-                            desc="Edit Your Job Details"
-                        >
-                            <div className="flex items-center gap-3.5 hover:bg-neutral-100 py-2 px-5 cursor-pointer rounded-md">
-                                <MdEdit size={20} />
-                                Edit
-                            </div>
-                        </Model>
-                        <Model
-                            bodyContent={<DeleteJobForm />}
-                            title="Delete Job"
-                            className="w-[500px]"
-                            desc="Are you sure you want to delete this job?"
-                        >
-                            <div className="flex items-center justify-between gap-5 hover:bg-neutral-100 py-2 px-5 cursor-pointer rounded-md">
-                                <FaTrash size={15} />
-                                Delete
-                            </div>
-                        </Model>
-                    </PopoverContent>
-                </Popover>
-            )}
-        </div>
+            {
+                more && (
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <button>
+                                <Icon icon={<IoIosMore size={20} />} isHover title="More" />
+                            </button>
+                        </PopoverTrigger>
+                        <PopoverContent className="max-w-max flex flex-col gap-1">
+                            <Model
+                                bodyContent={<CreateJobForm />}
+                                title="Edit Job"
+                                className="w-[1000px]"
+                                desc="Edit Your Job Details"
+                                modalId="editjobmodal"
+                            >
+                                <div onClick={() => dispatch(openModal('editjobmodal'))} className="flex items-center gap-3.5 hover:bg-neutral-100 py-2 px-5 cursor-pointer rounded-md">
+                                    <MdEdit size={20} />
+                                    Edit
+                                </div>
+                            </Model>
+                            <Model
+                                bodyContent={<DeleteJobForm />}
+                                title="Delete Job"
+                                className="w-[500px]"
+                                desc="Are you sure you want to delete this job?"
+                                modalId="deletejobmodal"
+                            >
+                                <div onClick={() => dispatch(openModal('deletejobmodal'))} className="flex items-center justify-between gap-5 hover:bg-neutral-100 py-2 px-5 cursor-pointer rounded-md">
+                                    <FaTrash size={15} />
+                                    Delete
+                                </div>
+                            </Model>
+                        </PopoverContent>
+                    </Popover>
+                )
+            }
+        </div >
     );
 };
 
