@@ -10,14 +10,20 @@ import Employee from "./Employee";
 const Employees = () => {
     const user = useSelector((state: any) => state.user.user);
 
+    if (!user) {
+        return <EmployeesSkeleton />;
+    }
+
     const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
         queryKey: ['getCompanyEmps', user.employees],
-        queryFn: async () => await getCompaniesEmployees(user.employees)
+        queryFn: async () => await getCompaniesEmployees(user.employees),
+        enabled: !!user?.employees,
     });
 
     const { data: verificationEmps = [], isLoading: verifyEmpsIsLoading } = useQuery({
         queryKey: ['getVerificationEmps', user.verifyEmps],
-        queryFn: async () => await getCompanyVerifyEmployees(user.verifyEmps)
+        queryFn: async () => await getCompanyVerifyEmployees(user.verifyEmps),
+        enabled: !!user?.verifyEmps,
     });
 
     return (
@@ -29,7 +35,7 @@ const Employees = () => {
                     <EmployeesSkeleton />
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
-                        {companyEmps?.length > 0 ? (
+                        {companyEmps.length > 0 ? (
                             companyEmps.map((emp: any) => (
                                 <Employee user={emp} key={emp.id} isVerify={false} />
                             ))
@@ -47,7 +53,7 @@ const Employees = () => {
                     <EmployeesSkeleton />
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
-                        {verificationEmps?.length > 0 ? (
+                        {verificationEmps.length > 0 ? (
                             verificationEmps.map((emp: any) => (
                                 <Employee user={emp} key={emp.id} isVerify={true} />
                             ))
@@ -62,4 +68,7 @@ const Employees = () => {
 };
 
 export default Employees;
+
+
+
 
