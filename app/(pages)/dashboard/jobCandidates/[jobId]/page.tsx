@@ -16,6 +16,7 @@ import {
 import { useParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getJobUsingId } from "@/actions/job/getJobUsingId"
+import moment from "moment"
 
 const JobCandidates = () => {
 
@@ -36,12 +37,15 @@ const JobCandidates = () => {
         <div className="p-5 w-full h-screen relative flex flex-row items-start gap-5">
 
             <div className="flex-1 space-y-3">
-                <h2>Full stack Developer</h2>
-                <h4 className="text-[var(--textBlur)]"> Chennai , Tamilnadu , India . 3 months Ago . (100 applicants)</h4>
+                <h2 className="capitalize">{job?.jobTitle}</h2>
+                <h4 className="text-[var(--textBlur)]">
+                    {job?.city}, {job?.state}, {job?.country}. {moment(job?.createdAt).fromNow()} (
+                    {job?.jobApplications?.length || 0} applicants)
+                </h4>
                 <div className="flex flex-row gap-3 items-center">
                     <FaSuitcase size={20} />
-                    <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">On Site</h5>
-                    <h5 className=" bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">Full Time</h5>
+                    <h5 className="bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">{job?.mode}</h5>
+                    <h5 className="bg-neutral-200 p-1 rounded-[5px] flexcenter px-3">{job?.type}</h5>
                 </div>
 
                 <div className="flex flex-row gap-3 items-center">
