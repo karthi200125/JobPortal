@@ -108,7 +108,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
     return (
         <div className="relative w-full min-h-[200px] overflow-hidden rounded-[20px] border">
             {/* Image Container */}
-            <div className="absolute top-0 left-0 w-full h-[100px] md:h-[200px]">
+            <div className="absolute top-0 left-0 w-full h-[150px] md:h-[200px]">
                 <img
                     src={profileUser?.profileImage || 'https://img.freepik.com/free-photo/abstract-smooth-empty-grey-studio-well-use-as-backgroundbusiness-reportdigitalwebsite-templatebackdrop_1258-90252.jpg?semt=ais_hybrid'}
                     alt="Profile Background"
@@ -120,7 +120,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     bodyContent={<UserProfileImage />}
                     title="Edit Images"
                     className="w-full md:w-[800px]"
-                    triggerCls="absolute bottom-[-40px] left-5"
+                    triggerCls="absolute bottom-[-70px] md:bottom-[-40px] left-5"
                     modalId='profileImageModal'
                 >
                     <img

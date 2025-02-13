@@ -7,6 +7,7 @@ import Image from 'next/image';
 import noAvatar from '../../../../public/noProfile.webp'
 import JobRecruiterSkeleton from '@/Skeletons/JobRecruiterSkeleton';
 import { useSelector } from 'react-redux';
+import Link from "next/link";
 
 const JobRecruiter = ({ job, company }: any) => {
 
@@ -27,12 +28,12 @@ const JobRecruiter = ({ job, company }: any) => {
                     <div className='flex flex-row items-start gap-5'>
                         <Image width={50} height={50} src={data?.userImage || noAvatar.src} alt='Recruiter Image' className='bg-neutral-200 rounded-full object-cover' />
                         <div className='space-y-1'>
-                            <h4 className='font-bold'>{data?.username}</h4>
+                            <Link href={`/userProfile/${data?.id}`} className='font-bold'>{data?.username}</Link>
                             <h5>{data?.profession || "Recruiter"} At {company?.companyName}</h5>
                             <h5>Technical recruiting</h5>
                             <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                         </div>
-                        <Button disabled={!user?.isPro} className='absolute top-3 right-3 hidden md:block' variant='border'>Message</Button>
+                        <Button disabled={!user?.isPro} className='absolute top-3 right-3' variant='border'>Message</Button>
                     </div>
                 </div>
             }

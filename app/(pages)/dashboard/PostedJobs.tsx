@@ -15,9 +15,9 @@ const PostedJobs = ({ postedJobs, isLoading, user }: any) => {
                         postedJobs?.map((job: any) => (
                             <div
                                 key={job?.id}
-                                className="border rounded-[20px] p-5 min-h-[100px]"
+                                className="border rounded-[20px] p-2 md:p-5 min-h-[100px]"
                             >
-                                <JobList more job={job} app_or_pos="posted"/>
+                                <JobList more job={job} app_or_pos="posted" />
                             </div>
                         ))
                         :

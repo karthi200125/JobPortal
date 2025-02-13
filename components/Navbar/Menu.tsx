@@ -6,15 +6,18 @@ import {
     SheetContent,
     SheetTrigger
 } from "@/components/ui/sheet";
-import { profileCardItems } from "@/data";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { FaCrown } from "react-icons/fa";
-import { RiMenu3Line } from "react-icons/ri";
+import { FaCrown, FaSuitcase } from "react-icons/fa";
+import { RiMenu3Line, RiMessage3Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "../Icon";
 import noAvatar from '../../public/noProfile.webp'
+import { IoPersonOutline } from "react-icons/io5";
+import { MdDashboard } from "react-icons/md";
+import { PiSignOutBold } from "react-icons/pi";
+import { BsFillBuildingsFill } from "react-icons/bs";
 
 const Menu = () => {
 
@@ -23,6 +26,45 @@ const Menu = () => {
     const dispatch = useDispatch();
     const pathname = usePathname()
     const basePath = pathname.split('/').slice(0, 2).join('/');
+
+    const profileCardItems = [
+        {
+            id: 1,
+            title: "Profile",
+            icon: <IoPersonOutline size={20} />,
+            href: `/userProfile/${user?.id}`
+        },
+        {
+            id: 2,
+            title: "Jobs",
+            icon: <FaSuitcase size={20} />,
+            href: "/jobs"
+        },
+        {
+            id: 3,
+            title: "Companies",
+            icon: <BsFillBuildingsFill size={20} />,
+            href: "/companies"
+        },
+        {
+            id: 4,
+            title: "Messages",
+            icon: <RiMessage3Fill size={20} />,
+            href: "/messages"
+        },
+        {
+            id: 5,
+            title: "Dashboard",
+            icon: <MdDashboard size={20} />,
+            href: "/dashboard"
+        },
+        {
+            id: 6,
+            title: "Sign Out",
+            icon: <PiSignOutBold size={20} />,
+            href: "/"
+        },
+    ];
 
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
@@ -44,7 +86,9 @@ const Menu = () => {
                 <SheetContent className="w-[90%] h-screen space-y-5">
                     {/*  profile detals*/}
                     <div className="flex flex-row items-start gap-3">
-                        <Image src={user?.userImage || noAvatar.src} alt="" width={60} height={60} className="rounded-full bg-neutral-200" />
+                        <div className="relative w-[50px] h-[50px] overflow-hidden rounded-full">
+                            <Image src={user?.userImage || noAvatar.src} alt="" fill className="rounded-full bg-neutral-200 w-full h-full object-cover absolute top-0 left-0" />
+                        </div>
                         <div className="space-y-1">
                             <h4 className="capitalize font-bold">{user?.username}</h4>
                             <h4 className="text-xs text-neutral-400">{user?.email}</h4>

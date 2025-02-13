@@ -9,7 +9,7 @@ import Employee from "./Employee";
 
 const Employees = () => {
     const user = useSelector((state: any) => state.user.user);
-    
+
     const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
         queryKey: ['getCompanyEmps', user?.employees],
         queryFn: async () => await getCompaniesEmployees(user?.employees),
@@ -29,7 +29,7 @@ const Employees = () => {
     return (
         <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">
             {/* Company Employees */}
-            <div className="flex-1 min-h-screen w-full space-y-5 border-r-[1px] border-solid border-neutral-200">
+            <div className="flex-1 max-h-max lg:min-h-screen w-full space-y-5 p-5 border rounded-[20px]">
                 <h3>Company Employees ({user?.employees?.length || 0})</h3>
                 {companyEmpIsLoading ? (
                     <EmployeesSkeleton />
@@ -47,7 +47,7 @@ const Employees = () => {
             </div>
 
             {/* Verification Employees */}
-            <div className="flex-1 h-full w-full space-y-5">
+            <div className="flex-1 max-h-max w-full space-y-5 p-5 border rounded-[20px]">
                 <h3>Employees Verifications ({user?.verifyEmps?.length || 0})</h3>
                 {verifyEmpsIsLoading ? (
                     <EmployeesSkeleton />

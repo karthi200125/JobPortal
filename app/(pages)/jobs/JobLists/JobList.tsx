@@ -123,7 +123,7 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
                             <Model
                                 bodyContent={<CreateJobForm />}
                                 title="Edit Job"
-                                className="w-[1000px]"
+                                className="w-full md:w-[1000px]"
                                 desc="Edit Your Job Details"
                                 modalId="editjobmodal"
                             >
@@ -135,7 +135,7 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
                             <Model
                                 bodyContent={<DeleteJobForm />}
                                 title="Delete Job"
-                                className="w-[500px]"
+                                className="w-full md:w-[500px]"
                                 desc="Are you sure you want to delete this job?"
                                 modalId="deletejobmodal"
                             >

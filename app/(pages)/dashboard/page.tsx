@@ -20,7 +20,7 @@ const Dashboard = () => {
     const isRecruiter = user?.role === 'RECRUITER'
     const isCandidate = user?.role === 'CANDIDATE'
     const isORG = user?.role === "ORGANIZATION"
-    
+
     const { data: appliedjObs, isPending: appliedJobsLoading } = useQuery({
         queryKey: ['getAppliedJobs', user?.id],
         queryFn: async () => await getAppliedJobs(user?.id),
@@ -32,11 +32,11 @@ const Dashboard = () => {
     });
 
     return (
-        <div className="w-full min-h-screen pt-5 space-y-5 ">
-            <div className="flex flex-row items-center justify-between">
+        <div className="w-full min-h-screen pt-5 space-y-5 px-2">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-5">
                 <h2 className="">Dashboard</h2>
                 <div className="flex flex-row items-center gap-5">
-                    {isORG &&
+                    {(isRecruiter || isORG) &&
                         <Button variant="border" onClick={() => router.push('/dashboard/employees')} icon={<IoIosPeople size={20} />}>
                             Employees
                         </Button>

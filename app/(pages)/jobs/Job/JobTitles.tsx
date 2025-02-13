@@ -20,6 +20,7 @@ import JobTitlesSkeleton from "@/Skeletons/JobTitlesSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { checkSkills } from "@/actions/job/CompareSkills";
 import { openModal } from "@/app/Redux/ModalSlice";
+import Link from "next/link";
 
 const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
     const user = useSelector((state: any) => state.user?.user);
@@ -61,7 +62,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
     return (
         <div className="space-y-5">
             {/* Company Info */}
-            <div className="flex flex-row items-center justify-between">
+            <Link href={`/userProfile/${company?.id}`} className="flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                     <Image
                         src={company?.companyImage || noImage.src}
@@ -73,7 +74,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                     <h5 className="text-sm font-bold">{company?.companyName}</h5>
                 </div>
                 <Icon icon={<IoIosMore size={25} />} title="More" tooltipbg="white" isHover />
-            </div>
+            </Link>
 
             {/* Job Details */}
             <div className="space-y-3">

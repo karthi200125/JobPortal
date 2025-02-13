@@ -28,7 +28,7 @@ const Candidates = ({ job, jobId }: any) => {
             <Model
                 bodyContent={<JobCandidate />}
                 title="Job Applicant Profile"
-                className="w-[800px]"
+                className="w-full md:w-[800px]"
                 modalId="jobcandidatemodal"
             >
                 <div></div>
@@ -36,7 +36,7 @@ const Candidates = ({ job, jobId }: any) => {
 
             {isPending ? (
                 "loading...."
-            ) : candidates.length === 0 ? ( 
+            ) : candidates.length === 0 ? (
                 "No Candidates Yet!"
             ) : (
                 candidates.map((can: any) => (
@@ -52,7 +52,7 @@ const Candidates = ({ job, jobId }: any) => {
                                 className="rounded-md bg-neutral-200 w-full h-full object-cover"
                             />
                         </div>
-                        <div className="w-full flex flex-row justify-between items-center">
+                        <div className="w-full flex flex-col md:flex-row justify-between items-center gap-5">
                             <div className="flex flex-col items-start">
                                 <h4 className="font-bold">{can?.user?.username}</h4>
                                 <h4>{can?.candidateEmail}</h4>

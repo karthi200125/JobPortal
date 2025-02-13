@@ -111,9 +111,9 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
                 {resumeUrl && (
                     <div className="w-full border max-h-max rounded-md p-3">
                         <iframe
-                            src={resumeUrl}
+                            src={resumeUrl || downloadUrl}
                             title="Resume Preview"
-                            className="w-full h-[400vh] md:h-[800px]"
+                            className="w-full max-h-max  md:h-[800px]"
                         />
                     </div>
                 )}

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useQueryClient } from '@tanstack/react-query'
 import { userFollow } from '@/app/Redux/AuthSlice'
 import { UserFollowAction } from '@/actions/user/UserFollowAction'
+import Link from 'next/link'
 
 const JobCompany = ({ company, isPending }: any) => {
 
@@ -43,11 +44,11 @@ const JobCompany = ({ company, isPending }: any) => {
         <div className='w-full border rounded-[10px] min-h-[100px] p-5 space-y-5'>
           <h3 className='font-bold'>About The Company</h3>
           <div className='flex flex-row items-start justify-between'>
-            <div className='flex flex-row items-start gap-5'>
+            <div className='flex flex-col md:flex-row items-start gap-5'>
               <Image src={company?.companyImage || noImage.src} alt='' width={100} height={100} className='w-[100px] h-[100px] rounded-md' />
               <div className='space-y-1'>
-                <h3 className='font-semibold capitalize'>{company?.companyName}</h3>
-                <h4 className='font-bold'>12000 follwers</h4>
+                <Link href={`/userProfile/${company?.id}`} className='font-semibold capitalize'>{company?.companyName}</Link>
+                <h4 className='font-bold'>120 follwers</h4>
                 <h6>{company?.companyTotalEmployees} Employees</h6>
               </div>
             </div>

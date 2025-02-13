@@ -34,7 +34,7 @@ const JobCandidates = () => {
     });
 
     return (
-        <div className="p-5 w-full h-screen relative flex flex-row items-start gap-5">
+        <div className="p-5 w-full h-screen relative flex flex-col md:flex-row items-start gap-5">
 
             <div className="flex-1 space-y-3">
                 <h2 className="capitalize">{job?.jobTitle}</h2>

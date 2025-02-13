@@ -15,7 +15,7 @@ const AppliedJobs = ({ aplliedJobs, isLoading }: any) => {
                         aplliedJobs?.map((job: any) => (
                             <div
                                 key={job?.id}
-                                className="border rounded-[20px] p-5 min-h-[100px]"
+                                className="border rounded-[20px] p-2 md:p-5 min-h-[100px]"
                                 onClick={() => { '' }}
                             >
                                 <JobList job={job} appliedJob={'hh'} app_or_pos="applied" />
