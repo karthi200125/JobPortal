@@ -53,8 +53,8 @@ const LpJobs = () => {
                                     height={100}
                                     className="w-[40px] md:w-[100px] h-[40px] md:h-[100px] rounded-lg bg-black object-cover"
                                 />
-                                <h3 className="text-xl font-bold">{job.jobTitle}</h3>
-                                <h5 className="text-xs font-semibold">
+                                <h3 className="text-xl font-bold capitalize">{job.jobTitle}</h3>
+                                <h5 className="text-xs font-semibold capitalize">
                                     {job.mode} Work · ${job.salary}
                                 </h5>
                             </div>
@@ -68,7 +68,7 @@ const LpJobs = () => {
                             {/* Job Skills */}
                             <div className="flex flex-wrap items-center gap-2 ">
                                 {job.skills?.map((skill: string, index: number) => (
-                                    <div key={index} className="rounded-full px-5 py-2 bg-black text-white text-sm font-bold">
+                                    <div key={index} className="rounded-full px-5 py-2 bg-black text-white text-sm font-bold capitalize">
                                         {skill}
                                     </div>
                                 ))}

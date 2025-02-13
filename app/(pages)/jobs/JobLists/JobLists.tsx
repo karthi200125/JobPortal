@@ -58,10 +58,10 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob }: JobListsProps)
       <div key={job.id} onClick={() => handleSelectJob(job.id)}>
         {isMobile ? (
           <BottomDrawer body={<JobDesc job={job} />}>
-            <JobList isHover job={job} selectedJob={selectedJob} />
+            <JobList isHover job={job} selectedJob={selectedJob} border />
           </BottomDrawer>
         ) : (
-          <JobList isHover job={job} selectedJob={selectedJob} />
+          <JobList isHover job={job} selectedJob={selectedJob} border />
         )}
       </div>
     ));

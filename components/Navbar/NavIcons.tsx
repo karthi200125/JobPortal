@@ -14,7 +14,7 @@ const NavIcons = () => {
         {
             id: 1,
             icon: <FaHome size={20} />,
-            count: '',
+            count: 0,
             isCount: false,
             title: "Home",
             href: "/"
@@ -30,7 +30,7 @@ const NavIcons = () => {
         {
             id: 3,
             icon: <BsFillBuildingsFill size={20} />,
-            count: 5,
+            count: 0,
             isCount: true,
             title: "Companies",
             href: "/companies"
@@ -38,7 +38,7 @@ const NavIcons = () => {
         {
             id: 4,
             icon: <FaSuitcase size={20} />,
-            count: 10,
+            count: 0,
             isCount: true,
             title: "Jobs",
             href: "/jobs"
@@ -46,7 +46,7 @@ const NavIcons = () => {
         {
             id: 5,
             icon: <MdDashboard size={20} />,
-            count: 10,
+            count: 0,
             isCount: true,
             title: "Dashboard",
             href: "/dashboard"
@@ -65,6 +65,7 @@ const NavIcons = () => {
                     icon={icon?.icon}
                     title={icon?.title}
                     isHover
+                    count={icon?.count}
                     tooltipbg='white'
                     className={`${pathname === icon?.href && "!bg-white/10 !text-white"} hover:!bg-white/10 hover:!text-white !text-neutral-600`} />
             ))}

@@ -8,7 +8,7 @@ interface IconProps {
     icon?: any;
     href?: string;
     className?: string;
-    count?: string;
+    count?: any;
     title?: string;
     tooltipbg?: string;
     isHover?: boolean;
@@ -35,11 +35,12 @@ const Icon = ({ icon, className, count, title, tooltipbg, isHover, href, onClick
                         onClick={HandleClick}
                     >
                         {icon}
-                        {count &&
-                            <div className='absolute w-[20px] h-[20px] bg-red-500 rounded-full flex items-center justify-center top-[-10px] right-[-10px] text-white text-[10px]'>
+                        {count > 0 && (
+                            <div className="absolute w-[20px] h-[20px] bg-red-500 rounded-full flex items-center justify-center top-[-6px] right-[-9px] text-white text-[10px]">
                                 {count}
                             </div>
-                        }
+                        )}
+
                     </div>
                 </TooltipTrigger>
                 <TooltipContent className={`${tooltipbg !== 'white' ? "bg-black text-white" : "bg-white text-black border"} text-xs px-3 rounded-[5px] py-2`}>

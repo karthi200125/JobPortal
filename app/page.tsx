@@ -19,9 +19,9 @@ const Home = () => {
       />
       <LandingPage />
       <LpAbout />
-      {/* <LpLeadingCompanies /> */}
       <LpJobs />
       <Pricing />
+      <LpLeadingCompanies />
       <Footer />
     </div>
   );

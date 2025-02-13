@@ -46,6 +46,7 @@ const WelcomeUserExperience = ({ currentStep = 2, onNext, onBack }: Props) => {
                 title="Experience"
                 desc="Add you Experience details"
                 className="w-full md:w-[1000px]"
+                modalId="welcomeuserexp"
             >
                 <Button variant="border" icon={<FaPlus size={20} />}>Add Experience</Button>
             </Model>
