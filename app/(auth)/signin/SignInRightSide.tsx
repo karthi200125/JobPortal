@@ -24,7 +24,7 @@ const SigninRightSide = () => {
             </div>
 
             {/* optional auth google and github */}
-            {/* <GoogleAuth /> */}
+            <GoogleAuth />
 
             <h4 className='flex flex-row items-center gap-2 text-white/40'>
                 Create a new Account?

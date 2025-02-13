@@ -58,7 +58,7 @@ const JobCandidates = () => {
             </div>
 
             <div className="flex-1 border rounded-md p-5 space-y-5">
-                <div className="flex flex-row items-center justify-between pb-5 borderb">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-between pb-5 borderb">
                     <div className="flex-1 flex flex-row items-center gap-3">
                         <FaUsers size={20} />
                         <h3 className="font-bold">Applied Candidates</h3>

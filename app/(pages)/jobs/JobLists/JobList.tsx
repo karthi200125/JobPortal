@@ -96,13 +96,13 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
                 ) : (
                     <>
                         {app_or_pos === 'posted' &&
-                            <Link href={`/dashboard/jobCandidates/${job?.id}`} className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold">
+                            <Link href={`/dashboard/jobCandidates/${job?.id}`} className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold text-xs md:text-sm">
                                 See applied Candidates
                                 <MdKeyboardDoubleArrowRight size={20} />
                             </Link>
                         }
                         {app_or_pos === 'applied' &&
-                            <Link href="/dashboard/jobStatus" className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold">
+                            <Link href="/dashboard/jobStatus" className="w-full bg-green-300 flex items-center justify-between px-2 py-1 rounded-md cursor-pointer hover:opacity-50 font-semibold text-xs md:text-sm">
                                 See Job Status
                                 <MdKeyboardDoubleArrowRight size={20} />
                             </Link>

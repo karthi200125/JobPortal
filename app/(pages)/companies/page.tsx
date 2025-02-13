@@ -16,7 +16,7 @@ const Companies = () => {
     });
 
     return (
-        <div className='w-full min-h-screen py-5 space-y-5'>
+        <div className='w-full min-h-screen py-5 space-y-5 px-2'>
             <h2 className='font-bold'>All Companies</h2>
             {isPending ?
                 <ComapniesSkeleton />
