@@ -1,14 +1,16 @@
 'use client'
 
 import { usePathname } from 'next/navigation';
+import { BsFillBuildingsFill } from "react-icons/bs";
 import { FaHome, FaSuitcase } from "react-icons/fa";
-import { IoNotifications } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { RiMessage3Fill } from "react-icons/ri";
+import { useSelector } from 'react-redux';
 import Icon from '../Icon';
-import { BsFillBuildingsFill } from "react-icons/bs";
 
 const NavIcons = () => {
+
+    const user = useSelector((state: any) => state.user.user);
 
     const NavIcons = [
         {
@@ -17,12 +19,12 @@ const NavIcons = () => {
             count: 0,
             isCount: false,
             title: "Home",
-            href: "/"
+            href: user ? "/jobs" : "/"
         },
         {
             id: 2,
             icon: <RiMessage3Fill size={20} />,
-            count: 5,
+            count: 0,
             isCount: true,
             title: "Message",
             href: "/messages"

@@ -6,7 +6,7 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
     const { easyApply, dateposted, experiencelevel, type, location, q, company } = searchParams;
 
     const ITEM_PER_PAGE = 10;
-
+    
     try {
         const filters: any = {};
 

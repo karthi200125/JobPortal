@@ -2,10 +2,10 @@
 
 import { NavIconSkeleton, PremiumSkeleton, UserProfileSkeleton } from '@/Skeletons/NavbarSkeletons';
 import dynamic from 'next/dynamic';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
+import { useSelector } from 'react-redux';
 import Logo from '../Logo';
 import Menu from './Menu';
-import { useSelector } from 'react-redux';
 
 const Premium = dynamic(() => import('./Premiem'), { suspense: true });
 const NavIcons = dynamic(() => import('./NavIcons'), { suspense: true });
@@ -15,8 +15,7 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 const Navbar = () => {
 
     const user = true
-    // const user = useSelector((state: any) => state.user.user);
-    
+
     return (
         <div className={`rounded-[10px] bg-black relative top-1 max-h-max`}>
             <nav
