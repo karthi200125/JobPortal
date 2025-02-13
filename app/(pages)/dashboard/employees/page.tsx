@@ -9,27 +9,27 @@ import Employee from "./Employee";
 
 const Employees = () => {
     const user = useSelector((state: any) => state.user.user);
+    
+    const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
+        queryKey: ['getCompanyEmps', user?.employees],
+        queryFn: async () => await getCompaniesEmployees(user?.employees),
+        enabled: !!user?.employees,
+    });
+
+    const { data: verificationEmps = [], isLoading: verifyEmpsIsLoading } = useQuery({
+        queryKey: ['getVerificationEmps', user?.verifyEmps],
+        queryFn: async () => await getCompanyVerifyEmployees(user?.verifyEmps),
+        enabled: !!user?.verifyEmps,
+    });
 
     if (!user) {
         return <EmployeesSkeleton />;
     }
 
-    const { data: companyEmps = [], isLoading: companyEmpIsLoading } = useQuery({
-        queryKey: ['getCompanyEmps', user.employees],
-        queryFn: async () => await getCompaniesEmployees(user.employees),
-        enabled: !!user?.employees,
-    });
-
-    const { data: verificationEmps = [], isLoading: verifyEmpsIsLoading } = useQuery({
-        queryKey: ['getVerificationEmps', user.verifyEmps],
-        queryFn: async () => await getCompanyVerifyEmployees(user.verifyEmps),
-        enabled: !!user?.verifyEmps,
-    });
-
     return (
         <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">
             {/* Company Employees */}
-            <div className="flex-1 min-h-screen w-full space-y-5 border-r-[1px] border-solid border-neutral-200 ">
+            <div className="flex-1 min-h-screen w-full space-y-5 border-r-[1px] border-solid border-neutral-200">
                 <h3>Company Employees ({user?.employees?.length || 0})</h3>
                 {companyEmpIsLoading ? (
                     <EmployeesSkeleton />
@@ -68,7 +68,3 @@ const Employees = () => {
 };
 
 export default Employees;
-
-
-
-
