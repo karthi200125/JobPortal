@@ -1,27 +1,38 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import google from '../../public/google.png';
-import { usePathname } from 'next/navigation';
 import Loader from '@/components/Loader/Loader';
 import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import google from '../../public/google.png';
+import { useCustomToast } from '@/lib/CustomToast';
 
-const GoogleAuth = () => {
+const GoogleAuth = ({ role }: any) => {
+
+    const { showErrorToast } = useCustomToast()
+
+    if (!role) {
+        showErrorToast("Please select a role before signing in.");
+        return;
+    }
+
     const pathname = usePathname();
     const [isLoading, setIsLoading] = useState(false);
 
     const onClick = async (provider: "google") => {
-        // setIsLoading(true);
-        // try {
-        //     await signIn(provider, {
-        //         callbackUrl: pathname === '/signin' ? '/dashboard' : '/welcome',
-        //     });
-        // } catch (error) {
-        //     console.error("Error during sign-in:", error);
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        setIsLoading(true);
+        try {
+            await signIn(provider, {
+                callbackUrl: pathname === '/signin' ? '/dashboard' : '/welcome',
+                redirect: false,
+                role,
+            });
+        } catch (error) {
+            console.error("Error during sign-in:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (

@@ -19,7 +19,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             where: { email },
         });
 
-        if (!existingUser) {
+        if (!existingUser || !existingUser.password) {
             return { error: "Email or password incorrect" };
         }
 
@@ -32,7 +32,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         if (!isPasswordValid) {
             return { error: "Email or password incorrect" };
         }
-        
+
         return { success: 'User login successful', data: existingUser };
     } catch (error) {
         console.error("Login error:", error);

@@ -6,6 +6,9 @@ import Link from 'next/link';
 
 const SigninRightSide = () => {
 
+
+    const role = "CANDIDATE"
+
     return (
         <div className='flex flex-col items-center text-white justify-between h-screen w-[95%] sm:w-[50%] md:w-[40%] py-5'>
 
@@ -24,7 +27,7 @@ const SigninRightSide = () => {
             </div>
 
             {/* optional auth google and github */}
-            <GoogleAuth />
+            <GoogleAuth role={role} />
 
             <h4 className='flex flex-row items-center gap-2 text-white/40'>
                 Create a new Account?

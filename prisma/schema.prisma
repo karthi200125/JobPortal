@@ -13,7 +13,7 @@ model User {
   firstName       String?
   lastName        String?
   email           String      @unique
-  password        String
+  password        String?
   role            Role
   isPro           Boolean     @default(false)
   userBio         String?
