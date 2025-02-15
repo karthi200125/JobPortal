@@ -18,6 +18,7 @@ import { IoPersonOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
 import { BsFillBuildingsFill } from "react-icons/bs";
+import { signOut } from "next-auth/react";
 
 const Menu = () => {
 
@@ -69,6 +70,7 @@ const Menu = () => {
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
+            signOut()
             router.push(item.href);
         } else {
             router.push(item.href);

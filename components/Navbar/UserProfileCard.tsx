@@ -15,6 +15,7 @@ import { IoPersonOutline } from "react-icons/io5";
 import { FaSuitcase } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
+import { signOut } from "next-auth/react";
 
 const UserProfileCard = () => {
 
@@ -55,6 +56,7 @@ const UserProfileCard = () => {
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
+            signOut()
             router.push(item.href);
         } else {
             router.push(item.href);

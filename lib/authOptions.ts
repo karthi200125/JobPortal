@@ -1,7 +1,48 @@
 import { db } from "@/lib/db";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-// import { parseCookies } from "nookies";
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: number;
+            username: string;
+            firstName?: string;
+            lastName?: string;
+            email: string;
+            role: string;
+            isPro: boolean;
+            userBio?: string;
+            userAbout?: string;
+            userImage?: string;
+            profileImage?: string;
+            gender?: string;
+            address?: string;
+            city?: string;
+            state?: string;
+            country?: string;
+            phoneNo?: string;
+            postalCode?: string;
+            profession?: string;
+            website?: string;
+            currentCompany?: string;
+            resume?: string;
+            skills: string[];
+            followers: number[];
+            followings: number[];
+            savedJobs: number[];
+            ProfileViews: number[];
+            employees: number[];
+            verifyEmps: number[];
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    }
+
+    interface JWT {
+        user: Session["user"];
+    }
+}
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -12,61 +53,59 @@ export const authOptions: NextAuthOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-        async signIn({ user }) {
-            try {
-                // const cookies = parseCookies();
-                // const selectedRole = cookies.user_role; 
-                const selectedRole = 'CANDIDATE'
-
-                if (!selectedRole) {
-                    console.error("Role not found in cookies.");
-                    return false;
-                }
-
-                let existingUser = await db.user.findUnique({
-                    where: { email: user.email! },
-                });
-
-                if (!existingUser) {
-                    existingUser = await db.user.create({
-                        data: {
-                            email: user.email!,
-                            username: user.name!,
-                            userImage: user.image!,
-                            role: selectedRole,
-                        },
-                    });
-                }
-
-                return true;
-            } catch (error) {
-                console.error("Error during sign-in:", error);
-                return false;
-            }
-        },
-
         async jwt({ token }) {
+            if (!token.email) return token;
+
             const existingUser = await db.user.findUnique({
                 where: { email: token.email! },
+                select: {
+                    id: true,
+                    username: true,
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    role: true,
+                    isPro: true,
+                    userBio: true,
+                    userAbout: true,
+                    userImage: true,
+                    profileImage: true,
+                    gender: true,
+                    address: true,
+                    city: true,
+                    state: true,
+                    country: true,
+                    phoneNo: true,
+                    postalCode: true,
+                    profession: true,
+                    website: true,
+                    currentCompany: true,
+                    resume: true,
+                    skills: true,
+                    followers: true,
+                    followings: true,
+                    savedJobs: true,
+                    ProfileViews: true,
+                    employees: true,
+                    verifyEmps: true,
+                    createdAt: true,
+                    updatedAt: true,
+                },
             });
 
             if (existingUser) {
-                token.id = existingUser.id;
-                token.role = existingUser.role;
+                token.user = existingUser;
             }
 
             return token;
         },
 
         async session({ session, token }) {
-            return {
-                ...session,
-                user: {
-                    ...session.user,
-                    id: token.id,
-                    role: token.role,
-                },
-            };
-        }
-    }
+            if (token.user) {
+                session.user = token.user as any;
+            }
+
+            return session;
+        },
+    },
 };
