@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { AnyAaaaRecord } from "dns";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -56,7 +57,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token }) {
             if (!token.email) return token;
 
-            const existingUser = await db.user.findUnique({
+            let user = await db.user.findUnique({
                 where: { email: token.email! },
                 select: {
                     id: true,
@@ -93,10 +94,26 @@ export const authOptions: NextAuthOptions = {
                 },
             });
 
-            if (existingUser) {
-                token.user = existingUser;
+            if (!user) {                
+                let role:any = "CANDIDATE"; 
+                if (typeof window !== "undefined") {
+                    const storedRole = localStorage.getItem("role");
+                    if (storedRole) {
+                        role = JSON.parse(storedRole);
+                    }
+                }
+
+                // Create new user
+                user = await db.user.create({
+                    data: {
+                        email: token.email!,
+                        username: token.name!,
+                        role,
+                    },
+                });
             }
 
+            token.user = user;
             return token;
         },
 
@@ -104,7 +121,6 @@ export const authOptions: NextAuthOptions = {
             if (token.user) {
                 session.user = token.user as any;
             }
-
             return session;
         },
     },

@@ -20,17 +20,19 @@ import {
 } from "@/components/ui/select";
 import { LoginSchema } from "@/lib/SchemaTypes";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { FaLock, FaLockOpen } from "react-icons/fa6";
 import { loginRedux } from "../Redux/AuthSlice";
 import { useDispatch } from "react-redux";
+import { useCustomToast } from "@/lib/CustomToast";
 
 const LoginForm = () => {
-
+    const { showErrorToast } = useCustomToast();
     const [showPass, setShowPass] = useState(false)
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
     const router = useRouter()
+    const [role, setRole] = useState<string>('');
 
     const dispatch = useDispatch();
 
@@ -40,25 +42,34 @@ const LoginForm = () => {
         "RECRUITER",
     ]
 
+    useEffect(() => {
+        if (role) {
+            localStorage.setItem('role', JSON.stringify(role));
+        }
+    }, [role]);
+
     const [isLoading, startTransition] = useTransition();
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
             email: "",
             password: "",
-            role: "CANDIDATE",
         },
     });
-    
+
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
         startTransition(() => {
-            login(values)
+            if (!role) {
+                showErrorToast("Please select a role before signing in.");
+                return;
+            }
+            login(values, role)
                 .then((data) => {
                     if (data?.success) {
                         setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))
                         setErr("")
-                        // router.push('/userProfile')
+                        router.push(`/userProfile/${data?.data?.id}`)
                     }
                     if (data?.error) {
                         console.log(data?.error)
@@ -71,30 +82,21 @@ const LoginForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
+
+                <Select onValueChange={setRole} value={role}>
+                    <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-white/10">
+                        <SelectValue placeholder="Select Role" />
+                    </SelectTrigger>
+                    <SelectContent >
+                        <SelectGroup>
+                            {options.map((option) => (
+                                <SelectItem key={option} value={option}>{option}</SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+
                 <div className='w-full space-y-3'>
-                    <FormField
-                        control={form.control}
-                        name="role"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-solid border-white/10 placeholder:text-white/30">
-                                            <SelectValue placeholder="Select Role" className="placeholder:text-white/30" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                {options.map((option) => (
-                                                    <SelectItem key={option} value={option}>{option}</SelectItem>
-                                                ))}
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
                     <FormField
                         control={form.control}
                         name="email"

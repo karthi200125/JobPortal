@@ -3,8 +3,10 @@
 import { db } from "@/lib/db"
 
 export const getUserById = async (id: any) => {
+
     if (!id) {
-        throw new Error("User ID is required")
+        console.warn("User ID is required but not provided");
+        return null;
     }
 
     const user: any = await db.user.findUnique({

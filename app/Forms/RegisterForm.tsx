@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { TiArrowRight } from "react-icons/ti";
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
@@ -29,14 +29,17 @@ import { FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
+import { useCustomToast } from "@/lib/CustomToast";
 
 
 const RegisterForm = () => {
-
+    const { showErrorToast } = useCustomToast();
     const [showPass, setShowPass] = useState(false)
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
     const router = useRouter()
+    const [role, setRole] = useState<string>('');
+
     const dispatch = useDispatch();
 
     const options = [
@@ -45,6 +48,12 @@ const RegisterForm = () => {
         "RECRUITER",
     ]
 
+    useEffect(() => {
+        if (role) {
+            localStorage.setItem('role', JSON.stringify(role));
+        }
+    }, [role]);
+
     const [isLoading, startTransition] = useTransition();
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
@@ -52,14 +61,17 @@ const RegisterForm = () => {
             username: "",
             email: "",
             password: "",
-            role: "CANDIDATE",
         },
     });
 
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         startTransition(() => {
-            register(values)
-                .then((data) => {                    
+            if (!role) {
+                showErrorToast("Please select a role before signing in.");
+                return;
+            }
+            register(values, role)
+                .then((data) => {
                     if (data?.success) {
                         dispatch(loginRedux(data?.data))
                         setSuccess(data?.success)
@@ -76,30 +88,21 @@ const RegisterForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
+
+                <Select onValueChange={setRole} value={role}>
+                    <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-white/10">
+                        <SelectValue placeholder="Select Role" />
+                    </SelectTrigger>
+                    <SelectContent >
+                        <SelectGroup>
+                            {options.map((option) => (
+                                <SelectItem key={option} value={option}>{option}</SelectItem>
+                            ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+
                 <div className='w-full space-y-3'>
-                    <FormField
-                        control={form.control}
-                        name="role"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-solid border-white/10 placeholder:text-white/30">
-                                            <SelectValue placeholder="Select Role" className="placeholder:text-white/30" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                {options.map((option) => (
-                                                    <SelectItem key={option} value={option}>{option}</SelectItem>
-                                                ))}
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
                     <FormField
                         control={form.control}
                         name="username"

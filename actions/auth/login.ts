@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import * as z from 'zod';
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
+export const login = async (values: z.infer<typeof LoginSchema>, role?: any) => {
     try {
         const validatedFields = LoginSchema.safeParse(values);
 
@@ -13,7 +13,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             return { error: "Invalid fields" };
         }
 
-        const { email, password, role } = validatedFields.data;
+        const { email, password } = validatedFields.data;
 
         const existingUser = await db.user.findUnique({
             where: { email },

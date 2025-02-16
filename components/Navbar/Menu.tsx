@@ -70,7 +70,8 @@ const Menu = () => {
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
-            signOut()
+            localStorage.removeItem('role')
+            signOut()            
             router.push(item.href);
         } else {
             router.push(item.href);

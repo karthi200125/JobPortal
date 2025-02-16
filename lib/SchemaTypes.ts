@@ -165,8 +165,7 @@ export const RegisterSchema = z.object({
     }),
     password: z.string().min(6, {
         message: "Password is required, with a minimum of 6 characters",
-    }),
-    role: RoleEnum,
+    }),    
 })
 
 export const LoginSchema = z.object({
@@ -175,8 +174,7 @@ export const LoginSchema = z.object({
     }),
     password: z.string().min(6, {
         message: "Password is required, with a minimum of 6 characters",
-    }),
-    role: RoleEnum,
+    }),    
 })
 
 export const CompanySchema = z.object({

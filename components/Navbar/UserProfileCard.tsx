@@ -56,6 +56,7 @@ const UserProfileCard = () => {
     const handleClick = useCallback((item: any) => {
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
+            localStorage.removeItem('role')
             signOut()
             router.push(item.href);
         } else {
@@ -80,7 +81,7 @@ const UserProfileCard = () => {
     }, [handleClick]);
 
     return (
-        <HoverCard>
+        <HoverCard >
             <HoverCardTrigger asChild>
                 <button onClick={() => router.push('/userprofile')}>
                     <Image
@@ -92,7 +93,7 @@ const UserProfileCard = () => {
                     />
                 </button>
             </HoverCardTrigger>
-            <HoverCardContent className="space-y-3 min-w-[250px]">
+            <HoverCardContent className="space-y-3 min-w-[250px] overflow-hidden">
                 <div className="flex flex-row items-start gap-5 border-b pb-3">
                     <Image
                         src={user?.userImage || noProfile.src}
@@ -103,7 +104,7 @@ const UserProfileCard = () => {
                     />
                     <div className="w-[170px]">
                         <h4 className="capitalize font-bold">{user?.username}{user?.id}</h4>
-                        <h4 className="text-xs text-neutral-400">{user?.email}</h4>
+                        <h4 className="text-xs text-neutral-400 line-clamp-1">{user?.email}</h4>
                         <h4>{user?.profession}</h4>
                         {/* <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6> */}
                     </div>
