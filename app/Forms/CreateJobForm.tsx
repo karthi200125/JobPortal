@@ -104,7 +104,7 @@ const CreateJobForm = () => {
   const { data: citiesOptions = [], isLoading: citiesLoading } = useQuery({
     queryKey: ["getCities", state],
     queryFn: () => getCities(state),
-    enabled: !!state, // Prevent unnecessary calls when state is empty
+    enabled: !!state,
   });
 
   const { data: companies = [], isLoading: companyLoading } = useQuery({
