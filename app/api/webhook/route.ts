@@ -1,3 +1,5 @@
+'use server'
+
 import { db } from '@/lib/db';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
@@ -8,10 +10,14 @@ export async function POST(req: Request) {
         typescript: true
     });
 
-    const sig = req.headers.get('stripe-signature')!;
-    const rawBody = await req.text();
+    const sig = req.headers.get('stripe-signature');
+    if (!sig) {
+        return NextResponse.json({ error: "Missing stripe-signature header" }, { status: 400 });
+    }
 
-    let event;
+    const rawBody = await req.text();
+    let event: Stripe.Event;
+
     try {
         event = stripe.webhooks.constructEvent(
             rawBody,
@@ -19,89 +25,84 @@ export async function POST(req: Request) {
             process.env.STRIPE_WEBHOOK_SECRET!
         );
     } catch (err: any) {
+        console.error("Webhook Error:", err.message);
         return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
     }
 
-    switch (event.type) {
-        case 'checkout.session.completed': {
-            const session = event.data.object as Stripe.Checkout.Session;
+    const response = NextResponse.json({ received: true }, { status: 200 });
 
-            if (session.metadata?.userId) {
-                const userId = Number(session.metadata.userId);
-                const subscriptionType = session.metadata.subscriptionType;
+    (async () => {
+        try {
+            switch (event.type) {
+                case 'checkout.session.completed': {
+                    const session = event.data.object as Stripe.Checkout.Session;
 
-                // Calculate expiry date
-                const expiryDate = new Date();
-                if (subscriptionType === "Monthly") {
-                    expiryDate.setMonth(expiryDate.getMonth() + 1);
-                } else if (subscriptionType === "Annual") {
-                    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-                }
-
-                await db.user.update({
-                    where: { id: userId },
-                    data: {
-                        isPro: true,
-                        updatedAt: new Date(),
+                    if (!session.metadata?.userId || !session.metadata?.subscriptionType) {
+                        console.error("Missing metadata (userId or subscriptionType) in session");
+                        return;
                     }
-                });
 
-                console.log(`User ${userId} is now Pro until ${expiryDate}`);
-            }
-            break;
-        }
+                    const userId = parseInt(session.metadata.userId, 10);
+                    if (isNaN(userId)) {
+                        console.error("Invalid userId:", session.metadata.userId);
+                        return;
+                    }
 
-        case 'invoice.payment_failed': {
-            const invoice = event.data.object as Stripe.Invoice;
-            const customerId = invoice.customer as string;
+                    const user = await db.user.findUnique({ where: { id: userId } });
 
-            // Get the customer email from Stripe
-            const customer = await stripe.customers.retrieve(customerId) as Stripe.Customer;
+                    if (user) {
+                        const expiryDate = new Date();
+                        if (session.metadata.subscriptionType === "Monthly") {
+                            expiryDate.setMonth(expiryDate.getMonth() + 1);
+                        } else if (session.metadata.subscriptionType === "Annual") {
+                            expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+                        }
 
-            if (customer.email) {
-                const user = await db.user.findFirst({
-                    where: { email: customer.email }
-                });
-
-                if (user) {
-                    await db.user.update({
-                        where: { id: user.id },
-                        data: { isPro: false }
-                    });
-
-                    console.log(`Subscription failed for user ${user.id}, setting isPro to false.`);
+                        await db.user.update({
+                            where: { id: userId },
+                            data: { isPro: true, updatedAt: new Date() }
+                        });
+                        console.log(`User ${userId} is now Pro.`);
+                    } else {
+                        console.error(`User with ID ${userId} not found`);
+                    }
+                    break;
                 }
-            }
-            break;
-        }
 
-        case 'customer.subscription.deleted': {
-            const subscription = event.data.object as Stripe.Subscription;
-            const customerId = subscription.customer as string;
+                case 'invoice.payment_failed': {
+                    const invoice = event.data.object as Stripe.Invoice;
+                    const customerId = invoice.customer as string;
 
-            // Get the customer email from Stripe
-            const customer = await stripe.customers.retrieve(customerId) as Stripe.Customer;
+                    try {
+                        const customer = await stripe.customers.retrieve(customerId) as Stripe.Customer;
 
-            if (customer.email) {
-                const user = await db.user.findFirst({
-                    where: { email: customer.email }
-                });
+                        if (customer.email) {
+                            const user = await db.user.findUnique({ where: { email: customer.email } });
 
-                if (user) {
-                    await db.user.update({
-                        where: { id: user.id },
-                        data: { isPro: false }
-                    });
+                            if (user) {
+                                await db.user.update({
+                                    where: { id: user.id },
+                                    data: { isPro: false, updatedAt: new Date() }
+                                });
 
-                    console.log(`Subscription canceled for user ${user.id}, setting isPro to false.`);
+                                console.log(`Subscription failed for user ${user.id}, setting isPro to false.`);
+                            } else {
+                                console.error(`User with email ${customer.email} not found.`);
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Error handling invoice.payment_failed:", err);
+                    }
+                    break;
                 }
+
+                default:
+                    console.log(`Unhandled event type: ${event.type}`);
             }
-            break;
+        } catch (error) {
+            console.error("Error processing webhook event:", error);
         }
+    })();
 
-        default:
-            console.log(`Unhandled event type: ${event.type}`);
-    }
-
-    return NextResponse.json({ received: true });
+    return response;
 }

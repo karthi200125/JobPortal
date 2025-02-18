@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export const CheckOutSession = async (values: any) => {
     const { user, plan } = values;
-    
+
     if (!user || !plan) {
         console.log("User or subscription plan missing.");
         return;
@@ -17,21 +17,21 @@ export const CheckOutSession = async (values: any) => {
 
     try {
         let customer: any = await stripe.customers.list({ email: user.email, limit: 1 });
+        
         if (!customer.data.length) {
             customer = await stripe.customers.create({
                 email: user.email,
-                name: user.username,
+                name: user.username,                
             });
         } else {
             customer = customer.data[0];
         }
-
-        // Create a Stripe checkout session
+        
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'subscription',
-            success_url: `http://localhost:3000/success?order_success=true`,
-            cancel_url: `http://localhost:3000/success?order_success=false`,
+            success_url: `${process.env.NEXT_PUBLIC_URL}/subscription`,
+            cancel_url: `${process.env.NEXT_PUBLIC_URL}/subscription`,
             customer: customer.id,
             metadata: {
                 userId: user.id,
@@ -39,6 +39,7 @@ export const CheckOutSession = async (values: any) => {
                 plan: plan.name,
                 subscriptionType: plan.type,
             },
+            billing_address_collection: 'required', 
             line_items: [
                 {
                     price_data: {
@@ -47,7 +48,7 @@ export const CheckOutSession = async (values: any) => {
                             name: plan.name,
                             description: plan.features.join(', '),
                         },
-                        unit_amount: Number(plan.price.replace(',', '')) * 100, 
+                        unit_amount: Number(plan.price.replace(',', '')) * 100,
                         recurring: {
                             interval: plan.type === 'Monthly' ? 'month' : 'year',
                         },
@@ -60,7 +61,7 @@ export const CheckOutSession = async (values: any) => {
         return { sessionUrl: session.url };
 
     } catch (error) {
+        console.error("Error during Stripe checkout session creation:", error);
         throw error;
     }
 };
-

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { useSession } from "next-auth/react";
 import { loginRedux } from "@/app/Redux/AuthSlice";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProtectedRoute = () => {
     const { data: session, status } = useSession();
@@ -17,19 +17,16 @@ const ProtectedRoute = () => {
     }, [session, status, dispatch]);
 
     const user = useSelector((state: any) => state.user.user);
-    const router = useRouter();
 
     useEffect(() => {
         const currentPath = window.location.pathname;
-
         if (!user && status !== "loading") {
-            router.push("/");
+            redirect("/");
         }
-
         else if (user && ["/signin", "/signUp", "/"].includes(currentPath)) {
-            router.push(`/userProfile/${user.id}`);
+            redirect(`/userProfile/${user.id}`);
         }
-    }, [user, status, router]);
+    }, [user, status, redirect]);
 
     return null;
 };
