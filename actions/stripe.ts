@@ -17,16 +17,16 @@ export const CheckOutSession = async (values: any) => {
 
     try {
         let customer: any = await stripe.customers.list({ email: user.email, limit: 1 });
-        
+
         if (!customer.data.length) {
             customer = await stripe.customers.create({
                 email: user.email,
-                name: user.username,                
+                name: user.username,
             });
         } else {
             customer = customer.data[0];
         }
-        
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'subscription',
@@ -39,7 +39,7 @@ export const CheckOutSession = async (values: any) => {
                 plan: plan.name,
                 subscriptionType: plan.type,
             },
-            billing_address_collection: 'required', 
+            billing_address_collection: 'required',
             line_items: [
                 {
                     price_data: {

@@ -1,41 +1,21 @@
 'use client'
 
-import { getUserById } from "@/actions/auth/getUserById";
 import { CheckOutSession } from "@/actions/stripe";
 import Button from "@/components/Button";
 import { subscriptionPlans } from "@/data";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState, useTransition } from "react";
+import { useTransition } from "react";
 import { FaCrown } from "react-icons/fa";
 import { PiArrowCircleRightFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
 
 export default function Subscription() {
-    const temp = useSelector((state: any) => state.user.user);
-    const [isLoading, startTransition] = useTransition()
-    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
-
-    const { data: user, isPending } = useQuery({
-        queryKey: ['getSubscriptionUser', temp?.id],
-        queryFn: async () => await getUserById(temp?.id),
-    });
+    const user = useSelector((state: any) => state.user.user);
+    const [isLoading, startTransition] = useTransition()    
 
     let selectedTab: "candidates" | "recruiters" | "organizations" | null = null;
     if (user?.role === "RECRUITER") selectedTab = "recruiters";
     else if (user?.role === "CANDIDATE") selectedTab = "candidates";
     else if (user?.role === "ORGANIZATION") selectedTab = "organizations";
-
-    useEffect(() => {
-        fetch(`/api/checkPaymentStatus?userId=${user?.id}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    setPaymentStatus("Payment Successful");
-                } else {
-                    setPaymentStatus("Payment Failed");
-                }
-            })
-    }, [user]);
 
     if (!selectedTab) return <p className="text-center">No subscription plans available.</p>;
 
@@ -96,13 +76,7 @@ export default function Subscription() {
                     ))}
                 </div>
             }
-
-            {/* Display Payment Status */}
-            {paymentStatus && (
-                <div className="mt-5 text-center">
-                    <h2>{paymentStatus}</h2>
-                </div>
-            )}
+            
         </div>
     );
 }

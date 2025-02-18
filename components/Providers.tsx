@@ -5,10 +5,8 @@ import {
     QueryClient,
     QueryClientProvider
 } from '@tanstack/react-query';
-import { Provider } from "react-redux";
-import { Toaster } from "sonner"
-import { usePathname } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
+import { Provider } from "react-redux";
 
 interface ProvidersProps {
     children: React.ReactNode;
@@ -16,17 +14,13 @@ interface ProvidersProps {
 
 const Providers = ({ children }: ProvidersProps) => {
 
-    const queryClient = new QueryClient()
-
-    const pathname = usePathname();
-    const blackBg = pathname === '/' || pathname === '/signin' || pathname === '/signUp'
+    const queryClient = new QueryClient()    
 
     return (
         <div>
             <SessionProvider>
                 <Provider store={Store}>
-                    <QueryClientProvider client={queryClient}>
-                        {/* <Toaster position="bottom-right" style={{ zIndex: '9999' }} /> */}
+                    <QueryClientProvider client={queryClient}>                        
                         {children}
                     </QueryClientProvider>
                 </Provider>
