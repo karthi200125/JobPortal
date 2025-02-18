@@ -1,16 +1,35 @@
-'use client'
+'use client';
 
+import { getUserById } from "@/actions/auth/getUserById";
 import { CheckOutSession } from "@/actions/stripe";
+import { loginRedux } from "@/app/Redux/AuthSlice";
 import Button from "@/components/Button";
 import { subscriptionPlans } from "@/data";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { FaCrown } from "react-icons/fa";
 import { PiArrowCircleRightFill } from "react-icons/pi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Subscription() {
     const user = useSelector((state: any) => state.user.user);
-    const [isLoading, startTransition] = useTransition()    
+    const dispatch = useDispatch();
+    const [isLoading, startTransition] = useTransition();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await getUserById(user?.id);
+                const data = await res.json();
+                if (data) {
+                    dispatch(loginRedux(data));
+                }
+            } catch (error) {
+                console.error("Failed to fetch updated user data:", error);
+            }
+        };
+
+        fetchUser();
+    }, [dispatch]);
 
     let selectedTab: "candidates" | "recruiters" | "organizations" | null = null;
     if (user?.role === "RECRUITER") selectedTab = "recruiters";
@@ -36,14 +55,15 @@ export default function Subscription() {
         <div className="w-full flex flex-col gap-5 items-center justify-center min-h-screen py-10">
             <h1>Our Pricing Plans</h1>
 
-            {user?.isPro ?
-                <div>See You plan</div>
-                :
+            {user?.isPro ? (
+                <div>You are a Pro user!</div>
+            ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {subscriptionPlans[selectedTab]?.map((plan, index) => (
                         <div
                             key={index}
-                            className={`w-full max-h-max rounded-[30px] p-5 lg:p-10 bg-white space-y-10 text-black border shadow-lg ${index === 1 ? 'mt-0 md:mt-10' : ''}`}
+                            className={`w-full max-h-max rounded-[30px] p-5 lg:p-10 bg-white space-y-10 text-black border shadow-lg ${index === 1 ? 'mt-0 md:mt-10' : ''
+                                }`}
                         >
                             <div className="flex flex-row items-center gap-5">
                                 <div className="w-[80px] h-[80px] rounded-full bg-neutral-200 flex items-center justify-center text-black">
@@ -75,8 +95,7 @@ export default function Subscription() {
                         </div>
                     ))}
                 </div>
-            }
-            
+            )}
         </div>
     );
 }

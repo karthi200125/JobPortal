@@ -14,12 +14,12 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 
 const Navbar = () => {
 
-    const user = true
+    const user = useSelector((state: any) => state.user.user);
 
     return (
         <div className={`rounded-none md:rounded-[10px] bg-black relative top-1 max-h-max`}>
             <nav
-                className={`${user ? `sticky top-0 md:top-1 left-0 bg-black px-2 md:px-5 z-10 w-full h-[55px] flex flex-row items-center justify-between` : "hidden"}`}
+                className={`sticky top-0 md:top-1 left-0 bg-black px-2 md:px-5 z-10 w-full h-[55px] flex flex-row items-center justify-between`}
                 style={{ borderTopRightRadius: "10px", borderTopLeftRadius: "10px" }}
             >
                 <Logo />
@@ -34,12 +34,18 @@ const Navbar = () => {
                         <UserProfileCard />
                     </Suspense>
                     <Suspense fallback={<PremiumSkeleton />}>
-                        <Premium />
+                        {user?.isPro ?
+                            <div className="">
+                                Premium features
+                            </div>
+                            :
+                            <Premium />
+                        }
                     </Suspense>
                 </div>
                 <Menu />
             </nav>
-        </div>
+        </div >
     );
 };
 
