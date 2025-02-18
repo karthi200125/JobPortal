@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import { subscriptionPlans } from "@/data";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaCrown } from "react-icons/fa";
 import { PiArrowCircleRightFill } from "react-icons/pi";
@@ -9,6 +10,8 @@ import { PiArrowCircleRightFill } from "react-icons/pi";
 const Pricing = () => {
 
     const [selectedTab, setSelectedTab] = useState<"candidates" | "recruiters" | "organizations">("candidates");
+
+    const router = useRouter()
 
 
     return (
@@ -20,19 +23,19 @@ const Pricing = () => {
 
             <div className="flex justify-center gap-2 mb-6 rounded-full overflow-hidden border max-w-max mx-auto p-2 bg-black text-white">
                 {["candidates", "recruiters", "organizations"].map((tab) => (
-                    <button
+                    <h4
                         key={tab}
                         onClick={() => setSelectedTab(tab as "candidates" | "recruiters" | "organizations")}
-                        className={`rounded-full capitalize px-2 sm:px-6 py-2 text-sm sm:text-lg transition ${selectedTab === tab && "bg-white text-black"}`}
+                        className={`rounded-full font-semibold cursor-pointer trans capitalize px-2 sm:px-6 py-2 ${selectedTab === tab && "bg-white text-black"}`}
                     >
                         {tab}
-                    </button>
+                    </h4>
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                 {subscriptionPlans[selectedTab].map((plan, index) => (
-                    <div key={index} className="w-full rounded-[30px] p-5 lg:p-10  bg-black space-y-10 text-white">
+                    <div key={index} className="w-full max-h-max rounded-[30px] p-5 lg:p-10  bg-black space-y-10 text-white">
                         <div className="flex flex-row items-center gap-5 ">
                             <div className="w-[100px] h-[100px] rounded-full bg-white/[0.05] flexcenter">
                                 <FaCrown size={30} className="text-[var(--pro)]" />
@@ -54,7 +57,7 @@ const Pricing = () => {
                             <h1>₹{plan?.price}</h1>
                             <h5 className="text-white/40">/${plan?.type}</h5>
                         </div>
-                        <Button className='w-full pro'>Subscribe</Button>
+                        <Button onClick={() => router.push('/signin')} className='w-full pro'>Subscribe</Button>
                     </div>
                 ))}
             </div>

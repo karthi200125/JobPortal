@@ -19,7 +19,7 @@ export default function Subscription() {
         const fetchUser = async () => {
             try {
                 const res = await getUserById(user?.id);
-                const data = await res.json();                
+                const data = await res.json();
                 if (data) {
                     dispatch(loginRedux(data));
                 }
@@ -58,7 +58,7 @@ export default function Subscription() {
             {user?.isPro ? (
                 <div>You are a Pro user!</div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                     {subscriptionPlans[selectedTab]?.map((plan, index) => (
                         <div
                             key={index}
