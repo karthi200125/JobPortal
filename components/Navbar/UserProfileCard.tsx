@@ -12,10 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import noProfile from '../../public/noProfile.webp';
 import { memo, useCallback, useMemo } from "react";
 import { IoPersonOutline } from "react-icons/io5";
-import { FaSuitcase } from "react-icons/fa";
+import { FaSuitcase, FaUsers } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
 import { signOut } from "next-auth/react";
+import { GoPlus } from "react-icons/go";
+import { GrStatusCriticalSmall } from "react-icons/gr";
 
 const UserProfileCard = () => {
 
@@ -23,30 +25,59 @@ const UserProfileCard = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
+    const isOrg = user?.role === 'ORGANIZATION'
+    const isRec = user?.role === 'RECRUITER'
+    const isCan = user?.role === 'CANDIDATE'
+
     const profileCardItems = [
         {
             id: 1,
             title: "Profile",
             icon: <IoPersonOutline size={20} />,
-            href: `/userProfile/${user?.id}`
+            href: `/userProfile/${user?.id}`,
+            isCard: true
         },
         {
             id: 2,
             title: "Jobs",
             icon: <FaSuitcase size={20} />,
-            href: "/jobs"
+            href: "/jobs",
+            isCard: (isRec || isCan) ? true : false
         },
         {
             id: 3,
             title: "Dashboard",
             icon: <MdDashboard size={20} />,
-            href: "/dashboard"
+            href: "/dashboard",
+            isCard: true
         },
         {
             id: 4,
+            title: "Create Job",
+            icon: <GoPlus size={20} />,
+            href: "/createJob",
+            isCard: (isRec || isOrg) ? true : false
+        },
+        {
+            id: 5,
+            title: "Job Status",
+            icon: <GrStatusCriticalSmall  size={20} />,
+            href: "/dashboard/jobStatus",
+            isCard: (isRec || isCan) ? true : false
+        },
+        {
+            id: 6,
+            title: "Employees",
+            icon: <FaUsers  size={20} />,
+            href: "/dashboard/employees",
+            isCard: isOrg ? true : false
+        },
+        {
+            id: 7,
             title: "Sign Out",
             icon: <PiSignOutBold size={20} />,
-            href: "/"
+            href: "/",
+            isCard: true
         },
     ];
 
@@ -70,6 +101,7 @@ const UserProfileCard = () => {
                 key={item.id}
                 className={`
                     ${basePath === item.href && 'bg-neutral-100'}
+                    ${item?.isCard === false && 'hidden'}
                     flex flex-row items-center gap-5 w-full p-3 rounded-md hover:bg-neutral-100 cursor-pointer transition
                     `}
                 onClick={() => handleClick(item)}

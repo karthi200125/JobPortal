@@ -8,6 +8,9 @@ import JobDesc from './Job/Job';
 import JobLists from './JobLists/JobLists';
 
 const Jobs = ({ searchParams }: { searchParams: any }) => {
+
+    const safeSearchParams = searchParams ?? {};
+
     const [jobs, setJobs] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedJob, setSelectedJob] = useState<string | null>(null);
@@ -19,14 +22,14 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
         if (!userId) return;
         setIsLoading(true);
         try {
-            const jobsData = await getFilterAllJobs(userId, searchParams);
+            const jobsData = await getFilterAllJobs(userId, safeSearchParams);
             setJobs(jobsData);
         } catch (err) {
             console.error('Error fetching jobs:', err);
         } finally {
             setIsLoading(false);
         }
-    }, [userId, searchParams]);
+    }, [userId, safeSearchParams]);
 
     useEffect(() => {
         fetchJobs();

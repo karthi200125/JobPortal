@@ -6,7 +6,7 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
     const { easyApply, dateposted, experiencelevel, type, location, q, company } = searchParams;
 
     const ITEM_PER_PAGE = 10;
-    
+
     try {
         const filters: any = {};
 
@@ -72,7 +72,7 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
         const allJobs: any = await db.job.findMany({
             where: {
                 AND: [
-                    filters,
+                    { ...filters },
                     {
                         NOT: {
                             jobApplications: {
@@ -88,6 +88,7 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
             orderBy: { createdAt: 'desc' },
             take: ITEM_PER_PAGE,
         });
+
 
         return allJobs;
     } catch (err) {

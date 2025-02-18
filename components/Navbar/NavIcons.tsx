@@ -13,14 +13,14 @@ const NavIcons = () => {
     const user = useSelector((state: any) => state.user.user);
 
     const NavIcons = [
-        {
-            id: 1,
-            icon: <FaHome size={20} />,
-            count: 0,
-            isCount: false,
-            title: "Home",
-            href: user ? "/jobs" : "/"
-        },
+        // {
+        //     id: 1,
+        //     icon: <FaHome size={20} />,
+        //     count: 0,
+        //     isCount: false,
+        //     title: "Home",
+        //     href: user ? "/jobs" : "/"
+        // },
         {
             id: 2,
             icon: <RiMessage3Fill size={20} />,
