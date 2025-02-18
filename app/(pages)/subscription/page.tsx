@@ -19,7 +19,7 @@ export default function Subscription() {
         const fetchUser = async () => {
             try {
                 const res = await getUserById(user?.id);
-                const data = await res.json();
+                const data = await res.json();                
                 if (data) {
                     dispatch(loginRedux(data));
                 }

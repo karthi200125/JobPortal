@@ -9,49 +9,55 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import React from "react";
+import React, { memo, useCallback, useMemo, ReactNode, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface ModelProps {
     modalId: string;
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
     triggerCls?: string;
     title?: string;
     desc?: string;
-    bodyContent?: React.ReactNode;
+    bodyContent?: ReactElement<{ onClose: () => void }>;
 }
 
 const Model = ({ modalId, children, className, title, desc, bodyContent, triggerCls }: ModelProps) => {
     const dispatch = useDispatch();
     const isOpen = useSelector((state: any) => state.modal.modals[modalId] || false);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         dispatch(closeModal(modalId));
-    };
+    }, [dispatch, modalId]);
 
-    const handleOpen = () => {
+    const handleOpen = useCallback(() => {
         dispatch(openModal(modalId));
-    };
+    }, [dispatch, modalId]);
+
+    const clonedBodyContent = useMemo(() =>
+        bodyContent && React.isValidElement(bodyContent)
+            ? React.cloneElement(bodyContent, { onClose: handleClose })
+            : null,
+        [bodyContent, handleClose]);
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-            <DialogTrigger asChild className={triggerCls}>
-                <button onClick={handleOpen}>
+            <DialogTrigger asChild>
+                <button onClick={handleOpen} className={triggerCls}>
                     {children}
                 </button>
             </DialogTrigger>
             <DialogContent className={`${className} max-h-screen md:max-h-[90vh] overflow-y-auto`}>
                 <DialogHeader className="borderb pb-3 sticky top-0 left-0 bg-white">
-                    <DialogTitle className="capitalize">{title}</DialogTitle>
-                    <DialogDescription>{desc}</DialogDescription>
+                    {title && <DialogTitle className="capitalize">{title}</DialogTitle>}
+                    {desc && <DialogDescription>{desc}</DialogDescription>}
                 </DialogHeader>
                 <div className="w-full max-h-max px-1 pb-6">
-                    {React.cloneElement(bodyContent as React.ReactElement, { onClose: handleClose })}
+                    {clonedBodyContent}
                 </div>
             </DialogContent>
         </Dialog>
     );
 };
 
-export default Model;
+export default memo(Model);

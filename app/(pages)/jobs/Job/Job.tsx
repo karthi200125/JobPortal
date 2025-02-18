@@ -7,9 +7,11 @@ import JobDescription from "./JobDescription";
 import JobPremium from "./JobPremium";
 import JobRecruiter from "./JobRecruiter";
 import JobTitles from "./JobTitles";
+import { useSelector } from "react-redux";
 
 const JobDesc = ({ job, refetchJobs }: any) => {
 
+    const user = useSelector((state: any) => state.user.user);
     const cId = job?.companyId
 
     const { data, isPending } = useQuery({
@@ -22,7 +24,9 @@ const JobDesc = ({ job, refetchJobs }: any) => {
             <JobTitles job={job} company={data} isPending={isPending} refetchJobs={refetchJobs} />
             <JobRecruiter job={job} company={data} />
             <JobDescription job={job} isPending={isPending} />
-            <JobPremium />
+            {!user?.isPro &&
+                <JobPremium />
+            }
             <JobCompany company={data} isPending={isPending} />
         </div>
     )

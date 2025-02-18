@@ -54,6 +54,7 @@ interface MoreUserProfileProps {
         userImage?: string;
         username?: string;
         isPro?: boolean;
+        role?: any;
         profession?: string;
     };
 }
@@ -101,7 +102,11 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                     >
                         {moreuser?.username}
                     </Link>
-                    {moreuser?.isPro && <Batch type="premium" />}
+                    {moreuser?.role === 'ORGANIZATION' ?
+                        <Batch type="ORGANIZATION" />
+                        :
+                        (moreuser?.isPro && <Batch type="premium" /> || '')
+                    }
                 </div>
                 <h5>{moreuser?.profession}</h5>
                 <div className="flex flex-row items-center gap-3">

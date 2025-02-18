@@ -1,9 +1,10 @@
 import React from 'react';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { PiCrownFill, PiMedalFill } from 'react-icons/pi';
+import { MdVerified } from "react-icons/md";
 
 interface BatchProps {
-    type?: 'premium' | 'recruiter' | 'candidate';
+    type?: 'premium' | 'RECRUITER' | 'CANDIDATE' | 'ORGANIZATION';
 }
 
 const Batch = ({ type }: BatchProps) => {
@@ -13,19 +14,24 @@ const Batch = ({ type }: BatchProps) => {
 
     switch (type) {
         case 'premium':
-            icon = <PiCrownFill size={12} />;
+            icon = <PiCrownFill size={22} className="text-yellow-300" />;
             clr = "pro";
-            title = "premium"
+            title = "Premium Member"
             break;
-        case 'recruiter':
-            icon = <PiMedalFill size={15} />;
+        case 'RECRUITER':
+            icon = <PiMedalFill size={25} className="text-green-400" />;
             clr = "bg-green-400";
             title = "recruiter"
             break;
-        case 'candidate':
-            icon = <PiMedalFill size={15} />;
+        case 'CANDIDATE':
+            icon = <PiMedalFill size={25} className="text-blue-400" />;
             clr = "bg-blue-400";
             title = "candidate"
+            break;
+        case 'ORGANIZATION':
+            icon = <MdVerified size={25} className="text-blue-500" />;
+            clr = "bg-blue-400";
+            title = "verified"
             break;
         default:
             icon = null;
@@ -36,7 +42,7 @@ const Batch = ({ type }: BatchProps) => {
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <div className={`w-[25px] h-[20px] rounded-[5px] flexcenter ${clr} cursor-pointer`}>
+                    <div className={`flexcenter cursor-pointer`}>
                         {icon}
                     </div>
                 </TooltipTrigger>

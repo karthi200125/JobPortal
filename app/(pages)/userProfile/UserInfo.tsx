@@ -21,6 +21,7 @@ import UserBackImage from '@/app/Forms/UserBackImage';
 import UserProfileImage from './UserProfileImage';
 import noProfile from '../../../public/noProfile.webp';
 import { openModal } from '@/app/Redux/ModalSlice';
+import Batch from '@/components/Batch';
 
 interface ProfileUserProps {
     profileUser?: any;
@@ -63,7 +64,10 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
 
         return (
             <>
-                <h2 className="font-bold capitalize">{displayName}</h2>
+                <h2 className="font-bold capitalize flex flex-row items-center gap-5">
+                    {displayName}
+                    <Batch type={profileUser?.role} />
+                </h2>
                 <h3 className="w-[70%] text-lg text-[var(--lighttext)]">{displayBio}</h3>
                 <h4 className="capitalize">{displayLocation}</h4>
                 <div className="flex flex-row items-center gap-2 text-[var(--voilet)] hover:underline transition">
@@ -109,11 +113,10 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
         <div className="relative w-full min-h-[200px] overflow-hidden rounded-[20px] border">
             {/* Image Container */}
             <div className="absolute top-0 left-0 w-full h-[150px] md:h-[200px]">
-                <img
+                <Image
                     src={profileUser?.profileImage || 'https://img.freepik.com/free-photo/abstract-smooth-empty-grey-studio-well-use-as-backgroundbusiness-reportdigitalwebsite-templatebackdrop_1258-90252.jpg?semt=ais_hybrid'}
                     alt="Profile Background"
-                    // width={100}
-                    // height={200}
+                    fill
                     className="bg-neutral-200 w-full h-full object-cover"
                 />
                 <Model
@@ -126,8 +129,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     <img
                         src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}
                         alt="Profile"
-                        // width={150}
-                        // height={150}
+                        // fill
                         className="w-[150px] h-[150px] rounded-full border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans"
                         onClick={() => dispatch(openModal('profileImageModal'))}
                     />
