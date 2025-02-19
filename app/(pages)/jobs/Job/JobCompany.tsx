@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { userFollow } from '@/app/Redux/AuthSlice'
 import { UserFollowAction } from '@/actions/user/UserFollowAction'
 import Link from 'next/link'
+import Batch from '@/components/Batch'
 
 const JobCompany = ({ company, isPending }: any) => {
 
@@ -47,7 +48,10 @@ const JobCompany = ({ company, isPending }: any) => {
             <div className='flex flex-col md:flex-row items-start gap-5'>
               <Image src={company?.companyImage || noImage.src} alt='' width={100} height={100} className='w-[100px] h-[100px] rounded-md' />
               <div className='space-y-1'>
-                <Link href={`/userProfile/${company?.id}`} className='font-semibold capitalize'>{company?.companyName}</Link>
+                <Link href={`/userProfile/${company?.id}`} className='font-semibold capitalize flex flex-row items-center gap-3'>
+                  {company?.companyName}
+                  <Batch type='ORGANIZATION' />
+                </Link>
                 <h4 className='font-bold'>120 follwers</h4>
                 <h6>{company?.companyTotalEmployees} Employees</h6>
               </div>

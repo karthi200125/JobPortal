@@ -111,9 +111,11 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                 {/* Premium Feature */}
                 <div className="flex flex-row gap-3 items-start md:items-center">
                     <HiLightBulb size={25} />
-                    <h5>
+                    <h5 className={`${user?.isPro && "underline hover:opacity-50 trans cursor-pointer"}`}>
                         See how you compare to over {job?.jobApplications?.length || 0} other applicants.{" "}
-                        <span className="cursor-pointer font-bold">Activate Premium</span>
+                        {!user?.isPro &&
+                            <span className="protext trans hover:opacity-50 cursor-pointer font-bold">Activate Premium</span>
+                        }
                     </h5>
                 </div>
 
@@ -125,7 +127,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                         <>
                             {job?.isEasyApply ? (
                                 <Model
-                                    bodyContent={<EasyApply job={job} refetchJobs={refetchJobs}/>}
+                                    bodyContent={<EasyApply job={job} refetchJobs={refetchJobs} />}
                                     title={`Apply to ${company?.companyName || "Company"}`}
                                     className="w-full md:w-[1000px]"
                                     modalId="easyapplyModal"

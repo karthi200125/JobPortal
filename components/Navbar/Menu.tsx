@@ -71,7 +71,7 @@ const Menu = () => {
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
             localStorage.removeItem('role')
-            signOut()            
+            signOut()
             router.push(item.href);
         } else {
             router.push(item.href);
@@ -98,10 +98,16 @@ const Menu = () => {
                         </div>
                     </div>
 
-                    <div className='text-black pro w-full px-5 rounded-md h-[50px] flex flex-row items-center gap-3 cursor-pointer'>
-                        <Icon icon={<FaCrown size={20} />} title="Upgrade Premium" />
-                        <h5 className='font-bold'>Premium</h5>
-                    </div>
+                    {user?.isPro ?
+                        <div onClick={() => router.push('/subscription')} className="underline protext text-sm cursor-pointer trans hover:opacity-50">
+                            Premium features
+                        </div>
+                        :
+                        <div className='text-black pro w-full px-5 rounded-md h-[50px] flex flex-row items-center gap-3 cursor-pointer'>
+                            <Icon icon={<FaCrown size={20} />} title="Upgrade Premium" />
+                            <h5 className='font-bold'>Premium</h5>
+                        </div>
+                    }
 
                     {/* nav routes */}
                     <div className="space-y-1">

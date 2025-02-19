@@ -8,10 +8,12 @@ import noAvatar from '../../../../public/noProfile.webp'
 import JobRecruiterSkeleton from '@/Skeletons/JobRecruiterSkeleton';
 import { useSelector } from 'react-redux';
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 const JobRecruiter = ({ job, company }: any) => {
 
     const user = useSelector((state: any) => state.user.user);
+    const router = useRouter()
 
     const { data, isLoading } = useQuery({
         queryKey: ['getUser', job?.userId],
@@ -33,7 +35,7 @@ const JobRecruiter = ({ job, company }: any) => {
                             <h5>Technical recruiting</h5>
                             <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                         </div>
-                        <Button disabled={!user?.isPro} className='absolute top-3 right-3' variant='border'>Message</Button>
+                        <Button onClick={() => router.push('/messages')} disabled={!user?.isPro} className='absolute top-3 right-3' variant='border'>Message</Button>
                     </div>
                 </div>
             }

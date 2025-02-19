@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import Logo from '../Logo';
 import Menu from './Menu';
+import { useRouter } from 'next/navigation';
 
 const Premium = dynamic(() => import('./Premiem'), { suspense: true });
 const NavIcons = dynamic(() => import('./NavIcons'), { suspense: true });
@@ -15,6 +16,8 @@ const UserProfileCard = dynamic(() => import('./UserProfileCard'), { suspense: t
 const Navbar = () => {
 
     const user = useSelector((state: any) => state.user.user);
+
+    const router = useRouter()
 
     return (
         <div className={`rounded-none md:rounded-[10px] bg-black relative top-1 max-h-max`}>
@@ -35,7 +38,7 @@ const Navbar = () => {
                     </Suspense>
                     <Suspense fallback={<PremiumSkeleton />}>
                         {user?.isPro ?
-                            <div className="">
+                            <div onClick={() => router.push('/subscription')} className="underline protext text-sm cursor-pointer trans hover:opacity-50">
                                 Premium features
                             </div>
                             :

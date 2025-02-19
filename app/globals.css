@@ -118,13 +118,16 @@ input:focus {
 }
 
 
-
-
-
 /* other styles */
 
 .pro {
   background: linear-gradient(to right, #f3e96f, #947303, #ceb349);
+}
+
+.protext {
+  background: linear-gradient(to right, #f3e96f, #947303, #ceb349);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .jobsh {

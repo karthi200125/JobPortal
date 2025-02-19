@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -23,19 +23,21 @@ interface Filter {
 const FilterNavbar = () => {
     const router = useRouter();
 
-    const { data: states = [] } = useQuery({
-        queryKey: ['getStates'],
-        queryFn: async () => await getStates(),
-    });
+    // Fetching states and companies using react-query
+    const { data: states = [] } = useQuery({ queryKey: ['getStates'], queryFn: getStates });
+    // const { data: companies = [] } = useQuery({ queryKey: ['getCompanies'], queryFn: getCompanies });
 
     const { data: companies = [] } = useQuery({
         queryKey: ['getCompanies'],
         queryFn: async () => await getCompanies(),
     });
 
+    // Memoizing derived state values
     const companiesOptions = companies?.map((company: any) => company?.companyName) || [];
-    const locations = states.map((state: any) => state.name) || [];
+    // const companiesOptions = useMemo(() => companies?.map((company: any) => company?.companyName) || [], [companies]);
+    const locations = useMemo(() => states?.map((state: any) => state.name) || [], [states]);
 
+    // Filters data
     const filters: Filter[] = [
         { id: 1, title: "Date Posted", options: DatePosted },
         { id: 2, title: "Experience Level", options: experiences },
@@ -44,35 +46,40 @@ const FilterNavbar = () => {
         { id: 5, title: "Company", options: companiesOptions },
     ];
 
-    const defaultFilters = filters.reduce((acc, filter) => {
+    // Initialize filter states
+    const defaultFilters = useMemo(() => filters.reduce((acc, filter) => {
         acc[filter.title] = '';
         return acc;
-    }, {} as Record<string, string>);
+    }, {} as Record<string, string>), [filters]);
 
     const [selectedFilters, setSelectedFilters] = useState(defaultFilters);
     const [pendingFilters, setPendingFilters] = useState({ ...defaultFilters });
     const [easyapply, setEasyapply] = useState(false);
 
-    const handlePendingSelection = (filterTitle: string, option: string) => {
+    // Handle selection of filters
+    const handlePendingSelection = useCallback((filterTitle: string, option: string) => {
         setPendingFilters(prev => ({
             ...prev,
             [filterTitle]: prev[filterTitle] === option ? '' : option
         }));
-    };
+    }, []);
 
-    const applyChanges = () => {
+    // Apply selected filters
+    const applyChanges = useCallback(() => {
         setSelectedFilters(pendingFilters);
         updateUrlParams(pendingFilters, easyapply);
-    };
+    }, [pendingFilters, easyapply]);
 
-    const resetFilter = () => {
+    // Reset all filters
+    const resetFilter = useCallback(() => {
         setSelectedFilters(defaultFilters);
         setPendingFilters(defaultFilters);
         setEasyapply(false);
-        router.push(`/jobs`); // Reset to default jobs list
-    };
+        router.push(`/jobs`);
+    }, [defaultFilters, router]);
 
-    const updateUrlParams = (filters: Record<string, string>, easyapply: boolean) => {
+    // Update URL parameters based on selected filters
+    const updateUrlParams = useCallback((filters: Record<string, string>, easyapply: boolean) => {
         const searchParams = new URLSearchParams();
 
         Object.keys(filters).forEach(filterKey => {
@@ -86,61 +93,66 @@ const FilterNavbar = () => {
         }
 
         router.push(`/jobs?${searchParams.toString()}`);
-    };
+    }, [router]);
 
     useEffect(() => {
         updateUrlParams(selectedFilters, easyapply);
-    }, [easyapply]);
+    }, [selectedFilters, easyapply, updateUrlParams]);
 
     return (
         <div className="whitespace-nowrap w-full h-[60px] shadow-md flex flex-row items-center gap-5 md:gap-5 overflow-x-auto">
-            {filters.map((filter) => (
-                <DropdownMenu key={filter.id}>
-                    <DropdownMenuTrigger className="trans text-sm font-semibold max-w-max rounded-full h-[35px] border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 px-3 flex items-center gap-2">
-                        {selectedFilters[filter.title] || filter.title}
-                        <IoMdArrowDropdown size={20} />
-                    </DropdownMenuTrigger>
+            {filters.map((filter) => {
+                const isActive = selectedFilters[filter.title] !== '';
 
-                    <DropdownMenuContent className="relative min-w-[300px] max-h-[400px] p-2 md:p-5 flex flex-col overflow-scroll">
-                        {filter.options.map((opt) => (
-                            <div key={opt} className="w-full flex flex-row items-center gap-3 p-3">
-                                <input
-                                    name={filter.title}
-                                    type="radio"
-                                    className="w-[20px] h-[20px] cursor-pointer"
-                                    checked={pendingFilters[filter.title] === opt}
-                                    onChange={() => handlePendingSelection(filter.title, opt)}
-                                />
-                                <h4 className="text-md">{opt}</h4>
+                return (
+                    <DropdownMenu key={filter.id}>
+                        <DropdownMenuTrigger
+                            className={`text-sm font-semibold max-w-max rounded-full h-[35px] border-[1px] filterborder hover:border-neutral-600 border-solid px-3 flex items-center gap-2 transition ${isActive ? 'border-[var(--voilet)] !border-[3px] text-[var(--voilet)] font-bold' : 'border-neutral-300'
+                                }`}
+                        >
+                            {selectedFilters[filter.title] || filter.title}
+                            <IoMdArrowDropdown size={20} />
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent className="relative min-w-[300px] max-h-[400px] p-2 md:p-5 flex flex-col overflow-scroll">
+                            {filter.options.map((opt) => (
+                                <div key={opt} className="w-full flex flex-row items-center gap-3 p-3">
+                                    <input
+                                        name={filter.title}
+                                        type="radio"
+                                        className="w-[20px] h-[20px] cursor-pointer"
+                                        checked={pendingFilters[filter.title] === opt}
+                                        onChange={() => handlePendingSelection(filter.title, opt)}
+                                    />
+                                    <h4 className="text-md">{opt}</h4>
+                                </div>
+                            ))}
+                            <DropdownMenuSeparator />
+
+                            <div className='p-3 w-full flex items-center justify-end flex-row gap-3'>
+                                <DropdownMenuItem className='bg-none' onClick={() => setPendingFilters({ ...selectedFilters })}>
+                                    Cancel
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={applyChanges} className='h-[40px] rounded-full px-5 max-w-max border flexcenter bg-none'>
+                                    Apply
+                                </DropdownMenuItem>
                             </div>
-                        ))}
-                        <DropdownMenuSeparator />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                );
+            })}
 
-                        <div className='p-3 w-full flex items-center justify-end flex-row gap-3'>
-                            <DropdownMenuItem className='bg-none' onClick={() => setPendingFilters({ ...selectedFilters })}>
-                                Cancel
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={applyChanges} className='h-[40px] rounded-full px-5 max-w-max border flexcenter bg-none'>
-                                Apply
-                            </DropdownMenuItem>
-                        </div>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            ))}
-
-            {/*  Easy Apply */}
+            {/* Easy Apply */}
             <div
-                className={`text-sm font-semibold max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid border-neutral-300 cursor-pointer trans ${easyapply && "bg-black text-white"}`}
+                className={`text-sm font-semibold max-w-max px-3 h-[35px] flexcenter rounded-full border-[1px] filterborder hover:border-neutral-600 border-solid cursor-pointer transition ${easyapply ? "bg-[var(--voilet)] text-white border-[var(--voilet)] " : "border-neutral-300"
+                    }`}
                 onClick={() => setEasyapply(!easyapply)}
             >
                 Easy Apply
             </div>
 
-            {/* RESET */}
-            <div
-                className="text-neutral-600 font-semibold cursor-pointer trans"
-                onClick={resetFilter}
-            >
+            {/* Reset */}
+            <div className="text-neutral-600 font-semibold cursor-pointer transition hover:text-black" onClick={resetFilter}>
                 Reset
             </div>
         </div>
