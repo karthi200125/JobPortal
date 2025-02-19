@@ -48,9 +48,7 @@ const AuthSlice = createSlice({
         },
         userFollow(state, action: PayloadAction<string>) {
             if (state.user) {
-                const isFollowing = state.user.followings.includes(action.payload);
-                console.log('this is action payload', action.payload);
-                console.log('this is isFollowing', isFollowing);
+                const isFollowing = state.user.followings.includes(action.payload);                
 
                 if (isFollowing) {
                     state.user.followings = state.user.followings.filter((id: any) => id !== action.payload);

@@ -68,7 +68,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     {displayName}
                     <Batch type={profileUser?.role} />
                 </h2>
-                <h3 className="w-full md:w-[70%] text-sm md:text-lg text-[var(--lighttext)]">{displayBio}</h3>
+                <h3 className="w-full md:w-[70%] text-sm md:text-[15px] text-[var(--lighttext)]">{displayBio}</h3>
                 <h4 className="capitalize">{displayLocation}</h4>
                 <div className="flex flex-row items-center gap-2 text-[var(--voilet)] hover:underline transition">
                     <a href={website || ''} className="font-bold" target="_blank" rel="noopener noreferrer">
