@@ -2,7 +2,7 @@
 
 import React, { useTransition } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { VscLinkExternal } from 'react-icons/vsc';
@@ -35,6 +35,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
     const dispatch = useDispatch();
     const [isPending, startTransition] = useTransition();
     const queryClient = useQueryClient();
+    const router = useRouter()
 
     const isFollowings = user?.followings?.includes(profileUser?.id);
     const isCurrentUser = user?.id === profileUser?.id;
@@ -153,10 +154,10 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                 <div className="relative mt-[250px] w-full p-5 space-y-2">
                     {renderProfileDetails()}
                     <div className="flex flex-row items-center gap-5">
-                        <h4 className="bg-neutral-100 rounded-md max-w-max p-3 flex flex-row items-center gap-5">
+                        <h4 className="bg-neutral-100 rounded-md max-w-max cursor-pointer trans hover:opacity-50 p-3 flex flex-row items-center gap-5" onClick={() => router.push('/network')}>
                             <b className="font-bold">{profileUser?.followers?.length || 0}</b> Followers
                         </h4>
-                        <h4 className="bg-neutral-100 rounded-md max-w-max p-3 flex flex-row items-center gap-5">
+                        <h4 className="bg-neutral-100 rounded-md max-w-max cursor-pointer trans hover:opacity-50 p-3 flex flex-row items-center gap-5" onClick={() => router.push('/network')}>
                             <b className="font-bold">{profileUser?.followings?.length || 0}</b> Followings
                         </h4>
                     </div>

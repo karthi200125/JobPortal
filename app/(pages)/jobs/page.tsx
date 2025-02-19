@@ -9,21 +9,25 @@ import JobLists from './JobLists/JobLists';
 
 const Jobs = ({ searchParams }: { searchParams: any }) => {
 
-    const safeSearchParams = searchParams ?? {};
+    const safeSearchParams = searchParams ?? new URLSearchParams();
+
+    const currentPage = Number(safeSearchParams.page) || 1;
 
     const [jobs, setJobs] = useState<any[]>([]);
+    const [count, setCount] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedJob, setSelectedJob] = useState<string | null>(null);
 
     const user = useSelector((state: any) => state.user.user);
     const userId = user?.id;
-    
+
     const fetchJobs = useCallback(async () => {
         if (!userId) return;
         setIsLoading(true);
         try {
-            const jobsData = await getFilterAllJobs(userId, safeSearchParams);
-            setJobs(jobsData);
+            const jobsData: any = await getFilterAllJobs(userId, safeSearchParams);
+            setJobs(jobsData?.jobs);
+            setCount(jobsData?.count);
         } catch (err) {
             console.error('Error fetching jobs:', err);
         } finally {
@@ -52,6 +56,8 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
                         Jobs={jobs}
                         isLoading={isLoading}
                         onSelectedJob={handleSelectedJob}
+                        count={count}
+                        currentPage={currentPage}
                     />
                 </div>
                 <div className="hidden md:block w-full md:w-[60%] overflow-y-auto jobsh">

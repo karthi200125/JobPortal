@@ -2,10 +2,11 @@
 
 import { db } from "@/lib/db";
 
-export const getFilterAllJobs = async (userId: any, searchParams: any) => {
-    const { easyApply, dateposted, experiencelevel, type, location, q, company } = searchParams;
+export const getFilterAllJobs = async (userId: string, searchParams: any) => {
+    const { easyApply, dateposted, experiencelevel, type, location, q, company, page = 1 } = searchParams;
 
     const ITEM_PER_PAGE = 10;
+    const currentPage = Number(page) || 1;
 
     try {
         const filters: any = {};
@@ -17,12 +18,10 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
             };
         }
 
-        // Easy Apply filter
         if (easyApply) {
             filters.isEasyApply = true;
         }
 
-        // Company filter
         if (company) {
             filters.company = {
                 companyName: {
@@ -32,7 +31,6 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
             };
         }
 
-        // Date posted filter
         if (dateposted) {
             const now = new Date();
             switch (dateposted) {
@@ -53,23 +51,36 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
             }
         }
 
-        // Job type filter
         if (type) {
             filters.mode = type;
         }
 
-        // Experience level filter
         if (experiencelevel) {
             filters.experience = experiencelevel;
         }
 
-        // Experience level filter
         if (location) {
             filters.state = location;
         }
 
-        // Fetch filtered jobs
-        const allJobs: any = await db.job.findMany({
+        // Get total job count
+        const totalCount = await db.job.count({
+            where: {
+                AND: [
+                    { ...filters },
+                    {
+                        NOT: {
+                            jobApplications: {
+                                some: { userId },
+                            },
+                        },
+                    },
+                ],
+            },
+        });
+
+        // Fetch paginated jobs
+        const allJobs = await db.job.findMany({
             where: {
                 AND: [
                     { ...filters },
@@ -87,10 +98,10 @@ export const getFilterAllJobs = async (userId: any, searchParams: any) => {
             },
             orderBy: { createdAt: 'desc' },
             take: ITEM_PER_PAGE,
+            skip: (currentPage - 1) * ITEM_PER_PAGE,
         });
 
-
-        return allJobs;
+        return { jobs: allJobs, count: totalCount };
     } catch (err) {
         return { error: "Failed to fetch jobs" };
     }

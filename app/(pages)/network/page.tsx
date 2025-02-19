@@ -10,6 +10,7 @@ import noProfile from '@/public/noProfile.webp';
 import { UserFollowAction } from "@/actions/user/UserFollowAction";
 import { userFollow } from "@/app/Redux/AuthSlice";
 import { GoPlus } from "react-icons/go";
+import Link from "next/link";
 
 interface User {
     id: number;
@@ -103,7 +104,7 @@ const NetworkUser = ({ networkUser, network }: NetworkUserProps) => {
                     <Image src={networkUser?.userImage || noProfile.src} fill alt={networkUser.username} className="object-cover" />
                 </div>
                 <div>
-                    <h3 className="font-bold">{networkUser?.username}</h3>
+                    <Link href={`/userProfile/${networkUser?.id}`} className="font-bold cursor-pointer trans hover:opacity-50">{networkUser?.username}</Link>
                     <h4 className="text-neutral-600 line-clamp-1">{networkUser?.userBio}</h4>
                 </div>
             </div>

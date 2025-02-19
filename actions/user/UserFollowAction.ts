@@ -31,7 +31,7 @@ export const UserFollowAction = async (currentUserId: any, userId: any) => {
                     },
                 },
             });
-            return { success: "User has been unfollowed" };
+            return { success: `${user?.username} has been unfollowed` };
         } else {
             await db.user.update({
                 where: { id: currentUserId },
@@ -49,7 +49,7 @@ export const UserFollowAction = async (currentUserId: any, userId: any) => {
                     },
                 },
             });
-            return { success: "User has been followed" };
+            return { success: `${user?.username} has been followed` };
         }
 
     } catch (error) {

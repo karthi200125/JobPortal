@@ -6,14 +6,18 @@ import BottomDrawer from '@/components/BottomDrawer';
 import JobDesc from '../Job/Job';
 import JobList from './JobList';
 import JobListsSkeleton from '@/Skeletons/JobListsSkeleten';
+import CustomPagination from '@/components/CustomPagination';
+
 
 interface JobListsProps {
   Jobs?: any[];
+  count?: number;
+  currentPage?: number;
   isLoading?: boolean;
   onSelectedJob?: (jobId: number) => void;
 }
 
-const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob }: JobListsProps) => {
+const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, currentPage = 1 }: JobListsProps) => {
   const searchParams = useSearchParams();
 
   const query = useMemo(() => searchParams.get('q'), [searchParams]);
@@ -72,6 +76,15 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob }: JobListsProps)
       {renderHeader()}
       <div className="md:hidden">{renderJobs(true)}</div>
       <div className="hidden md:block">{renderJobs(false)}</div>
+      {!isLoading &&
+        <div className='w-full h-[100px] flexcenter'>
+          <CustomPagination
+            totalJobsCount={count}
+            currentPage={currentPage}
+          />
+        </div>
+      }
+
     </div>
   );
 };
