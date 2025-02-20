@@ -10,9 +10,9 @@ import { useDispatch } from "react-redux";
 import noProfile from '../../../../public/noProfile.webp';
 import JobCandidate from "./JobCandidate";
 import { useState, useTransition } from "react";
-import { Accept_or_Remove } from "@/actions/jobapplication/acceptOrRemove";
 import { useCustomToast } from "@/lib/CustomToast";
 import { useQueryClient } from "@tanstack/react-query";
+import { AcceptOrRemove } from "@/actions/jobapplication/acceptOrRemove";
 
 const Candidates = ({ job, candidates, isPending }: any) => {
     const [canId, setCanId] = useState('');
@@ -56,16 +56,21 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
         dispatch(openModal("jobcandidatemodal"));
     };
 
-    const Accept_or_remove_Function = (userId: any, action: string) => {
+    const Accept_or_remove_Function = (
+        e: React.MouseEvent<HTMLButtonElement>,
+        userId: number,        
+        action: "accept" | "remove"
+    ) => {
+        e.stopPropagation(); 
+
         startTransition(() => {
-            Accept_or_Remove(userId, jobId, action)
-                .then((data) => {
-                    if (data?.success) {
-                        showSuccessToast(data?.success)
-                        queryClient.invalidateQueries({ queryKey: ['getJobApplicationCandidates', jobId] })
-                    }
-                })
-        })
+            AcceptOrRemove(userId, jobId, action).then((data) => {
+                if (data?.success) {
+                    showSuccessToast(data?.success);
+                    queryClient.invalidateQueries({ queryKey: ["getJobApplicationCandidates", jobId] });
+                }
+            });
+        });
     };
 
     return (
@@ -89,16 +94,18 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
                 </div>
                 <div className="flex flex-row items-center gap-5">
                     <Button
-                        onClick={() => Accept_or_remove_Function(can?.id, "accept")}
+                        onClick={(e:any) => Accept_or_remove_Function(e, can?.id, "accept")}
                         variant="border"
                         icon={<FaCheck size={15} />}
+                        isLoading={isLoading}
                     >
                         Accept
                     </Button>
                     <Button
-                        onClick={() => Accept_or_remove_Function(can?.id, "remove")}
+                        onClick={(e:any) => Accept_or_remove_Function(e, can?.id, "remove")}
                         variant="border"
                         icon={<RiCloseFill size={15} />}
+                        isLoading={isLoading}
                     >
                         Not Interested
                     </Button>

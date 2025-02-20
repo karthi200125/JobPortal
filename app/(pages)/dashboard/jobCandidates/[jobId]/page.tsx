@@ -38,6 +38,8 @@ const JobCandidates = () => {
         enabled: !!jobId,
     });
 
+    const jobApplication = job?.jobApplications.filter((jb: any) => jb.jobId === job.id);
+
     return (
         <div className="p-5 w-full h-screen relative flex flex-col md:flex-row items-start gap-5">
             {/* Job Details Section */}

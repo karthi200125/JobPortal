@@ -11,13 +11,24 @@ import { getUserById } from "@/actions/auth/getUserById";
 const JobCandidate = ({ userId, job }: any) => {
 
     const router = useRouter()
-
+    
     const { data: user, isPending } = useQuery({
         queryKey: ["getUser", userId],
         queryFn: async () => getUserById(userId),
     });
 
     const jobApplication = user?.jobApplications.filter((jb: any) => jb.jobId === job.id);
+
+    const handleDownload = () => {
+        if (jobApplication?.candidateResume) {
+            const link = document.createElement("a");
+            link.href = jobApplication.candidateResume;
+            link.download = `${user?.username} Resume.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
 
     return (
         <>
@@ -51,7 +62,9 @@ const JobCandidate = ({ userId, job }: any) => {
                         <h3 className="font-semibold text-sm">Resume</h3>
                         <div className='border rounded-md p-5 flex flex-row items-center justify-between'>
                             {jobApplication?.candidateResume}
-                            <Button variant="border">Download</Button>
+                            {jobApplication?.candidateResume && (
+                                <Button variant="border" onClick={handleDownload}>Download</Button>
+                            )}
                         </div>
                     </div>
 
