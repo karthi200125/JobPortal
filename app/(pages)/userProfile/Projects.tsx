@@ -40,13 +40,14 @@ export default function Projects({ userId, profileUser }: ProjectsProps) {
     };
 
     const projects = data?.data || [];
-    const isCurrentUser = user?.id === profileUser?.id
+    const isCurrentUser = user?.id === profileUser?.id;
 
     return (
         <div className="relative rounded-[20px] border p-5 space-y-5">
+            {/* Header */}
             <div className="flex flex-row items-center justify-between">
                 <h3 className="font-bold">Projects</h3>
-                {isCurrentUser &&
+                {isCurrentUser && (
                     <Model
                         bodyContent={<UserProjectForm />}
                         modalId="userProjectModal"
@@ -56,47 +57,50 @@ export default function Projects({ userId, profileUser }: ProjectsProps) {
                     >
                         <Button variant="border" onClick={handleShowProjectClick} icon={<GoPlus size={20} />}>Add</Button>
                     </Model>
-                }
+                )}
             </div>
-            {
-                isLoading ? (
-                    <CarouselSkeleton />
-                ) : (
-                    <Carousel
-                        opts={{
-                            align: "start",
-                        }}
-                        className="w-full md:w-[92%] mx-auto"
-                    >
-                        <CarouselContent className="w-full gap-5 md:px-5">
-                            {projects?.length > 0 ? (
-                                projects?.map((project) => (
-                                    <CarouselItem key={project?.id} className="md:basis-1/2 lg:basis-1/3">
+
+            {/* Carousel */}
+            {isLoading ? (
+                <CarouselSkeleton />
+            ) : (
+                <Carousel opts={{ align: "start" }} className="w-full max-w-4xl mx-auto">
+                    <CarouselContent>
+                        {projects?.length > 0 ? (
+                            projects.map((project) => (
+                                <CarouselItem key={project?.id} className="md:basis-1/2 lg:basis-1/3">
+                                    <div className="p-1">
                                         <Model
                                             bodyContent={<ShowProject project={project} />}
                                             title={project?.proName}
-                                            desc=''
-                                            className='min-w-[300px] md:w-[600px] lg:w-[1000px]'
-                                            modalId='showProjectModal'
+                                            desc=""
+                                            className="min-w-[300px] md:w-[600px] lg:w-[1000px]"
+                                            modalId="showProjectModal"
                                         >
-                                            <ProjectCard project={project} onClick={() => dispatch(openModal('showProjectModal'))} />
+                                            <ProjectCard
+                                                project={project}
+                                                onClick={() => dispatch(openModal('showProjectModal'))}
+                                                className="h-[320px] w-full" 
+                                                isCurrentUser={isCurrentUser}
+                                            />
                                         </Model>
-                                    </CarouselItem>
-                                ))
-                            ) : (
-                                // <div>No Projects Yet</div>
-                                ""
-                            )}
-                        </CarouselContent>
-                        {projects?.length >= 3 &&
-                            <>
-                                <CarouselPrevious className="hidden md:flex" />
-                                <CarouselNext className="hidden md:flex" />
-                            </>
-                        }
-                    </Carousel>
-                )
-            }
-        </div >
+                                    </div>
+                                </CarouselItem>
+                            ))
+                        ) : (
+                            <p className="text-center text-gray-500">No projects available</p>
+                        )}
+                    </CarouselContent>
+
+                    {/* Show navigation only if projects >= 3 */}
+                    {projects?.length >= 3 && (
+                        <>
+                            <CarouselPrevious className="hidden md:flex" />
+                            <CarouselNext className="hidden md:flex" />
+                        </>
+                    )}
+                </Carousel>
+            )}
+        </div>
     );
 }

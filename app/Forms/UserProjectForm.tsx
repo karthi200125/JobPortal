@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../Redux/ModalSlice";
 import { useUpload } from "@/lib/Uploadfile";
 import { Progress } from "@/components/ui/progress";
+import bg_gray from '@/public/backgray.jpg'
+import Image from "next/image";
 
 interface UserProjectProps {
     isEdit?: boolean;
@@ -108,9 +110,10 @@ export function UserProjectForm({ isEdit, project }: UserProjectProps) {
                 />
 
                 <div className="relative h-[200px] rounded-lg border overflow-hidden">
-                    <img
-                        src={showImage || ""}
+                    <Image
+                        src={showImage || bg_gray.src}
                         alt="User profile"
+                        fill
                         className="w-full h-full object-cover bg-neutral-100 absolute top-0 left-0"
                     />
                     <input

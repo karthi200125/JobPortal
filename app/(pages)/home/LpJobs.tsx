@@ -2,29 +2,16 @@
 
 import { GetLpJobs } from "@/actions/job/getLpJobs";
 import LpJobsSkeleton from "@/Skeletons/LpJobsSkeleton";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const LpJobs = () => {
-
-    const [jobs, setJobs] = useState([])
-    const [isLoading, setisLoading] = useState(false)
-
-    useEffect(() => {
-        const getJobs = async () => {
-            try {
-                setisLoading(true)
-                const job = await GetLpJobs()
-                setJobs(job)
-            } catch (err) {
-                console.log(err)
-            } finally {
-                setisLoading(false)
-            }
-        }
-        getJobs()
-    }, [])
-
+    
+    const { data: jobs, isPending } = useQuery({
+        queryKey: ['getLpJobs'],
+        queryFn: async () => await GetLpJobs(),
+    });
+    
     return (
         <div className="w-full min-h-screen p-2 lg:p-10 space-y-10 md:space-y-20">
 
@@ -37,7 +24,7 @@ const LpJobs = () => {
             </div>
 
             {/* Jobs List */}
-            {isLoading ? (
+            {isPending ? (
                 <LpJobsSkeleton />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
