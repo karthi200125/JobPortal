@@ -94,6 +94,8 @@ model JobApplication {
   candidateResume    String   
   questionAndAnswers Json?
 
+  isNotIntrested     Boolean @default(false)
+
   isApplicationViewed Boolean @default(false)
   isResumeViewd       Boolean @default(false)
   isSelected          Boolean @default(false)

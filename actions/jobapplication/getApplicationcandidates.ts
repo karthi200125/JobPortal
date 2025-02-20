@@ -21,11 +21,11 @@ export const getApplicationCandidates = async (jobId: number, type: 'Top Applica
             }
 
             jobApplicationCandidates = await db.jobApplication.findMany({
-                where: { jobId },
+                where: { jobId, isNotIntrested: false },
                 include: {
                     user: true,
                     job: true,
-                }
+                },
             });
 
             // Sorting logic for top applicants
@@ -51,17 +51,17 @@ export const getApplicationCandidates = async (jobId: number, type: 'Top Applica
                 const profileViewsA = userA.ProfileViews?.length || 0;
                 const profileViewsB = userB.ProfileViews?.length || 0;
                 if (profileViewsA !== profileViewsB) return profileViewsB - profileViewsA;
-                
+
                 // 5. Pro User Priority
                 if (userA.isPro !== userB.isPro) return userB.isPro ? 1 : -1;
-                            
+
                 return 0;
             });
 
         } else {
             // Get Early Applicants (Oldest applications first)
             jobApplicationCandidates = await db.jobApplication.findMany({
-                where: { jobId },
+                where: { jobId, isNotIntrested: false },
                 include: {
                     user: true,
                     job: true,

@@ -9,7 +9,10 @@ import { RiCloseFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import noProfile from '../../../../public/noProfile.webp';
 import JobCandidate from "./JobCandidate";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { Accept_or_Remove } from "@/actions/jobapplication/acceptOrRemove";
+import { useCustomToast } from "@/lib/CustomToast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Candidates = ({ job, candidates, isPending }: any) => {
     const [canId, setCanId] = useState('');
@@ -31,7 +34,7 @@ const Candidates = ({ job, candidates, isPending }: any) => {
                 "No Candidates Yet!"
             ) : (
                 candidates.map((can: any) => (
-                    <Candidate key={can.id} can={can} setCanId={setCanId} />
+                    <Candidate key={can.id} can={can} setCanId={setCanId} jobId={job?.id} />
                 ))
             )}
         </div>
@@ -40,16 +43,29 @@ const Candidates = ({ job, candidates, isPending }: any) => {
 
 export default Candidates;
 
-const Candidate = ({ can, setCanId }: any) => {
+const Candidate = ({ can, setCanId, jobId }: any) => {
     const dispatch = useDispatch();
+
+    const [isLoading, startTransition] = useTransition()
+
+    const { showSuccessToast } = useCustomToast()
+    const queryClient = useQueryClient();
 
     const OnClick = (userId: string) => {
         setCanId(userId);
         dispatch(openModal("jobcandidatemodal"));
     };
 
-    const Accept_or_remove = (action: string) => {
-        console.log(action);
+    const Accept_or_remove_Function = (userId: any, action: string) => {
+        startTransition(() => {
+            Accept_or_Remove(userId, jobId, action)
+                .then((data) => {
+                    if (data?.success) {
+                        showSuccessToast(data?.success)
+                        queryClient.invalidateQueries({ queryKey: ['getJobApplicationCandidates', jobId] })
+                    }
+                })
+        })
     };
 
     return (
@@ -73,14 +89,14 @@ const Candidate = ({ can, setCanId }: any) => {
                 </div>
                 <div className="flex flex-row items-center gap-5">
                     <Button
-                        onClick={() => Accept_or_remove("accept")}
+                        onClick={() => Accept_or_remove_Function(can?.id, "accept")}
                         variant="border"
                         icon={<FaCheck size={15} />}
                     >
                         Accept
                     </Button>
                     <Button
-                        onClick={() => Accept_or_remove("remove")}
+                        onClick={() => Accept_or_remove_Function(can?.id, "remove")}
                         variant="border"
                         icon={<RiCloseFill size={15} />}
                     >
