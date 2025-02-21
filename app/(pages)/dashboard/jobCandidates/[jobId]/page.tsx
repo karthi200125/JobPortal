@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getJobUsingId } from "@/actions/job/getJobUsingId";
 import moment from "moment";
 import { getApplicationCandidates } from "@/actions/jobapplication/getApplicationcandidates";
+import JobTitlesSkeleton from "@/Skeletons/JobTitlesSkeleton";
 
 const JobCandidates = () => {
     const params = useParams();
@@ -25,40 +26,44 @@ const JobCandidates = () => {
 
     const options = ["EarlyApplicants", "TopApplicants"];
     const [type, setType] = useState("EarlyApplicants");
-    
+
     const { data: job, isPending } = useQuery({
         queryKey: ["getJob", jobId],
         queryFn: async () => getJobUsingId(jobId),
         enabled: !!jobId,
     });
-    
+
     const { data: candidates, isPending: candidatesPending } = useQuery({
         queryKey: ["getJobApplicationCandidates", jobId],
         queryFn: async () => getApplicationCandidates(jobId),
         enabled: !!jobId,
     });
 
-    const jobApplication = job?.jobApplications.filter((jb: any) => jb.jobId === job.id);
-
     return (
         <div className="p-5 w-full h-screen relative flex flex-col md:flex-row items-start gap-5">
             {/* Job Details Section */}
             <div className="flex-1 space-y-3">
-                <h2 className="capitalize">{job?.jobTitle}</h2>
-                <h4 className="text-[var(--textBlur)]">
-                    {job?.city}, {job?.state}, {job?.country}. {moment(job?.createdAt).fromNow()} (
-                    {candidates?.length || 0} applicants)
-                </h4>
-                <div className="flex flex-row gap-3 items-center">
-                    <FaSuitcase size={20} />
-                    <h5 className="bg-neutral-200 p-1 rounded-[5px] flex-center px-3">{job?.mode}</h5>
-                    <h5 className="bg-neutral-200 p-1 rounded-[5px] flex-center px-3">{job?.type}</h5>
-                </div>
+                {isPending ?
+                    <JobTitlesSkeleton />
+                    :
+                    <div className="space-y-3">
+                        <h2 className="capitalize">{job?.jobTitle}</h2>
+                        <h4 className="text-[var(--textBlur)]">
+                            {job?.city}, {job?.state}, {job?.country}. {moment(job?.createdAt).fromNow()} (
+                            {candidates?.length || 0} applicants)
+                        </h4>
+                        <div className="flex flex-row gap-3 items-center">
+                            <FaSuitcase size={20} />
+                            <h5 className="bg-neutral-200 p-1 rounded-[5px] flex-center px-3">{job?.mode}</h5>
+                            <h5 className="bg-neutral-200 p-1 rounded-[5px] flex-center px-3">{job?.type}</h5>
+                        </div>
 
-                <div className="flex flex-row gap-3 items-center">
-                    <FaListCheck size={20} />
-                    <h5>10 skills match your profile - you may be a good fit</h5>
-                </div>
+                        <div className="flex flex-row gap-3 items-center">
+                            <FaListCheck size={20} />
+                            <h5>10 skills match your profile - you may be a good fit</h5>
+                        </div>
+                    </div>
+                }
 
                 <JobDescription job={job} isPending={isPending} />
             </div>

@@ -11,8 +11,10 @@ import noProfile from "../../../../public/noProfile.webp";
 import JobCandidate from "./JobCandidate";
 import { useState, useCallback, useTransition, useMemo } from "react";
 import { useCustomToast } from "@/lib/CustomToast";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AcceptOrRemove } from "@/actions/jobapplication/acceptOrRemove";
+import { checkSkills } from "@/actions/job/CompareSkills";
+import { getUserById } from "@/actions/auth/getUserById";
 
 const Candidates = ({ job, candidates, isPending }: any) => {
     const [canId, setCanId] = useState<string>("");
@@ -36,7 +38,7 @@ const Candidates = ({ job, candidates, isPending }: any) => {
                 "No Candidates Yet!"
             ) : (
                 memoizedCandidates.map((can: any) => (
-                    <Candidate key={can.id} can={can} setCanId={setCanId} jobId={job?.id} />
+                    <Candidate key={can.id} can={can} setCanId={setCanId} jobId={job?.id} job={job} />
                 ))
             )}
         </div>
@@ -45,33 +47,53 @@ const Candidates = ({ job, candidates, isPending }: any) => {
 
 export default Candidates;
 
-const Candidate = ({ can, setCanId, jobId }: any) => {
+const Candidate = ({ can, setCanId, jobId, job }: any) => {
     const dispatch = useDispatch();
-    const [isLoading, startTransition] = useTransition();
-    const { showSuccessToast } = useCustomToast();
+    const { showSuccessToast, showErrorToast } = useCustomToast();
     const queryClient = useQueryClient();
+    const [loadingAction, setLoadingAction] = useState<"accept" | "remove" | null>(null);
 
     // Open modal with selected candidate ID
     const handleOpenModal = useCallback(() => {
-        setCanId(can.id);
+        setCanId(can.userId);
         dispatch(openModal("jobcandidatemodal"));
-    }, [can.id, setCanId, dispatch]);
+    }, [can.userId, setCanId, dispatch]);
+
+    const { data } = useQuery({
+        queryKey: ["getCompareSkills", can, job],
+        queryFn: async () => checkSkills(can, job),
+    });
+
+    const { data: user } = useQuery({
+        queryKey: ["getUser", can?.user?.id],
+        queryFn: async () => getUserById(can?.user?.id),
+    });
+
+    const jobApplication = user?.jobApplications.find((jb: any) => jb.jobId === job.id && jb?.userId === user?.id);    
 
     // Accept or remove candidate
     const handleAcceptOrRemove = useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>, action: "accept" | "remove") => {
+        async (e: React.MouseEvent<HTMLButtonElement>, action: "accept" | "remove") => {
             e.stopPropagation();
-            startTransition(() => {
-                AcceptOrRemove(can.id, jobId, action).then((data) => {
-                    if (data?.success) {
-                        showSuccessToast(data.success);
-                        queryClient.invalidateQueries({ queryKey: ["getJobApplicationCandidates", jobId] });
-                    }
-                });
-            });
+            setLoadingAction(action);
+
+            try {
+                const data = await AcceptOrRemove(jobApplication?.id, action);
+                if (data?.success) {
+                    showSuccessToast(data.success);
+                    queryClient.invalidateQueries({ queryKey: ["getJobApplicationCandidates", jobId] });
+                }
+                if (data?.error) {
+                    console.log(data?.error)
+                    showErrorToast(data?.error)
+                }
+            } finally {
+                setLoadingAction(null);
+            }
         },
         [can.id, jobId, queryClient, showSuccessToast]
     );
+
 
     return (
         <div
@@ -81,7 +103,7 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
             {/* Profile Image */}
             <div className="w-[80px] h-[80px] rounded-md bg-neutral-200 overflow-hidden relative">
                 <Image
-                    src={can?.user?.userImage || noProfile.src}
+                    src={user?.userImage || noProfile.src}
                     alt="User Profile"
                     fill
                     className="rounded-md bg-neutral-200 w-full h-full object-cover absolute top-0 left-0"
@@ -90,10 +112,13 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
 
             {/* Candidate Info */}
             <div className="w-full flex flex-col md:flex-row justify-between items-center gap-5">
-                <div className="flex flex-col items-start">
-                    <h4 className="font-bold">{can?.user?.username}</h4>
-                    <h4>{can?.candidateEmail}</h4>
-                    <h4 className="text-[var(--lighttext)]">{can?.user?.profession}</h4>
+                <div className="flex flex-col items-start gap-1">
+                    <h4 className="font-bold capitalize">{user?.username}</h4>
+                    <h4 className="px-2 py-1 rounded-md bg-green-100 text-green-600 text-xs font-semibold">
+                        Skills Match: {data?.per}%
+                    </h4>
+                    <h4>Exp: Fresher</h4>
+                    {user?.city && <h4>{user?.city}, {user?.state}</h4>}
                 </div>
 
                 {/* Action Buttons */}
@@ -102,7 +127,7 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
                         onClick={(e: any) => handleAcceptOrRemove(e, "accept")}
                         variant="border"
                         icon={<FaCheck size={15} />}
-                        isLoading={isLoading}
+                        isLoading={loadingAction === "accept"}
                     >
                         Accept
                     </Button>
@@ -110,7 +135,7 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
                         onClick={(e: any) => handleAcceptOrRemove(e, "remove")}
                         variant="border"
                         icon={<RiCloseFill size={15} />}
-                        isLoading={isLoading}
+                        isLoading={loadingAction === "remove"}
                     >
                         Not Interested
                     </Button>
@@ -119,3 +144,4 @@ const Candidate = ({ can, setCanId, jobId }: any) => {
         </div>
     );
 };
+
