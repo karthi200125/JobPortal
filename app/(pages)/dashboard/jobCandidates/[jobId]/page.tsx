@@ -19,6 +19,7 @@ import { getJobUsingId } from "@/actions/job/getJobUsingId";
 import moment from "moment";
 import { getApplicationCandidates } from "@/actions/jobapplication/getApplicationcandidates";
 import JobTitlesSkeleton from "@/Skeletons/JobTitlesSkeleton";
+import Title from "@/lib/MetaTitle";
 
 const JobCandidates = () => {
     const params = useParams();
@@ -41,6 +42,12 @@ const JobCandidates = () => {
 
     return (
         <div className="p-5 w-full h-screen relative flex flex-col md:flex-row items-start gap-5">
+            <Title
+                title={`${job?.jobTitle} Candidates | JOBIFY`}
+                description="View and manage candidates who have applied for job openings in your company."
+                keywords="job candidates, applicants, hiring process, recruitment, job applications"
+            />
+
             {/* Job Details Section */}
             <div className="flex-1 space-y-3">
                 {isPending ?

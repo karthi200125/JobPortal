@@ -1,13 +1,19 @@
 'use client'
 
+import Title from "@/lib/MetaTitle";
 import JobProgress from "./JobProgress";
 
 const StatusSide = ({ job, user }: any) => {
-    
-    const jobApplication = user?.jobApplications?.find((ja: any) => ja?.jobId === job?.id);    
+
+    const jobApplication = user?.jobApplications?.find((ja: any) => ja?.jobId === job?.id);
 
     return (
         <>
+            <Title
+                title={`${job?.jobTitle} Status | JOBIFY`}
+                description="Track job application progress, interview status, and hiring decisions with JOBIFY."
+                keywords="job status, application tracking, interview updates, hiring process"
+            />
             <div className="w-full h-full p-5 space-y-5">
 
                 <div className="space-y-2 borderb pb-5">
@@ -18,7 +24,7 @@ const StatusSide = ({ job, user }: any) => {
                 <div className="space-y-2">
                     <h3>Application Status</h3>
                     <div className="w-full border p-5 overflow-x-auto rounded-md">
-                        <JobProgress jobApplication={jobApplication}/>
+                        <JobProgress jobApplication={jobApplication} />
                     </div>
                 </div>
 

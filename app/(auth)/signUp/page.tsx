@@ -2,10 +2,17 @@ import { GoArrowLeft } from "react-icons/go"
 import AuthLeftSide from "../AuthLeftSide"
 import SignUpRightSide from "./SignUpRightSide"
 import Link from "next/link"
+import Title from "@/lib/MetaTitle"
 
 const RegisterPage = () => {
   return (
     <main className=" w-full min-h-screen sm:h-screen flex flex-row items-center bg-[var(--black)]">
+      <Title
+        title="Create an Account | JOBIFY"
+        description="Join JOBIFY today and find your dream job. Sign up now to apply for top job listings and connect with recruiters."
+        keywords="sign up, register, create account, job seeker, job portal"
+      />
+
       <div className="hidden w-full lg:w-[40%] h-full lg:flex items-center justify-center">
         <AuthLeftSide />
       </div>

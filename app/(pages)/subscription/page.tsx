@@ -5,6 +5,7 @@ import { CheckOutSession } from "@/actions/stripe";
 import { loginRedux } from "@/app/Redux/AuthSlice";
 import Button from "@/components/Button";
 import { subscriptionPlans } from "@/data";
+import Title from "@/lib/MetaTitle";
 import { useEffect, useTransition } from "react";
 import { FaCrown } from "react-icons/fa";
 import { PiArrowCircleRightFill } from "react-icons/pi";
@@ -53,6 +54,12 @@ export default function Subscription() {
 
     return (
         <div className="w-full flex flex-col gap-5 items-center justify-center min-h-screen py-10">
+            <Title
+                title="Upgrade Your Job Search | JOBIFY Subscription"
+                description="Unlock exclusive job listings, premium features, and career insights with JOBIFY's subscription plans."
+                keywords="subscription, premium jobs, job search upgrade, career boost"
+            />
+
             <h1>Our Pricing Plans</h1>
 
             {user?.isPro ? (

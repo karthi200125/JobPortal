@@ -55,12 +55,12 @@ const JobProgress: React.FC<JobProgressProps> = ({ jobApplication }) => {
                     key={step.id}
                     className="flex-1 flex flex-col gap-2 items-start text-center"
                 >
-                    <div className="flex items-center">
+                    <div className="flex items-center max-w-max">
                         {/* Step Circle */}
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${step.id <= currentStep
-                                    ? "bg-green-500 border-green-500"
-                                    : "bg-gray-200 border-gray-300"
+                                ? "bg-green-500 border-green-500"
+                                : "bg-gray-200 border-gray-300"
                                 }`}
                         >
                             {step.id <= currentStep ? (
@@ -73,7 +73,7 @@ const JobProgress: React.FC<JobProgressProps> = ({ jobApplication }) => {
                         {/* Progress Line */}
                         {index < steps.length - 1 && (
                             <div
-                                className={`w-[140px] h-1 ${step.id < currentStep ? "bg-green-500" : "bg-gray-300"
+                                className={`max-w-max h-1 ${step.id < currentStep ? "bg-green-500" : "bg-gray-300"
                                     }`}
                             />
                         )}

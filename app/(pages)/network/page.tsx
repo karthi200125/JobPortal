@@ -11,6 +11,7 @@ import { UserFollowAction } from "@/actions/user/UserFollowAction";
 import { userFollow } from "@/app/Redux/AuthSlice";
 import { GoPlus } from "react-icons/go";
 import Link from "next/link";
+import Title from "@/lib/MetaTitle";
 
 interface User {
     id: number;
@@ -33,6 +34,12 @@ const NetWork = () => {
 
     return (
         <div className="w-full max-h-max pt-5">
+            <Title
+                title="Your Professional Network | JOBIFY"
+                description="Connect with professionals, follow recruiters, and build your career network on JOBIFY."
+                keywords="network, job connections, follow recruiters, career networking, professional network"
+            />
+
             <div className="rounded-[20px] border">
                 {/* Tabs */}
                 <div className="flex items-center gap-5 px-5 border-b border-neutral-200">

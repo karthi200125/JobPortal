@@ -14,6 +14,7 @@ import Skills from "../Skills"
 import UserInfo from "../UserInfo"
 import { updateProfileViews } from "@/actions/user/profileViews"
 import { useSelector } from "react-redux"
+import Title from "@/lib/MetaTitle"
 
 const UserProfile = () => {
   const user = useSelector((state: any) => state.user.user)
@@ -37,6 +38,12 @@ const UserProfile = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-row items-start gap-5 py-5 px-2">
+      <Title
+        title={`${data?.username || "User Profile"} | JOBIFY`}
+        description="View user profiles, explore professional details, and connect with job seekers and recruiters on JOBIFY."
+        keywords="user profile, job seeker profile, recruiter profile, jobify network"
+      />
+
       <div className="w-full md:w-[70%] h-full space-y-5">
         <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
 

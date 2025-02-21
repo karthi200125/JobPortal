@@ -9,6 +9,7 @@ import { getUserById } from "@/actions/auth/getUserById";
 import Image from "next/image";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import Title from "@/lib/MetaTitle";
 
 const JobStatus = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -43,6 +44,12 @@ const JobStatus = () => {
 
     return (
         <div className="relative w-full p-5 space-y-5">
+            <Title
+                title="Job Status | JOBIFY"
+                description="Track job application progress, interview status, and hiring decisions with JOBIFY."
+                keywords="job status, application tracking, interview updates, hiring process"
+            />
+
             {/* Header */}
             <div className="w-full pb-5 border-b flex flex-row items-center justify-between">
                 <div>
@@ -99,7 +106,7 @@ const JobStatus = () => {
 
                 {/* Job Details */}
                 <div className="w-[60%] jobStatusHeight space-y-5 overflow-y-auto">
-                    {job ? <StatusSide job={job}  user={userData}/> : <div>Loading...</div>}
+                    {job ? <StatusSide job={job} user={userData} /> : <div>Loading...</div>}
                 </div>
             </div>
         </div>

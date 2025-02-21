@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FaSuitcase } from 'react-icons/fa'
 import noImage from '../../../public/noImage.webp'
+import Title from '@/lib/MetaTitle'
 
 const Companies = () => {
 
@@ -17,6 +18,12 @@ const Companies = () => {
 
     return (
         <div className='w-full min-h-screen py-5 space-y-5 px-2'>
+            <Title
+                title="Top Hiring Companies | JOBIFY"
+                description="Discover companies that are hiring. Learn about company cultures, job openings, and career opportunities."
+                keywords="companies, hiring companies, job openings, work culture, recruiters"
+            />
+
             <h2 className='font-bold'>All Companies</h2>
             {isPending ?
                 <ComapniesSkeleton />

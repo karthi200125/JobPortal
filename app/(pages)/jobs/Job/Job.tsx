@@ -8,6 +8,7 @@ import JobPremium from "./JobPremium";
 import JobRecruiter from "./JobRecruiter";
 import JobTitles from "./JobTitles";
 import { useSelector } from "react-redux";
+import { NextSeo } from 'next-seo';
 
 const JobDesc = ({ job, refetchJobs }: any) => {
 
@@ -21,6 +22,10 @@ const JobDesc = ({ job, refetchJobs }: any) => {
 
     return (
         <div className="w-full h-full overflow-y-auto p-5 space-y-5">
+            <NextSeo
+                title="JOBS PAGE Simple Usage Example"
+                description="A short description goes here."
+            />
             <JobTitles job={job} company={data} isPending={isPending} refetchJobs={refetchJobs} />
             <JobRecruiter job={job} company={data} />
             <JobDescription job={job} isPending={isPending} />

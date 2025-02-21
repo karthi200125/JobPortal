@@ -11,6 +11,7 @@ import { getAppliedJobs } from "@/actions/jobapplication/getAppliedJobs"
 import { getUserById } from "@/actions/auth/getUserById"
 import PostedJobs from "./PostedJobs"
 import { IoIosPeople } from "react-icons/io";
+import Title from "@/lib/MetaTitle"
 
 
 const Dashboard = () => {
@@ -33,6 +34,12 @@ const Dashboard = () => {
 
     return (
         <div className="w-full min-h-screen pt-5 space-y-5 px-2">
+            <Title
+                title="Dashboard | JOBIFY"
+                description="Manage your job applications, postings, and interactions all in one place with JOBIFY's intuitive dashboard."
+                keywords="dashboard, job management, applications, hiring, career tracking"
+            />
+
             <div className="flex flex-col md:flex-row items-center justify-between gap-5">
                 <h2 className="">Dashboard</h2>
                 <div className="flex flex-row items-center gap-5">

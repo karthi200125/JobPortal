@@ -2,10 +2,11 @@
 
 import { getFilterAllJobs } from '@/actions/job/getFilterAllJobs';
 import FilterNavbar from '@/components/FilterNavbar/FilterNavbar';
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import JobDesc from './Job/Job';
 import JobLists from './JobLists/JobLists';
+import Title from '@/lib/MetaTitle';
 
 const Jobs = ({ searchParams }: { searchParams: any }) => {
 
@@ -49,6 +50,12 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
 
     return (
         <div className="w-full relative">
+            <Title
+                title={`${job?.jobTitle || "Explore Job Listings"} | JOBIFY`}
+                description="Browse thousands of job listings from top companies. Find remote, full-time, and part-time job opportunities."
+                keywords="jobs, job listings, hiring, careers, remote jobs, find jobs"
+            />
+
             <FilterNavbar />
             <div className="w-full flex flex-row items-start">
                 <div className="w-full md:w-[40%] jobsh overflow-y-auto">

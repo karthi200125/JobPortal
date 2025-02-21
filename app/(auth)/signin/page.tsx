@@ -4,10 +4,16 @@ import { GoArrowLeft } from "react-icons/go";
 import AuthLeftSide from "../AuthLeftSide"
 import SigninRightSide from "./SignInRightSide"
 import Link from "next/link";
+import Title from "@/lib/MetaTitle";
 
 const LoginPage = () => {
   return (
     <main className="w-full min-h-screen sm:h-screen flex flex-row items-center bg-[var(--black)]">
+      <Title
+        title="Find Your Dream Job | JOBIFY"
+        description="Browse thousands of job listings from top companies. Apply for jobs and get hired today!"
+        keywords="jobs, hiring, careers, job listings, remote jobs"
+      />
       <div className="hidden w-full lg:w-[40%] h-full lg:flex items-center justify-center">
         <AuthLeftSide />
       </div>

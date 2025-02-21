@@ -27,7 +27,8 @@ const Employees = () => {
     }
 
     return (
-        <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">
+        <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">            
+
             {/* Company Employees */}
             <div className="flex-1 max-h-max lg:min-h-screen w-full space-y-5 p-5 border rounded-[20px]">
                 <h3>Company Employees ({user?.employees?.length || 0})</h3>
