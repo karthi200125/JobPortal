@@ -8,6 +8,8 @@ import noProfile from '@/public/noProfile.webp'
 import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "@/actions/auth/getUserById";
 import { checkSkills } from "@/actions/job/CompareSkills";
+import { useEffect } from "react";
+import { updateJobApplicationStatus } from "@/actions/jobapplication/updateJobApplicationStatus";
 
 const JobCandidate = ({ userId, job }: any) => {
 
@@ -25,6 +27,13 @@ const JobCandidate = ({ userId, job }: any) => {
 
     const jobApplication = user?.jobApplications.find((jb: any) => jb.jobId === job.id);
 
+    useEffect(() => {
+        const updateJobApplication = async () => {
+            await updateJobApplicationStatus(jobApplication?.id)
+        }
+        updateJobApplication()
+    }, [jobApplication?.id])
+
     const handleDownload = () => {
         if (jobApplication?.candidateResume) {
             const link = document.createElement("a");
@@ -35,7 +44,7 @@ const JobCandidate = ({ userId, job }: any) => {
             document.body.removeChild(link);
         }
     };
-    
+
     return (
         <>
             {isPending ?

@@ -1,20 +1,21 @@
 'use client';
 
+import { getUserById } from "@/actions/auth/getUserById";
+import { checkSkills } from "@/actions/job/CompareSkills";
+import { AcceptOrRemove } from "@/actions/jobapplication/acceptOrRemove";
 import { openModal } from "@/app/Redux/ModalSlice";
 import Button from "@/components/Button";
 import Model from "@/components/Model/Model";
+import { useCustomToast } from "@/lib/CustomToast";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
+import { useCallback, useMemo, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { RiCloseFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import noProfile from "../../../../public/noProfile.webp";
 import JobCandidate from "./JobCandidate";
-import { useState, useCallback, useTransition, useMemo } from "react";
-import { useCustomToast } from "@/lib/CustomToast";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AcceptOrRemove } from "@/actions/jobapplication/acceptOrRemove";
-import { checkSkills } from "@/actions/job/CompareSkills";
-import { getUserById } from "@/actions/auth/getUserById";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Candidates = ({ job, candidates, isPending }: any) => {
     const [canId, setCanId] = useState<string>("");
@@ -33,7 +34,11 @@ const Candidates = ({ job, candidates, isPending }: any) => {
             </Model>
 
             {isPending ? (
-                "Loading..."
+                <div className="space-y-2">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <Skeleton key={i} className="bg-neutral-200 h-[100px] rounded-[10px]" />
+                    ))}
+                </div>
             ) : memoizedCandidates.length === 0 ? (
                 "No Candidates Yet!"
             ) : (
@@ -69,7 +74,7 @@ const Candidate = ({ can, setCanId, jobId, job }: any) => {
         queryFn: async () => getUserById(can?.user?.id),
     });
 
-    const jobApplication = user?.jobApplications.find((jb: any) => jb.jobId === job.id && jb?.userId === user?.id);    
+    const jobApplication = user?.jobApplications.find((jb: any) => jb.jobId === job.id && jb?.userId === user?.id);
 
     // Accept or remove candidate
     const handleAcceptOrRemove = useCallback(

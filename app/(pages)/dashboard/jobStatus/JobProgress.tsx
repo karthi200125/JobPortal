@@ -1,60 +1,88 @@
-'use client'
+"use client";
 
-import { CheckCircleIcon } from 'lucide-react';
-import moment from 'moment';
-import React from 'react';
+import { CheckCircleIcon } from "lucide-react";
+import moment from "moment";
+import React from "react";
 
-const JobProgress = ({ jobApplication }: any) => {
+interface JobApplication {
+    createdAt: any;
+    ApplicationViewedUpdatedAt?: any
+    SelectedUpdatedAt?: any
+    isApplicationViewed: boolean;
+    isSelected: boolean;
+}
 
-    let currentStep = 1
+interface JobProgressProps {
+    jobApplication: JobApplication;
+}
 
-    if (jobApplication?.isApplicationViewed === true) {
-        currentStep = 2
+const JobProgress: React.FC<JobProgressProps> = ({ jobApplication }) => {
+    let currentStep = 1;
+
+    if (jobApplication?.isApplicationViewed) {
+        currentStep = 2;
     }
-    if (jobApplication?.isResumeViewd === true) {
-        currentStep = 3
-    }
-    if (jobApplication?.isSelected === true) {
-        currentStep = 4
+    if (jobApplication?.isSelected) {
+        currentStep = 3;
     }
 
     const steps = [
         {
             id: 1,
             title: "Applied",
-            date: moment(jobApplication?.createdAt).format("MMM D - YYYY")
+            date: moment(jobApplication?.createdAt).format("MMM D, YYYY"),
         },
         {
             id: 2,
-            title: "Application Viewed",
-            date: moment(jobApplication?.updatedAt).format("MMM D - YYYY")
+            title: "Profile/Resume Viewed",
+            date: jobApplication?.ApplicationViewedUpdatedAt
+                ? moment(jobApplication?.ApplicationViewedUpdatedAt).format("MMM D, YYYY")
+                : "Pending",
         },
         {
             id: 3,
-            title: "Profile/Resume Viewed",
-            date: moment(jobApplication?.updatedAt).format("MMM D - YYYY")
-        },
-        {
-            id: 4,
             title: "Shortlisted",
-            date: moment(jobApplication?.updatedAt).format("MMM D - YYYY")
+            date: jobApplication?.SelectedUpdatedAt
+                ? moment(jobApplication?.SelectedUpdatedAt).format("MMM D, YYYY")
+                : "Pending",
         },
     ];
 
-
     return (
         <div className="w-full flex justify-between items-center overflow-x-auto">
-            {steps.map((step) => (
-                <div className="flex-1 flex flex-col gap-2 items-start" key={step?.id}>
+            {steps.map((step, index) => (
+                <div
+                    key={step.id}
+                    className="flex-1 flex flex-col gap-2 items-start text-center"
+                >
                     <div className="flex items-center">
-                        <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${step?.id <= currentStep ? 'bg-green-500 border-green-500' : 'bg-gray-200 border-gray-300'}`}>
-                            {step?.id <= currentStep ? <CheckCircleIcon className="w-4 h-4 text-white" /> : <span className="text-gray-500">{step?.id}</span>}
+                        {/* Step Circle */}
+                        <div
+                            className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${step.id <= currentStep
+                                    ? "bg-green-500 border-green-500"
+                                    : "bg-gray-200 border-gray-300"
+                                }`}
+                        >
+                            {step.id <= currentStep ? (
+                                <CheckCircleIcon className="w-4 h-4 text-white" />
+                            ) : (
+                                <span className="text-gray-500">{step.id}</span>
+                            )}
                         </div>
-                        <div className={`w-[140px] flex-1 h-1 ${step?.id < steps.length - 1 ? step?.id < currentStep ? 'bg-green-500' : 'bg-gray-300' : ''}`} />
+
+                        {/* Progress Line */}
+                        {index < steps.length - 1 && (
+                            <div
+                                className={`w-[140px] h-1 ${step.id < currentStep ? "bg-green-500" : "bg-gray-300"
+                                    }`}
+                            />
+                        )}
                     </div>
-                    <div className='space-y-1'>
-                        <h4 className={`text-center mt-2 font-bold`}>{step?.title}</h4>
-                        <h6 className='text-[var(--lighttext)]'>{step?.date}</h6>
+
+                    {/* Step Title & Date */}
+                    <div className="space-y-1">
+                        <h4 className="font-bold">{step.title}</h4>
+                        <h6 className="text-gray-500">{step.date}</h6>
                     </div>
                 </div>
             ))}

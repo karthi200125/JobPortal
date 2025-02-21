@@ -11,11 +11,39 @@ export const AcceptOrRemove = async (
             return { error: "Invalid input parameters." };
         }
 
+
         if (action === "accept") {
             await db.jobApplication.update({
                 where: { id: JobApplicationId },
                 data: { isSelected: true },
             });
+            const JA = await db.jobApplication.findUnique({
+                where: { id: JobApplicationId }
+            })
+
+            // check jobapplication isApplicationViewed true if not then make it true
+            if (JA?.isApplicationViewed !== true) {
+                await db.jobApplication.update({
+                    where: {
+                        id: JobApplicationId,
+                    },
+                    data: {
+                        isApplicationViewed: true,
+                        ApplicationViewedUpdatedAt: new Date()
+                    }
+                });
+            } else {
+                await db.jobApplication.update({
+                    where: {
+                        id: JobApplicationId,
+                    },
+                    data: {
+                        isSelected: true,
+                        SelectedUpdatedAt: new Date()
+                    }
+                });
+            }
+
             return { success: "Candidate has been selected." };
         } else if (action === "remove") {
             await db.jobApplication.update({
