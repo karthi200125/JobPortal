@@ -44,14 +44,6 @@ const Welcome = () => {
                     :
                     renderStepContent()}
             </div>
-            {/* <div className='w-full flex flex-row items-center justify-end gap-5'>
-                {isOrg ?
-                    ""
-                    :
-                    step !== 1 &&
-                    <Button variant="border" onClick={HandleBack}>Back</Button>
-                }
-            </div> */}
         </div>
     )
 }

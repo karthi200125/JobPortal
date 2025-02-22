@@ -127,13 +127,17 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     triggerCls="absolute bottom-[-70px] md:bottom-[-40px] left-5"
                     modalId='profileImageModal'
                 >
-                    <img
-                        src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}
-                        alt="Profile"
-                        // fill
-                        className="w-[150px] h-[150px] rounded-full border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans"
+                    <div
+                        className="relative bg-white w-[150px] h-[150px] rounded-full border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans "
                         onClick={() => dispatch(openModal('profileImageModal'))}
-                    />
+                    >
+                        <Image
+                            src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}
+                            alt="Profile"
+                            fill
+                            className="w-full h-full rounded-full object-cover absolute left-0 top-0"
+                        />
+                    </div>
                 </Model>
                 {isCurrentUser && (
                     <Model

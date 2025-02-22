@@ -69,6 +69,7 @@ const LoginForm = () => {
                         setSuccess(data?.success)
                         dispatch(loginRedux(data?.data))
                         setErr("")
+                        // if(data?.data?.)
                         router.push(`/userProfile/${data?.data?.id}`)
                     }
                     if (data?.error) {

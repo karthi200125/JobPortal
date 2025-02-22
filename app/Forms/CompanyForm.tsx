@@ -29,9 +29,9 @@ const CompanyForm = () => {
     const form = useForm<z.infer<typeof CompanySchema>>({
         resolver: zodResolver(CompanySchema),
         defaultValues: {
-            companyName: "",
-            companyImage: "",
-            companyBackImage: "",
+            companyName: user?.username || "",
+            // companyImage: "",
+            // companyBackImage: "",
             companyAddress: "",
             companyCity: "",
             companyState: "",
@@ -82,7 +82,7 @@ const CompanyForm = () => {
                         placeholder="Ex: Google"
                         isLoading={isLoading}
                     />
-                    <CustomFormField
+                    {/* <CustomFormField
                         name="companyImage"
                         form={form}
                         label="Company Image"
@@ -95,7 +95,7 @@ const CompanyForm = () => {
                         label="Company Back Image"
                         placeholder="Ex: https://example.com/image.jpg"
                         isLoading={isLoading}
-                    />
+                    /> */}
                     <CustomFormField
                         name="companyAddress"
                         form={form}
@@ -109,32 +109,30 @@ const CompanyForm = () => {
                         label="Company Country"
                         placeholder="Ex: India"
                         isLoading={isLoading}
-                        isSelect
-                        options={["India"]}
                     />
                     <CustomFormField
                         name="companyState"
                         form={form}
-                        label="Conoaby State"
+                        label="Company State"
                         placeholder="Ex: TamilNadu"
                         isLoading={isLoading}
-                        isSelect
-                        options={statesOptions}
-                        optionsLoading={statesLoading}
-                        onSelect={(d: any) => setState(d)}
+                    // isSelect
+                    // options={statesOptions}
+                    // optionsLoading={statesLoading}
+                    // onSelect={(d: any) => setState(d)}
                     />
-                    {state && (
-                        <CustomFormField
-                            name="companyCity"
-                            form={form}
-                            label="Company City"
-                            placeholder="Ex: Chennai"
-                            isLoading={isLoading}
-                            isSelect
-                            options={citiesOptions}
-                            optionsLoading={citiesLoading}
-                        />
-                    )}
+                    {/* {state && ( */}
+                    <CustomFormField
+                        name="companyCity"
+                        form={form}
+                        label="Company City"
+                        placeholder="Ex: Chennai"
+                        isLoading={isLoading}
+                    // isSelect
+                    // options={citiesOptions}
+                    // optionsLoading={citiesLoading}
+                    />
+                    {/* )} */}
                     <CustomFormField
                         name="companyWebsite"
                         form={form}

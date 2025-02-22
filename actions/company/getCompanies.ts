@@ -6,7 +6,7 @@ export const getCompanies = async () => {
     try {
         const companies: any = await db.company.findMany({
             where: {
-                companyIsVerified: false
+                companyIsVerified: true
             },
             include: {
                 jobs: true

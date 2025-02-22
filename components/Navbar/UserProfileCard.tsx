@@ -61,14 +61,14 @@ const UserProfileCard = () => {
         {
             id: 5,
             title: "Job Status",
-            icon: <GrStatusCriticalSmall  size={20} />,
+            icon: <GrStatusCriticalSmall size={20} />,
             href: "/dashboard/jobStatus",
             isCard: (isRec || isCan) ? true : false
         },
         {
             id: 6,
             title: "Employees",
-            icon: <FaUsers  size={20} />,
+            icon: <FaUsers size={20} />,
             href: "/dashboard/employees",
             isCard: isOrg ? true : false
         },
@@ -116,13 +116,14 @@ const UserProfileCard = () => {
         <HoverCard >
             <HoverCardTrigger asChild>
                 <button onClick={() => router.push('/userprofile')}>
-                    <Image
-                        src={user?.userImage || noProfile.src}
-                        alt="User profile"
-                        className="w-[30px] h-[30px] rounded-full bg-white/10 cursor-pointer object-cover"
-                        width={30}
-                        height={30}
-                    />
+                    <div className="w-[35px] h-[35px] relative overflow-hidden rounded-full ">
+                        <Image
+                            src={user?.userImage || noProfile.src}
+                            alt="User profile"
+                            className="w-full h-full rounded-full bg-neutral-200 cursor-pointer object-cover absolute top-0 left-0"
+                            fill
+                        />
+                    </div>
                 </button>
             </HoverCardTrigger>
             <HoverCardContent className="space-y-3 min-w-[250px] overflow-hidden">
@@ -135,7 +136,7 @@ const UserProfileCard = () => {
                         height={60}
                     />
                     <div className="w-[170px]">
-                        <h4 className="capitalize font-bold">{user?.username}{user?.id}</h4>
+                        <h4 className="capitalize font-bold line-clamp-1">{user?.username}{user?.id}</h4>
                         <h4 className="text-xs text-neutral-400 line-clamp-1">{user?.email}</h4>
                         <h4>{user?.profession}</h4>
                         {/* <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6> */}

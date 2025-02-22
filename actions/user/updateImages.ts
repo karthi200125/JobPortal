@@ -5,26 +5,37 @@ import { db } from '@/lib/db';
 export const updateImages = async (
     userId: number,
     userImage?: string | null,
-    profileImage?: string | null
+    profileImage?: string | null,
+    isOrg?: boolean
 ) => {
-    try {
+    try {        
         if (!userId) {
             throw new Error('User ID is required');
         }
         
-        if (!profileImage && !userImage) {
+        if (!userImage && !profileImage) {
             throw new Error('At least one image field must be provided');
         }
 
-        const data: Record<string, string> = {};
-        if (profileImage) data.profileImage = profileImage;
-        if (userImage) data.userImage = userImage;
+        const updateData: Record<string, string> = {};
+        if (userImage) updateData.userImage = userImage;
+        if (profileImage) updateData.profileImage = profileImage;
 
-        const updatedUser: any = await db.user.update({
+        const updatedUser = await db.user.update({
             where: { id: userId },
-            data,
+            data: updateData,
         });
-        
+
+        if (isOrg) {
+            await db.company.updateMany({
+                where: { userId },
+                data: {
+                    companyImage: userImage || undefined,
+                    companyBackImage: profileImage || undefined,
+                },
+            });
+        }
+
         return { success: 'User images updated successfully', data: updatedUser };
     } catch (error: any) {
         console.error('Error updating user images:', error);

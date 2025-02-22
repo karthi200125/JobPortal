@@ -181,12 +181,12 @@ export const CompanySchema = z.object({
     companyName: z.string().min(1, {
         message: "Company Name is required",
     }),
-    companyImage: z.string().min(1, {
-        message: "Company Image URL is required",
-    }),
-    companyBackImage: z.string().min(1, {
-        message: "Company Back Image URL is required",
-    }),
+    // companyImage: z.string().min(1, {
+    //     message: "Company Image URL is required",
+    // }),
+    // companyBackImage: z.string().min(1, {
+    //     message: "Company Back Image URL is required",
+    // }),
     companyAddress: z.string().min(1, {
         message: "Company Address is required",
     }),

@@ -62,8 +62,10 @@ const UserProfileImage = () => {
             return;
         }
 
+        const isOrg = user?.role === "ORGANIZATION"
+
         startTransition(async () => {
-            const response = await updateImages(userId, downloadUrl, null);
+            const response = await updateImages(userId, downloadUrl, null, isOrg);
             if (response.success) {
                 dispatch(loginRedux(response.data));
                 dispatch(closeModal("profileImageModal"));

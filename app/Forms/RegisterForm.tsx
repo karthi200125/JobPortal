@@ -75,8 +75,9 @@ const RegisterForm = () => {
                     if (data?.success) {
                         dispatch(loginRedux(data?.data))
                         setSuccess(data?.success)
+                        // router.push('/welcome')
+                        window.location.href = '/welcome'
                         setErr("")
-                        router.push('/welcome')
                     }
                     if (data?.error) {
                         setErr(data?.error)

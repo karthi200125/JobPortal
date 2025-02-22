@@ -61,8 +61,11 @@ const UserBackImage = () => {
             showErrorToast("No image URL available for update.");
             return;
         }
+
+        const isOrg = user?.role === "ORGANIZATION"
+
         startTransition(async () => {
-            const response = await updateImages(userId, null, downloadUrl);
+            const response = await updateImages(userId, null, downloadUrl, isOrg);
             if (response.success) {
                 dispatch(loginRedux(response.data));
                 dispatch(closeModal("UserBackImageModal"));
