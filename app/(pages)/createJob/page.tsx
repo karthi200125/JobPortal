@@ -37,7 +37,7 @@ const Page = () => {
                 </h3>
             ) : canCreateJob ? (
                 <div>
-                    {!user?.isPro ?
+                    {user?.isPro ?
                         <Button onClick={() => router.push('/subscription')} className='pro !text-black'>Subscription to create job</Button>
                         :
                         <CreateJobForm />
