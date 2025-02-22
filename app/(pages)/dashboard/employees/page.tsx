@@ -27,15 +27,15 @@ const Employees = () => {
     }
 
     return (
-        <div className="w-full flex flex-col md:flex-row items-start p-5 gap-5 min-h-screen">            
+        <div className="w-full flex flex-col lg:flex-row items-start p-5 gap-5 min-h-screen">
 
             {/* Company Employees */}
-            <div className="flex-1 max-h-max lg:min-h-screen w-full space-y-5 p-5 border rounded-[20px]">
+            <div className="flex-1 max-h-max w-full space-y-5 p-5 border rounded-[20px]">
                 <h3>Company Employees ({user?.employees?.length || 0})</h3>
                 {companyEmpIsLoading ? (
                     <EmployeesSkeleton />
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
+                    <div className="space-y-2 w-full">
                         {companyEmps.length > 0 ? (
                             companyEmps.map((emp: any) => (
                                 <Employee user={emp} key={emp.id} isVerify={false} />
@@ -53,7 +53,7 @@ const Employees = () => {
                 {verifyEmpsIsLoading ? (
                     <EmployeesSkeleton />
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
+                    <div className="space-y-2 w-full">
                         {verificationEmps.length > 0 ? (
                             verificationEmps.map((emp: any) => (
                                 <Employee user={emp} key={emp.id} isVerify={true} />

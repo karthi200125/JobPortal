@@ -65,7 +65,7 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
 
     return (
         <div
-            className="flex flex-row items-start gap-5 p-2 md:p-5 border-[1px] border-solid border-neutral-200 rounded-lg overflow-hidden"
+            className="w-full flex flex-row items-start gap-5 overflow-hidden border-b py-2"
         >
             <Image
                 src={user?.userImage || noAvatar.src}
@@ -74,12 +74,14 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
                 height={50}
                 className="bg-neutral-200 rounded-lg object-cover"
             />
-            <div className="space-y-2">
-                <div className="flex flex-row items-center gap-2">
-                    <Link href={`/userProfile/${user?.id}`} className="font-bold cursor-pointer">{user?.username}</Link>
-                    {user?.isPro && <Batch type="premium" />}
+            <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+                <div className="space-y-2">
+                    <div className="flex flex-row items-center gap-2">
+                        <Link href={`/userProfile/${user?.id}`} className="font-bold cursor-pointer">{user?.username}</Link>
+                        {user?.isPro && <Batch type="premium" />}
+                    </div>
+                    <h5 className="text-neutral-500">{user?.profession}</h5>
                 </div>
-                <h5 className="text-neutral-500">{user?.profession}</h5>
                 {isVerify && (
                     <div className="flex flex-row items-center gap-3">
                         <Button

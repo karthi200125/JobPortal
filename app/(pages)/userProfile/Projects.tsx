@@ -66,7 +66,7 @@ export default function Projects({ userId, profileUser }: ProjectsProps) {
             ) : (
                 <Carousel opts={{ align: "start" }} className="w-full max-w-4xl mx-auto">
                     <CarouselContent>
-                        {projects?.length > 0 ? (
+                        {projects?.length > 0 && (
                             projects.map((project) => (
                                 <CarouselItem key={project?.id} className="md:basis-1/2 lg:basis-1/3">
                                     <div className="p-1">
@@ -80,15 +80,13 @@ export default function Projects({ userId, profileUser }: ProjectsProps) {
                                             <ProjectCard
                                                 project={project}
                                                 onClick={() => dispatch(openModal('showProjectModal'))}
-                                                className="h-[320px] w-full" 
+                                                className="h-[320px] w-full"
                                                 isCurrentUser={isCurrentUser}
                                             />
                                         </Model>
                                     </div>
                                 </CarouselItem>
                             ))
-                        ) : (
-                            <p className="text-center text-gray-500">No projects available</p>
                         )}
                     </CarouselContent>
 

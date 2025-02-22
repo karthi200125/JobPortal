@@ -112,6 +112,8 @@ const CreateJobForm = () => {
     queryFn: async () => await getCompanies(),
   });
 
+  console.log(companies)
+
   const statesOptions = states.map((s: any) => s.name).sort();
   const companiesOptions = companies?.map((company: any) => company?.companyName);
 

@@ -136,9 +136,9 @@ const UserProfileCard = () => {
                         height={60}
                     />
                     <div className="w-[170px]">
-                        <h4 className="capitalize font-bold line-clamp-1">{user?.username}{user?.id}</h4>
+                        <h4 className="capitalize font-bold line-clamp-1">{user?.username}</h4>
                         <h4 className="text-xs text-neutral-400 line-clamp-1">{user?.email}</h4>
-                        <h4>{user?.profession}</h4>
+                        <h4 className="text-xs">{user?.profession}</h4>
                         {/* <h6 className="line-clamp-3 text-[var(--lighttext)]">{user?.userBio}</h6> */}
                     </div>
                 </div>
