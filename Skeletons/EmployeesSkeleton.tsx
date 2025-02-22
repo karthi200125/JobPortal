@@ -3,7 +3,7 @@ import React from 'react'
 
 const EmployeesSkeleton = () => {
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5'>
+        <div className='space-y-2 w-full'>
             {Array.from({ length: 8 }).map((_, i) => (
                 <Skeleton key={i} className='bg-neutral-100 flex flex-row items-start gap-5 p-2 md:p-5 rounded-lg overflow-hidden' >
                     <Skeleton className="bg-neutral-200 rounded-lg object-cover h-[50px] w-[50px]" />
