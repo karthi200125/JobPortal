@@ -34,8 +34,8 @@ const EasyApplyUserInfo = ({ onUserdata, onNext, currentStep = 0 }: EasyApplyUse
             <div className="space-y-2">
                 <h3>Contact Info</h3>
                 <div className="w-full border p-5 rounded-md flex flex-row items-start gap-5">
-                    <div className="h-[80px] relative rounded-md overflow-hidden w-[30%]">
-                        <Image src={user?.userImage || noProfile.src} alt="User Image" fill className="absolute top-0 left-0 w-full h-full  bg-neutral-200" />
+                    <div className="h-[80px] w-[80px] relative rounded-md overflow-hidden bg-neutral-200">
+                        <Image src={user?.userImage || noProfile.src} alt="User Image" fill className="absolute top-0 left-0 w-full h-full object-cover" />
                     </div>
                     <div className="space-y-2 w-[70%]">
                         <h4 className="font-bold capitalize">{user?.username}</h4>

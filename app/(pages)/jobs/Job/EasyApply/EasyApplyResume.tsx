@@ -105,15 +105,15 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
 
             <div className="space-y-5">
                 <div className="w-full border rounded-md p-3">
-                    {resumeName || 'No resume uploaded'}
+                    { resumeName || 'No resume uploaded'}
                 </div>
 
                 {resumeUrl && (
-                    <div className="w-full border max-h-max rounded-md p-3">
+                    <div className="w-full max-h-max md:h-[800px] border rounded-md p-3">
                         <iframe
                             src={resumeUrl || downloadUrl}
                             title="Resume Preview"
-                            className="w-full max-h-max  md:h-[800px]"
+                            className="w-full h-full"
                         />
                     </div>
                 )}

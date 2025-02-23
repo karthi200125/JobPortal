@@ -132,6 +132,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                                     title={`Apply to ${company?.companyName || "Company"}`}
                                     className="w-full md:w-[1000px]"
                                     modalId="easyapplyModal"
+                                    desc={`For ${job?.jobTitle || "this Job"} Post`}
                                 >
                                     <Button onClick={() => dispatch(openModal('easyapplyModal'))}>Easy Apply</Button>
                                 </Model>

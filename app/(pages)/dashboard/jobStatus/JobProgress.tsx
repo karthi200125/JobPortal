@@ -49,18 +49,18 @@ const JobProgress: React.FC<JobProgressProps> = ({ jobApplication }) => {
     ];
 
     return (
-        <div className="w-full flex justify-between items-center overflow-x-auto">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center overflow-x-auto gap-5 md:gap-0">
             {steps.map((step, index) => (
                 <div
                     key={step.id}
-                    className="flex-1 flex flex-col gap-2 items-start text-center"
+                    className="w-full md:flex-1 flex flex-row md:flex-col gap-5 md:gap-2 items-start text-center"
                 >
-                    <div className="flex items-center">
+                    <div className="min-w-[30px] md:w-full flex flex-col md:flex-row items-start md:items-center">
                         {/* Step Circle */}
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${step.id <= currentStep
-                                    ? "bg-green-500 border-green-500"
-                                    : "bg-gray-200 border-gray-300"
+                                ? "bg-green-500 border-green-500"
+                                : "bg-gray-200 border-gray-300"
                                 }`}
                         >
                             {step.id <= currentStep ? (
@@ -73,14 +73,14 @@ const JobProgress: React.FC<JobProgressProps> = ({ jobApplication }) => {
                         {/* Progress Line */}
                         {index < steps.length - 1 && (
                             <div
-                                className={`w-[140px] h-1 ${step.id < currentStep ? "bg-green-500" : "bg-gray-300"
+                                className={`hidden md:block w-full h-1 ${step.id < currentStep ? "bg-green-500" : "bg-gray-300"
                                     }`}
                             />
                         )}
                     </div>
 
                     {/* Step Title & Date */}
-                    <div className="space-y-1">
+                    <div className="space-y-1 text-start">
                         <h4 className="font-bold">{step.title}</h4>
                         <h6 className="text-gray-500">{step.date}</h6>
                     </div>

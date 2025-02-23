@@ -24,7 +24,7 @@ const GoogleAuth = ({ role }: any) => {
         try {
             await signIn("google", {
                 callbackUrl: pathname.current === '/signin' ? '/dashboard' : '/welcome',
-                redirect: false,
+                redirect: true,
             })
         } catch (error) {
             console.error("Error during sign-in:", error);

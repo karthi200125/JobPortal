@@ -91,7 +91,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
             >
                 {isFollowings ? 'Unfollow' : 'Follow'}
             </Button>
-            <Button variant="border" icon={<IoMdSend size={20} />}>
+            <Button disabled={!user?.isPro} variant="border" icon={<IoMdSend size={20} />}>
                 Message
             </Button>
         </div>
@@ -142,37 +142,40 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                         />
                     </div>
                 </Model>
-                {isCurrentUser && (
-                    <Model
-                        bodyContent={<UserBackImage />}
-                        title="Edit Images"
-                        className="w-full md:w-[800px]"
-                        triggerCls="absolute top-3 right-3"
-                        modalId="UserBackImageModal"
-                    >
-                        <Icon icon={<LuPencil size={20} />} className='bg-white hover:opacity-50' isHover title="Edit Profile" onClick={() => dispatch(openModal('UserBackImageModal'))} />
-                    </Model>
-                )}
-            </div>
+                {
+                    isCurrentUser && (
+                        <Model
+                            bodyContent={<UserBackImage />}
+                            title="Edit Images"
+                            className="w-full md:w-[800px]"
+                            triggerCls="absolute top-3 right-3"
+                            modalId="UserBackImageModal"
+                        >
+                            <Icon icon={<LuPencil size={20} />} className='bg-white hover:opacity-50' isHover title="Edit Profile" onClick={() => dispatch(openModal('UserBackImageModal'))} />
+                        </Model>
+                    )
+                }
+            </div >
 
-            {isLoading ? (
-                <UserInfoSkeleton />
-            ) : (
-                <div className="relative mt-[250px] w-full p-5 space-y-2">
-                    {renderProfileDetails()}
-                    <div className="flex flex-row items-center gap-5">
-                        <h4 className="bg-neutral-100 rounded-md max-w-max cursor-pointer trans hover:opacity-50 p-3 flex flex-row items-center gap-5" onClick={() => router.push('/network')}>
-                            <b className="font-bold">{profileUser?.followers?.length || 0}</b> Followers
-                        </h4>
-                        <h4 className="bg-neutral-100 rounded-md max-w-max cursor-pointer trans hover:opacity-50 p-3 flex flex-row items-center gap-5" onClick={() => router.push('/network')}>
-                            <b className="font-bold">{profileUser?.followings?.length || 0}</b> Followings
-                        </h4>
+            {
+                isLoading ? (
+                    <UserInfoSkeleton />
+                ) : (
+                    <div className="relative mt-[250px] w-full p-5 space-y-2">
+                        {renderProfileDetails()}
+                        <div className="flex flex-row items-center gap-5">
+                            <h4 className="bg-neutral-100 rounded-md max-w-max cursor-pointer trans hover:opacity-50 p-3 flex flex-row items-center gap-5" onClick={() => router.push('/network')}>
+                                <b className="font-bold">{profileUser?.followers?.length || 0}</b> Followers
+                            </h4>
+                            <h4 className="bg-neutral-100 rounded-md max-w-max cursor-pointer trans hover:opacity-50 p-3 flex flex-row items-center gap-5" onClick={() => router.push('/network')}>
+                                <b className="font-bold">{profileUser?.followings?.length || 0}</b> Followings
+                            </h4>
+                        </div>
+                        {!isCurrentUser && renderFollowButtons()}
+                        {isCurrentUser && renderCurrentUserActions()}
                     </div>
-                    {!isCurrentUser && renderFollowButtons()}
-                    {isCurrentUser && renderCurrentUserActions()}
-                </div>
-            )}
-        </div>
+                )}
+        </div >
     );
 };
 
