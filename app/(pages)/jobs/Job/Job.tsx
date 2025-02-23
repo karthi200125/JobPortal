@@ -26,14 +26,14 @@ const JobDesc = ({ job, refetchJobs }: any) => {
                 title="JOBS PAGE Simple Usage Example"
                 description="A short description goes here."
             />
-            <JobTitles job={job} company={data} isPending={isPending} refetchJobs={refetchJobs} />
-            <JobRecruiter job={job} company={data} />
-            <JobDescription job={job} isPending={isPending} />
+            <JobTitles job={job} company={data} isPending={(isPending || !job)} refetchJobs={(refetchJobs || !job)} />
+            <JobRecruiter job={job} company={data} isPending={(isPending || !job)} />
+            <JobDescription job={job} isPending={(isPending || !job)} />
             {!user?.isPro &&
                 <JobPremium />
             }
             {user?.role !== "ORGANIZATION" &&
-                <JobCompany company={data} isPending={isPending} />
+                <JobCompany company={data} isPending={(isPending || !job)} />
             }
         </div>
     )

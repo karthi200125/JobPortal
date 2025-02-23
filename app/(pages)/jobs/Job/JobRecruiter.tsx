@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-const JobRecruiter = ({ job, company }: any) => {
+const JobRecruiter = ({ job, company, isPending }: any) => {
 
     const user = useSelector((state: any) => state.user.user);
     const router = useRouter()
@@ -22,7 +22,7 @@ const JobRecruiter = ({ job, company }: any) => {
 
     return (
         <>
-            {isLoading ?
+            {(isLoading || isPending) ?
                 <JobRecruiterSkeleton />
                 :
                 <div className='relative w-full border rounded-[10px] min-h-[100px] p-5 space-y-3'>
