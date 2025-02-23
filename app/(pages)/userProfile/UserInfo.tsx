@@ -128,7 +128,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     modalId='profileImageModal'
                 >
                     <div
-                        className="relative bg-white w-[150px] h-[150px] rounded-full border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans "
+                        className={`${user?.role === "ORGANIZATION" ? "" : "rounded-full"} relative bg-neutral-100 w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans `}
                         onClick={() => dispatch(openModal('profileImageModal'))}
                     >
                         <Image
