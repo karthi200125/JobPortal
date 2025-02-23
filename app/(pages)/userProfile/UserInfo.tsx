@@ -20,6 +20,7 @@ import UserInfoSkeleton from '@/Skeletons/UserInfoSkeleton';
 import UserBackImage from '@/app/Forms/UserBackImage';
 import UserProfileImage from './UserProfileImage';
 import noProfile from '../../../public/noProfile.webp';
+import noImage from '../../../public/noImage.webp';
 import { openModal } from '@/app/Redux/ModalSlice';
 import Batch from '@/components/Batch';
 
@@ -128,14 +129,18 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     modalId='profileImageModal'
                 >
                     <div
-                        className={`${user?.role === "ORGANIZATION" ? "" : "rounded-full"} relative bg-neutral-100 w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover filter brightness-100 hover:brightness-75 trans `}
-                        onClick={() => dispatch(openModal('profileImageModal'))}
+                        className={`
+                            ${user?.role === "ORGANIZATION" && "rounded-full"}
+                            ${isCurrentUser && "filter brightness-100 hover:brightness-75 trans"}
+                             relative bg-white w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover`
+                        }
+                        onClick={isCurrentUser ? () => dispatch(openModal('profileImageModal')) : undefined}
                     >
                         <Image
-                            src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}
+                            src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || (user?.role === "ORGANIZATION" ? noImage.src : noProfile.src)}
                             alt="Profile"
                             fill
-                            className="w-full h-full rounded-full object-cover absolute left-0 top-0"
+                            className="w-full h-full object-cover absolute left-0 top-0"
                         />
                     </div>
                 </Model>
