@@ -26,7 +26,7 @@ const UserBackImage = () => {
     const userId = user?.id;
 
     const handleDeleteImage = useCallback(async () => {
-        const response = await deleteImages(userId, "pro");
+        const response = await deleteImages(userId, "pro" , user?.role);
         if (response.success) {
             dispatch(loginRedux(response.data));
             dispatch(closeModal("UserBackImageModal"));

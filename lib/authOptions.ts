@@ -108,6 +108,7 @@ export const authOptions: NextAuthOptions = {
                     data: {
                         email: token.email!,
                         username: token.name!,
+                        userImage: token.picture!,
                         role,
                     },
                 });

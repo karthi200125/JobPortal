@@ -29,7 +29,7 @@ const UserProfileImage = () => {
     const handleDeleteImage = useCallback(async () => {
         if (!userId) return;
 
-        const response = await deleteImages(userId, "user");
+        const response = await deleteImages(userId, "user", user?.role);
         if (response.success) {
             dispatch(loginRedux(response.data));
             showSuccessToast(response.success);

@@ -18,21 +18,21 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
+import { useCustomToast } from "@/lib/CustomToast";
 import { LoginSchema } from "@/lib/SchemaTypes";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from 'react';
 import { FaLock, FaLockOpen } from "react-icons/fa6";
-import { loginRedux } from "../Redux/AuthSlice";
 import { useDispatch } from "react-redux";
-import { useCustomToast } from "@/lib/CustomToast";
+import { loginRedux } from "../Redux/AuthSlice";
 
-const LoginForm = () => {
+const LoginForm = ({ onRole }: { onRole: (role: string) => void }) => {
     const { showErrorToast } = useCustomToast();
-    const [showPass, setShowPass] = useState(false)
-    const [err, setErr] = useState("")
-    const [success, setSuccess] = useState("")
-    const router = useRouter()
-    const [role, setRole] = useState<string>('');
+    const [showPass, setShowPass] = useState(false);
+    const [err, setErr] = useState("");
+    const [success, setSuccess] = useState("");
+    const router = useRouter();
+    const [role, setRole] = useState<string>("");
 
     const dispatch = useDispatch();
 
@@ -40,13 +40,7 @@ const LoginForm = () => {
         "CANDIDATE",
         "ORGANIZATION",
         "RECRUITER",
-    ]
-
-    useEffect(() => {
-        if (role) {
-            localStorage.setItem('role', JSON.stringify(role));
-        }
-    }, [role]);
+    ];
 
     const [isLoading, startTransition] = useTransition();
     const form = useForm<z.infer<typeof LoginSchema>>({
@@ -66,29 +60,39 @@ const LoginForm = () => {
             login(values, role)
                 .then((data) => {
                     if (data?.success) {
-                        setSuccess(data?.success)
-                        dispatch(loginRedux(data?.data))
-                        setErr("")
-                        // if(data?.data?.)
-                        router.push(`/userProfile/${data?.data?.id}`)
+                        setSuccess(data?.success);
+                        dispatch(loginRedux(data?.data));
+                        setErr("");
+                        router.push(`/userProfile/${data?.data?.id}`);
                     }
                     if (data?.error) {
-                        console.log(data?.error)
-                        setErr(data?.error)
+                        console.log(data?.error);
+                        setErr(data?.error);
                     }
-                })
-        })
+                });
+        });
+    };
+
+    useEffect(() => {
+        if (role) {
+            localStorage.setItem('role', JSON.stringify(role));
+        }
+    }, [role]);
+
+    const handleRoleChange = (value: string) => {
+        setRole(value);
+        onRole(value);
     };
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
 
-                <Select onValueChange={setRole} value={role}>
+                <Select onValueChange={handleRoleChange} value={role}>
                     <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-white/10">
                         <SelectValue placeholder="Select Role" />
                     </SelectTrigger>
-                    <SelectContent >
+                    <SelectContent>
                         <SelectGroup>
                             {options.map((option) => (
                                 <SelectItem key={option} value={option}>{option}</SelectItem>

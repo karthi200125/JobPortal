@@ -3,8 +3,11 @@
 import LoginForm from '@/app/Forms/LoginForm';
 import GoogleAuth from '@/app/(auth)/GoogleAuth';
 import Link from 'next/link';
+import { useState } from 'react';
 
 const SigninRightSide = () => {
+
+    const [role, setRole] = useState('')
 
     return (
         <div className='flex flex-col items-center text-white justify-between h-screen w-[95%] sm:w-[50%] md:w-[40%] py-5'>
@@ -14,7 +17,7 @@ const SigninRightSide = () => {
             </div>
             <h2 className='font-semibold'>SignIn Account</h2>
 
-            <LoginForm />
+            <LoginForm onRole={(r: string) => setRole(r)} />
 
             {/* or */}
             <div className='w-full flex flex-row items-center justify-between text-neutral-500'>
@@ -24,7 +27,7 @@ const SigninRightSide = () => {
             </div>
 
             {/* optional auth google and github */}
-            <GoogleAuth />
+            <GoogleAuth role={role}/>
 
             <h4 className='flex flex-row items-center gap-2 text-white/40'>
                 Create a new Account?

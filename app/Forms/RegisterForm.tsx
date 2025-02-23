@@ -4,40 +4,35 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { useEffect, useState, useTransition } from 'react';
-import { TiArrowRight } from "react-icons/ti";
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-import { Label } from '@/components/ui/label';
+import { register } from "@/actions/auth/Register";
 import Button from '@/components/Button';
-import { FaLockOpen } from "react-icons/fa6";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import FormError from '@/components/ui/FormError';
+import FormSuccess from '@/components/ui/FormSuccess';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import FormError from '@/components/ui/FormError';
-import FormSuccess from '@/components/ui/FormSuccess';
+    SelectValue
+} from "@/components/ui/select";
+import { useCustomToast } from "@/lib/CustomToast";
 import { RegisterSchema } from "@/lib/SchemaTypes";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { register } from "@/actions/auth/Register";
-import { FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from 'react';
+import { FaLock } from "react-icons/fa";
+import { FaLockOpen } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
-import { useCustomToast } from "@/lib/CustomToast";
 
 
-const RegisterForm = () => {
+const RegisterForm = ({ onRole }: { onRole: (role: string) => void }) => {
     const { showErrorToast } = useCustomToast();
     const [showPass, setShowPass] = useState(false)
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
-    const router = useRouter()
     const [role, setRole] = useState<string>('');
 
     const dispatch = useDispatch();
@@ -47,12 +42,6 @@ const RegisterForm = () => {
         "ORGANIZATION",
         "RECRUITER",
     ]
-
-    useEffect(() => {
-        if (role) {
-            localStorage.setItem('role', JSON.stringify(role));
-        }
-    }, [role]);
 
     const [isLoading, startTransition] = useTransition();
     const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -75,7 +64,6 @@ const RegisterForm = () => {
                     if (data?.success) {
                         dispatch(loginRedux(data?.data))
                         setSuccess(data?.success)
-                        // router.push('/welcome')
                         window.location.href = '/welcome'
                         setErr("")
                     }
@@ -86,11 +74,22 @@ const RegisterForm = () => {
         })
     };
 
+    useEffect(() => {
+        if (role) {
+            localStorage.setItem('role', JSON.stringify(role));
+        }
+    }, [role]);
+
+    const handleRoleChange = (value: string) => {
+        setRole(value);
+        onRole(value);
+    };
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
 
-                <Select onValueChange={setRole} value={role}>
+                <Select onValueChange={handleRoleChange} value={role}>
                     <SelectTrigger className="w-full bg-white/[0.02] border-[1px] border-white/10">
                         <SelectValue placeholder="Select Role" />
                     </SelectTrigger>

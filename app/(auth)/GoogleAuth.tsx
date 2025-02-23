@@ -8,19 +8,11 @@ import { usePathname } from 'next/navigation';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import google from '../../public/google.png';
 
-const GoogleAuth = () => {
+const GoogleAuth = ({ role }: any) => {
     const { showErrorToast } = useCustomToast();
-    const [role, setRole] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
 
     const pathname = useRef(usePathname());
-
-    useEffect(() => {
-        const storedRole = localStorage.getItem('role');
-        if (storedRole && storedRole !== role) {
-            setRole(JSON.parse(storedRole));
-        }
-    }, [role]);
 
     const onClick = useCallback(async () => {
         if (!role) {
@@ -33,7 +25,7 @@ const GoogleAuth = () => {
             await signIn("google", {
                 callbackUrl: pathname.current === '/signin' ? '/dashboard' : '/welcome',
                 redirect: false,
-            });
+            })
         } catch (error) {
             console.error("Error during sign-in:", error);
         } finally {
