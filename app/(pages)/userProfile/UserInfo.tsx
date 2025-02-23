@@ -1,28 +1,26 @@
 'use client';
 
-import React, { useTransition } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
-import { VscLinkExternal } from 'react-icons/vsc';
-import { GoPlus } from 'react-icons/go';
-import { IoMdSend } from 'react-icons/io';
-import { LuPencil } from 'react-icons/lu';
-import { getUserById } from '@/actions/auth/getUserById';
 import { UserFollowAction } from '@/actions/user/UserFollowAction';
+import UserBackImage from '@/app/Forms/UserBackImage';
+import { UserInfoForm } from '@/app/Forms/UserInfoForm';
 import { userFollow } from '@/app/Redux/AuthSlice';
+import { openModal } from '@/app/Redux/ModalSlice';
+import Batch from '@/components/Batch';
 import Button from '@/components/Button';
 import Icon from '@/components/Icon';
 import Model from '@/components/Model/Model';
-import { UserInfoForm } from '@/app/Forms/UserInfoForm';
 import UserInfoSkeleton from '@/Skeletons/UserInfoSkeleton';
-import UserBackImage from '@/app/Forms/UserBackImage';
-import UserProfileImage from './UserProfileImage';
+import { useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
+import { GoPlus } from 'react-icons/go';
+import { IoMdSend } from 'react-icons/io';
+import { LuPencil } from 'react-icons/lu';
+import { VscLinkExternal } from 'react-icons/vsc';
+import { useDispatch, useSelector } from 'react-redux';
 import noProfile from '../../../public/noProfile.webp';
-import noImage from '../../../public/noImage.webp';
-import { openModal } from '@/app/Redux/ModalSlice';
-import Batch from '@/components/Batch';
+import UserProfileImage from './UserProfileImage';
 
 interface ProfileUserProps {
     profileUser?: any;
@@ -130,14 +128,14 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                 >
                     <div
                         className={`
-                            ${user?.role === "ORGANIZATION" && "rounded-full"}
+                            ${user?.role === "ORGANIZATION" ? "" : "rounded-full"}
                             ${isCurrentUser && "filter brightness-100 hover:brightness-75 trans"}
-                             relative bg-white w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover`
+                             relative bg-white w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover overflow-hidden`
                         }
                         onClick={isCurrentUser ? () => dispatch(openModal('profileImageModal')) : undefined}
                     >
                         <Image
-                            src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || (user?.role === "ORGANIZATION" ? noImage.src : noProfile.src)}
+                            src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}
                             alt="Profile"
                             fill
                             className="w-full h-full object-cover absolute left-0 top-0"

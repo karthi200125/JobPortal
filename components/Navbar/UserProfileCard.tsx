@@ -116,11 +116,11 @@ const UserProfileCard = () => {
         <HoverCard >
             <HoverCardTrigger asChild>
                 <button onClick={() => router.push('/userprofile')}>
-                    <div className="w-[35px] h-[35px] relative overflow-hidden rounded-full ">
+                    <div className="w-[35px] h-[35px] relative overflow-hidden rounded-full">
                         <Image
                             src={user?.userImage || noProfile.src}
                             alt="User profile"
-                            className="w-full h-full rounded-full bg-neutral-200 cursor-pointer object-cover absolute top-0 left-0"
+                            className="w-full h-full bg-neutral-100 cursor-pointer object-cover absolute top-0 left-0 trans"
                             fill
                         />
                     </div>

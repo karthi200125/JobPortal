@@ -32,7 +32,9 @@ const JobDesc = ({ job, refetchJobs }: any) => {
             {!user?.isPro &&
                 <JobPremium />
             }
-            <JobCompany company={data} isPending={isPending} />
+            {user?.role !== "ORGANIZATION" &&
+                <JobCompany company={data} isPending={isPending} />
+            }
         </div>
     )
 }

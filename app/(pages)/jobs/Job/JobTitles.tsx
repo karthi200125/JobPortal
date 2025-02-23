@@ -124,6 +124,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                     {isApplied ? (
                         <Button className="bg-green-100 !text-green-500">Applied</Button>
                     ) : (
+                        user?.role !== "ORGANIZATION" &&
                         <>
                             {job?.isEasyApply ? (
                                 <Model

@@ -63,37 +63,52 @@ export const getFilterAllJobs = async (userId: string, searchParams: any) => {
             filters.state = location;
         }
 
-        // Get total job count
         const totalCount = await db.job.count({
             where: {
                 AND: [
                     { ...filters },
                     {
-                        NOT: {
-                            jobApplications: {
-                                some: { userId },
+                        NOT: [
+                            { userId },  
+                            {
+                                company: {
+                                    userId,  
+                                },
                             },
-                        },
+                            {
+                                jobApplications: {
+                                    some: { userId }, 
+                                },
+                            },
+                        ],
                     },
                 ],
             },
         });
-
-        // Fetch paginated jobs
+        
         const allJobs = await db.job.findMany({
             where: {
                 AND: [
                     { ...filters },
                     {
-                        NOT: {
-                            jobApplications: {
-                                some: { userId },
+                        NOT: [
+                            { userId },  
+                            {
+                                company: {
+                                    userId,  
+                                },
                             },
-                        },
+                            {
+                                jobApplications: {
+                                    some: { userId }, 
+                                },
+                            },
+                        ],
                     },
                 ],
             },
             include: {
+                company: true, 
                 jobApplications: true,
             },
             orderBy: { createdAt: 'desc' },
