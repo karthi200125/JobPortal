@@ -23,18 +23,30 @@ export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: num
                 }
             });
 
-            // Update the user record and push the id into verifyEmps array
             if (company?.userId) {
-                await db.user.update({
+                const existingUser = await db.user.findUnique({
                     where: {
                         id: company.userId,
                     },
-                    data: {
-                        verifyEmps: {
-                            push: id,
-                        },
+                    select: {
+                        verifyEmps: true,
+                        employees: true,
                     },
                 });
+
+                // Check if the ID is already in employees before pushing
+                if (existingUser && !existingUser.employees?.includes(id)) {
+                    await db.user.update({
+                        where: {
+                            id: company.userId,
+                        },
+                        data: {
+                            verifyEmps: {
+                                push: id,
+                            },
+                        },
+                    });
+                }
             }
         }
 
@@ -50,7 +62,7 @@ export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: num
 
         return { success: 'User updated successfully', data: updatedUser };
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return { error: 'User update failed' };
     }
 };

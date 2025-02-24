@@ -19,10 +19,10 @@ export const getCompanies = async () => {
     }
 };
 
-export const getRecruiterCompany = async (userId?: number) => {
+export const getRecruiterCompany = async (userId?: number) => {    
     try {
         if (!userId) {
-            throw new Error("User ID is required");
+            return { error: "userId not found" };
         }
 
         const user = await db.user.findFirst({

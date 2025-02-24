@@ -21,7 +21,7 @@ const Welcome = () => {
             case 2:
                 return <WelcomeUserEducation currentStep={step} onNext={(n: number) => setStep(n)} onBack={(n: number) => setStep(n)} />
             case 3:
-                return <WelcomeUserExperince currentStep={step} onNext={(n: number) => setStep(n)} onBack={(n: number) => setStep(n)} />
+                return <WelcomeUserExperince currentStep={step} onBack={(n: number) => setStep(n)} />
             default:
                 return null
         }

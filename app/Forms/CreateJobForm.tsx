@@ -27,7 +27,7 @@ import {
 import { CreateJobSchema } from "@/lib/SchemaTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition, useEffect } from "react";
 import { useSelector } from "react-redux";
 import JobQuestion from "../(pages)/createJob/JobQuestion";
 import JobSkills from "../(pages)/createJob/JobSkills";
@@ -51,7 +51,10 @@ const CreateJobForm = () => {
     enabled: user?.role === "RECRUITER" && !!user?.id,
   });
 
-  const companyName = user?.role === 'ORGANIZATION' ? user?.username : test?.companyName
+  const companyName = useMemo(() => {
+    return user?.role === 'ORGANIZATION' ? user?.username : test?.companyName;
+  }, [user?.role, user?.username, test?.companyName]);
+
 
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
@@ -66,10 +69,16 @@ const CreateJobForm = () => {
       type: "",
       mode: "",
       applyLink: "",
-      company: companyName || "",
+      company: companyName,
       vacancies: "",
     },
   });
+
+  useEffect(() => {
+    if (companyName) {
+      form.setValue("company", companyName);
+    }
+  }, [companyName, form]);
 
   const onSubmit = useCallback(
     (values: z.infer<typeof CreateJobSchema>) => {
@@ -114,13 +123,6 @@ const CreateJobForm = () => {
   });
 
   const statesOptions = states.map((s: any) => s.name).sort();
-
-  // const { data: companies = [], isLoading: companyLoading } = useQuery({
-  //   queryKey: ['getCompanies'],
-  //   queryFn: async () => await getCompanies(),
-  // });
-  // const companiesOptions = companies?.map((company: any) => company?.companyName);
-
 
   return (
     <Form {...form}>
