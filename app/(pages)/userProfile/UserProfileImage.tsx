@@ -13,12 +13,12 @@ import Image from "next/image";
 import noProfile from '../../../public/noProfile.webp'
 import { closeModal } from "@/app/Redux/ModalSlice";
 
-const UserProfileImage = () => {
+const UserProfileImage = ({ isCurrentUser, profileUser }: any) => {
     const user = useSelector((state: any) => state.user.user);
     const dispatch = useDispatch();
 
     const [file, setFile] = useState<File | null>(null);
-    const [showImage, setShowImage] = useState<string | null>(user?.userImage || null);
+    const [showImage, setShowImage] = useState<string | null>((!isCurrentUser ? profileUser?.userImage : user?.userImage) || null);
     const [isPending, startTransition] = useTransition();
 
     const { showErrorToast, showSuccessToast } = useCustomToast();
@@ -93,14 +93,16 @@ const UserProfileImage = () => {
                         id="imageupload"
                         onChange={handleImageUpload}
                     />
-                    <label
-                        htmlFor="imageupload"
-                        className="absolute top-0 left-0 w-full h-full opacity-70 z-10 flex items-center justify-center cursor-pointer transition bg-black"
-                    >
-                        <div className="space-y-3 text-center">
-                            <h3 className="text-blue-400 z-10">Select Image</h3>
-                        </div>
-                    </label>
+                    {isCurrentUser &&
+                        <label
+                            htmlFor="imageupload"
+                            className="absolute top-0 left-0 w-full h-full opacity-70 z-10 flex items-center justify-center cursor-pointer transition bg-black"
+                        >
+                            <div className="space-y-3 text-center">
+                                <h3 className="text-blue-400 z-10">Select Image</h3>
+                            </div>
+                        </label>
+                    }
                 </div>
             </div>
 
@@ -111,21 +113,23 @@ const UserProfileImage = () => {
                 </div>
             )}
 
-            <div className="flex flex-row items-center justify-between">
-                <h3
-                    className="text-sm font-bold text-red-500 cursor-pointer py-2 px-5 border rounded-full"
-                    onClick={handleDeleteImage}
-                >
-                    Delete Image
-                </h3>
-                <Button
-                    className="!py-2"
-                    onClick={downloadUrl ? handleUpdateImage : handleUpload}
-                    isLoading={isPending}
-                >
-                    {downloadUrl ? "Update Image" : "Upload Image"}
-                </Button>
-            </div>
+            {isCurrentUser &&
+                <div className="flex flex-row items-center justify-between">
+                    <h3
+                        className="text-sm font-bold text-red-500 cursor-pointer py-2 px-5 border rounded-full"
+                        onClick={handleDeleteImage}
+                    >
+                        Delete Image
+                    </h3>
+                    <Button
+                        className="!py-2"
+                        onClick={downloadUrl ? handleUpdateImage : handleUpload}
+                        isLoading={isPending}
+                    >
+                        {downloadUrl ? "Update Image" : "Upload Image"}
+                    </Button>
+                </div>
+            }
         </div>
     );
 };

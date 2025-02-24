@@ -3,25 +3,21 @@
 import { getCompaniesEmployees } from "@/actions/getCompanyEmployees"
 import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton"
 import { useQuery } from "@tanstack/react-query"
-import Employee from "../../dashboard/employees/Employee"
-import { getUserById } from "@/actions/auth/getUserById"
 import { memo } from "react"
+import Employee from "../../dashboard/employees/Employee"
 
-const CompanyEmployees = ({ company }: { company: any }) => {
-
-  const { data: user, isPending: userPending } = useQuery({
-    queryKey: ['getUser', company?.userId],
-    queryFn: async () => await getUserById(company?.userId),
-  });
+const CompanyEmployees = ({ profileUser }: any) => {
 
   const { data = [], isPending } = useQuery({
-    queryKey: ['getCompanyEmps', user?.employee],
-    queryFn: async () => await getCompaniesEmployees(user?.employees),
+    queryKey: ['getCompanyEmps', profileUser?.employees],
+    queryFn: async () => await getCompaniesEmployees(profileUser?.employees),
   });
+
+  console.log('empoyess companuy', profileUser)
 
   return (
     <div className="p-2 md:p-5 border rounded-[10px]">
-      {(userPending || isPending) ? (
+      {isPending ? (
         <EmployeesSkeleton />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-5">

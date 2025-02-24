@@ -91,7 +91,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                     src={moreuser?.userImage || noAvatar.src}
                     alt={moreuser?.username || 'No Avatar'}
                     fill
-                    className="bg-neutral-200 rounded-full object-cover absolute top-0 left-0 w-full h-full"
+                    className="rounded-full object-cover absolute top-0 left-0 w-full h-full"
                 />
             </div>
             <div className="space-y-2">

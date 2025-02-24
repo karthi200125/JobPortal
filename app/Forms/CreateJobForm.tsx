@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { getCompanies } from "@/actions/company/getCompanies";
+import { getRecruiterCompany } from "@/actions/company/getCompanies";
 import { createJobAction } from "@/actions/job/createJobAction";
 import Button from "@/components/Button";
 import CustomFormField from "@/components/CustomFormField";
@@ -26,13 +26,13 @@ import {
 } from "@/getOptionsData";
 import { CreateJobSchema } from "@/lib/SchemaTypes";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useCallback, useTransition } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import JobSkills from "../(pages)/createJob/JobSkills";
+import { useCallback, useState, useTransition } from "react";
+import { useSelector } from "react-redux";
 import JobQuestion from "../(pages)/createJob/JobQuestion";
-import JobDesc from "./JobDesc";
+import JobSkills from "../(pages)/createJob/JobSkills";
 import { useCustomToast } from "../../lib/CustomToast";
+import JobDesc from "./JobDesc";
 
 const CreateJobForm = () => {
   const user = useSelector((state: any) => state.user.user);
@@ -44,6 +44,14 @@ const CreateJobForm = () => {
   const [isLoading, startTransition] = useTransition();
   const router = useRouter();
   const { showErrorToast, showSuccessToast } = useCustomToast();
+
+  const { data: test } = useQuery({
+    queryKey: ['getRecruiterCompany'],
+    queryFn: async () => await getRecruiterCompany(user?.id),
+    enabled: user?.role === "RECRUITER" && !!user?.id,
+  });
+
+  const companyName = user?.role === 'ORGANIZATION' ? user?.username : test?.companyName
 
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
@@ -58,7 +66,7 @@ const CreateJobForm = () => {
       type: "",
       mode: "",
       applyLink: "",
-      company: "",
+      company: companyName || "",
       vacancies: "",
     },
   });
@@ -66,8 +74,6 @@ const CreateJobForm = () => {
   const onSubmit = useCallback(
     (values: z.infer<typeof CreateJobSchema>) => {
       startTransition(() => {
-
-        console.log(skills.length, skills.length < 0)
 
         if (skills.length < 1) {
           setSkillsErr("Add at least one skill");
@@ -107,15 +113,14 @@ const CreateJobForm = () => {
     enabled: !!state,
   });
 
-  const { data: companies = [], isLoading: companyLoading } = useQuery({
-    queryKey: ['getCompanies'],
-    queryFn: async () => await getCompanies(),
-  });
-
-  console.log(companies)
-
   const statesOptions = states.map((s: any) => s.name).sort();
-  const companiesOptions = companies?.map((company: any) => company?.companyName);
+
+  // const { data: companies = [], isLoading: companyLoading } = useQuery({
+  //   queryKey: ['getCompanies'],
+  //   queryFn: async () => await getCompanies(),
+  // });
+  // const companiesOptions = companies?.map((company: any) => company?.companyName);
+
 
   return (
     <Form {...form}>
@@ -194,9 +199,6 @@ const CreateJobForm = () => {
           form={form}
           label="Company"
           placeholder="Ex: Google"
-          isSelect
-          options={companiesOptions}
-          optionsLoading={companyLoading}
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

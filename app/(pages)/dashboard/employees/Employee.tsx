@@ -65,7 +65,7 @@ const Employee = ({ user, isVerify }: EmployeeProps) => {
 
     return (
         <div
-            className="w-full flex flex-row items-start gap-5 overflow-hidden border-b py-2"
+            className="w-full flex flex-row items-start gap-5 overflow-hidden p-2 border rounded-md"
         >
             <Image
                 src={user?.userImage || noAvatar.src}

@@ -47,6 +47,13 @@ const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleAddQuestion();
+        }
+    };
+
     const handleRemoveQuestion = (id: number) => {
         const updatedQuestions = questions.filter(question => question.id !== id);
         setQuestions(updatedQuestions);
@@ -71,8 +78,11 @@ const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
                     placeholder='Write question here'
                     value={newQuestion}
                     onChange={(e) => setNewQuestion(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
-                <Button variant='border' className='w-[200px]' onClick={handleAddQuestion}>Add Question</Button>
+                <Button type="button" variant='border' className='w-[200px]' onClick={handleAddQuestion}>
+                    Add Question
+                </Button>
             </div>
 
             {questions.length > 0 && (
@@ -98,7 +108,7 @@ const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default JobQuestion
+export default JobQuestion;

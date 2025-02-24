@@ -19,16 +19,29 @@ export const getCompanies = async () => {
     }
 };
 
-// export const getCompaniesEmployees = async (companyId?: any) => {
-//     try {
-//         const companies: any = await db.user.findMany({
-//             where: {
-//                 company: companyId
-//             }
-//         });
+export const getRecruiterCompany = async (userId?: number) => {
+    try {
+        if (!userId) {
+            throw new Error("User ID is required");
+        }
 
-//         return companies
-//     } catch (err) {
-//         return { error: "Get companies failed" };
-//     }
-// };
+        const user = await db.user.findFirst({
+            where: {
+                employees: {
+                    has: userId,
+                },
+            },
+            select: {
+                username: true,
+            },
+        });
+
+        if (!user) {
+            return { error: "Company not found" };
+        }
+
+        return { companyName: user.username };
+    } catch (err) {
+        return { error: "Get company failed" };
+    }
+};

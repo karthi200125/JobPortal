@@ -27,7 +27,7 @@ const Employees = () => {
     }
 
     return (
-        <div className="w-full flex flex-col lg:flex-row items-start p-5 gap-5 min-h-screen">
+        <div className="w-full flex flex-col lg:flex-row items-start py-5 gap-5 min-h-screen">
 
             {/* Verification Employees */}
             <div className="flex-1 max-h-max w-full space-y-5 p-5 border rounded-[20px]">

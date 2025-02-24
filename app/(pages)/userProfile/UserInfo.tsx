@@ -4,7 +4,7 @@ import { UserFollowAction } from '@/actions/user/UserFollowAction';
 import UserBackImage from '@/app/Forms/UserBackImage';
 import { UserInfoForm } from '@/app/Forms/UserInfoForm';
 import { userFollow } from '@/app/Redux/AuthSlice';
-import { openModal } from '@/app/Redux/ModalSlice';
+import { closeModal, openModal } from '@/app/Redux/ModalSlice';
 import Batch from '@/components/Batch';
 import Button from '@/components/Button';
 import Icon from '@/components/Icon';
@@ -120,19 +120,19 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     className="bg-neutral-200 w-full h-full object-cover"
                 />
                 <Model
-                    bodyContent={<UserProfileImage />}
-                    title="Edit Images"
+                    bodyContent={<UserProfileImage isCurrentUser={isCurrentUser} profileUser={profileUser} />}
+                    title={!isCurrentUser ? `${profileUser?.username} Profile Image` : `Edit Images`}
                     className="w-full md:w-[800px]"
                     triggerCls="absolute bottom-[-70px] md:bottom-[-40px] left-5"
                     modalId='profileImageModal'
                 >
                     <div
                         className={`
-                            ${user?.role === "ORGANIZATION" ? "" : "rounded-full"}
+                            ${profileUser?.role === "ORGANIZATION" ? "" : "rounded-full"}
                             ${isCurrentUser && "filter brightness-100 hover:brightness-75 trans"}
                              relative bg-white w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover overflow-hidden`
                         }
-                        onClick={isCurrentUser ? () => dispatch(openModal('profileImageModal')) : undefined}
+                        onClick={() => dispatch(openModal('profileImageModal'))}
                     >
                         <Image
                             src={(isCurrentUser ? user?.userImage : profileUser?.userImage) || noProfile.src}

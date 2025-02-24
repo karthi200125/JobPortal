@@ -137,7 +137,13 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                                     <Button onClick={() => dispatch(openModal('easyapplyModal'))}>Easy Apply</Button>
                                 </Model>
                             ) : (
-                                <Button icon={<VscLinkExternal size={15} />}>Apply on Company Site</Button>
+                                <Button
+                                    onClick={() => job?.applyLink && window.open(job.applyLink, '_blank')}
+                                    icon={<VscLinkExternal size={15} />}
+                                >
+                                    Apply on Company Site
+                                </Button>
+
                             )}
                             <Button
                                 onClick={HandleSaveJob}

@@ -32,7 +32,6 @@ const JobRecruiter = ({ job, company, isPending }: any) => {
                         <div className='space-y-1'>
                             <Link href={`/userProfile/${data?.id}`} className='font-bold'>{data?.username}</Link>
                             <h5>{data?.profession || "Recruiter"} At {company?.companyName}</h5>
-                            <h5>Technical recruiting</h5>
                             <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                         </div>
                         <Button onClick={() => router.push('/messages')} disabled={!user?.isPro} className='absolute top-3 right-3' variant='border'>Message</Button>
