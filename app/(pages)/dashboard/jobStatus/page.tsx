@@ -50,13 +50,13 @@ const JobStatus = () => {
         }
 
         if (appliedJobs.length === 0) {
-            return <h4 className="p-3">No Jobs Found</h4>;
+            return <h4 className="p-3">No Jobs Yet!</h4>;
         }
 
         return appliedJobs.map((job: any) => (
             <div key={job.id} onClick={() => handleSelectJob(job)}>
                 {isMobile ? (
-                    <BottomDrawer body={<StatusSide job={job} user={userData} />}>
+                    <BottomDrawer body={job ? <StatusSide job={job} user={userData} /> : <h4 className="p-3">No Jobs Yet!</h4>}>
                         <JobStatusJobsList job={job} selectedJob={selectedJob} handleSelectJob={handleSelectJob} />
                     </BottomDrawer>
                 ) : (
@@ -99,7 +99,7 @@ const JobStatus = () => {
 
                 {/* Job Details */}
                 <div className="hidden lg:block w-[60%] jobStatusHeight space-y-5 overflow-y-auto">
-                    {job ? <StatusSide job={job} user={userData} /> : <div>Loading...</div>}
+                    {job ? <StatusSide job={job} user={userData} /> : <h4 className="p-3">No Jobs Yet!</h4>}
                 </div>
             </div>
         </div>

@@ -61,7 +61,7 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
         ${isHover ? "hover:bg-neutral-100" : ""}
         relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-l-transparent
         ${border ? "border-b-[1px] border-b-neutral-200" : ""}
-      `}
+      `}      
         >
             <Image src={companyImage} alt="" width={60} height={60} className="w-[60px] h-[60px] object-contain" />
 

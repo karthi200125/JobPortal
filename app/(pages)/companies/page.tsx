@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { FaSuitcase } from 'react-icons/fa'
 import noImage from '../../../public/noImage.webp'
 import Title from '@/lib/MetaTitle'
+import Batch from '@/components/Batch'
 
 const Companies = () => {
 
@@ -36,7 +37,7 @@ const Companies = () => {
                             </div>
 
                             <div className='flex flex-col justify-between h-full'>
-                                <Link href={`/userProfile/${company?.id}`} className='font-bold hover:opacity-50 trans'>{company?.companyName}</Link>
+                                <Link href={`/userProfile/${company?.id}`} className='font-bold hover:opacity-50 trans'>{company?.companyName} <Batch type='ORGANIZATION' /></Link>
                                 <h5 className='text-neutral-500'>{company?.companyCity} , {company?.companyState} , {company?.companyCountry}</h5>
                                 <Link href={`/jobs?company=${company?.companyName}`} className='flex flex-row items-center gap-3 hover:opacity-50 trans' >
                                     <FaSuitcase size={20} />

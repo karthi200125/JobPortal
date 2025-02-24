@@ -32,7 +32,7 @@ export const moreProUsers = async (currentUser: any, profileUserId: any) => {
             where: {
                 role: { equals: 'ORGANIZATION' },
                 id: isCurrentUser ? { not: profileUserId } : { not: profileUserId }
-            }
+            },            
         }
     };
 

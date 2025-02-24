@@ -68,6 +68,8 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
     const isFollowings = user?.followings?.includes(moreuser?.id);
     const [isPending, startTransition] = useTransition();
 
+    const isCurrentUser = user?.id === moreuser?.id
+
     const handleFollow = () => {
         startTransition(() => {
             const currentUserId = user?.id;
@@ -109,26 +111,28 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                     }
                 </div>
                 <h5>{moreuser?.profession}</h5>
-                <div className="flex flex-row items-center gap-3">
-                    <Button
-                        variant="border"
-                        isLoading={isPending}
-                        className={`${isFollowings && '!bg-[var(--voilet)] text-white'
-                            } !h-[30px]`}
-                        onClick={handleFollow}
-                        icon={!isFollowings && <GoPlus size={20} />}
-                    >
-                        {!isFollowings ? 'Follow' : 'Unfollow'}
-                    </Button>
-                    <Button
-                        variant="border"
-                        icon={<IoMdSend size={15} />}
-                        className="!h-[30px]"
-                        disabled={!user?.isPro}
-                    >
-                        Message
-                    </Button>
-                </div>
+                {!isCurrentUser &&
+                    <div className="flex flex-row items-center gap-3">
+                        <Button
+                            variant="border"
+                            isLoading={isPending}
+                            className={`${isFollowings && '!bg-[var(--voilet)] text-white'
+                                } !h-[30px]`}
+                            onClick={handleFollow}
+                            icon={!isFollowings && <GoPlus size={20} />}
+                        >
+                            {!isFollowings ? 'Follow' : 'Unfollow'}
+                        </Button>
+                        <Button
+                            variant="border"
+                            icon={<IoMdSend size={15} />}
+                            className="!h-[30px]"
+                            disabled={!user?.isPro}
+                        >
+                            Message
+                        </Button>
+                    </div>
+                }
             </div>
         </div>
     );
