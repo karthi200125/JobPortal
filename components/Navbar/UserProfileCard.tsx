@@ -93,19 +93,17 @@ const UserProfileCard = () => {
 
     const profileCardItems = useProfileCardItems(user);
 
-    const handleClick = useCallback((item: any) => {
+    const handleClick = useCallback(async (item: any) => {
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
             localStorage.removeItem('role');
-            signOut();
-
-            setTimeout(() => {
-                router.replace(item.href);
-            }, 500);
+            await signOut({ redirect: false });
+            router.replace(item.href);
         } else {
             router.push(item.href);
         }
     }, [dispatch, router]);
+
 
 
     const renderedItems = useMemo(() => {

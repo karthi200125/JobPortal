@@ -26,15 +26,13 @@ export function SkillsForm({ skillsData = [], onClose }: SkillsFormProps) {
     const [isLoading, startTransition] = useTransition();
     const [skills, setSkills] = useState<string[]>(skillsData);
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [error, setError] = useState<string>("");
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [error, setError] = useState("");
 
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedSearchTerm(searchTerm);
         }, 500);
-
         return () => clearTimeout(handler);
     }, [searchTerm]);
 
@@ -73,25 +71,23 @@ export function SkillsForm({ skillsData = [], onClose }: SkillsFormProps) {
 
     const handleSelectSuggestion = (suggestion: string) => {
         if (!skills.includes(suggestion)) {
-            setSkills((prev) => [...prev, suggestion]);
+            setSkills([...skills, suggestion]);
         }
         setSearchTerm("");
-        setSuggestions([]);
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
             if (searchTerm.trim() && !skills.includes(searchTerm)) {
-                setSkills((prev) => [...prev, searchTerm.trim()]);
+                setSkills([...skills, searchTerm.trim()]);
             }
             setSearchTerm("");
-            setSuggestions([]);
         }
     };
 
     const removeSkill = (skillToRemove: string) => {
-        setSkills((prev) => prev.filter((skill) => skill !== skillToRemove));
+        setSkills(skills.filter(skill => skill !== skillToRemove));
     };
 
     return (
@@ -106,11 +102,11 @@ export function SkillsForm({ skillsData = [], onClose }: SkillsFormProps) {
                     onKeyDown={handleKeyDown}
                     className="w-full border rounded-md py-2 px-5 placeholder:text-sm"
                 />
-                {allSkills.length > 0 && (
-                    <div className="border rounded-md mt-2 max-h-40 overflow-y-auto">
+                {debouncedSearchTerm && (
+                    <div className="border rounded-md mt-2 max-h-40 overflow-y-auto absolute w-full bg-white shadow-md z-10">
                         {isFetching ? (
-                            <h4>Loading...</h4>
-                        ) : (
+                            <h4 className="p-3">Loading...</h4>
+                        ) : allSkills.length > 0 ? (
                             allSkills.map((suggestion) => (
                                 <div
                                     key={suggestion}
@@ -120,6 +116,8 @@ export function SkillsForm({ skillsData = [], onClose }: SkillsFormProps) {
                                     {suggestion}
                                 </div>
                             ))
+                        ) : (
+                            <h4 className="p-3">No data found</h4>
                         )}
                     </div>
                 )}

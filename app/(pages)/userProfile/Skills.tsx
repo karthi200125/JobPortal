@@ -26,7 +26,7 @@ const Skills = ({ profileUser, isLoading }: SkillsProps) => {
                     modalId="userSkillsModal"
                     title='Add Your Skills'
                     desc='add your Technical & soft skills'
-                    className='min-w-[300px] lg:w-[800px]'
+                    className='min-w-[300px] lg:w-[800px] min-h-[100px]'
                     triggerCls='absolute top-3 right-3'
                 >
                     <Icon
