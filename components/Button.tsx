@@ -9,6 +9,7 @@ interface ButtonProps {
     variant?: 'border' | 'default';
     className?: String;
     icon?: any;
+    type?: any;
 }
 
 const Button = ({
@@ -19,6 +20,7 @@ const Button = ({
     variant = 'default',
     className,
     icon,
+    type
 }: ButtonProps) => {
     const buttonClassNames = `${className} text-sm font-bold  h-[40px] flex flex-row items-center justify-center gap-2 px-5 rounded-full trans hover:opacity-80 ${variant === 'border'
         ? 'bg-[var(--white)] border-[1px] border-solid border-[var(--voilet)] text-[var(--voilet)]'
@@ -30,6 +32,7 @@ const Button = ({
             className={buttonClassNames}
             disabled={isLoading || disabled}
             onClick={onClick}
+            type={type}
         >
             {!isLoading &&
                 <div>{icon}</div>
