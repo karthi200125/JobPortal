@@ -55,7 +55,7 @@ const Menu = () => {
             dispatch(logoutRedux());
             localStorage.removeItem('role');
             signOut();
-            window.location.href = item.href;
+            router.push(item.href);            
         } else {
             router.push(item.href);
         }

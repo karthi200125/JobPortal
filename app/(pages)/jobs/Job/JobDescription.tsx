@@ -20,7 +20,7 @@ const JobDescription = ({ job, isPending }: any) => {
       ) : (
         <div className="w-full p-5 space-y-5">
           <h3 className="font-bold">About The Job</h3>
-          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: sanitizedDesc }} />
+          <div className="prose max-w-none text-xs" dangerouslySetInnerHTML={{ __html: sanitizedDesc }} />
         </div>
       )}
     </>

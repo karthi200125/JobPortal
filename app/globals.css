@@ -91,7 +91,7 @@
   }
 
   h5 {
-    @apply text-sm
+    @apply text-xs md:text-sm
   }
 
   h6 {

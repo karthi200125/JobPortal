@@ -61,13 +61,15 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
         ${isHover ? "hover:bg-neutral-100" : ""}
         relative w-full min-h-[120px] px-2 md:px-5 py-3 flex flex-row items-start gap-5 border-l-[4px] border-l-transparent
         ${border ? "border-b-[1px] border-b-neutral-200" : ""}
-      `}      
+      `}
         >
-            <Image src={companyImage} alt="" width={60} height={60} className="w-[60px] h-[60px] object-contain" />
+            <div className="relative w-[60px] h-[60px] overflow-hidden">
+                <Image src={companyImage} alt="" fill className="w-full h-full absolute top-0 left-0 object-contain" />
+            </div>
 
             <div className="w-full flex flex-col gap-1 items-start">
                 <h3 className="text-lg font-bold capitalize">{jobTitle}</h3>
-                <h5 className="text-sm font-semibold capitalize">{data?.companyName}</h5>
+                <h5 className="font-semibold capitalize">{data?.companyName}</h5>
                 <div className="flex items-center gap-2">
                     <CiLocationOn size={15} />
                     <h5 className="text-xs">{city}, {state}, {country} ({mode})</h5>

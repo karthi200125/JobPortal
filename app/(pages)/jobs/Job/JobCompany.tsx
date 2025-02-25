@@ -19,7 +19,7 @@ const JobCompany = ({ company, isPending }: any) => {
   const dispatch = useDispatch();
   const [isLoading, startTransition] = useTransition();
   const queryClient = useQueryClient();
-  
+
   const isFollowings = user?.followings?.includes(company?.userId);
 
   const handleFollow = async () => {
@@ -45,15 +45,17 @@ const JobCompany = ({ company, isPending }: any) => {
         <div className='w-full border rounded-[10px] min-h-[100px] p-5 space-y-5'>
           <h3 className='font-bold'>About The Company</h3>
           <div className='flex flex-row items-start justify-between'>
-            <div className='flex flex-col md:flex-row items-center gap-5'>
-              <Image src={company?.companyImage || noImage.src} alt='' width={100} height={100} className='w-[100px] h-[100px] rounded-md' />
+            <div className='flex flex-row items-center gap-5'>
+              <div className="w-[40px] md:w-[100px] h-[40px] md:h-[100px] rounded-md overflow-hidden relative">
+                <Image src={company?.companyImage || noImage.src} alt='' fill className='w-full h-full object-cover absolute top-0 left-0' />
+              </div>
               <div className='space-y-1'>
                 <Link href={`/userProfile/${company?.id}`} className='font-semibold capitalize flex flex-row items-center gap-3'>
                   {company?.companyName}
                   <Batch type='ORGANIZATION' />
                 </Link>
-                <h6>{company?.companyTotalEmployees} Employees</h6>
                 <h4 className='font-bold'>{company?.user?.followers?.length || 0} Follwers</h4>
+                <h6>{company?.companyTotalEmployees} Employees</h6>
               </div>
             </div>
             <Button
@@ -66,7 +68,7 @@ const JobCompany = ({ company, isPending }: any) => {
               {isFollowings ? 'Unfollow' : 'Follow'}
             </Button>
           </div>
-          <h4 className='text-[var(--lighttext)]'>{company?.companyAbout}</h4>
+          <h5 className='text-[var(--lighttext)]'>{company?.companyAbout}</h5>
         </div>
       }
     </>

@@ -37,7 +37,7 @@ const UserProfile = () => {
   }, [user?.id, userId]);
 
   return (
-    <div className="min-h-screen w-full flex flex-row items-start gap-5 py-5 px-2">
+    <div className="min-h-screen w-full flex flex-row items-start gap-5 py-5">
       <Title
         title={`${data?.username || "User Profile"} | JOBIFY`}
         description="View user profiles, explore professional details, and connect with job seekers and recruiters on JOBIFY."

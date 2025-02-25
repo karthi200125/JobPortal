@@ -112,7 +112,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
     return (
         <div className="relative w-full min-h-[200px] overflow-hidden rounded-[20px] border">
             {/* Image Container */}
-            <div className="absolute top-0 left-0 w-full h-[150px] md:h-[200px]">
+            <div className="absolute top-0 left-0 w-full h-[120px] md:h-[200px]">
                 <Image
                     src={profileUser?.profileImage || 'https://img.freepik.com/free-photo/abstract-smooth-empty-grey-studio-well-use-as-backgroundbusiness-reportdigitalwebsite-templatebackdrop_1258-90252.jpg?semt=ais_hybrid'}
                     alt="Profile Background"
@@ -123,14 +123,14 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     bodyContent={<UserProfileImage isCurrentUser={isCurrentUser} profileUser={profileUser} />}
                     title={!isCurrentUser ? `${profileUser?.username} Profile Image` : `Edit Images`}
                     className="w-full md:w-[800px]"
-                    triggerCls="absolute bottom-[-70px] md:bottom-[-40px] left-5"
+                    triggerCls="absolute bottom-[-30px] md:bottom-[-40px] left-5"
                     modalId='profileImageModal'
                 >
                     <div
                         className={`
                             ${profileUser?.role === "ORGANIZATION" ? "" : "rounded-full"}
                             ${isCurrentUser && "filter brightness-100 hover:brightness-75 trans"}
-                             relative bg-white w-[150px] h-[150px] border-[4px] border-solid border-[var(--white)] object-cover overflow-hidden`
+                             relative bg-white w-[120px] md:w-[150px] h-[120px] md:h-[150px] border-[4px] border-solid border-[var(--white)] object-cover overflow-hidden`
                         }
                         onClick={() => dispatch(openModal('profileImageModal'))}
                     >
@@ -161,7 +161,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                 isLoading ? (
                     <UserInfoSkeleton />
                 ) : (
-                    <div className="relative mt-[250px] w-full p-5 space-y-2">
+                    <div className="relative mt-[130px] md:mt-[250px] w-full p-5 space-y-2">
                         {renderProfileDetails()}
                         <div className="flex flex-row items-center gap-5 py-3">
                             <h4 className="text-[var(--voilet)] cursor-pointer trans hover:opacity-50 flex flex-row items-center gap-3 font-bold" onClick={() => router.push('/network')}>
