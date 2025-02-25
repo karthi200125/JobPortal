@@ -31,6 +31,12 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, curre
     }
   }, [Jobs, selectedJob]);
 
+  // useEffect(() => {
+  //   if (chatUsers.length > 0 && selectedJob === null) {
+  //     setSelectedJob(chatUsers[0].id);
+  //   }
+  // }, [Jobs, selectedJob]);
+
   const handleSelectJob = useCallback(
     (jobId: number) => {
       setSelectedJob(jobId);

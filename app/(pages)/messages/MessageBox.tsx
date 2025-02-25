@@ -23,8 +23,6 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
     enabled: Boolean(user?.id && receiverId),
   });
 
-  // console.log("getConversation", data)
-
   return (
     <div className="h-full relative">
       {isPending ?

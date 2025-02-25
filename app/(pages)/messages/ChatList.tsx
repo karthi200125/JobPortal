@@ -12,14 +12,9 @@ interface chatUserProps {
 const ChatList = ({ chatUser, selectedChatUserId }: chatUserProps) => {
 
     const lastMessageUpdatedAt = moment(chatUser?.updatedAt).format("MMM D")
-
-    console.log('chaylist', chatUser?.receiver?.id === selectedChatUserId)
-
-    console.log(chatUser?.receiver?.id)
-    console.log(selectedChatUserId)
-
+            
     return (
-        <div className={`${chatUser?.receiver?.id === selectedChatUserId && 'border-l-black bg-neutral-100'} w-full p-3 border-b max-h-max cursor-pointer trans hover:bg-neutral-100 flex flex-row items-center gap-5 md:border-l-[3px] border-solid border-l-white md:hover:border-l-black relative`}>
+        <div className={`${chatUser?.receiver?.id === selectedChatUserId && '!border-l-black bg-neutral-100'} w-full p-3 border-b max-h-max cursor-pointer trans hover:bg-neutral-100 flex flex-row items-center gap-5 md:border-l-[3px] border-solid border-l-white md:hover:border-l-black relative`}>
             <div className="w-[40px] md:w-[50px] h-[40px] md:h-[50px] rounded-full overflow-hidden relative">
                 <Image
                     src={chatUser?.receiver?.userImage || noProfile.src}

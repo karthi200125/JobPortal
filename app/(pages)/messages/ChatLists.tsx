@@ -22,7 +22,7 @@ const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUser
       setSelectedChatUserId(defaultChatUserId);
     }
   }, [defaultChatUserId]);
-
+  
   const handleSelectChatUserId = useCallback(
     (chatUserId: number) => {
       setSelectedChatUserId(chatUserId);

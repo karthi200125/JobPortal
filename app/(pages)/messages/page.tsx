@@ -20,7 +20,7 @@ const Messages = () => {
 
     useEffect(() => {
         if (chatUsers.length > 0 && selectedChatUserId === null) {
-            setSelectedChatUserId(chatUsers[0].id);
+            setSelectedChatUserId(chatUsers[0]?.receiver?.id);
         }
     }, [chatUsers, selectedChatUserId]);
 
@@ -28,7 +28,7 @@ const Messages = () => {
         setSelectedChatUserId(chatUserId);
     }, []);
 
-    const chatUser: any = chatUsers.find((user: any) => user.id === selectedChatUserId) || null;
+    const chatUser: any = chatUsers.find((user: any) => user?.receiver?.id === selectedChatUserId) || null;
 
     return (
         <div className="w-full flex flex-row items-start h-full">
