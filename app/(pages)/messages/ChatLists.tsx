@@ -4,22 +4,17 @@ import MessageBox from "./MessageBox";
 import { IoSearchOutline } from "react-icons/io5";
 
 const ChatLists = () => {
-
-  const chats = ['one', 'two', 'three', 'one']
+  const chats = ["one", "two", "three", "one"];
 
   const renderChats = (isMobile: boolean) => {
-    // if (isLoading) {
-    //     return <JobListsSkeleton />;
-    // }
-
-    if (chats?.length === 0) {
-      return <h4 className="p-3">No Jobs Found</h4>;
+    if (chats.length === 0) {
+      return <h4 className="p-3">No Chat Users Yet!</h4>;
     }
 
     return chats.map((chat, i) => (
-      <div >
+      <div key={i}>
         {isMobile ? (
-          <BottomDrawer key={i} body={<MessageBox />}>
+          <BottomDrawer body={<MessageBox />}>
             <ChatList />
           </BottomDrawer>
         ) : (
@@ -30,12 +25,12 @@ const ChatLists = () => {
   };
 
   return (
-    <div className="w-full md:flex-[2] messageh md:border-r-[1px] border-solid border-neutral-200 pt-3">
-      <div className="space-y-5 py-3 pr-3">
+    <div className="w-full md:flex-[2] messageh md:border-r border-neutral-200 pt-3">
+      <div className="space-y-5 py-3 md:pr-3">
         <h3>Messaging</h3>
-        <div className="bg-neutral-100 rounded-md flex flex-row items-center gap-3 pl-3">
+        <div className="bg-neutral-100 rounded-md flex items-center gap-3 pl-3">
           <IoSearchOutline />
-          <input type="text" className="p-2 w-full bg-neutral-100" placeholder="search.." />
+          <input type="text" className="p-2 w-full bg-neutral-100" placeholder="Search..." />
         </div>
       </div>
       <div className="flex flex-col overflow-y-auto">
@@ -43,7 +38,7 @@ const ChatLists = () => {
         <div className="hidden md:block">{renderChats(false)}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatLists
+export default ChatLists;
