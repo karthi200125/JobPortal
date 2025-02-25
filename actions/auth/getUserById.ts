@@ -5,7 +5,7 @@ import { db } from "@/lib/db"
 export const getUserById = async (id: any) => {
 
     if (!id) {
-        console.warn("User ID is required but not provided");
+        console.log("User ID is required but not provided");
         return null;
     }
 
@@ -21,7 +21,7 @@ export const getUserById = async (id: any) => {
             },
             educations: true,
             experiences: true,
-            projects: true,
+            projects: true,            
         },
     })
 
