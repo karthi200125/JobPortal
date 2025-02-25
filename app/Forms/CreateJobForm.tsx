@@ -100,21 +100,27 @@ const CreateJobForm = ({ job, isEdit = false }: CreateJobFormProps) => {
           return;
         }
 
-        createJobAction(values, user?.id, skills, questions, jobDesc, isEdit, job?.id)
-          .then(
-            (data) => {
-              if (data?.success) {
-                router.push("/dashboard");
-                showSuccessToast(data?.success);
-              } else if (data?.error) {
-                showErrorToast(data?.error);
-              }
-            }
-          );
+        createJobAction({
+          values,
+          userId: user?.id || "",
+          skills,
+          questions,
+          jobDesc,
+          isEdit,
+          jobId: job?.id || "",
+        }).then((data) => {
+          if (data?.success) {
+            router.push("/dashboard");
+            showSuccessToast(data?.success);
+          } else if (data?.error) {
+            showErrorToast(data?.error);
+          }
+        });
       });
     },
     [skills, jobDesc, questions, user?.id, router, showSuccessToast, showErrorToast]
   );
+
 
   const { data: states = [], isLoading: statesLoading } = useQuery({
     queryKey: ["getStates"],
