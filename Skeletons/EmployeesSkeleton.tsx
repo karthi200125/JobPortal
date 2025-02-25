@@ -11,7 +11,7 @@ const EmployeesSkeleton = () => {
                         <Skeleton className="bg-neutral-200 h-[20px] w-full rounded-md" />
                         <Skeleton className="bg-neutral-200 h-[10px] w-[200px] rounded-md" />
                     </div>
-                </Skeleton>
+            </Skeleton>
             ))}
         </div>
     )

@@ -12,12 +12,13 @@ import { userFollow } from "@/app/Redux/AuthSlice";
 import { GoPlus } from "react-icons/go";
 import Link from "next/link";
 import Title from "@/lib/MetaTitle";
+import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton";
 
 interface User {
     id: number;
     username: string;
     userImage?: string;
-    userBio?: string;
+    profession?: string;
 }
 
 const NetWork = () => {
@@ -62,7 +63,7 @@ const NetWork = () => {
                 {/* Users */}
                 <div className="max-h-max p-5 space-y-3">
                     {isPending ? (
-                        <div>Loading...</div>
+                        <EmployeesSkeleton />
                     ) : users?.length === 0 ? (
                         <div>No users found</div>
                     ) : (
@@ -105,14 +106,14 @@ const NetworkUser = ({ networkUser, network }: NetworkUserProps) => {
     };
 
     return (
-        <div className="p-2 border-b flex items-center justify-between">
-            <div className="flex items-center gap-5">
-                <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
-                    <Image src={networkUser?.userImage || noProfile.src} fill alt={networkUser.username} className="object-cover" />
+        <div className="py-2 md:p-2 border-b flex items-center justify-between">
+            <div className="md:max-w-max flex items-center gap-3">
+                <div className="relative w-[40px] md:w-[60px] h-[40px] md:h-[60px] overflow-hidden rounded-full">
+                    <Image src={networkUser?.userImage || noProfile.src} fill alt={networkUser.username} className="object-cover w-full h-full absolute top-0 left-0" />
                 </div>
                 <div>
-                    <Link href={`/userProfile/${networkUser?.id}`} className="font-bold cursor-pointer trans hover:opacity-50">{networkUser?.username}</Link>
-                    <h4 className="text-neutral-600 line-clamp-1">{networkUser?.userBio}</h4>
+                    <Link href={`/userProfile/${networkUser?.id}`} className="font-semibold text-sm md:text-lg cursor-pointer trans hover:opacity-50">{networkUser?.username}</Link>
+                    <h4 className="hidden md:block text-neutral-600 line-clamp-1">{networkUser?.profession}</h4>
                 </div>
             </div>
             <Button

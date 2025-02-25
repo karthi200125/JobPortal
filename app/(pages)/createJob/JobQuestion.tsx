@@ -21,12 +21,13 @@ interface Question {
 
 interface JobQuestionsProps {
     onQuestions?: (questions: Question[]) => void;
+    aleardyQuestions?: any;
 }
 
 let nextId = 1;
 
-const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
-    const [questions, setQuestions] = useState<Question[]>([]);
+const JobQuestion = ({ onQuestions, aleardyQuestions }: JobQuestionsProps) => {
+    const [questions, setQuestions] = useState<Question[]>(aleardyQuestions || []);
     const [newQuestion, setNewQuestion] = useState<string>("");
     const [newType, setNewType] = useState<'input' | 'select'>('input');
 
@@ -66,7 +67,7 @@ const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
 
             <div className='flex flex-row items-center gap-5'>
                 <Select onValueChange={(value) => setNewType(value as 'input' | 'select')} value={newType}>
-                    <SelectTrigger className="w-[200px]">
+                    <SelectTrigger className="w-[200px] hidden md:block">
                         <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -80,7 +81,7 @@ const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
                     onChange={(e) => setNewQuestion(e.target.value)}
                     onKeyDown={handleKeyDown}
                 />
-                <Button type="button" variant='border' className='w-[200px]' onClick={handleAddQuestion}>
+                <Button type="button" variant='border' className='text-xs md:text-sm w-[200px]' onClick={handleAddQuestion}>
                     Add Question
                 </Button>
             </div>
@@ -102,7 +103,7 @@ const JobQuestion = ({ onQuestions }: JobQuestionsProps) => {
                                 title='Remove Question'
                             />
                             <h4 className='font-bold'>{q.question}</h4>
-                            <h4 className='bg-black px-3 py-1 text-white rounded-md'>{q.type}</h4>
+                            <h4 className='hidden md:block bg-black px-3 py-1 text-white rounded-md'>{q.type}</h4>
                         </div>
                     ))}
                 </div>

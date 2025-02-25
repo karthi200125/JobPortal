@@ -8,10 +8,11 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface JobDescProps {
     onJobDesc: (content: string) => void;
+    jobDesc?: any;
 }
 
-const JobDesc = ({ onJobDesc }: JobDescProps) => {
-    const [value, setValue] = useState<string>('');
+const JobDesc = ({ onJobDesc, jobDesc }: JobDescProps) => {
+    const [value, setValue] = useState<string>(jobDesc || '');
 
     const handleChange = (content: string) => {
         setValue(content);

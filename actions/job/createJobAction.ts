@@ -6,14 +6,25 @@ import * as z from 'zod';
 import { getUserById } from '../auth/getUserById';
 import { getCompanies } from '../company/getCompanies';
 
-export const createJobAction = async (
-    values: z.infer<typeof CreateJobSchema>,
-    userId?: any,
-    skills?: any,
-    questions?: any,
-    jobDesc?: any,
-) => {
+interface CreateJobProps {
+    values: z.infer<typeof CreateJobSchema>;
+    userId: string;
+    skills?: string[];
+    questions?: string[];
+    jobDesc?: string;
+    isEdit?: boolean;
+    jobId?: number;
+}
 
+export const createJobAction = async ({
+    values,
+    userId,
+    skills = [],
+    questions = [],
+    jobDesc = '',
+    isEdit = false,
+    jobId,
+}: CreateJobProps) => {
     try {
         if (!userId) {
             return { error: "User ID is required" };
@@ -22,7 +33,7 @@ export const createJobAction = async (
         const user = await getUserById(userId);
 
         if (!user || (user.role !== "ORGANIZATION" && user.role !== "RECRUITER")) {
-            return { error: "You are not allowed to create a job" };
+            return { error: "You are not authorized to create a job" };
         }
 
         const validatedFields = CreateJobSchema.safeParse(values);
@@ -32,7 +43,6 @@ export const createJobAction = async (
         }
 
         const { company, ...jobData } = validatedFields.data;
-
         const companies = await getCompanies();
         const uniqueCompany = companies?.find((c: any) => c.companyName === company);
 
@@ -40,19 +50,33 @@ export const createJobAction = async (
             return { error: "Company not found" };
         }
 
-        const newJob = await db.job.create({
-            data: {
-                ...jobData,
-                userId: user.id,
-                companyId: uniqueCompany.id,
-                skills,
-                questions,
-                jobDesc
-            },
-        });
+        let job;
+        if (isEdit && jobId) {
+            job = await db.job.update({
+                where: { id: jobId },
+                data: {
+                    ...jobData,
+                    skills,
+                    questions,
+                    jobDesc,
+                },
+            });
+        } else {
+            job = await db.job.create({
+                data: {
+                    ...jobData,
+                    userId: user.id,
+                    companyId: uniqueCompany.id,
+                    skills,
+                    questions,
+                    jobDesc,
+                },
+            });
+        }
 
-        return { success: 'New job has been created successfully', data: newJob };
+        return { success: isEdit ? 'Job has been Edited successfully' : 'Job has been successfully created', data: job };
     } catch (error) {
-        return { error: 'Job creation failed' };
+        console.error("Job creation error:", error);
+        return { error: 'Job creation failed. Please try again later.' };
     }
 };

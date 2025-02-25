@@ -34,7 +34,12 @@ import JobSkills from "../(pages)/createJob/JobSkills";
 import { useCustomToast } from "../../lib/CustomToast";
 import JobDesc from "./JobDesc";
 
-const CreateJobForm = () => {
+interface CreateJobFormProps {
+  job?: any,
+  isEdit?: boolean
+}
+
+const CreateJobForm = ({ job, isEdit = false }: CreateJobFormProps) => {
   const user = useSelector((state: any) => state.user.user);
   const [jobDesc, setJobDesc] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
@@ -59,18 +64,18 @@ const CreateJobForm = () => {
   const form = useForm<z.infer<typeof CreateJobSchema>>({
     resolver: zodResolver(CreateJobSchema),
     defaultValues: {
-      jobTitle: "",
-      experience: "",
-      city: "",
-      state: "",
-      country: "India",
-      salary: "",
-      isEasyApply: false,
-      type: "",
-      mode: "",
-      applyLink: "",
+      jobTitle: isEdit ? job?.jobTitle : "",
+      experience: isEdit ? job?.experience : "",
+      city: isEdit ? job?.cit : "",
+      state: isEdit ? job?.state : "",
+      country: isEdit ? job?.country : "India",
+      salary: isEdit ? job?.salary : "",
+      isEasyApply: isEdit ? job?.isEasyApply : false,
+      type: isEdit ? job?.type : "",
+      mode: isEdit ? job?.mode : "",
+      applyLink: isEdit ? job?.applyLink : "",
       company: companyName,
-      vacancies: "",
+      vacancies: isEdit ? job?.vacancies : "",
     },
   });
 
@@ -95,7 +100,7 @@ const CreateJobForm = () => {
           return;
         }
 
-        createJobAction(values, user?.id, skills, questions, jobDesc)
+        createJobAction(values, user?.id, skills, questions, jobDesc, isEdit, job?.id)
           .then(
             (data) => {
               if (data?.success) {
@@ -228,19 +233,19 @@ const CreateJobForm = () => {
         </div>
 
         <div className="space-y-3">
-          <JobSkills onSkills={setSkills} />
+          <JobSkills onSkills={setSkills} alreadySkills={job?.skills} />
           {skillsErr && <p className="text-red-500 font-semibold">{skillsErr}</p>}
         </div>
 
         <div className="space-y-2">
           <h5 className="font-bold">Job Description</h5>
-          <JobDesc onJobDesc={setJobDesc} />
+          <JobDesc onJobDesc={setJobDesc} jobDesc={job?.jobDesc} />
         </div>
 
-        <JobQuestion onQuestions={(question: any) => setQuestions(question)} />
+        <JobQuestion onQuestions={(question: any) => setQuestions(question)} aleardyQuestions={job?.questions} />
 
         <Button isLoading={isLoading} className="!w-full">
-          Create Job
+          {isEdit ? "Edit Job" : "Create Job"}
         </Button>
       </form>
     </Form>

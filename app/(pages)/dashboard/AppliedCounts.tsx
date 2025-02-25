@@ -52,7 +52,7 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             id: 3,
             icon: <MdOutlinePendingActions size={25} />,
             title: "Actions Taken",
-            count: 0 ,
+            count: 0,
             subtitle: "Review the jobs that took action",
         },
     ];
@@ -67,7 +67,7 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
                     </div>
                     <div className='flex flex-row items-start justify-between gap-10'>
                         <h1>{analysisItem.count}</h1>
-                        <span className='h-[50px] w-[1px] bg-neutral-200'></span>
+                        <span className='h-[25px] md:h-[50px] w-[1px] bg-neutral-200'></span>
                         <h5 className='text-[var(--lighttext)]'>{analysisItem.subtitle}</h5>
                     </div>
                 </div>

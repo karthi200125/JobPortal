@@ -1,9 +1,9 @@
-export const Setting = () => {
+const SettingPage = () => {
     return (
-        <div className="py-10 w-full min-h-screens">
-            etting
+        <div className="py-10 w-full min-h-screen flexcenter">
+            Setting
         </div>
-    )
-}
+    );
+};
 
-export default Setting
+export default SettingPage;

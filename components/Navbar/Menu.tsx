@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { logoutRedux } from "@/app/Redux/AuthSlice";
 import {
@@ -9,7 +9,7 @@ import {
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { BsFillBuildingsFill } from "react-icons/bs";
 import { FaCrown } from "react-icons/fa";
 import { RiMenu3Line, RiMessage3Fill } from "react-icons/ri";
@@ -23,6 +23,7 @@ const Menu = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const pathname = usePathname();
+    const [open, setOpen] = useState(false);
 
     const ExtraItems = [
         {
@@ -51,11 +52,12 @@ const Menu = () => {
         [pathname]);
 
     const handleClick = useCallback((item: any) => {
+        setOpen(false);
         if (item?.title === "Sign Out") {
             dispatch(logoutRedux());
             localStorage.removeItem('role');
             signOut();
-            router.push(item.href);            
+            router.push(item.href);
         } else {
             router.push(item.href);
         }
@@ -82,8 +84,8 @@ const Menu = () => {
 
     return (
         <div className='md:hidden w-[40px] h-[40px] rounded-md bg-white/10 flexcenter text-white'>
-            <Sheet>
-                <SheetTrigger>
+            <Sheet open={open} onOpenChange={setOpen}>
+                <SheetTrigger onClick={() => setOpen(true)}>
                     <RiMenu3Line size={25} />
                 </SheetTrigger>
                 <SheetContent className="w-[90%] h-screen space-y-5">
@@ -107,7 +109,10 @@ const Menu = () => {
                     {/* Premium Upgrade Section */}
                     {user?.isPro ? (
                         <div
-                            onClick={() => router.push('/subscription')}
+                            onClick={() => {
+                                setOpen(false);
+                                router.push('/subscription');
+                            }}
                             className="underline protext text-sm cursor-pointer trans hover:opacity-50"
                         >
                             Premium features
@@ -115,6 +120,10 @@ const Menu = () => {
                     ) : (
                         <div
                             className='text-black pro w-full px-5 rounded-md h-[50px] flex flex-row items-center gap-3 cursor-pointer'
+                            onClick={() => {
+                                setOpen(false);
+                                router.push('/subscription');
+                            }}
                         >
                             <Icon icon={<FaCrown size={20} />} title="Upgrade Premium" />
                             <h5 className='font-bold'>Premium</h5>

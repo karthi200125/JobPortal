@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StatusSide from "./StatusSide";
+import JobListsSkeleton from "@/Skeletons/JobListsSkeleten";
 
 const JobStatus = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -46,7 +47,7 @@ const JobStatus = () => {
 
     const renderJobs = (isMobile: boolean) => {
         if (appliedJobsLoading) {
-            return <div>Loading...</div>;
+            return <JobListsSkeleton />;
         }
 
         if (appliedJobs.length === 0) {
@@ -124,7 +125,7 @@ const JobStatusJobsList = ({
             ${job?.id === selectedJob ? '!bg-neutral-100' : ''}`}
             onClick={() => handleSelectJob(job)}
         >
-            <div className="w-[80px] h-[80px] rounded-md bg-neutral-100 relative overflow-hidden">
+            <div className="w-[40px] md:w-[80px] h-[40px] md:h-[80px] rounded-md bg-neutral-100 relative overflow-hidden">
                 <Image
                     src={job?.company?.companyImage || '/default-image.jpg'}
                     fill

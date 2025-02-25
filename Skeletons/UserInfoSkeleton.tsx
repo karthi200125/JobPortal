@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 const UserInfoSkeleton = () => {
     return (
-        <div className='relative mt-[250px] w-full max-h-max p-5 space-y-2'>
+        <div className='relative mt-[130px] md:mt-[250px] w-full max-h-max p-5 space-y-2'>
             <Skeleton className="bg-neutral-200 rounded-full h-[20px] w-[200px]" />
             <Skeleton className="bg-neutral-200 rounded-full h-3 w-[70%]" />
             <Skeleton className="bg-neutral-200 rounded-full h-3 w-[70%]" />

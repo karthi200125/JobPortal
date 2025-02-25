@@ -123,7 +123,7 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
                         </PopoverTrigger>
                         <PopoverContent className="max-w-max flex flex-col gap-1">
                             <Model
-                                bodyContent={<CreateJobForm />}
+                                bodyContent={<CreateJobForm job={job} isEdit={true}/>}
                                 title="Edit Job"
                                 className="w-full md:w-[1000px]"
                                 desc="Edit Your Job Details"
@@ -135,7 +135,7 @@ const JobList = ({ isHover, job, more, selectedJob, border = false, app_or_pos }
                                 </div>
                             </Model>
                             <Model
-                                bodyContent={<DeleteJobForm />}
+                                bodyContent={<DeleteJobForm job={job}/>}
                                 title="Delete Job"
                                 className="w-full md:w-[500px]"
                                 desc="Are you sure you want to delete this job?"

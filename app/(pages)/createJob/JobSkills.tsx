@@ -8,13 +8,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { IoClose } from "react-icons/io5";
 
 interface JobSkillsProps {
-    onSkills?: (value: string[]) => void;
+    onSkills?: (value: string[]) => void,
+    alreadySkills?: any;
 }
 
-const JobSkills = ({ onSkills }: JobSkillsProps) => {
+const JobSkills = ({ onSkills , alreadySkills }: JobSkillsProps) => {
     const [query, setQuery] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>(alreadySkills || []);
 
     const debouncedQuery = useCallback(
         debounce((query: string) => {

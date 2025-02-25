@@ -29,14 +29,14 @@ const Companies = () => {
             {isPending ?
                 <ComapniesSkeleton />
                 :
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-5'>
                     {data?.map((company: any) => (
                         <div key={company?.id} className='rounded-[10px] w-full max-h-max md:h-[120px] border-[1px] border-solid border-neutral-200 p-5 flex flex-row items-start gap-5 overflow-hidden hover:shadow-lg trans cursor-pointer'>
                             <div className='relative w-[40px] md:w-[80px] h-[40px] md:h-[80px] rounded-md overflow-hidden'>
                                 <Image alt='' src={company?.companyImage || noImage.src} fill className='w-full h-full absolute top-0 left-0' />
                             </div>
 
-                            <div className='flex flex-col justify-between h-full'>
+                            <div className='flex flex-col justify-between h-full space-y-1'>
                                 <Link href={`/userProfile/${company?.id}`} className='font-bold hover:opacity-50 trans flex flex-row items-center gap-2'>{company?.companyName} <Batch type='ORGANIZATION' /></Link>
                                 <h5 className='text-neutral-500 line-clamp-1'>{company?.companyCity} , {company?.companyState} , {company?.companyCountry}</h5>
                                 <Link href={`/jobs?company=${company?.companyName}`} className='flex flex-row items-center gap-3 hover:opacity-50 trans' >
