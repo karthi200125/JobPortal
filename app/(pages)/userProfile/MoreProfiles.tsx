@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { UserFollowAction } from '@/actions/user/UserFollowAction';
 import { userFollow } from '@/app/Redux/AuthSlice';
 import { useCustomToast } from '@/lib/CustomToast';
+import MessageButton from '@/components/MessageButton';
 
 interface ProfileUserProps {
     userId?: string | number;
@@ -131,6 +132,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                         >
                             Message
                         </Button>
+                        {/* <MessageButton receiver={moreuser} className='!h-[30px]'/> */}
                     </div>
                 }
             </div>

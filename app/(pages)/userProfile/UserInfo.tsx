@@ -21,6 +21,7 @@ import { VscLinkExternal } from 'react-icons/vsc';
 import { useDispatch, useSelector } from 'react-redux';
 import noProfile from '../../../public/noProfile.webp';
 import UserProfileImage from './UserProfileImage';
+import MessageButton from '@/components/MessageButton';
 
 interface ProfileUserProps {
     profileUser?: any;
@@ -91,9 +92,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
             >
                 {isFollowings ? 'Unfollow' : 'Follow'}
             </Button>
-            <Button disabled={!user?.isPro} variant="border" icon={<IoMdSend size={20} />}>
-                Message
-            </Button>
+            <MessageButton receiver={profileUser} />
         </div>
     );
 

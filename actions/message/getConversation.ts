@@ -1,46 +1,31 @@
-"use server";
+'use server'
 
-import { db } from "@/lib/db";
-import moment from "moment";
+import { PrismaClient } from "@prisma/client";
 
-export const getConversation = async (userId: number, otherUserId: number) => {
+const prisma = new PrismaClient();
+
+export const getConversation = async (currentUserId: number, otherUserId: number) => {
+
+    console.log(currentUserId, otherUserId)
+
     try {
-        // Find the chat between these two users
-        const chat = await db.chats.findFirst({
+        const chat = await prisma.chats.findFirst({
             where: {
                 OR: [
-                    { senderId: userId, receiverId: otherUserId },
-                    { senderId: otherUserId, receiverId: userId },
+                    { senderId: currentUserId, receiverId: otherUserId },
+                    { senderId: otherUserId, receiverId: currentUserId },
                 ],
             },
-            select: {
-                id: true, 
+            include: {
                 messages: {
-                    select: {
-                        id: true,
-                        senderId: true,
-                        text: true,
-                        image: true,
-                        createdAt: true,
-                    },
-                    orderBy: {
-                        createdAt: "asc", 
-                    },
+                    orderBy: { createdAt: "asc" },
                 },
             },
         });
 
-        if (!chat) return [];
-
-        return chat.messages.map(msg => ({
-            id: msg.id,
-            senderId: msg.senderId,            
-            message: msg.text || "",
-            image: msg.image || null,
-            sentAt: moment(msg.createdAt).format("MMM D, h:mm A"),
-        }));
+        return chat;
     } catch (error) {
         console.error("Error fetching conversation:", error);
-        throw new Error("Failed to fetch conversation");
+        return null;
     }
 };

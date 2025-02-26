@@ -10,7 +10,7 @@ import { getUserById } from "@/actions/auth/getUserById";
 
 interface MessageBoxProps {
   receiverId?: number,
-  chatUser?: any  
+  chatUser?: any
 }
 
 const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
@@ -23,6 +23,8 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
     enabled: Boolean(user?.id && receiverId),
   });
 
+  console.log('test test', data)
+
   return (
     <div className="h-full relative">
       {isPending ?
@@ -32,7 +34,7 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
           <ChatUser chatUser={chatUser} />
 
           {/* message show*/}
-          <Chats messages={data} currentUserId={user?.id} isPending={isPending} />
+          {/* <Chats messages={data?.messages} currentUserId={user?.id} isPending={isPending} /> */}
 
           {/* chat button */}
           <ChatButton userId={user?.id} receiverId={receiverId!} />
