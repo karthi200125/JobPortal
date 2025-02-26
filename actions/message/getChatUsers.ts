@@ -2,11 +2,19 @@
 
 import { db } from "@/lib/db";
 
-export const getChatUsers = async (userId: number) => {
+export const getChatUsers = async (userId: number, q?: string) => {
     try {
         const chatusers: any = await db.chats.findMany({
             where: {
-                OR: [{ senderId: userId }, { receiverId: userId }],
+                OR: [
+                    { senderId: userId },
+                    { receiverId: userId }
+                ],
+                ...(q ? {
+                    receiver: {
+                        username: { contains: q, mode: "insensitive" }
+                    }
+                } : {})
             },
             select: {
                 receiver: { select: { id: true, username: true, userImage: true } },
@@ -23,5 +31,6 @@ export const getChatUsers = async (userId: number) => {
         return chatusers;
     } catch (error) {
         console.error("Error fetching chat users:", error);
+        return [];
     }
 };

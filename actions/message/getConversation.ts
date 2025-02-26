@@ -16,6 +16,7 @@ export const getConversation = async (currentUserId: number, otherUserId: number
             include: {
                 messages: {
                     orderBy: { createdAt: "asc" },
+                    take: 30,
                     include: {
                         sender: {
                             select: {
@@ -24,6 +25,7 @@ export const getConversation = async (currentUserId: number, otherUserId: number
                         },
                     },
                 },
+
             },
         });
 

@@ -11,10 +11,13 @@ import { useCallback, useEffect, useState } from "react";
 const Messages = () => {
     const user = useSelector((state: any) => state.user?.user);
     const [selectedChatUserId, setSelectedChatUserId] = useState<number | null>(null);
+    const [q, setQ] = useState('')
+
+    console.log(q)
 
     const { data: chatUsers = [], isPending } = useQuery({
-        queryKey: ["getChatUsers", user?.id],
-        queryFn: async () => (user?.id ? await getChatUsers(user.id) : []),
+        queryKey: ["getChatUsers", user?.id, q],
+        queryFn: async () => (user?.id ? await getChatUsers(user.id, q) : []),
         enabled: !!user?.id,
     });
 
@@ -43,6 +46,7 @@ const Messages = () => {
                 isPending={isPending}
                 onSelectedChatUserId={handleSelectedChatUser}
                 defaultChatUserId={selectedChatUserId}
+                onSearch={(query: string) => setQ(query)}
             />
 
             <div className="hidden md:block flex-[5] messageh">

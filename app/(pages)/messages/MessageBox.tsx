@@ -1,12 +1,12 @@
 'use client'
 
+import { getConversation } from "@/actions/message/getConversation";
+import MessageBoxSkeleton from "@/Skeletons/MessageBoxSkeleton";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 import ChatButton from "./ChatButton";
 import Chats from "./Chats";
 import ChatUser from "./ChatUser";
-import { useSelector } from "react-redux";
-import { getConversation } from "@/actions/message/getConversation";
-import { getUserById } from "@/actions/auth/getUserById";
 
 interface MessageBoxProps {
   receiverId?: number,
@@ -23,12 +23,10 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
     enabled: Boolean(user?.id && receiverId),
   });
 
-  console.log('test test', data)
-
   return (
     <div className="h-full relative">
       {isPending ?
-        "loasing... "
+        <MessageBoxSkeleton />
         :
         <>
           <ChatUser chatUser={chatUser} />

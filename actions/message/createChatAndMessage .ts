@@ -11,8 +11,7 @@ export const createChatAndMessage = async (
         if (!senderId || !receiverId || !messageText) {
             throw new Error("Invalid data: senderId, receiverId, and messageText are required");
         }
-
-        // Check if chat exists between sender and receiver
+        
         let chat = await db.chats.findFirst({
             where: {
                 OR: [
@@ -22,7 +21,6 @@ export const createChatAndMessage = async (
             },
         });
 
-        // If chat doesn't exist, create a new chat
         if (!chat) {
             chat = await db.chats.create({
                 data: {
@@ -38,6 +36,16 @@ export const createChatAndMessage = async (
                 chatId: chat.id,
                 senderId,
                 text: messageText,
+            },
+        });
+
+        await db.chats.update({
+            where: {
+                id: chat.id,
+            },
+            data: {
+                lastMessage: messageText,
+                updatedAt: new Date(),
             },
         });
 

@@ -12,17 +12,19 @@ interface ChatUsersProps {
   isPending?: boolean;
   onSelectedChatUserId?: (id: number) => void;
   defaultChatUserId?: number | null;
+  onSearch?: any;
 }
 
-const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUserId }: ChatUsersProps) => {
+const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUserId, onSearch }: ChatUsersProps) => {
   const [selectedChatUserId, setSelectedChatUserId] = useState<number | null>(defaultChatUserId || null);
+  const [q, setQ] = useState('')
 
   useEffect(() => {
     if (defaultChatUserId) {
       setSelectedChatUserId(defaultChatUserId);
     }
   }, [defaultChatUserId]);
-  
+
   const handleSelectChatUserId = useCallback(
     (chatUserId: number) => {
       setSelectedChatUserId(chatUserId);
@@ -38,7 +40,7 @@ const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUser
     return chatUsers.map((chatUser) => (
       <div key={chatUser.id} onClick={() => handleSelectChatUserId(chatUser?.receiver?.id)}>
         {isMobile ? (
-          <BottomDrawer body={<MessageBox receiverId={chatUser.id} chatUser={chatUser} />}>
+          <BottomDrawer body={<MessageBox receiverId={chatUser?.receiver?.id} chatUser={chatUser} />}>
             <ChatList chatUser={chatUser} selectedChatUserId={selectedChatUserId} />
           </BottomDrawer>
         ) : (
@@ -48,13 +50,23 @@ const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUser
     ));
   };
 
+  const HandleChange = (e: any) => {
+    setQ(e.target.value)
+    onSearch(q)
+  }
+
   return (
     <div className="w-full md:flex-[2] messageh md:border-r border-neutral-200 pt-3 md:pr-3">
       <div className="space-y-5 py-3">
-        <h3>Messaging</h3>
+        <h3 className="font-bold">Messaging</h3>
         <div className="bg-neutral-100 rounded-md flex items-center gap-3 pl-3 overflow-hidden">
           <IoSearchOutline />
-          <input type="text" className="p-2 w-full bg-neutral-100" placeholder="Search..." />
+          <input
+            type="text"
+            className="p-2 w-full bg-neutral-100"
+            placeholder="Search users ..."
+            onChange={HandleChange}
+          />
         </div>
       </div>
       <div className="flex flex-col overflow-y-auto">

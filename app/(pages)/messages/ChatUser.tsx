@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { IoIosMore } from 'react-icons/io'
 
 const ChatUser = ({ chatUser }: any) => {
-    
+
     return (
         <div className="w-full flex flex-row items-center justify-between border-b h-[90px] px-3 z-10">
             <div className='flex flex-row items-center gap-5'>
@@ -16,9 +16,9 @@ const ChatUser = ({ chatUser }: any) => {
                         fill
                     />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1">
                     <h3 className="capitalize">{chatUser?.receiver?.username}</h3>
-                    <h5>last chat mnessage</h5>
+                    <h5 className="text-neutral-500">Chat with that user</h5>
                 </div>
             </div>
             <Icon icon={<IoIosMore size={25} />} title="More" tooltipbg="white" isHover />
