@@ -104,8 +104,6 @@ const UserProfileCard = () => {
         }
     }, [dispatch, router]);
 
-
-
     const renderedItems = useMemo(() => {
         return profileCardItems.map((item) => (
             item.isCard && (
