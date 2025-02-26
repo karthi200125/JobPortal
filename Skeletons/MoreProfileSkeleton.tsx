@@ -14,7 +14,7 @@ const MoreProfileSkeleton = () => {
                         <Skeleton className='bg-neutral-200 h-3 w-[100px] rounded-md' />
                         <div className='flex flex-row items-center gap-3'>
                             <Skeleton className='bg-neutral-200 h-[40px] w-[100px] rounded-full' />
-                            <Skeleton className='bg-neutral-200 h-[40px] w-[150px] rounded-full' />
+                            <Skeleton className='bg-neutral-200 h-[40px] w-[100px] rounded-full' />
                         </div>
                     </div>
                 </div>

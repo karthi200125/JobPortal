@@ -27,14 +27,14 @@ const Menu = () => {
 
     const ExtraItems = [
         {
-            id: 8,
+            id: 9,
             title: "Companies",
             icon: <BsFillBuildingsFill size={20} />,
             href: "/companies",
             isCard: true
         },
         {
-            id: 9,
+            id: 10,
             title: "Messages",
             icon: <RiMessage3Fill size={20} />,
             href: "/messages",

@@ -49,27 +49,34 @@ export const useProfileCardItems = (user: any) => {
             },
             {
                 id: 4,
+                title: "Messages",
+                icon: <MdDashboard size={20} />,
+                href: "/messages",
+                isCard: true
+            },
+            {
+                id: 5,
                 title: "Create Job",
                 icon: <GoPlus size={20} />,
                 href: "/createJob",
                 isCard: isRec || isOrg
             },
             {
-                id: 5,
+                id: 6,
                 title: "Job Status",
                 icon: <GrStatusCriticalSmall size={20} />,
                 href: "/dashboard/jobStatus",
                 isCard: isRec || isCan
             },
             {
-                id: 6,
+                id: 7,
                 title: "Employees",
                 icon: <FaUsers size={20} />,
                 href: "/dashboard/employees",
                 isCard: isOrg
             },
             {
-                id: 7,
+                id: 8,
                 title: "Sign Out",
                 icon: <PiSignOutBold size={20} />,
                 href: "/",

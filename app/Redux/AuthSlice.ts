@@ -33,11 +33,11 @@ const AuthSlice = createSlice({
                 localStorage.removeItem('user');
             }
         },
-        userSavedJobs(state, action: PayloadAction<string>) {
+        userSavedJobs(state, action: PayloadAction<number>) {
             if (state.user) {
                 const isSaved = state.user.savedJobs.includes(action.payload);
                 if (isSaved) {
-                    state.user.savedJobs = state.user.savedJobs.filter((id: any) => id !== action.payload);
+                    state.user.savedJobs = state.user.savedJobs.filter((id: number) => id !== action.payload);
                 } else {
                     state.user.savedJobs = [...state.user.savedJobs, action.payload];
                 }
@@ -46,12 +46,12 @@ const AuthSlice = createSlice({
                 }
             }
         },
-        userFollow(state, action: PayloadAction<string>) {
+        userFollow(state, action: PayloadAction<number>) {
             if (state.user) {
-                const isFollowing = state.user.followings.includes(action.payload);                
+                const isFollowing = state.user.followings.includes(action.payload);
 
                 if (isFollowing) {
-                    state.user.followings = state.user.followings.filter((id: any) => id !== action.payload);
+                    state.user.followings = state.user.followings.filter((id: number) => id !== action.payload);
                 } else {
                     state.user.followings = [...state.user.followings, action.payload];
                 }

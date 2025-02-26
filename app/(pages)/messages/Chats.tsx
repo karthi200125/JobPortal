@@ -12,7 +12,7 @@ const Chats = ({ messages, currentUserId, isPending, user }: { messages: any, us
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
-    
+
     return (
         <div className='w-full overflow-y-auto p-3 flex flex-col gap-10 chatsh'>
             {messages?.map((msg: any) => (
@@ -21,10 +21,10 @@ const Chats = ({ messages, currentUserId, isPending, user }: { messages: any, us
                     className={`max-w-[70%] flex gap-2                        
                          ${msg.senderId === currentUserId && "self-end  text-white"}
                          `}
-                >                    
+                >
                     <div className={`relative space-y-2`} >
                         {msg.image && (
-                            <div className="relative overflow-hidden rounded-md w-[500px] h-[150px] md:h-[300px]">
+                            <div className="relative overflow-hidden rounded-md w-full md:w-[500px] h-[150px] md:h-[300px]">
                                 <Image src={msg.image || noImage.src} alt='' fill className='absolute top-0 left-0 w-full h-full object-cover' />
                             </div>
                         )}

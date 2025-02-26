@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import noProfile from '../../../public/noProfile.webp';
 import UserProfileImage from './UserProfileImage';
 import MessageButton from '@/components/MessageButton';
+import MessageBox from '../messages/MessageBox';
 
 interface ProfileUserProps {
     profileUser?: any;
@@ -92,7 +93,14 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
             >
                 {isFollowings ? 'Unfollow' : 'Follow'}
             </Button>
-            <MessageButton receiver={profileUser} />
+            <Button
+                onClick={() => dispatch(openModal("messageModel"))}
+                disabled={user?.isPro}
+                variant="border"
+                icon={<IoMdSend size={20} />}
+            >
+                Message
+            </Button>
         </div>
     );
 
@@ -110,6 +118,14 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
 
     return (
         <div className="relative w-full min-h-[200px] overflow-hidden rounded-[20px] border">
+            <Model
+                bodyContent={<MessageBox receiverId={profileUser?.id} chatUser={profileUser} />}
+                title={`Message ${profileUser?.username || "User"}`}
+                className="min-w-[300px] lg:w-[800px]"
+                modalId="messageModel"
+            >
+                <div></div>
+            </Model>
             {/* Image Container */}
             <div className="absolute top-0 left-0 w-full h-[120px] md:h-[200px]">
                 <Image

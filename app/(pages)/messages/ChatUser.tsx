@@ -3,10 +3,10 @@ import noProfile from '@/public/noProfile.webp'
 import Image from 'next/image'
 import { IoIosMore } from 'react-icons/io'
 
-const ChatUser = ({ chatUser }: any) => {
+const ChatUser = ({ chatUser, isChatuser }: any) => {
 
     return (
-        <div className="w-full flex flex-row items-center justify-between border-b h-[90px] px-3 z-10">
+        <div className={`${isChatuser ? "flex" : "hidden"} w-full flex-row items-center justify-between border-b h-[90px] px-3 z-10`}>
             <div className='flex flex-row items-center gap-5'>
                 <div className="w-[40px] md:w-[60px] h-[40px] md:h-[60px] rounded-full overflow-hidden relative">
                     <Image
