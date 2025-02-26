@@ -1,15 +1,12 @@
-'use server'
+'use server';
 
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export const getConversation = async (currentUserId: number, otherUserId: number) => {
-
-    console.log(currentUserId, otherUserId)
-
     try {
-        const chat = await prisma.chats.findFirst({
+        const chat: any = await prisma.chats.findFirst({
             where: {
                 OR: [
                     { senderId: currentUserId, receiverId: otherUserId },
@@ -19,6 +16,13 @@ export const getConversation = async (currentUserId: number, otherUserId: number
             include: {
                 messages: {
                     orderBy: { createdAt: "asc" },
+                    include: {
+                        sender: {
+                            select: {
+                                userImage: true,
+                            },
+                        },
+                    },
                 },
             },
         });

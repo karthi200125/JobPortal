@@ -34,7 +34,7 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
           <ChatUser chatUser={chatUser} />
 
           {/* message show*/}
-          {/* <Chats messages={data?.messages} currentUserId={user?.id} isPending={isPending} /> */}
+          <Chats messages={data?.messages} currentUserId={user?.id} isPending={isPending} user={user} />
 
           {/* chat button */}
           <ChatButton userId={user?.id} receiverId={receiverId!} />

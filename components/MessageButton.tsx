@@ -21,10 +21,17 @@ const MessageButton = ({ receiver, className = "" }: MessageButtonProps) => {
         dispatch(openModal("messageModel"));
     }, [dispatch]);
 
+    const formattedReceiver = { receiver };
+
     const messageBoxContent = useMemo(
-        () => <MessageBox receiverId={receiver?.id} chatUser={user} />,
+        () => (
+            <div className="w-full h-[500px]">
+                <MessageBox receiverId={receiver?.id} chatUser={formattedReceiver} />
+            </div>
+        ),
         [receiver?.id, user]
     );
+
 
     return (
         <div>
