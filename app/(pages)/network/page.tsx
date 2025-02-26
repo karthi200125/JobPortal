@@ -96,7 +96,7 @@ const NetworkUser = ({ networkUser, network }: NetworkUserProps) => {
         startTransition(() => {
             UserFollowAction(user.id, networkUser.id).then((data: any) => {
                 if (data?.success) {
-                    dispatch(userFollow(networkUser?.id.toString()));
+                    dispatch(userFollow(networkUser?.id));
                     queryClient.invalidateQueries({ queryKey: ["getNetworkUsers", user?.id] });
                 } else if (data?.error) {
                     console.error(data.error);

@@ -44,14 +44,14 @@ const MoreProfiles = ({ userId }: ProfileUserProps) => {
 
     return (
         <div className="w-full min-h-[200px] overflow-hidden rounded-[20px] border space-y-3 p-5">
-            <Model
+            {/* <Model
                 bodyContent={<MessageBox receiverId={selectedUser?.id} chatUser={selectedUser} />}
                 title={`Message ${selectedUser?.username || 'User'}`}
                 className="min-w-[300px] lg:w-[800px]"
                 modalId="messageModel"
             >
                 <div></div>
-            </Model>
+            </Model> */}
             <h3 className="font-bold">
                 {user?.id === userId ? 'More Profiles' : 'Profile Followers'}
             </h3>
@@ -133,7 +133,7 @@ export const MoreUserProfile = ({ moreuser, onSelectedUser }: MoreUserProfilePro
                         >
                             {!isFollowing ? 'Follow' : 'Unfollow'}
                         </Button>
-                        <Button
+                        {/* <Button
                             onClick={handleOpenModal}
                             disabled={user?.isPro}
                             variant="border"
@@ -141,7 +141,8 @@ export const MoreUserProfile = ({ moreuser, onSelectedUser }: MoreUserProfilePro
                             className="!h-[30px]"
                         >
                             Message
-                        </Button>
+                        </Button> */}
+                        <MessageButton receiver={moreuser} />
                     </div>
                 )}
             </div>

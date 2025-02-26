@@ -27,7 +27,7 @@ const MessageButton = ({ receiver, className = "" }: MessageButtonProps) => {
 
     const handleOpenModal = useCallback(() => {
         setSelectedUser(receiver);
-        dispatch(openModal("messageModel"));
+        dispatch(openModal(`messageModel-${selectedUser?.id}`))
     }, [dispatch, receiver]);
 
     const messageBoxContent = useMemo(() => (
@@ -36,22 +36,22 @@ const MessageButton = ({ receiver, className = "" }: MessageButtonProps) => {
 
     return (
         <>
-            {/* <Model
+            <Model
                 bodyContent={messageBoxContent}
                 title={`Message ${selectedUser?.username || "User"}`}
                 className="min-w-[300px] lg:w-[800px]"
-                modalId="messageModel"
-            > */}
-            <Button
-                onClick={handleOpenModal}
-                disabled={user?.isPro}
-                variant="border"
-                icon={<IoMdSend size={20} />}
-                className={className}
+                modalId={`messageModel-${selectedUser?.id}`}
             >
-                Message
-            </Button>
-            {/* </Model> */}
+                <Button
+                    onClick={handleOpenModal}
+                    disabled={user?.isPro}
+                    variant="border"
+                    icon={<IoMdSend size={20} />}
+                    className={className}
+                >
+                    Message
+                </Button>
+            </Model>
         </>
     );
 };
