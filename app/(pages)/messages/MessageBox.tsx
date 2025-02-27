@@ -10,15 +10,13 @@ import ChatUser from "./ChatUser";
 
 interface MessageBoxProps {
   receiverId?: number,
-  chatUser?: any
+  chatUser?: any,
+  isLoading?: boolean
 }
 
-const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
+const MessageBox = ({ receiverId, chatUser, isLoading }: MessageBoxProps) => {
 
   const user = useSelector((state: any) => state.user?.user);
-
-  console.log('message box', receiverId)
-  console.log('message box', chatUser)
 
   const { data, isPending } = useQuery({
     queryKey: ["getConversation", user?.id, receiverId],
@@ -28,7 +26,7 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
 
   return (
     <div className="h-full relative">
-      {isPending ?
+      {(isPending || isLoading) ?
         <MessageBoxSkeleton />
         :
         <>

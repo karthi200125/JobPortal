@@ -36,11 +36,11 @@ const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUser
   const renderChats = (isMobile: boolean) => {
     if (isPending) return <EmployeesSkeleton count={5} />;
     if (!chatUsers || chatUsers.length === 0) return <h4 className="p-3">No Chat Users Yet!</h4>;
-
+    
     return chatUsers.map((chatUser) => (
-      <div key={chatUser.id} onClick={() => handleSelectChatUserId(chatUser?.receiver?.id)}>
+      <div key={chatUser.id} onClick={() => handleSelectChatUserId(chatUser?.id)}>
         {isMobile ? (
-          <BottomDrawer body={<MessageBox receiverId={chatUser?.receiver?.id} chatUser={chatUser} />}>
+          <BottomDrawer body={<MessageBox receiverId={chatUser?.id} chatUser={chatUser} isLoading={isPending} />}>
             <ChatList chatUser={chatUser} selectedChatUserId={selectedChatUserId} />
           </BottomDrawer>
         ) : (

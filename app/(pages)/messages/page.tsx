@@ -12,16 +12,16 @@ const Messages = () => {
     const user = useSelector((state: any) => state.user?.user);
     const [selectedChatUserId, setSelectedChatUserId] = useState<number | null>(null);
     const [q, setQ] = useState('')
-    
+
     const { data: chatUsers = [], isPending } = useQuery({
         queryKey: ["getChatUsers", user?.id, q],
         queryFn: async () => (user?.id ? await getChatUsers(user.id, q) : []),
         enabled: !!user?.id,
     });
-
+    
     useEffect(() => {
         if (chatUsers.length > 0 && selectedChatUserId === null) {
-            setSelectedChatUserId(chatUsers[0]?.receiver?.id);
+            setSelectedChatUserId(chatUsers[0]?.id);
         }
     }, [chatUsers, selectedChatUserId]);
 
@@ -29,12 +29,12 @@ const Messages = () => {
         setSelectedChatUserId(chatUserId);
     }, []);
 
-    const chatUser: any = chatUsers.find((user: any) => user?.receiver?.id === selectedChatUserId) || null;
+    const chatUser: any = chatUsers.find((user: any) => user?.id === selectedChatUserId) || null;
 
     return (
         <div className="w-full flex flex-row items-start h-full">
             <Title
-                title={`${chatUser?.receiver?.username} Messages | JOBIFY`}
+                title={`${chatUser?.username} Messages | JOBIFY`}
                 description="Stay connected with recruiters and job seekers. Send and receive messages directly on JOBIFY."
                 keywords="messages, job messages, recruiter chat, communication, networking"
             />
@@ -48,7 +48,12 @@ const Messages = () => {
             />
 
             <div className="hidden md:block flex-[5] messageh">
-                {chatUser && <MessageBox receiverId={chatUser?.receiver?.id} chatUser={chatUser} />}
+                {chatUser &&
+                    <MessageBox
+                        receiverId={chatUser?.id}
+                        chatUser={chatUser}
+                        isLoading={isPending}
+                    />}
             </div>
         </div>
     );
