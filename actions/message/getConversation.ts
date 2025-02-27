@@ -24,8 +24,7 @@ export const getConversation = async (currentUserId: number, otherUserId: number
                             },
                         },
                     },
-                },
-
+                },                
             },
         });
 

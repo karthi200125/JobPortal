@@ -191,8 +191,7 @@ model Chats {
   id          Int      @id @default(autoincrement())    
   senderId    Int
   receiverId  Int
-  lastMessage String?
-  isSeen      Boolean  @default(false)
+  lastMessage String? 
   
   sender      User     @relation("SenderChats", fields: [senderId], references: [id], onDelete: Cascade)
   receiver    User     @relation("ReceiverChats", fields: [receiverId], references: [id], onDelete: Cascade)
@@ -209,6 +208,7 @@ model Message {
   senderId  Int
   text      String?
   image     String?  
+  isSeen    Boolean  @default(false)
 
   chat      Chats    @relation(fields: [chatId], references: [id], onDelete: Cascade)
   sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)

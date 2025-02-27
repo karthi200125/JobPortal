@@ -16,8 +16,7 @@ export const getChatUsers = async (userId: number, q?: string) => {
                 id: true,
                 senderId: true,
                 receiverId: true,
-                lastMessage: true,
-                isSeen: true,
+                lastMessage: true,                
                 updatedAt: true,
                 createdAt: true,
                 sender: {
@@ -31,8 +30,7 @@ export const getChatUsers = async (userId: number, q?: string) => {
                 updatedAt: "desc",
             }
         });
-
-        // Map chat users correctly based on the current user
+        
         const formattedUsers = chatusers.map((chat: any) => {
             const chatUser = chat.senderId === userId ? chat.receiver : chat.sender;
             return {
@@ -45,8 +43,7 @@ export const getChatUsers = async (userId: number, q?: string) => {
                 createdAt: chat.createdAt
             };
         });
-
-        // Apply search filter if `q` is provided
+        
         if (q) {
             return formattedUsers.filter((user: any) =>
                 user.username.toLowerCase().includes(q.toLowerCase())

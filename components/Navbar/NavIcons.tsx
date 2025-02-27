@@ -7,11 +7,18 @@ import { MdDashboard } from "react-icons/md";
 import { RiMessage3Fill } from "react-icons/ri";
 import { useSelector } from 'react-redux';
 import Icon from '../Icon';
+import { useQuery } from '@tanstack/react-query';
+import { getUnreadMessagesCount } from '@/actions/message/getUnreadMessagesCount ';
 
 const NavIcons = () => {
+    const user = useSelector((state: any) => state.user.user)
 
-    const user = useSelector((state: any) => state.user.user);
-
+    const { data, isPending } = useQuery({
+        queryKey: ['getUnreadMessagesCount', user?.id],
+        queryFn: () => getUnreadMessagesCount(user?.id!),
+        enabled: Boolean(user?.id),
+    });
+    
     const NavIcons = [
         // {
         //     id: 1,
@@ -24,7 +31,7 @@ const NavIcons = () => {
         {
             id: 2,
             icon: <RiMessage3Fill size={20} />,
-            count: 0,
+            count: data || 0,
             isCount: true,
             title: "Message",
             href: "/messages"
