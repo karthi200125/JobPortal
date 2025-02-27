@@ -18,7 +18,7 @@ const MessageBox = ({ receiverId, chatUser }: MessageBoxProps) => {
   const user = useSelector((state: any) => state.user?.user);
 
   console.log('message box', receiverId)
-  console.log('user', chatUser)
+  console.log('message box', chatUser)
 
   const { data, isPending } = useQuery({
     queryKey: ["getConversation", user?.id, receiverId],

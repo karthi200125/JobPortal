@@ -19,7 +19,7 @@ const Home = () => {
       />
       <LandingPage />
       <LpAbout />
-      {/* <LpJobs /> */}
+      <LpJobs />
       <LpLeadingCompanies />
       <Pricing />
       <Footer />

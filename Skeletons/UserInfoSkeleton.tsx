@@ -16,7 +16,7 @@ const UserInfoSkeleton = () => {
             </div>
             <div className='flex flex-row items-center gap-5'>
                 <Skeleton className="bg-neutral-200 rounded-full h-[40px] w-[100px]" />
-                <Skeleton className="bg-neutral-200 rounded-full h-[40px] w-[150px]" />
+                <Skeleton className="bg-neutral-200 rounded-full h-[40px] w-[100px]" />
             </div>
         </div>
     )

@@ -3,22 +3,21 @@
 import { moreProUsers } from '@/actions/moreProfileUsers';
 import { UserFollowAction } from '@/actions/user/UserFollowAction';
 import { userFollow } from '@/app/Redux/AuthSlice';
+import { openModal } from '@/app/Redux/ModalSlice';
 import Batch from '@/components/Batch';
 import Button from '@/components/Button';
-import MessageButton from '@/components/MessageButton';
+import Model from '@/components/Model/Model';
 import { useCustomToast } from '@/lib/CustomToast';
 import MoreProfileSkeleton from '@/Skeletons/MoreProfileSkeleton';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo, useCallback, useState, useTransition } from 'react';
+import { memo, useTransition } from 'react';
 import { GoPlus } from 'react-icons/go';
+import { IoMdSend } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import noAvatar from '../../../public/noProfile.webp';
-import Model from '@/components/Model/Model';
 import MessageBox from '../messages/MessageBox';
-import { IoMdSend } from 'react-icons/io';
-import { openModal } from '@/app/Redux/ModalSlice';
 
 interface User {
     id: number;
@@ -35,7 +34,6 @@ interface ProfileUserProps {
 
 const MoreProfiles = ({ userId }: ProfileUserProps) => {
     const user = useSelector((state: any) => state.user?.user);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const { data = [], isLoading } = useQuery({
         queryKey: ['getMoreProfiles', user?.id, userId],
@@ -44,14 +42,6 @@ const MoreProfiles = ({ userId }: ProfileUserProps) => {
 
     return (
         <div className="w-full min-h-[200px] overflow-hidden rounded-[20px] border space-y-3 p-5">
-            {/* <Model
-                bodyContent={<MessageBox receiverId={selectedUser?.id} chatUser={selectedUser} />}
-                title={`Message ${selectedUser?.username || 'User'}`}
-                className="min-w-[300px] lg:w-[800px]"
-                modalId="messageModel"
-            >
-                <div></div>
-            </Model> */}
             <h3 className="font-bold">
                 {user?.id === userId ? 'More Profiles' : 'Profile Followers'}
             </h3>
@@ -59,7 +49,7 @@ const MoreProfiles = ({ userId }: ProfileUserProps) => {
                 <MoreProfileSkeleton />
             ) : data.length > 0 ? (
                 data.map((moreUser: User) => (
-                    <MoreUserProfile key={moreUser.id} moreuser={moreUser} onSelectedUser={setSelectedUser} />
+                    <MoreUserProfile key={moreUser.id} moreuser={moreUser} />
                 ))
             ) : (
                 <h4 className="text-[var(--lighttext)]">No Profiles</h4>
@@ -72,17 +62,15 @@ export default memo(MoreProfiles);
 
 interface MoreUserProfileProps {
     moreuser: User;
-    onSelectedUser?: (user: User) => void;
 }
 
-export const MoreUserProfile = ({ moreuser, onSelectedUser }: MoreUserProfileProps) => {
+export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
     const user = useSelector((state: any) => state.user?.user);
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
     const { showSuccessToast, showErrorToast } = useCustomToast();
     const [isPending, startTransition] = useTransition();
     const isCurrentUser = user?.id === moreuser?.id;
-
     const isFollowing = user?.followings?.includes(moreuser?.id);
 
     const handleFollow = () => {
@@ -99,13 +87,9 @@ export const MoreUserProfile = ({ moreuser, onSelectedUser }: MoreUserProfilePro
         });
     };
 
-    const handleOpenModal = useCallback(() => {
-        onSelectedUser && onSelectedUser(moreuser);
-        dispatch(openModal('messageModel'));
-    }, [dispatch, moreuser, onSelectedUser]);
-
     return (
         <div className="flex flex-row items-start gap-5 border-b py-5">
+            {/* User Avatar */}
             <div className="relative w-[40px] h-[40px] overflow-hidden rounded-full">
                 <Image
                     src={moreuser?.userImage || noAvatar.src}
@@ -114,14 +98,20 @@ export const MoreUserProfile = ({ moreuser, onSelectedUser }: MoreUserProfilePro
                     className="rounded-full object-cover absolute top-0 left-0 w-full h-full"
                 />
             </div>
+
             <div className="space-y-2">
+                {/* Username & Role */}
                 <div className="flex flex-row items-center gap-3">
                     <Link href={`/userProfile/${moreuser?.id}`} className="font-bold cursor-pointer trans capitalize">
                         {moreuser?.username}
                     </Link>
                     {moreuser?.role === 'ORGANIZATION' ? <Batch type="ORGANIZATION" /> : moreuser?.isPro && <Batch type="premium" />}
                 </div>
+
+                {/* Profession */}
                 <h5>{moreuser?.profession}</h5>
+
+                {/* Actions */}
                 {!isCurrentUser && (
                     <div className="flex flex-row items-center gap-3">
                         <Button
@@ -133,19 +123,30 @@ export const MoreUserProfile = ({ moreuser, onSelectedUser }: MoreUserProfilePro
                         >
                             {!isFollowing ? 'Follow' : 'Unfollow'}
                         </Button>
-                        {/* <Button
-                            onClick={handleOpenModal}
+
+                        {/* Message Button */}
+                        <Button
+                            onClick={() => dispatch(openModal(`messageModel-${moreuser?.id}`))}
                             disabled={user?.isPro}
                             variant="border"
                             icon={<IoMdSend size={20} />}
                             className="!h-[30px]"
                         >
                             Message
-                        </Button> */}
-                        <MessageButton receiver={moreuser} />
+                        </Button>
                     </div>
                 )}
             </div>
+
+            {/* Message Modal */}
+            <Model
+                bodyContent={<MessageBox receiverId={moreuser?.id} chatUser={moreuser} />}
+                title={`Message ${moreuser?.username || 'User'}`}
+                className="min-w-[300px] lg:w-[800px]"
+                modalId={`messageModel-${moreuser?.id}`}
+            >
+                <div></div>
+            </Model>
         </div>
     );
 };

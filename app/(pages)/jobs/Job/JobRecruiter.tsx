@@ -1,19 +1,21 @@
 'use client'
 
 import { getUserById } from '@/actions/auth/getUserById';
+import { openModal } from '@/app/Redux/ModalSlice';
 import Button from '@/components/Button';
+import Model from '@/components/Model/Model';
+import JobRecruiterSkeleton from '@/Skeletons/JobRecruiterSkeleton';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import noAvatar from '../../../../public/noProfile.webp'
-import JobRecruiterSkeleton from '@/Skeletons/JobRecruiterSkeleton';
-import { useSelector } from 'react-redux';
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import noAvatar from '../../../../public/noProfile.webp';
+import MessageBox from '../../messages/MessageBox';
 
 const JobRecruiter = ({ job, company, isPending }: any) => {
 
     const user = useSelector((state: any) => state.user.user);
-    const router = useRouter()
+    const dispatch = useDispatch()
 
     const { data, isLoading } = useQuery({
         queryKey: ['getUser', job?.userId],
@@ -34,8 +36,24 @@ const JobRecruiter = ({ job, company, isPending }: any) => {
                             <h5>{data?.profession || "Recruiter"} At {company?.companyName}</h5>
                             <h6 className='text-[var(--lighttext)]'>Job poster</h6>
                         </div>
-                        <Button onClick={() => router.push('/messages')} disabled={!user?.isPro} className='absolute top-3 right-3' variant='border'>Message</Button>
+                        <Button
+                            onClick={() => dispatch(openModal(`messageModel-${data?.id}`))}
+                            disabled={user?.isPro}
+                            variant='border'
+                            className="absolute top-3 right-3"
+                        >
+                            Message
+                        </Button>
                     </div>
+                    {/* Message Modal */}
+                    <Model
+                        bodyContent={<MessageBox receiverId={data?.id} chatUser={data} />}
+                        title={`Message ${data?.username || 'User'}`}
+                        className="min-w-[300px] lg:w-[800px]"
+                        modalId={`messageModel-${data?.id}`}
+                    >
+                        <div></div>
+                    </Model>
                 </div>
             }
         </>
