@@ -94,7 +94,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
             </Button>
             <Button
                 onClick={() => dispatch(openModal(`messageModel-${profileUser?.id}`))}
-                disabled={user?.isPro}
+                disabled={!user?.isPro}
                 variant="border"
                 icon={<IoMdSend size={20} />}
             >

@@ -9,7 +9,7 @@ import { PiArrowCircleRightFill } from "react-icons/pi";
 
 const Pricing = () => {
 
-    const [selectedTab, setSelectedTab] = useState<"candidates" | "recruiters" | "organizations">("candidates");
+    const [selectedTab, setSelectedTab] = useState<"CANDIDATE" | "RECRUITER" | "ORGANIZATION">("CANDIDATE");
 
     const router = useRouter()
 
@@ -22,10 +22,10 @@ const Pricing = () => {
             </div>
 
             <div className="flex justify-center gap-2 mb-6 rounded-full overflow-hidden border max-w-max mx-auto p-2 bg-black text-white">
-                {["candidates", "recruiters", "organizations"].map((tab) => (
+                {["CANDIDATE", "RECRUITER", "ORGANIZATION"].map((tab) => (
                     <h4
                         key={tab}
-                        onClick={() => setSelectedTab(tab as "candidates" | "recruiters" | "organizations")}
+                        onClick={() => setSelectedTab(tab as "CANDIDATE" | "RECRUITER" | "ORGANIZATION")}
                         className={`rounded-full font-semibold cursor-pointer trans capitalize px-2 sm:px-6 py-2 ${selectedTab === tab && "bg-white text-black"}`}
                     >
                         {tab}

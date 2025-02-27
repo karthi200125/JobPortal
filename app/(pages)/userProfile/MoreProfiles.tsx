@@ -127,7 +127,7 @@ export const MoreUserProfile = ({ moreuser }: MoreUserProfileProps) => {
                         {/* Message Button */}
                         <Button
                             onClick={() => dispatch(openModal(`messageModel-${moreuser?.id}`))}
-                            disabled={user?.isPro}
+                            disabled={!user?.isPro}
                             variant="border"
                             icon={<IoMdSend size={20} />}
                             className="!h-[30px]"

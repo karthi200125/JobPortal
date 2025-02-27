@@ -4,6 +4,7 @@ import { getUserById } from "@/actions/auth/getUserById";
 import { CheckOutSession } from "@/actions/stripe";
 import { loginRedux } from "@/app/Redux/AuthSlice";
 import Button from "@/components/Button";
+import SubscriptionCard from "@/components/SubscriptionCard";
 import { subscriptionPlans } from "@/data";
 import Title from "@/lib/MetaTitle";
 import { useEffect, useTransition } from "react";
@@ -55,15 +56,15 @@ export default function Subscription() {
     return (
         <div className="w-full flex flex-col gap-5 items-center justify-center min-h-screen py-10">
             <Title
-                title="Upgrade Your Job Search | JOBIFY Subscription"
+                title="Upgrade Your Job Search | JOBIFY"
                 description="Unlock exclusive job listings, premium features, and career insights with JOBIFY's subscription plans."
                 keywords="subscription, premium jobs, job search upgrade, career boost"
             />
 
-            <h1>Our Pricing Plans</h1>
+            {!user?.isPro && <h1>Our Pricing Plans</h1>}
 
             {user?.isPro ? (
-                <div>You are a Pro user!</div>
+                <SubscriptionCard />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                     {subscriptionPlans[selectedTab]?.map((plan, index) => (

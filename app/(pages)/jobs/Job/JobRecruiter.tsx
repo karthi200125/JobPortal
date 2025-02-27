@@ -38,7 +38,7 @@ const JobRecruiter = ({ job, company, isPending }: any) => {
                         </div>
                         <Button
                             onClick={() => dispatch(openModal(`messageModel-${data?.id}`))}
-                            disabled={user?.isPro}
+                            disabled={!user?.isPro}
                             variant='border'
                             className="absolute top-3 right-3"
                         >

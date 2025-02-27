@@ -14,9 +14,10 @@ interface MessageBoxProps {
   receiverId?: number;
   chatUser?: any;
   isLoading?: boolean;
+  isChatuser?: boolean;
 }
 
-const MessageBox = ({ receiverId, chatUser, isLoading }: MessageBoxProps) => {
+const MessageBox = ({ receiverId, chatUser, isLoading , isChatuser}: MessageBoxProps) => {
   const user = useSelector((state: any) => state.user?.user);
   const queryClient = useQueryClient();
 
@@ -33,7 +34,7 @@ const MessageBox = ({ receiverId, chatUser, isLoading }: MessageBoxProps) => {
     const markMessagesAsSeenAsync = async () => {
       if (data?.id && user?.id) {
         try {
-          const response = await markMessagesAsSeen( user.id);
+          const response = await markMessagesAsSeen(data.id, user.id);
           if (response.success) {
             queryClient.invalidateQueries({ queryKey: ["getUnreadMessagesCount", user?.id] });
           }
@@ -52,7 +53,7 @@ const MessageBox = ({ receiverId, chatUser, isLoading }: MessageBoxProps) => {
         <MessageBoxSkeleton />
       ) : (
         <>
-          <ChatUser chatUser={chatUser} />
+          <ChatUser chatUser={chatUser} isChatuser={isChatuser}/>
           <Chats messages={data?.messages} currentUserId={user?.id} isPending={isPending} user={user} />
           <ChatButton userId={user?.id} receiverId={receiverId!} />
         </>

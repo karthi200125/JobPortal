@@ -30,13 +30,13 @@ export const CheckOutSession = async (values: any) => {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'subscription',
-            success_url: `${process.env.NEXT_PUBLIC_URL}/subscription`,
+            success_url: `${process.env.NEXT_PUBLIC_URL}/success`,
             cancel_url: `${process.env.NEXT_PUBLIC_URL}/subscription`,
             customer: customer.id,
             metadata: {
                 userId: user.id,
                 role: user.role,
-                plan: plan.name,
+                planname: plan.name,
                 subscriptionType: plan.type,
             },
             billing_address_collection: 'required',

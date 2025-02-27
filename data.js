@@ -216,17 +216,17 @@ export const fields_of_study = [
 ];
 
 export const subscriptionPlans = {
-    candidates: [
+    CANDIDATE: [
         { name: "Free", features: ["Apply to jobs", "Limited profile views", "Message Any Profile"], price: "0", type: "Free" },
         { name: "Premium", features: ["Resume boost", "Profile visibility", "Job alerts"], price: "499", type: "Monthly" },
         { name: "VIP Lifetime", features: ["Resume review", "Unlimited applications"], price: "2,999", type: "One-Time" },
     ],
-    recruiters: [
+    RECRUITER: [
         { name: "Basic", features: ["5 job posts", "Limited candidate views"], price: "1,499", type: "Monthly" },
         { name: "Standard", features: ["20 job posts", "Resume access", "Premium placement"], price: "5,999", type: "Monthly" },
         { name: "Enterprise", features: ["Unlimited job posts", "AI-matching", "Priority support"], price: "15,000", type: "Annual" },
     ],
-    organizations: [
+    ORGANIZATION: [
         { name: "Startup", features: ["10 job slots", "Team access"], price: "9,999", type: "Annual" },
         { name: "Growth", features: ["50 job slots", "Advanced analytics"], price: "29,999", type: "Annual" },
         { name: "Enterprise", features: ["Unlimited job slots", "Custom solutions"], price: "Custom", type: "Custom Pricing" },

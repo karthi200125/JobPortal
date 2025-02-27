@@ -48,10 +48,12 @@ model User {
   ProfileViews    Int[]
   employees       Int[]
   verifyEmps      Int[]
-  
+
   chatsSent     Chats[]  @relation("SenderChats")  
   chatsReceived Chats[]  @relation("ReceiverChats")
   messages      Message[]
+
+  subscription   Subscription[]
  
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
@@ -215,4 +217,26 @@ model Message {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+
+model Subscription {
+  id                   Int      @id @default(autoincrement())
+  
+  userId               Int    @unique
+  user                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  stripeSubscriptionId String?  @unique
+  stripeCustomerId     String   @unique
+  stripePriceId        String?
+  stripeCurrentPeriodEnd DateTime?
+  subscriptionStatus   String   @default("inactive")
+
+  planName             String?  
+  billingInterval      String?  
+  amount               Int?     
+  canceledAt           DateTime? 
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }
