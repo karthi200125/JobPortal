@@ -33,10 +33,10 @@ export default function Subscription() {
         fetchUser();
     }, [dispatch]);
 
-    let selectedTab: "candidates" | "recruiters" | "organizations" | null = null;
-    if (user?.role === "RECRUITER") selectedTab = "recruiters";
-    else if (user?.role === "CANDIDATE") selectedTab = "candidates";
-    else if (user?.role === "ORGANIZATION") selectedTab = "organizations";
+    let selectedTab: "CANDIDATE" | "RECRUITER" | "ORGANIZATION" | null = null;
+    if (user?.role === "RECRUITER") selectedTab = "RECRUITER";
+    else if (user?.role === "CANDIDATE") selectedTab = "CANDIDATE";
+    else if (user?.role === "ORGANIZATION") selectedTab = "ORGANIZATION";
 
     if (!selectedTab) return <p className="text-center">No subscription plans available.</p>;
 
@@ -56,7 +56,7 @@ export default function Subscription() {
     return (
         <div className="w-full flex flex-col gap-5 items-center justify-center min-h-screen py-10">
             <Title
-                title="Upgrade Your Job Search | JOBIFY"
+                title={`${user?.isPro ? "Manage Your Subscription" : "Upgrade Pro"} | JOBIFY`}
                 description="Unlock exclusive job listings, premium features, and career insights with JOBIFY's subscription plans."
                 keywords="subscription, premium jobs, job search upgrade, career boost"
             />
