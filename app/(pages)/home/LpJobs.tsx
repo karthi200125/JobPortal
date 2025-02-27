@@ -4,7 +4,7 @@ import { GetLpJobs } from "@/actions/job/getLpJobs";
 import LpJobsSkeleton from "@/Skeletons/LpJobsSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import noImage from '.@/public/noImage.webp'
+import noImage from '@/public/noImage.webp'
 
 const LpJobs = () => {
 
