@@ -33,7 +33,7 @@ const MessageBox = ({ receiverId, chatUser, isLoading }: MessageBoxProps) => {
     const markMessagesAsSeenAsync = async () => {
       if (data?.id && user?.id) {
         try {
-          const response = await markMessagesAsSeen(user.id);
+          const response = await markMessagesAsSeen( user.id);
           if (response.success) {
             queryClient.invalidateQueries({ queryKey: ["getUnreadMessagesCount", user?.id] });
           }
@@ -48,7 +48,7 @@ const MessageBox = ({ receiverId, chatUser, isLoading }: MessageBoxProps) => {
 
   return (
     <div className="h-full relative">
-      {(isPending || isLoading) ? (
+      {isPending || isLoading ? (
         <MessageBoxSkeleton />
       ) : (
         <>
