@@ -1,10 +1,12 @@
-import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton"
-import { NetworkUser } from "../network/page"
-import JobListsSkeleton from "@/Skeletons/JobListsSkeleten";
-import JobList from "../jobs/JobLists/JobList";
-import { useQuery } from "@tanstack/react-query";
+'use client'
+
 import { getWhoViewedYourProfile } from "@/actions/premiumFeatures/getWhoviwedYouProfile";
+import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton";
+import JobListsSkeleton from "@/Skeletons/JobListsSkeleten";
+import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import JobList from "../jobs/JobLists/JobList";
+import NetworkUser from "../network/NetworkUser";
 
 interface ShowAllProps {
     type?: string,
