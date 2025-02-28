@@ -68,7 +68,7 @@ const JobStatus = () => {
     };
 
     return (
-        <div className="relative w-full py-5 md:p-5 space-y-5">
+        <div className="relative w-full py-5 space-y-5">
             <Title
                 title="Job Status | JOBIFY"
                 description="Track job application progress, interview status, and hiring decisions with JOBIFY."

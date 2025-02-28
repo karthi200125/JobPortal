@@ -217,19 +217,78 @@ export const fields_of_study = [
 
 export const subscriptionPlans = {
     CANDIDATE: [
-        { name: "Free", features: ["Apply to jobs", "Limited profile views", "Message Any Profile"], price: "0", type: "Free" },
-        { name: "Premium", features: ["Resume boost", "Profile visibility", "Job alerts"], price: "499", type: "Monthly" },
-        { name: "VIP Lifetime", features: ["Resume review", "Unlimited applications"], price: "2,999", type: "One-Time" },
+        {
+            name: "Free",
+            features: [
+                "Apply to jobs",
+                "Limited profile views",
+            ],
+            price: "0",
+            type: "Free"
+        },
+        {
+            name: "Premium",
+            features: [
+                "Increased profile visibility",
+                "Unlimited profile views",
+                "See who viewed you profile",
+                "Priority job alerts",
+                "Message any recruiter",
+                "Compare your job application with others",
+                "View job applicants for a position",
+                "Access salary insights"
+            ],
+            price: "499",
+            type: "Monthly"
+        },
     ],
     RECRUITER: [
-        { name: "Basic", features: ["5 job posts", "Limited candidate views"], price: "1,499", type: "Monthly" },
-        { name: "Standard", features: ["20 job posts", "Resume access", "Premium placement"], price: "5,999", type: "Monthly" },
-        { name: "Enterprise", features: ["Unlimited job posts", "AI-matching", "Priority support"], price: "15,000", type: "Annual" },
+        {
+            name: "Basic",
+            features: [
+                "Post 1 job",
+                "Limited candidate views",
+                "Access to basic filters"
+            ],
+            price: "1,499",
+            type: "Monthly"
+        },
+        {
+            name: "Standard",
+            features: [
+                "Post up to 20 jobs",
+                "Full resume database access",
+                "Premium job placement",
+                "AI-powered candidate recommendations",
+                "Contact candidates directly"
+            ],
+            price: "5,999",
+            type: "Monthly"
+        },
     ],
     ORGANIZATION: [
-        { name: "Startup", features: ["10 job slots", "Team access"], price: "9,999", type: "Annual" },
-        { name: "Growth", features: ["50 job slots", "Advanced analytics"], price: "29,999", type: "Annual" },
-        { name: "Enterprise", features: ["Unlimited job slots", "Custom solutions"], price: "Custom", type: "Custom Pricing" },
+        {
+            name: "Startup",
+            features: [
+                "5 job slots",
+                "Basic team collaboration",
+                "Access to analytics dashboard"
+            ],
+            price: "9,999",
+            type: "Annual"
+        },
+        {
+            name: "Growth",
+            features: [
+                "50 job slots",
+                "Advanced team collaboration",
+                "AI-driven hiring insights",
+                "Priority support",
+                "Advanced analytics and reporting"
+            ],
+            price: "29,999",
+            type: "Annual"
+        },
     ],
 };
 

@@ -36,7 +36,7 @@ export const CheckOutSession = async (values: any) => {
             metadata: {
                 userId: user.id,
                 role: user.role,
-                planname: plan.name,
+                planName: plan.name,
                 subscriptionType: plan.type,
             },
             billing_address_collection: 'required',

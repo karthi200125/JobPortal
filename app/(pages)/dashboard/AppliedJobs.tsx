@@ -2,6 +2,8 @@
 
 import JobListsSkeleton from "@/Skeletons/JobListsSkeleten"
 import JobList from "../jobs/JobLists/JobList"
+import Link from "next/link"
+import { HiArrowLongRight } from "react-icons/hi2"
 
 const AppliedJobs = ({ aplliedJobs, isLoading }: any) => {
     return (
@@ -12,7 +14,7 @@ const AppliedJobs = ({ aplliedJobs, isLoading }: any) => {
                 :
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     {aplliedJobs?.length > 0 ?
-                        aplliedJobs?.map((job: any) => (
+                        aplliedJobs?.slice(0, 4).map((job: any) => (
                             <div
                                 key={job?.id}
                                 className="border rounded-[20px] p-2 md:p-5 min-h-[100px]"
@@ -25,6 +27,13 @@ const AppliedJobs = ({ aplliedJobs, isLoading }: any) => {
                         <h4>No Jobs Applied yet</h4>
                     }
                 </div>
+            }
+
+            {aplliedJobs?.length > 4 &&
+                <Link href={`/dashboard?appliedjobs`} className="flex flex-row items-center mx-auto gap-5 border p-3 rounded-lg max-w-max hover:opacity-50 trans">
+                    <h5>Show all Applied Jobs</h5>
+                    <HiArrowLongRight size={20} />
+                </Link>
             }
         </div>
     )

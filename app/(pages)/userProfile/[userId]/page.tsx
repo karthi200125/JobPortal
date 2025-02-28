@@ -1,20 +1,19 @@
 'use client'
 
 import { getUserById } from "@/actions/auth/getUserById"
+import { updateProfileViews } from "@/actions/user/profileViews"
+import Title from "@/lib/MetaTitle"
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from "next/navigation"
 import { useEffect } from 'react'
+import { useSelector } from "react-redux"
 import AboutMe from "../AboutMe"
 import CompanySlides from "../CompanySlides/CompanySlides"
 import Education from "../Educations"
 import Experiences from "../Experiences"
 import MoreProfiles from "../MoreProfiles"
 import Projects from "../Projects"
-import Skills from "../Skills"
 import UserInfo from "../UserInfo"
-import { updateProfileViews } from "@/actions/user/profileViews"
-import { useSelector } from "react-redux"
-import Title from "@/lib/MetaTitle"
 
 const UserProfile = () => {
   const user = useSelector((state: any) => state.user.user)
@@ -45,15 +44,13 @@ const UserProfile = () => {
       />
 
       <div className="w-full md:w-[70%] h-full space-y-5">
-        <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
-
+        <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />        
         <AboutMe profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
-        {!isOrg && <Skills profileUser={data} isLoading={isPending} />}
         {!isOrg && <Education userId={userId} profileUser={data} />}
         {!isOrg && <Projects userId={userId} profileUser={data} />}
         {!isOrg && <Experiences userId={userId} profileUser={data} />}
         {isOrg &&
-          <CompanySlides company={company} profileUser={data}/>
+          <CompanySlides company={company} profileUser={data} />
         }
       </div>
       <div className="hidden md:block md:w-[30%] h-full">

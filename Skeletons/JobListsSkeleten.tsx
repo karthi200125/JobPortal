@@ -11,12 +11,12 @@ const JobListsSkeleton = ({ isDash }: { isDash?: boolean }) => {
                         <Skeleton className='h-4 w-[90%] bg-neutral-200' />
                         <div className="flex flex-row gap-2 items-center justify-between">
                             <Skeleton className='h-5 w-5 bg-neutral-200' />
-                            <Skeleton className='h-3 w-[150px] bg-neutral-200' />
+                            <Skeleton className='h-3 w-[100px] bg-neutral-200' />
                         </div>
 
                         <div className="flex flex-row gap-2 items-center justify-between">
                             <Skeleton className='h-5 w-5 bg-neutral-200' />
-                            <Skeleton className='h-3 w-[150px] bg-neutral-200' />
+                            <Skeleton className='h-3 w-[100px] bg-neutral-200' />
                         </div>
                         <div className="flex flex-row gap-2 items-center justify-between">
                             <Skeleton className='h-5 w-[100px] bg-neutral-200' />

@@ -17,7 +17,7 @@ model User {
   role            Role
   isPro           Boolean     @default(false)
   userBio         String?
-  userAbout       String?
+  userAbout       Json?
   userImage       String?
   profileImage    String?
   gender          String?

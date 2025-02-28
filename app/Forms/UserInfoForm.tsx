@@ -19,10 +19,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCustomToast } from "@/lib/CustomToast";
 import { getCompanies } from "@/actions/company/getCompanies";
 import { closeModal } from "../Redux/ModalSlice";
+import UserAbout from "./UserAbout";
 
 interface UserInfoFormProps {
     currentStep?: number;
-    onNext?: (value: number) => void;    
+    onNext?: (value: number) => void;
 }
 
 export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
@@ -30,6 +31,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
     const [isLoading, startTransition] = useTransition();
     const pathname = usePathname()
     const queryClient = useQueryClient();
+    const [userAbout, setUserAbout] = useState(user?.userAbout || "");
 
     const isRec = user?.role === "RECRUITER"
 
@@ -50,6 +52,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
         defaultValues: {
             username: user?.username || "",
             userBio: user?.userBio || "",
+            userAbout: userAbout,
             website: user?.website || "",
             email: user?.email || "",
             firstName: user?.firstName || "",
@@ -71,10 +74,10 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
             const id = user?.id
             if (isRec) {
                 if (!values.currentCompany) {
-                    setErr("Select company")                    
+                    setErr("Select company")
                 }
                 setErr('')
-            }            
+            }
             UserUpdate(values, id)
                 .then((data) => {
                     if (data?.success) {
@@ -83,7 +86,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
                         showSuccessToast(data?.success)
                         if (pathname === '/welcome' && onNext) {
                             onNext(currentStep + 1);
-                        }                        
+                        }
                         dispatch(closeModal('userInfoFormModal'))
                     }
                     if (data?.error) {
@@ -213,6 +216,11 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
                         optionsLoading={companyLoading}
                     />
                 }
+
+                <div className="space-y-2">
+                    <h5 className="font-bold">About User</h5>
+                    <UserAbout onUserAbout={setUserAbout} UserAbout={user?.userAbout} />
+                </div>
 
                 <FormError message={err} />
                 <Button isLoading={isLoading} className="!w-full">

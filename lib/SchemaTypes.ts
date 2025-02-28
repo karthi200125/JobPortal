@@ -16,6 +16,11 @@ export const UserInfoSchema = z.object({
     }).max(100, {
         message: "Maximum 100 characters",
     }),
+    userAbout: z.string().min(50, {
+        message: "User Bio is required",
+    }).max(1000, {
+        message: "Maximum 1000 characters",
+    }).optional(),
     website: z.string().url({
         message: "Invalid website URL",
     }).optional(),

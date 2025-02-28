@@ -21,7 +21,7 @@ export const getUserById = async (id: any) => {
             },
             educations: true,
             experiences: true,
-            projects: true,            
+            projects: true,
         },
     })
 

@@ -14,6 +14,9 @@ interface Subscription {
     planName?: string;
     subscriptionStatus: string;
     stripeCurrentPeriodEnd?: string;
+    amount?: string;
+    billingInterval?: string;
+    createdAt?: string;
 }
 
 const SubscriptionCard = () => {
@@ -59,6 +62,15 @@ const SubscriptionCard = () => {
                             {data.subscriptionStatus || "N/A"}
                         </span>
                     </h3>
+                    <h3 className="text-sm flex gap-5 items-center">Plan Price:
+                        <span className="text-sm font-semibold ">₹ {data.amount || "N/A"}</span>
+                    </h3>
+                    <h3 className="text-sm flex gap-5 items-center">Plan Type:
+                        <span className="text-sm font-semibold">{data.billingInterval || "N/A"}</span>
+                    </h3>
+                    <h3 className="text-sm flex gap-5 items-center">Subscription Date:
+                        <span className="text-sm font-semibold">{data.createdAt ? moment(data.createdAt).format("MMMM D, YYYY") : "N/A"}</span>
+                    </h3>
                     <h3 className="text-sm flex gap-5 items-center">Expired Date:
                         <span className="text-sm font-semibold">{data.stripeCurrentPeriodEnd ? moment(data.stripeCurrentPeriodEnd).format("MMMM D, YYYY") : "N/A"}</span>
                     </h3>
@@ -66,7 +78,7 @@ const SubscriptionCard = () => {
 
                 <span className="w-full h-[1px] md:h-[100px] md:w-[1px] bg-neutral-200"></span>
 
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2 items-start justify-start">
                     <h3 className="font-bold text-sm">Plan Features</h3>
                     <div className="space-y-3">
                         {getSubscriptionPlan?.features?.map((feature: any, index: number) => (

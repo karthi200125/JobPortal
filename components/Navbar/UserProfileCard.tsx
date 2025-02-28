@@ -18,6 +18,7 @@ import { PiSignOutBold } from "react-icons/pi";
 import { signOut } from "next-auth/react";
 import { GoPlus } from "react-icons/go";
 import { GrStatusCriticalSmall } from "react-icons/gr";
+import { RiMessage3Fill } from "react-icons/ri";
 
 export const useProfileCardItems = (user: any) => {
     return useMemo(() => {
@@ -50,7 +51,7 @@ export const useProfileCardItems = (user: any) => {
             {
                 id: 4,
                 title: "Messages",
-                icon: <MdDashboard size={20} />,
+                icon: <RiMessage3Fill size={20} />,
                 href: "/messages",
                 isCard: true
             },

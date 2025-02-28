@@ -179,9 +179,10 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                         </div>
                         {!isCurrentUser && renderFollowButtons()}
                         {isCurrentUser && renderCurrentUserActions()}
+                        
 
                         {/* Message Modal */}
-                        <Model
+                        < Model
                             bodyContent={<MessageBox receiverId={profileUser?.id} chatUser={profileUser} />}
                             title={`Message ${profileUser?.username || 'User'}`}
                             className="min-w-[300px] lg:w-[800px]"
@@ -190,7 +191,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                             <div></div>
                         </Model>
 
-                    </div>
+                    </div >
                 )}
         </div >
     );

@@ -67,7 +67,7 @@ const NetWork = () => {
                     ) : users?.length === 0 ? (
                         <div>No users found</div>
                     ) : (
-                        users?.map((user: User) => <NetworkUser key={user.id} networkUser={user} network={network} />)
+                        users?.map((user: User) => <NetworkUser key={user.id} networkUser={user} />)
                     )}
                 </div>
             </div>
@@ -78,11 +78,10 @@ const NetWork = () => {
 export default NetWork;
 
 interface NetworkUserProps {
-    networkUser: User;
-    network: string;
+    networkUser: User;    
 }
 
-const NetworkUser = ({ networkUser, network }: NetworkUserProps) => {
+export const NetworkUser = ({ networkUser }: NetworkUserProps) => {
     const user = useSelector((state: any) => state.user?.user);
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
