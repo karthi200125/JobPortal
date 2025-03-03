@@ -40,7 +40,7 @@ const ChatLists = ({ chatUsers, isPending, onSelectedChatUserId, defaultChatUser
     return chatUsers.map((chatUser) => (
       <div key={chatUser.id} onClick={() => handleSelectChatUserId(chatUser?.id)}>
         {isMobile ? (
-          <BottomDrawer body={<MessageBox receiverId={chatUser?.id} chatUser={chatUser} isLoading={isPending} isChatuser={false} />}>
+          <BottomDrawer body={<MessageBox receiverId={chatUser?.id} chatUser={chatUser} isLoading={isPending} isChatuser={true} />}>
             <ChatList chatUser={chatUser} selectedChatUserId={selectedChatUserId} />
           </BottomDrawer>
         ) : (

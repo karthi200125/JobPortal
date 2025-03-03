@@ -13,10 +13,11 @@ interface ShowAllProps {
     postedJobs?: any,
     appliedJobs?: any,
     actionTaken?: any,
+    savedJobs?: any,
     isLoading?: boolean,
 }
 
-const ShowAll = ({ type, postedJobs, appliedJobs, actionTaken, isLoading }: ShowAllProps) => {
+const ShowAll = ({ type, postedJobs, appliedJobs, actionTaken, isLoading, savedJobs }: ShowAllProps) => {
 
     const user = useSelector((state: any) => state.user.user);
 
@@ -25,6 +26,7 @@ const ShowAll = ({ type, postedJobs, appliedJobs, actionTaken, isLoading }: Show
     if (type === "appliedJobs") jobs = appliedJobs
     if (type === "postedJobs") jobs = postedJobs
     if (type === "actionTaken") jobs = actionTaken
+    if (type === "savedJobs") jobs = savedJobs
 
     const { data: profileViewUsers, isPending } = useQuery({
         queryKey: ["getWhoViewedYourProfile", user?.ProfileViews],
@@ -60,12 +62,12 @@ const ShowAll = ({ type, postedJobs, appliedJobs, actionTaken, isLoading }: Show
                                         <JobList
                                             job={job}
                                             appliedJob={'hh'}
-                                            app_or_pos={type === 'appliedJobs' ? "applied" : 'posted'}
+                                            app_or_pos={type === 'appliedJobs' || 'actionTaken' ? "applied" : 'posted'}
                                         />
                                     </div>
                                 ))
                                 :
-                                <h4>{type === 'appliedJobs' ? "No Jobs Applied yet" : "No Jobs posted yet"}</h4>
+                                <h4>No Jobs yet</h4>
                             }
                         </div>
                     }

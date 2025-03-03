@@ -2,11 +2,13 @@ import Link from "next/link";
 import { LiaListSolid } from "react-icons/lia";
 import { LuUsers } from "react-icons/lu";
 import { MdOutlinePendingActions } from "react-icons/md";
+import { FaRegBookmark } from "react-icons/fa"; 
 
 interface User {
     role?: "CANDIDATE" | "RECRUITER" | "ORGANIZATION";
     ProfileViews?: any[];
     postedJobs?: any[];
+    savedJobs?: any[];
 }
 
 interface AppliedCountsProps {
@@ -23,6 +25,7 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             jobTitle3: "Actions Taken",
             jobSubtitle3: "Review the jobs that took action",
             jobCount3: 0,
+            showSavedJobs: true,
         },
         RECRUITER: {
             jobTitle2: "Applied Jobs",
@@ -31,6 +34,7 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             jobTitle3: "Posted Jobs",
             jobSubtitle3: "See jobs that you posted",
             jobCount3: user?.postedJobs?.length || 0,
+            showSavedJobs: true,
         },
         ORGANIZATION: {
             jobTitle2: "Posted Jobs",
@@ -39,11 +43,12 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             jobTitle3: "Actions Taken",
             jobSubtitle3: "Review the jobs that took action",
             jobCount3: 0,
+            showSavedJobs: false, 
         },
     } as const;
 
     const userRole = user?.role as keyof typeof roleConfig;
-    const { jobTitle2, jobSubtitle2, jobCount2, jobTitle3, jobSubtitle3, jobCount3 } =
+    const { jobTitle2, jobSubtitle2, jobCount2, jobTitle3, jobSubtitle3, jobCount3, showSavedJobs } =
         roleConfig[userRole] || {
             jobTitle2: "",
             jobSubtitle2: "",
@@ -51,6 +56,7 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             jobTitle3: "",
             jobSubtitle3: "",
             jobCount3: 0,
+            showSavedJobs: false,
         };
 
     const Analysis = [
@@ -78,10 +84,22 @@ const AppliedCounts = ({ appliedJobs, user }: AppliedCountsProps) => {
             subtitle: jobSubtitle3,
             href: user?.role !== "CANDIDATE" ? "/dashboard?postedJobs" : "/dashboard?actionTaken",
         },
+        ...(showSavedJobs
+            ? [
+                {
+                    id: 4,
+                    icon: <FaRegBookmark size={25} />,
+                    title: "Saved Jobs",
+                    count: user?.savedJobs?.length || 0,
+                    subtitle: "See jobs that you saved",
+                    href: "/dashboard?savedJobs",
+                },
+            ]
+            : []),
     ];
 
     return (
-        <div className="w-full max-h-max flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="w-full max-h-max grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {Analysis.map(({ id, icon, title, count, subtitle, href }) => (
                 <Link
                     key={id}

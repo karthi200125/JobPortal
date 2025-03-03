@@ -1,26 +1,28 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { IoIosPeople } from 'react-icons/io';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { GoPlus } from 'react-icons/go';
+import { IoIosPeople } from 'react-icons/io';
+import { useSelector } from 'react-redux';
 
 import Button from '@/components/Button';
-import AppliedCounts from './AppliedCounts';
-import AppliedJobs from './AppliedJobs';
-import PostedJobs from './PostedJobs';
 import Title from '@/lib/MetaTitle';
+import AppliedCounts from './AppliedCounts';
 import ShowAll from './ShowAll';
+import ShowJobs from './ShowJobs';
 
-import { getAppliedJobs } from '@/actions/jobapplication/getAppliedJobs';
 import { getUserById } from '@/actions/auth/getUserById';
+import { getActionTakenJobs } from '@/actions/job/getActionTakensJobs';
+import { getSavedJobs } from '@/actions/job/getSavedJobs';
+import { getAppliedJobs } from '@/actions/jobapplication/getAppliedJobs';
 
-// Type Definitions
+
 interface User {
-    id: string;
+    id: number;
     role: 'CANDIDATE' | 'RECRUITER' | 'ORGANIZATION';
-    postedJobs?: any[];
+    postedJobs?: number[];
+    savedJobs?: number[];
 }
 
 interface ReduxState {
@@ -31,25 +33,37 @@ const Dashboard = () => {
     const user = useSelector((state: ReduxState) => state.user.user);
     const router = useRouter();
     const searchParams = useSearchParams();
-    const paramValue = searchParams.keys().next().value;
+    const paramValue = searchParams.get('type');
 
     const isRecruiter = user?.role === 'RECRUITER';
     const isCandidate = user?.role === 'CANDIDATE';
     const isORG = user?.role === 'ORGANIZATION';
 
-    const { data: appliedJobs, isPending: appliedJobsLoading } = useQuery({
+    const { data, isPending: appliedJobsLoading } = useQuery({
         queryKey: ['getAppliedJobs', user?.id],
-        queryFn: () => getAppliedJobs(user?.id),
+        queryFn: () => user?.id ? getAppliedJobs(user.id) : Promise.resolve(null),
         enabled: !!user?.id,
     });
+
+    const appliedJobs = data?.data
 
     const { data: userData, isPending: userLoading } = useQuery({
         queryKey: ['getUser', user?.id],
-        queryFn: () => getUserById(user?.id),
+        queryFn: () => user?.id ? getUserById(user.id) : Promise.resolve(null),
         enabled: !!user?.id,
     });
 
-    const actionTakens: any = [];
+    const { data: savedJobs, isPending: savedJobsLoading } = useQuery({
+        queryKey: ['getSavedJobs', user?.id],
+        queryFn: () => user?.id ? getSavedJobs(user.id) : Promise.resolve(null),
+        enabled: !!user?.id,
+    });
+
+    const { data: actionTakenJobs, isPending: actionTakenJobsLoading } = useQuery({
+        queryKey: ['getActionTakenJobs', user?.id],
+        queryFn: () => user?.id ? getActionTakenJobs(user.id) : Promise.resolve(null),
+        enabled: !!user?.id,
+    });
 
     if (userLoading) {
         return <div className="w-full min-h-screen flex items-center justify-center">Loading...</div>;
@@ -58,7 +72,7 @@ const Dashboard = () => {
     return (
         <div className="w-full min-h-screen pt-5 space-y-5 px-2">
             <Title
-                title="Dashboard | JOBIFY"
+                title={` ${paramValue || "Dashboard"} | JOBIFY`}
                 description="Manage your job applications, postings, and interactions all in one place with JOBIFY's intuitive dashboard."
                 keywords="dashboard, job management, applications, hiring, career tracking"
             />
@@ -69,9 +83,10 @@ const Dashboard = () => {
                     <ShowAll
                         type={paramValue}
                         postedJobs={userData?.postedJobs}
-                        appliedJobs={appliedJobs?.data}
-                        actionTaken={actionTakens}
-                        isLoading={(appliedJobsLoading || userLoading)}
+                        appliedJobs={appliedJobs || []}
+                        actionTaken={actionTakenJobs || []}
+                        savedJobs={savedJobs || []}
+                        isLoading={appliedJobsLoading || savedJobsLoading || actionTakenJobsLoading}
                     />
                 </div>
             ) : (
@@ -81,12 +96,20 @@ const Dashboard = () => {
                         <h2>Dashboard</h2>
                         <div className="flex flex-row items-center gap-5">
                             {(isRecruiter || isORG) && (
-                                <Button variant="border" onClick={() => router.push('/dashboard/employees')} icon={<IoIosPeople size={20} />}>
+                                <Button
+                                    variant="border"
+                                    onClick={() => router.push('/dashboard/employees')}
+                                    icon={<IoIosPeople size={20} />}
+                                >
                                     Employees
                                 </Button>
                             )}
                             {(isRecruiter || isORG) && (
-                                <Button variant="border" onClick={() => router.push('/createJob')} icon={<GoPlus size={20} />}>
+                                <Button
+                                    variant="border"
+                                    onClick={() => router.push('/createJob')}
+                                    icon={<GoPlus size={20} />}
+                                >
                                     Create Job
                                 </Button>
                             )}
@@ -94,13 +117,40 @@ const Dashboard = () => {
                     </div>
 
                     {/* Applied Counts */}
-                    <AppliedCounts appliedJobs={appliedJobs?.data} user={userData} />
+                    <AppliedCounts appliedJobs={appliedJobs} user={userData} />
 
                     {/* Applied Jobs (Only for Candidates) */}
-                    {!isORG && <AppliedJobs appliedJobs={appliedJobs?.data} isLoading={appliedJobsLoading} />}
+                    {(isRecruiter || isCandidate) && (
+                        <ShowJobs
+                            Jobs={appliedJobs || []}
+                            isLoading={appliedJobsLoading}
+                            title="Applied Jobs"
+                            href='/dashboard?appliedJobs'
+                            type="applied"
+                        />
+                    )}
 
                     {/* Posted Jobs (Only for Recruiters & Organizations) */}
-                    {!isCandidate && <PostedJobs postedJobs={userData?.postedJobs} isLoading={userLoading} user={userData} />}
+                    {(isRecruiter || isORG) && (
+                        <ShowJobs
+                            Jobs={userData?.postedJobs || []}
+                            isLoading={userLoading}
+                            title="Posted Jobs"
+                            href='/dashboard?postedJobs'
+                            type="posted"
+                        />
+                    )}
+
+                    {/* Saved Jobs (Only for Recruiters & Candidate) */}
+                    {(isRecruiter || isCandidate) && (
+                        <ShowJobs
+                            Jobs={savedJobs || []}
+                            isLoading={savedJobsLoading}
+                            title="Saved Jobs"
+                            href='/dashboard?savedJobs'
+                        />
+                    )}
+
                 </div>
             )}
         </div>

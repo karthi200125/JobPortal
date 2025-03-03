@@ -18,7 +18,7 @@ const Messages = () => {
         queryFn: async () => (user?.id ? await getChatUsers(user.id, q) : []),
         enabled: !!user?.id,
     });
-    
+
     useEffect(() => {
         if (chatUsers.length > 0 && selectedChatUserId === null) {
             setSelectedChatUserId(chatUsers[0]?.id);
@@ -53,6 +53,7 @@ const Messages = () => {
                         receiverId={chatUser?.id}
                         chatUser={chatUser}
                         isLoading={isPending}
+                        isChatuser={true}
                     />}
             </div>
         </div>

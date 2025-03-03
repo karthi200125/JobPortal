@@ -62,8 +62,8 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
     return (
         <div className="space-y-5">
             {/* Company Info */}
-            <Link href={`/userProfile/${company?.id}`} className="flex flex-row items-center justify-between">
-                <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center justify-between">
+                <Link href={`/userProfile/${company?.id}`} className="flex flex-row items-center gap-2">
                     <Image
                         src={company?.companyImage || noImage.src}
                         alt="Company Logo"
@@ -72,9 +72,9 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                         className="w-[20px] h-[20px]"
                     />
                     <h5 className="text-sm font-bold">{company?.companyName}</h5>
-                </div>
+                </Link>
                 <Icon icon={<IoIosMore size={25} />} title="More" tooltipbg="white" isHover />
-            </Link>
+            </div>
 
             {/* Job Details */}
             <div className="space-y-3">
@@ -109,7 +109,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                 </div>
 
                 {/* Premium Feature */}
-                <div className="flex flex-row gap-3 items-start md:items-center">
+                <Link href={'/dashboard?'} className="flex flex-row gap-3 items-start md:items-center">
                     <HiLightBulb size={25} />
                     <h5 className={`${user?.isPro && "underline hover:opacity-50 trans cursor-pointer"}`}>
                         See how you compare to over {job?.jobApplications?.length || 0} other applicants.{" "}
@@ -117,7 +117,7 @@ const JobTitles = ({ job, company, isPending, refetchJobs }: any) => {
                             <span className="protext trans hover:opacity-50 cursor-pointer font-bold">Activate Premium</span>
                         }
                     </h5>
-                </div>
+                </Link>
 
                 {/* Action Buttons */}
                 <div className="flex flex-row items-center gap-3 mt-5">

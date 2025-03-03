@@ -54,7 +54,7 @@ const MessageBox = ({ receiverId, chatUser, isLoading , isChatuser}: MessageBoxP
       ) : (
         <>
           <ChatUser chatUser={chatUser} isChatuser={isChatuser}/>
-          <Chats messages={data?.messages} currentUserId={user?.id} isPending={isPending} user={user} />
+          <Chats messages={data?.messages} currentUserId={user?.id} user={user} isChatuser={isChatuser}/>
           <ChatButton userId={user?.id} receiverId={receiverId!} />
         </>
       )}
