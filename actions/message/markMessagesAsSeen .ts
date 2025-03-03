@@ -3,9 +3,8 @@
 import { db } from "@/lib/db";
 
 export const markMessagesAsSeen = async (chatId: number, userId: number) => {
-
     try {
-        await db.message.updateMany({
+        const updatedMessages = await db.message.updateMany({
             where: {
                 chatId: chatId,
                 senderId: { not: userId },
@@ -14,7 +13,7 @@ export const markMessagesAsSeen = async (chatId: number, userId: number) => {
             data: { isSeen: true },
         });
 
-        return { success: true };
+        return { success: true, updatedCount: updatedMessages.count };
     } catch (error) {
         console.error("Error marking messages as seen:", error);
         return { success: false };

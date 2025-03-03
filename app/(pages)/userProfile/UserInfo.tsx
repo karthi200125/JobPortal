@@ -170,10 +170,10 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                     <div className="relative mt-[130px] md:mt-[250px] w-full p-5 space-y-2">
                         {renderProfileDetails()}
                         <div className="flex flex-row items-center gap-5 py-3">
-                            <h4 className="text-[var(--voilet)] cursor-pointer trans hover:opacity-50 flex flex-row items-center gap-3 font-bold" onClick={() => router.push('/network')}>
+                            <h4 className="text-[var(--voilet)] cursor-pointer trans hover:opacity-50 flex flex-row items-center gap-3 font-bold" onClick={() => router.push(`/network/${profileUser?.id}`)}>
                                 <b className="font-bold">{profileUser?.followers?.length || 0}</b> Followers
                             </h4>
-                            <h4 className="text-[var(--voilet)] cursor-pointer trans hover:opacity-50 flex flex-row items-center gap-3 font-bold" onClick={() => router.push('/network')}>
+                            <h4 className="text-[var(--voilet)] cursor-pointer trans hover:opacity-50 flex flex-row items-center gap-3 font-bold" onClick={() => router.push(`/network/${profileUser?.id}`)}>
                                 <b className="font-bold">{profileUser?.followings?.length || 0}</b> Followings
                             </h4>
                         </div>

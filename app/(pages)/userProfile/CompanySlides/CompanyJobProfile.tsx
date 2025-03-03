@@ -6,7 +6,7 @@ import JobList from '../../jobs/JobLists/JobList';
 const CompanyJobProfile = ({ company }: any) => {
 
     return (
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5 p-2 md:p-5 border rounded-[10px]">
             {company?.jobs?.length > 0 ?
                 company?.jobs?.map((job: any) => (
                     <div key={job?.id} className="border rounded-md p-2 md:p-5">

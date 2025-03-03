@@ -34,7 +34,7 @@ const Messages = () => {
     return (
         <div className="w-full flex flex-row items-start h-full">
             <Title
-                title={`${chatUser?.username} Messages | JOBIFY`}
+                title={`${chatUser?.username || ""} Messages | JOBIFY`}
                 description="Stay connected with recruiters and job seekers. Send and receive messages directly on JOBIFY."
                 keywords="messages, job messages, recruiter chat, communication, networking"
             />

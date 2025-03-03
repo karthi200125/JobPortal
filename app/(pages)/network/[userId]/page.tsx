@@ -4,9 +4,10 @@ import { getNetworkusers } from "@/actions/user/getNetworkusers";
 import Title from "@/lib/MetaTitle";
 import EmployeesSkeleton from "@/Skeletons/EmployeesSkeleton";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
-import NetworkUser from "./NetworkUser";
+import { useState } from "react";
+import NetworkUser from "../NetworkUser";
 
 interface User {
     id: number;
@@ -16,21 +17,24 @@ interface User {
 }
 
 const NetWork = () => {
-    const user = useSelector((state: any) => state.user?.user);
+    const params = useParams()
+    const userId = Number(params?.userId)
+    
+    const user = useSelector((state: any) => state.user.user);
     const [network, setNetwork] = useState<"followers" | "followings">("followers");
 
-    const ids = useMemo(() => (network === "followers" ? user?.followers || [] : user?.followings || []), [network, user]);
-
     const { data: users, isPending } = useQuery({
-        queryKey: ["getNetworkUsers", ids],
-        queryFn: async () => await getNetworkusers(ids),
-        enabled: ids.length > 0,
+        queryKey: ["getNetworkUsers", userId, network],
+        queryFn: async () => await getNetworkusers(userId, network),
+        enabled: !!userId,
     });
+
+    const isCurrentUser = user?.id === userId;
 
     return (
         <div className="w-full max-h-max pt-5">
             <Title
-                title="Your Professional Network | JOBIFY"
+                title={`${!isCurrentUser ? "User Professional Network" : "Your Professional Network"} | JOBIFY`}
                 description="Connect with professionals, follow recruiters, and build your career network on JOBIFY."
                 keywords="network, job connections, follow recruiters, career networking, professional network"
             />
@@ -42,8 +46,8 @@ const NetWork = () => {
                         <h3
                             key={type}
                             onClick={() => setNetwork(type as "followers" | "followings")}
-                            className={`capitalize max-w-max cursor-pointer transition hover:opacity-50 py-5 border-b-[3px] border-solid ${network === type ? "border-[var(--voilet)] text-[var(--voilet)]" : "border-transparent text-black"
-                                }`}
+                            className={`capitalize max-w-max cursor-pointer transition hover:opacity-50 py-5 border-b-[3px] border-solid 
+                                ${network === type ? "border-[var(--voilet)] text-[var(--voilet)]" : "border-transparent text-black"}`}
                         >
                             {type}
                         </h3>
@@ -51,7 +55,13 @@ const NetWork = () => {
                 </div>
 
                 <h4 className="text-neutral-500 p-3">
-                    {network !== "followers" ? `You are following ${users?.length || 0} people out of your network` : `${users?.length || 0} people are following you`}
+                    {network !== "followers"
+                        ? isCurrentUser
+                            ? `You are following ${users?.length || 0} people out of your network`
+                            : `That user followed ${users?.length || 0} people from their network`
+                        : isCurrentUser
+                            ? `${users?.length || 0} people are following you`
+                            : `${users?.length || 0} people are following that user`}
                 </h4>
 
                 {/* Users */}
@@ -61,7 +71,9 @@ const NetWork = () => {
                     ) : users?.length === 0 ? (
                         <div>No users found</div>
                     ) : (
-                        users?.map((user: User) => <NetworkUser key={user.id} networkUser={user} />)
+                        users?.map((networkUser: User) => (
+                            <NetworkUser key={networkUser.id} networkUser={networkUser} />
+                        ))
                     )}
                 </div>
             </div>
@@ -70,5 +82,3 @@ const NetWork = () => {
 };
 
 export default NetWork;
-
-

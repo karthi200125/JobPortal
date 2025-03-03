@@ -3,15 +3,11 @@
 import { db } from "@/lib/db";
 
 export const getUnreadMessagesCount = async (userId: number) => {
-
     try {
         const count = await db.message.count({
             where: {
                 isSeen: false,
-                OR: [
-                    { chat: { receiverId: userId } },
-                    { chat: { senderId: userId } }
-                ]
+                chat: { receiverId: userId } 
             },
         });
 
