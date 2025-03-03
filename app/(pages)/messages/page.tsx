@@ -47,14 +47,13 @@ const Messages = () => {
                 onSearch={(query: string) => setQ(query)}
             />
 
-            <div className="hidden md:block flex-[5] messageh">
-                {chatUser &&
+            <div className="hidden md:block flex-[5] messageh">                
                     <MessageBox
                         receiverId={chatUser?.id}
                         chatUser={chatUser}
                         isLoading={isPending}
                         isChatuser={true}
-                    />}
+                    />
             </div>
         </div>
     );

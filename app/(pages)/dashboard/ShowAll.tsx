@@ -35,7 +35,7 @@ const ShowAll = ({ type, postedJobs, appliedJobs, actionTaken, isLoading, savedJ
     });
 
     return (
-        <div className="w-full min-h-screen">
+        <div className="w-full max-h-max">
             {type === 'profileViews' ?
                 <div className="max-h-max space-y-3">
                     {isPending ? (

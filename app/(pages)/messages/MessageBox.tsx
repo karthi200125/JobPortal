@@ -17,7 +17,7 @@ interface MessageBoxProps {
   isChatuser?: boolean;
 }
 
-const MessageBox = ({ receiverId, chatUser, isLoading , isChatuser}: MessageBoxProps) => {
+const MessageBox = ({ receiverId, chatUser, isLoading, isChatuser }: MessageBoxProps) => {
   const user = useSelector((state: any) => state.user?.user);
   const queryClient = useQueryClient();
 
@@ -49,14 +49,17 @@ const MessageBox = ({ receiverId, chatUser, isLoading , isChatuser}: MessageBoxP
 
   return (
     <div className="h-full relative">
-      {isPending || isLoading ? (
+      {(isPending || isLoading) ? (
         <MessageBoxSkeleton />
       ) : (
-        <>
-          <ChatUser chatUser={chatUser} isChatuser={isChatuser}/>
-          <Chats messages={data?.messages} currentUserId={user?.id} user={user} isChatuser={isChatuser}/>
-          <ChatButton userId={user?.id} receiverId={receiverId!} />
-        </>
+        receiverId ?
+          <>
+            <ChatUser chatUser={chatUser} isChatuser={isChatuser} />
+            <Chats messages={data?.messages} currentUserId={user?.id} user={user} isChatuser={isChatuser} />
+            <ChatButton userId={user?.id} receiverId={receiverId!} />
+          </>
+          :
+          <div>No User yet!</div>
       )}
     </div>
   );
