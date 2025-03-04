@@ -29,8 +29,6 @@ const CompanyForm = () => {
         resolver: zodResolver(CompanySchema),
         defaultValues: {
             companyName: user?.username || "",
-            // companyImage: "",
-            // companyBackImage: "",
             companyAddress: "",
             companyCity: "",
             companyState: "",
@@ -59,16 +57,10 @@ const CompanyForm = () => {
         });
     };
 
-    const { data: states = [], isLoading: statesLoading } = useQuery({
+    const { data: states = [] } = useQuery({
         queryKey: ['getStates'],
         queryFn: async () => await getStates(),
     });
-    const { data: citiesOptions = [], isLoading: citiesLoading } = useQuery({
-        queryKey: ['getCities', state],
-        queryFn: async () => await getCities(state),
-    });
-
-    const statesOptions = states.map((s: any) => s.name).sort()
 
     return (
         <Form {...form}>
@@ -81,20 +73,6 @@ const CompanyForm = () => {
                         placeholder="Ex: Google"
                         isLoading={isLoading}
                     />
-                    {/* <CustomFormField
-                        name="companyImage"
-                        form={form}
-                        label="Company Image"
-                        placeholder="Ex: https://example.com/image.jpg"
-                        isLoading={isLoading}
-                    />
-                    <CustomFormField
-                        name="companyBackImage"
-                        form={form}
-                        label="Company Back Image"
-                        placeholder="Ex: https://example.com/image.jpg"
-                        isLoading={isLoading}
-                    /> */}
                     <CustomFormField
                         name="companyAddress"
                         form={form}
@@ -115,10 +93,6 @@ const CompanyForm = () => {
                         label="Company State"
                         placeholder="Ex: TamilNadu"
                         isLoading={isLoading}
-                    // isSelect
-                    // options={statesOptions}
-                    // optionsLoading={statesLoading}
-                    // onSelect={(d: any) => setState(d)}
                     />
                     {/* {state && ( */}
                     <CustomFormField
@@ -127,9 +101,6 @@ const CompanyForm = () => {
                         label="Company City"
                         placeholder="Ex: Chennai"
                         isLoading={isLoading}
-                    // isSelect
-                    // options={citiesOptions}
-                    // optionsLoading={citiesLoading}
                     />
                     {/* )} */}
                     <CustomFormField
