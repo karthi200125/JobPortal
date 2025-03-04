@@ -21,7 +21,7 @@ const Success = () => {
             }
         };
         fetchUserData();
-    }, [dispatch, pathname]);
+    }, [dispatch, pathname, user?.id]);
 
 
     return (
@@ -32,7 +32,7 @@ const Success = () => {
                 description="Unlock exclusive job listings, premium features, and career insights with JOBIFY's subscription plans."
                 keywords="subscription, premium jobs, job search upgrade, career boost"
             />
-            
+
             <SubscriptionCard />
 
         </div>

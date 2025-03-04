@@ -25,66 +25,63 @@ export async function POST(req: Request) {
             process.env.STRIPE_WEBHOOK_SECRET!
         );
     } catch (err) {
-        console.error("⚠️ Webhook Signature Verification Failed:", err);
+        console.error("Webhook Signature Verification Failed:", err);
         return new Response(
             `Webhook Error: ${err instanceof Error ? err.message : 'Unknown error'}`,
             { status: 400 }
         );
     }
 
-    const session = event.data.object as Stripe.Checkout.Session;
+    const object = event.data.object as any;
+    let userId: number | null = null;
+    let subscription: Stripe.Subscription | null = null;
 
-    if (!session?.metadata?.userId) {
-        return new Response(null, { status: 200 });
+    if (object?.metadata?.userId) {
+        userId = Number(object.metadata.userId);
     }
 
-    const userId = Number(session.metadata.userId);
-
     try {
-        if (event.type === 'checkout.session.completed') {
-            const subscription = await stripe.subscriptions.retrieve(
-                session.subscription as string
-            );
-
-            console.log('✅ Subscription created:', subscription.id);
+        if (event.type === 'checkout.session.completed' && object.subscription) {
+            subscription = await stripe.subscriptions.retrieve(object.subscription as string);
+            console.log('Subscription created:', subscription.id);
 
             await db.$transaction([
                 db.user.update({
-                    where: { id: userId },
+                    where: { id: userId! },
                     data: {
                         isPro: true,
                         updatedAt: new Date(),
                     },
                 }),
                 db.subscription.upsert({
-                    where: { userId },
+                    where: { userId: userId! },
                     update: {
                         stripeSubscriptionId: subscription.id,
                         stripeCustomerId: subscription.customer as string,
                         stripePriceId: subscription.items.data[0].price.id,
                         stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
                         subscriptionStatus: subscription.status,
-                        planName: session.metadata.planName,
-                        billingInterval: session.metadata.subscriptionType,
+                        planName: object.metadata.planName,
+                        billingInterval: object.metadata.subscriptionType,
                         amount: subscription.items.data[0].price.unit_amount! / 100,
                     },
                     create: {
-                        userId,
+                        userId: userId!,
                         stripeSubscriptionId: subscription.id,
                         stripeCustomerId: subscription.customer as string,
                         stripePriceId: subscription.items.data[0].price.id,
                         stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
                         subscriptionStatus: subscription.status,
-                        planName: session.metadata.planName,
-                        billingInterval: session.metadata.subscriptionType,
+                        planName: object.metadata.planName,
+                        billingInterval: object.metadata.subscriptionType,
                         amount: subscription.items.data[0].price.unit_amount! / 100,
                     },
                 }),
             ]);
         }
 
-        if (event.type === 'invoice.payment_succeeded') {
-            console.log('💳 Invoice payment succeeded for user:', userId);
+        if (event.type === 'invoice.payment_succeeded' && userId) {
+            console.log('Invoice payment succeeded for user:', userId);
 
             await db.user.update({
                 where: { id: userId },
@@ -96,27 +93,34 @@ export async function POST(req: Request) {
         }
 
         if (
-            event.type === 'customer.subscription.deleted' ||
-            event.type === 'invoice.payment_failed'
+            (event.type === 'customer.subscription.updated' ||
+                event.type === 'customer.subscription.deleted' ||
+                event.type === 'invoice.payment_failed') &&
+            object.id
         ) {
-            console.log('❌ Subscription expired/cancelled for user:', userId);
+            subscription = await stripe.subscriptions.retrieve(object.id);
+            if (subscription.status === 'canceled' && userId) {
+                console.log('Subscription canceled/expired for user:', userId);
 
-            await db.$transaction([
-                db.user.update({
-                    where: { id: userId },
-                    data: {
-                        isPro: false,
-                        updatedAt: new Date(),
-                    },
-                }),
-                db.subscription.deleteMany({
-                    where: { userId },
-                }),
-            ]);
+                await db.$transaction([
+                    db.user.update({
+                        where: { id: userId },
+                        data: {
+                            isPro: false,
+                            updatedAt: new Date(),
+                        },
+                    }),
+                    db.subscription.updateMany({
+                        where: { userId },
+                        data: {
+                            subscriptionStatus: 'inactive',
+                        },
+                    }),
+                ]);
+            }
         }
-
     } catch (error) {
-        console.error('⚠️ Webhook Handling Error:', error);
+        console.error('Webhook Handling Error:', error);
         return new Response('Webhook handling error', { status: 500 });
     }
 

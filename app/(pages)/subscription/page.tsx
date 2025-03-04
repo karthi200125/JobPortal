@@ -1,38 +1,55 @@
 'use client';
 
+import { getUserById } from "@/actions/auth/getUserById";
 import { CheckOutSession } from "@/actions/stripe";
+import { loginRedux } from "@/app/Redux/AuthSlice";
 import Button from "@/components/Button";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import { subscriptionPlans } from "@/data";
 import Title from "@/lib/MetaTitle";
-import { useTransition } from "react";
-import { FaCrown } from "react-icons/fa";
-import { PiArrowCircleRightFill } from "react-icons/pi";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { FaCheck, FaCrown } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Subscription() {
     const user = useSelector((state: any) => state.user.user);
-    const [isLoading, startTransition] = useTransition();
+    const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const updatedUser = await getUserById(user?.id)
+            dispatch(loginRedux(updatedUser))
+        };
+        fetchUserData();
+    }, [dispatch, user?.id]);
+
 
     let selectedTab: "CANDIDATE" | "RECRUITER" | "ORGANIZATION" | null = null;
     if (user?.role === "RECRUITER") selectedTab = "RECRUITER";
     else if (user?.role === "CANDIDATE") selectedTab = "CANDIDATE";
     else if (user?.role === "ORGANIZATION") selectedTab = "ORGANIZATION";
 
-    if (!selectedTab) return <p className="text-center">No subscription plans available.</p>;
+    if (!selectedTab) return <p className="w-full flexcenter messageh">No subscription plans available.</p>;
 
-    const handleSubscription = (plan: any) => {
-        startTransition(async () => {
-            try {
-                const response: any = await CheckOutSession({ user, plan });
-                console.log(response)
-                if (response?.sessionUrl) {
-                    window.location.href = response.sessionUrl;
-                }
-            } catch (error) {
-                console.error("Error during checkout session creation:", error);
+    const handleSubscription = async (plan: any, index: number) => {
+        setLoadingIndex(index);
+
+        try {
+            const response: any = await CheckOutSession({
+                user,
+                plan: { ...plan, icon: undefined },
+            });
+
+            if (response?.sessionUrl) {
+                window.location.href = response.sessionUrl;
             }
-        });
+        } catch (error) {
+            console.error("Error during checkout session creation:", error);
+        } finally {
+            setLoadingIndex(null);
+        }
     };
 
     return (
@@ -45,7 +62,7 @@ export default function Subscription() {
 
             {!user?.isPro && <h1>Our Pricing Plans</h1>}
 
-            {user?.isPro ? (
+            {!user?.isPro ? (
                 <SubscriptionCard />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -65,9 +82,9 @@ export default function Subscription() {
                             {/* Features */}
                             <div className="space-y-3">
                                 {plan?.features?.map((feature, idx) => (
-                                    <div key={idx} className="flex flex-row items-center gap-3">
-                                        <PiArrowCircleRightFill size={20} className="text-green-600" />
-                                        <h3 className="font-semibold">{feature}</h3>
+                                    <div key={idx} className="flex flex-row items-center gap-5">
+                                        <FaCheck size={20} className="text-green-600" />
+                                        <h3 className="text-neutral-400">{feature}</h3>
                                     </div>
                                 ))}
                             </div>
@@ -78,7 +95,11 @@ export default function Subscription() {
                             </div>
 
                             {plan?.type !== "Free" && (
-                                <Button onClick={() => handleSubscription(plan)} className="w-full pro" isLoading={isLoading}>
+                                <Button
+                                    onClick={() => handleSubscription(plan, index)}
+                                    className="w-full pro"
+                                    isLoading={loadingIndex === index}
+                                >
                                     Subscribe
                                 </Button>
                             )}
