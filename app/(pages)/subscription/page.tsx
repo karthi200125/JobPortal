@@ -11,7 +11,7 @@ import { PiArrowCircleRightFill } from "react-icons/pi";
 import { useSelector } from "react-redux";
 
 export default function Subscription() {
-    const user = useSelector((state: any) => state.user.user);    
+    const user = useSelector((state: any) => state.user.user);
     const [isLoading, startTransition] = useTransition();
 
     let selectedTab: "CANDIDATE" | "RECRUITER" | "ORGANIZATION" | null = null;
@@ -25,6 +25,7 @@ export default function Subscription() {
         startTransition(async () => {
             try {
                 const response: any = await CheckOutSession({ user, plan });
+                console.log(response)
                 if (response?.sessionUrl) {
                     window.location.href = response.sessionUrl;
                 }
