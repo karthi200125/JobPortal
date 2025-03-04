@@ -62,7 +62,7 @@ export default function Subscription() {
 
             {!user?.isPro && <h1>Our Pricing Plans</h1>}
 
-            {!user?.isPro ? (
+            {user?.isPro ? (
                 <SubscriptionCard />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
