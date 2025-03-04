@@ -9,6 +9,7 @@ import { useTransition } from "react";
 import { useDispatch } from "react-redux";
 import { closeModal } from "../Redux/ModalSlice";
 import { deleteExperience } from "@/actions/user/deleteExperience";
+import noImage from '@/public/noImage.webp'
 
 const DeleteExperienceForm = ({ exp }: any) => {
 
@@ -41,7 +42,7 @@ const DeleteExperienceForm = ({ exp }: any) => {
     return (
         <div className="w-full">
             <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={exp?.id}>
-                <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
+                <Image src={noImage.src} alt='' width={50} height={50} className='bg-neutral-200 object-cover' />
                 <div>
                     <h4 className='capitalize font-bold'>{exp?.companyName}</h4>
                     <h5 className='capitalize'>{exp?.position}</h5>

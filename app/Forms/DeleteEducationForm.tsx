@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useTransition } from "react";
 import { closeModal } from "../Redux/ModalSlice";
 import { useDispatch } from "react-redux";
+import noImage from '@/public/noImage.webp'
 
 const DeleteEducationForm = ({ edu }: any) => {
 
@@ -41,7 +42,7 @@ const DeleteEducationForm = ({ edu }: any) => {
     return (
         <div className="w-full">
             <div className='relative flex flex-row gap-5 items-start min-h-[100px]' key={edu?.id}>
-                <Image src={''} alt='' width={50} height={50} className='bg-neutral-200' />
+                <Image src={noImage.src} alt='' width={50} height={50} className='bg-neutral-200' />
                 <div>
                     <h4 className='capitalize font-bold'>{edu?.instituteName}</h4>
                     <h5 className='capitalize'>{edu?.degree} in {edu?.fieldOfStudy}</h5>

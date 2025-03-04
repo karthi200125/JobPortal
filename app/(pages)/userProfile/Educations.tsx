@@ -65,7 +65,7 @@ const Educations = ({ userId, profileUser }: EducationsProps) => {
                         </div>
 
                         {isCurrentUser &&
-                            <div className='absolute top-3 right-3 flex flex-row items-center gap-5'>
+                            <div className='absolute bottom-0 md:top-3 right-3 flex flex-row items-center gap-5'>
                                 <Model
                                     bodyContent={
                                         <UserEducationForm

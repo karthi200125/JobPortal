@@ -33,13 +33,6 @@ const Menu = () => {
             href: "/companies",
             isCard: true
         },
-        {
-            id: 10,
-            title: "Messages",
-            icon: <RiMessage3Fill size={20} />,
-            href: "/messages",
-            isCard: true
-        },
     ];
 
     const profileCardItems = useProfileCardItems(user) || [];

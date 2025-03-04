@@ -80,7 +80,7 @@ const Dashboard = () => {
             <div className="space-y-5">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row items-center justify-between gap-5">
-                    <h2>{`${paramValue || 'Dashboard'}`}</h2>
+                    <h2 className='capitalize'>{`${paramValue || 'Dashboard'}`}</h2>
                     <div className="flex flex-row items-center gap-5">
                         {isORG && (
                             <Button
@@ -105,6 +105,8 @@ const Dashboard = () => {
 
                 {/* Applied Counts */}
                 <AppliedCounts appliedJobs={appliedJobs} user={userData} />
+
+                {paramValue && <div className="w-full h-[1px] bg-neutral-200 my-2"></div>}
 
                 {/* show all */}
                 {paramValue ?

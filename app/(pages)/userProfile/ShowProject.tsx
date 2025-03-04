@@ -3,8 +3,8 @@ import noImage from '../../../public/noImage.webp'
 
 const ShowProject = ({ project }: any) => {
     return (
-        <div className='w-full max-h-max p-5 flex flex-col md:flex-row items-start gap-5'>
-            <div className='w-full md:w-[70%] h-[400px] overflow-hidden relative rounded-[20px]'>
+        <div className='w-full max-h-max md:p-5 flex flex-col md:flex-row items-start gap-5'>
+            <div className='w-full md:w-[70%] h-[200px] md:h-[400px] overflow-hidden relative rounded-md md:rounded-[20px] border'>
                 <Image src={project?.proImage || noImage.src} alt="" fill className="w-full h-full absolute top-0 left-0 bg-neutral-200 object-cover" />
             </div>
             <div className="space-y-5 w-full md:w-[30%]">

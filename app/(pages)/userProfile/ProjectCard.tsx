@@ -39,7 +39,7 @@ const ProjectCard = ({ project, onClick, isCurrentUser }: any) => {
                             bodyContent={<UserProjectForm isEdit project={project} />}
                             title='Edit Project'
                             desc='edit your project Details'
-                            className='w-[800px]'
+                            className='min-w-[300px] md:w-[800px]'
                             modalId='projectEditModal'
                         >
                             <Icon icon={<LuPencil size={20} />} isHover title='Edit Project' onClick={handleEditClick} />
@@ -48,7 +48,7 @@ const ProjectCard = ({ project, onClick, isCurrentUser }: any) => {
                             bodyContent={<DeleteProjectForm project={project} />}
                             title='Delete Project'
                             desc='Delete your project'
-                            className='w-[400px]'
+                            className='w-full md:w-[400px]'
                             modalId='projectDeleteModal'
                         >
                             <Icon icon={<CiTrash size={20} />} isHover title='Delete Project' onClick={handleDeleteClick} />

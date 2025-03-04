@@ -41,6 +41,7 @@ export async function POST(req: Request) {
     }
 
     try {
+        /** ✅ Handle New Subscription Purchase **/
         if (event.type === 'checkout.session.completed' && object.subscription) {
             subscription = await stripe.subscriptions.retrieve(object.subscription as string);
             console.log('Subscription created:', subscription.id);
@@ -48,10 +49,7 @@ export async function POST(req: Request) {
             await db.$transaction([
                 db.user.update({
                     where: { id: userId! },
-                    data: {
-                        isPro: true,
-                        updatedAt: new Date(),
-                    },
+                    data: { isPro: true, updatedAt: new Date() },
                 }),
                 db.subscription.upsert({
                     where: { userId: userId! },
@@ -80,44 +78,60 @@ export async function POST(req: Request) {
             ]);
         }
 
+        /** ✅ Handle Successful Subscription Renewal **/
         if (event.type === 'invoice.payment_succeeded' && userId) {
             console.log('Invoice payment succeeded for user:', userId);
-
             await db.user.update({
                 where: { id: userId },
-                data: {
-                    isPro: true,
-                    updatedAt: new Date(),
-                },
+                data: { isPro: true, updatedAt: new Date() },
             });
         }
 
-        if (
-            (event.type === 'customer.subscription.updated' ||
-                event.type === 'customer.subscription.deleted' ||
-                event.type === 'invoice.payment_failed') &&
-            object.id
-        ) {
+        /** ✅ Handle Subscription Cancellation (User Cancels Plan) **/
+        if (event.type === 'customer.subscription.updated') {
             subscription = await stripe.subscriptions.retrieve(object.id);
+
             if (subscription.status === 'canceled' && userId) {
-                console.log('Subscription canceled/expired for user:', userId);
+                console.log('Subscription canceled by user:', userId);
 
                 await db.$transaction([
                     db.user.update({
                         where: { id: userId },
-                        data: {
-                            isPro: false,
-                            updatedAt: new Date(),
-                        },
+                        data: { isPro: false, updatedAt: new Date() },
                     }),
-                    db.subscription.updateMany({
+                    db.subscription.update({
                         where: { userId },
-                        data: {
-                            subscriptionStatus: 'inactive',
-                        },
+                        data: { subscriptionStatus: 'inactive' },
                     }),
                 ]);
             }
+        }
+
+        /** ✅ Handle Subscription Expiry (Stripe Deletes Subscription) **/
+        if (event.type === 'customer.subscription.deleted') {
+            console.log('Subscription expired for user:', userId);
+
+            await db.$transaction([
+                db.user.update({
+                    where: { id: userId! },
+                    data: { isPro: false, updatedAt: new Date() },
+                }),
+                db.subscription.deleteMany({
+                    where: {
+                        userId: userId!
+                    },
+                }),
+            ]);
+        }
+
+        /** ✅ Handle Payment Failure (Card Declined, Insufficient Funds) **/
+        if (event.type === 'invoice.payment_failed' && userId) {
+            console.log('Payment failed for user:', userId);
+
+            await db.user.update({
+                where: { id: userId },
+                data: { isPro: false, updatedAt: new Date() },
+            });
         }
     } catch (error) {
         console.error('Webhook Handling Error:', error);

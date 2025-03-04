@@ -65,7 +65,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
 
         return (
             <>
-                <h2 className="font-bold capitalize flex flex-row items-center gap-5">
+                <h2 className="font-bold capitalize flex flex-row items-center gap-5 mt-2 md:mt-0">
                     {displayName}
                     <Batch type={profileUser?.role} />
                 </h2>
@@ -179,7 +179,7 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
                         </div>
                         {!isCurrentUser && renderFollowButtons()}
                         {isCurrentUser && renderCurrentUserActions()}
-                        
+
 
                         {/* Message Modal */}
                         < Model
