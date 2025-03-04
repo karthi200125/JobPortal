@@ -1,16 +1,19 @@
 "use client";
 
 import { getSubscription } from "@/actions/getSubscription";
+import { StripeCustomerPortal } from "@/actions/stripeCustomerPortal";
 import Button from "@/components/Button";
 import { subscriptionPlans } from "@/data";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { PiArrowCircleRightFill } from "react-icons/pi";
+import { useTransition } from "react";
+import { FaCheck } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 type UserRole = "CANDIDATE" | "RECRUITER" | "ORGANIZATION";
 
 interface Subscription {
+    stripeCustomerId?: string;
     planName?: string;
     subscriptionStatus: string;
     stripeCurrentPeriodEnd?: string;
@@ -21,6 +24,7 @@ interface Subscription {
 
 const SubscriptionCard = () => {
     const user = useSelector((state: any) => state.user.user);
+    const [isLoading, startTransition] = useTransition()
 
     const { data, isPending, error } = useQuery<Subscription>({
         queryKey: ["getSubscription", user?.id],
@@ -29,7 +33,7 @@ const SubscriptionCard = () => {
     });
 
     if (isPending) {
-        return <h5>Loading...</h5>;
+        return <h5 className="messageh w-full flexcenter">Loading...</h5>;
     }
 
     if (error || !data) {
@@ -41,13 +45,24 @@ const SubscriptionCard = () => {
         (sp) => sp.name === data?.planName
     );
 
+    const HandleManageSubscription = () => {
+        startTransition(() => {
+            StripeCustomerPortal(data.stripeCustomerId!)
+                .then((data) => {
+                    if (data?.sessionUrl) {
+                        window.location.href = data.sessionUrl;
+                    }
+                })
+        })
+    }
+
     return (
         <div className="w-full md:max-w-max mx-auto p-5 md:p-10 shadow-lg border rounded-lg space-y-5 md:space-y-10">
 
             <div className="space-y-2">
                 <h3 className="font-bold">Subscription Plan</h3>
                 <h5 className="text-neutral-500">You are currently on the {data?.planName} plan</h5>
-                <Button className="!rounded-md">Manage Subscription</Button>
+                <Button onClick={HandleManageSubscription} isLoading={isLoading} className="!rounded-md">Manage Subscription</Button>
             </div>
 
             <span className="h-[1px] w-full bg-neutral-200"></span>
@@ -82,8 +97,8 @@ const SubscriptionCard = () => {
                     <h3 className="font-bold text-sm">Plan Features</h3>
                     <div className="space-y-3">
                         {getSubscriptionPlan?.features?.map((feature: any, index: number) => (
-                            <div key={index} className="flex flex-row items-center gap-3">
-                                <PiArrowCircleRightFill size={20} className="text-green-600" />
+                            <div key={index} className="flex flex-row items-center gap-5">
+                                <FaCheck size={20} className="text-green-600" />
                                 <h5 className="text-neutral-500">{feature}</h5>
                             </div>
                         ))}

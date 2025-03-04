@@ -1,4 +1,4 @@
-import { FaSuitcase } from "react-icons/fa";
+import { FaBriefcase, FaBuilding, FaChartBar, FaCrown, FaRocket, FaSuitcase, FaUser } from "react-icons/fa";
 import { IoPersonOutline } from "react-icons/io5";
 import { MdDashboard } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
@@ -224,7 +224,8 @@ export const subscriptionPlans = {
                 "Limited profile views",
             ],
             price: "0",
-            type: "Free"
+            type: "Free",
+            icon: <FaUser size={30}/>
         },
         {
             name: "Premium",
@@ -239,7 +240,8 @@ export const subscriptionPlans = {
                 "Access salary insights"
             ],
             price: "499",
-            type: "Monthly"
+            type: "Monthly",
+            icon: <FaCrown size={30}/>
         },
     ],
     RECRUITER: [
@@ -251,7 +253,8 @@ export const subscriptionPlans = {
                 "Access to basic filters"
             ],
             price: "1,499",
-            type: "Monthly"
+            type: "Monthly",
+            icon: <FaBriefcase  size={30}/>
         },
         {
             name: "Standard",
@@ -263,7 +266,8 @@ export const subscriptionPlans = {
                 "Contact candidates directly"
             ],
             price: "5,999",
-            type: "Monthly"
+            type: "Monthly",
+            icon: <FaRocket  size={30}/>
         },
     ],
     ORGANIZATION: [
@@ -275,7 +279,8 @@ export const subscriptionPlans = {
                 "Access to analytics dashboard"
             ],
             price: "9,999",
-            type: "Annual"
+            type: "Annual",
+            icon: <FaBuilding  size={30}/>
         },
         {
             name: "Growth",
@@ -287,7 +292,8 @@ export const subscriptionPlans = {
                 "Advanced analytics and reporting"
             ],
             price: "29,999",
-            type: "Annual"
+            type: "Annual",
+            icon: <FaChartBar  size={30}/>
         },
     ],
 };

@@ -14,10 +14,11 @@ interface JobListsProps {
   count?: number;
   currentPage?: number;
   isLoading?: boolean;
+  fetchJobs?: any;
   onSelectedJob?: (jobId: number) => void;
 }
 
-const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, currentPage = 1 }: JobListsProps) => {
+const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, currentPage = 1, fetchJobs }: JobListsProps) => {
   const searchParams = useSearchParams();
 
   const query = useMemo(() => searchParams.get('q'), [searchParams]);
@@ -31,11 +32,6 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, curre
     }
   }, [Jobs, selectedJob]);
 
-  // useEffect(() => {
-  //   if (chatUsers.length > 0 && selectedJob === null) {
-  //     setSelectedJob(chatUsers[0].id);
-  //   }
-  // }, [Jobs, selectedJob]);
 
   const handleSelectJob = useCallback(
     (jobId: number) => {
@@ -67,7 +63,7 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, curre
     return Jobs.map((job) => (
       <div key={job.id} onClick={() => handleSelectJob(job.id)}>
         {isMobile ? (
-          <BottomDrawer body={<JobDesc job={job} />}>
+          <BottomDrawer body={<JobDesc job={job} refetchJobs={fetchJobs} />}>
             <JobList isHover job={job} selectedJob={selectedJob} border />
           </BottomDrawer>
         ) : (

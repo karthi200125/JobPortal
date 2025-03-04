@@ -4,8 +4,7 @@ import Button from "@/components/Button";
 import { subscriptionPlans } from "@/data";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaCrown } from "react-icons/fa";
-import { PiArrowCircleRightFill } from "react-icons/pi";
+import { FaCheck } from "react-icons/fa6";
 
 const Pricing = () => {
 
@@ -33,12 +32,14 @@ const Pricing = () => {
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div className="mx-auto w-full md:w-[80%] xl:w-[70%] grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {subscriptionPlans[selectedTab].map((plan, index) => (
                     <div key={index} className="w-full max-h-max rounded-[30px] p-5 lg:p-10  bg-black space-y-10 text-white">
                         <div className="flex flex-row items-center gap-5 ">
-                            <div className="w-[100px] h-[100px] rounded-full bg-white/[0.05] flexcenter">
-                                <FaCrown size={30} className="text-[var(--pro)]" />
+                            <div className="w-[100px] h-[100px] rounded-full bg-white/[0.05] flexcenter">                                
+                                <div className="w-[30px] text-[var(--pro)]">
+                                    {plan?.icon}
+                                </div>
                             </div>
                             <h2>{plan?.name}</h2>
                         </div>
@@ -46,18 +47,23 @@ const Pricing = () => {
                         {/* Features */}
                         <div className="space-y-3">
                             {plan?.features?.map((feature, index) => (
-                                <div key={index} className="flex flex-row items-center gap-3">
-                                    <PiArrowCircleRightFill size={20} className="text-green-600" />
-                                    <h3 className="font-semibold">{feature}</h3>
+                                <div key={index} className="flex flex-row items-center gap-5">
+                                    <FaCheck size={20} className="text-green-600" />
+                                    <h3 className="text-neutral-400">{feature}</h3>
                                 </div>
                             ))}
                         </div>
 
                         <div className="flex flex-row items-end gap-1 w-full justify-center">
                             <h1>₹{plan?.price}</h1>
-                            <h5 className="text-white/40">/${plan?.type}</h5>
+                            <h5 className="text-white/40"> / {plan?.type}</h5>
                         </div>
-                        <Button onClick={() => router.push('/signin')} className='w-full pro'>Subscribe</Button>
+                        <Button
+                            onClick={() => router.push('/signin')}
+                            className={`${plan?.type === 'Free' ? "!text-black !bg-white" : "pro"} w-full `}
+                        >
+                            {plan?.type === 'Free' ? "Get Started" : "Upgrade Now"}
+                        </Button>
                     </div>
                 ))}
             </div>

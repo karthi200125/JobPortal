@@ -5,6 +5,8 @@ import LpJobsSkeleton from "@/Skeletons/LpJobsSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import noImage from '@/public/noImage.webp'
+import { useEffect, useState } from 'react';
+import DOMPurify from 'dompurify';
 
 const LpJobs = () => {
 
@@ -12,6 +14,18 @@ const LpJobs = () => {
         queryKey: ['getLpJobs'],
         queryFn: async () => await GetLpJobs(),
     });
+
+    const [sanitizedDescriptions, setSanitizedDescriptions] = useState<{ [key: string]: string }>({});
+
+    useEffect(() => {
+        if (jobs) {
+            const sanitized = jobs.reduce((acc: { [key: string]: string }, job: any) => {
+                acc[job.id] = job.jobDesc ? DOMPurify.sanitize(job.jobDesc) : '';
+                return acc;
+            }, {});
+            setSanitizedDescriptions(sanitized);
+        }
+    }, [jobs]);
 
     return (
         <div className="w-full min-h-screen p-2 lg:p-10 space-y-10 md:space-y-20">
@@ -29,7 +43,7 @@ const LpJobs = () => {
                 <LpJobsSkeleton />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {jobs?.map((job: any) => (
+                    {jobs && jobs?.map((job: any) => (
                         <div key={job.id} className="bg-white p-5 rounded-xl overflow-hidden space-y-4 lg:space-y-7 cursor-pointer trans text-black">
 
                             {/* Job Image & Title */}
@@ -49,8 +63,7 @@ const LpJobs = () => {
 
                             {/* Job Description */}
                             <h4 className="text-neutral-600 text-sm line-clamp-3">
-                                {/* {job.description || "No description available."} */}
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit earum sed dolorem eum voluptates porro magnam debitis voluptatem quaerat aut?
+                                <div className="prose max-w-none text-xs md:text-sm" dangerouslySetInnerHTML={{ __html: sanitizedDescriptions[job.id] || '' }} />
                             </h4>
 
                             {/* Job Skills */}
@@ -60,9 +73,7 @@ const LpJobs = () => {
                                         {skill}
                                     </div>
                                 ))}
-
                             </div>
-
                         </div>
                     ))}
                 </div>

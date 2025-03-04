@@ -23,11 +23,14 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
     const userId = user?.id;
 
     const fetchJobs = useCallback(async () => {
-        if (!userId) return;
+        if (!userId || !safeSearchParams) return;
+
         setIsLoading(true);
         try {
             const jobsData: any = await getFilterAllJobs(userId, safeSearchParams);
-            setJobs(jobsData?.jobs);
+            setJobs((prevJobs) => {
+                return JSON.stringify(prevJobs) === JSON.stringify(jobsData?.jobs) ? prevJobs : jobsData?.jobs;
+            });
             setCount(jobsData?.count);
         } catch (err) {
             console.error('Error fetching jobs:', err);
@@ -36,9 +39,13 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
         }
     }, [userId, safeSearchParams]);
 
+
     useEffect(() => {
-        fetchJobs();
-    }, [fetchJobs]);
+        if (userId && safeSearchParams) {
+            fetchJobs();
+        }
+    }, [userId, safeSearchParams]);
+
 
     const job = useMemo(() => {
         return selectedJob ? jobs.find((job) => job?.id === selectedJob) : jobs[0];

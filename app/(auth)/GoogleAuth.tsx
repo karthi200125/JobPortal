@@ -4,7 +4,7 @@ import Loader from '@/components/Loader/Loader';
 import { useCustomToast } from '@/lib/CustomToast';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import google from '../../public/google.png';
 
@@ -13,6 +13,7 @@ const GoogleAuth = ({ role }: any) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const pathname = useRef(usePathname());
+    const router = useRouter()
 
     const onClick = useCallback(async () => {
         if (!role) {
@@ -22,10 +23,13 @@ const GoogleAuth = ({ role }: any) => {
 
         setIsLoading(true);
         try {
-            await signIn("google", {
+            const result = await signIn("google", {
                 callbackUrl: pathname.current === '/signin' ? '/dashboard' : '/welcome',
-                redirect: true,
+                redirect: false,
             })
+            if (result?.url) {
+                router.push(pathname.current === '/signin' ? '/dashboard' : '/welcome')
+            }
         } catch (error) {
             console.error("Error during sign-in:", error);
         } finally {

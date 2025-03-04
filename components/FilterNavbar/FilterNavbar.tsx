@@ -23,21 +23,16 @@ interface Filter {
 const FilterNavbar = () => {
     const router = useRouter();
 
-    // Fetching states and companies using react-query
     const { data: states = [] } = useQuery({ queryKey: ['getStates'], queryFn: getStates });
-    // const { data: companies = [] } = useQuery({ queryKey: ['getCompanies'], queryFn: getCompanies });
 
     const { data: companies = [] } = useQuery({
         queryKey: ['getCompanies'],
         queryFn: async () => await getCompanies(),
     });
 
-    // Memoizing derived state values
     const companiesOptions = companies?.map((company: any) => company?.companyName) || [];
-    // const companiesOptions = useMemo(() => companies?.map((company: any) => company?.companyName) || [], [companies]);
     const locations = useMemo(() => states?.map((state: any) => state.name) || [], [states]);
 
-    // Filters data
     const filters: Filter[] = [
         { id: 1, title: "Date Posted", options: DatePosted },
         { id: 2, title: "Experience Level", options: experiences },
@@ -46,7 +41,6 @@ const FilterNavbar = () => {
         { id: 5, title: "Company", options: companiesOptions },
     ];
 
-    // Initialize filter states
     const defaultFilters = useMemo(() => filters.reduce((acc, filter) => {
         acc[filter.title] = '';
         return acc;
@@ -56,7 +50,6 @@ const FilterNavbar = () => {
     const [pendingFilters, setPendingFilters] = useState({ ...defaultFilters });
     const [easyapply, setEasyapply] = useState(false);
 
-    // Handle selection of filters
     const handlePendingSelection = useCallback((filterTitle: string, option: string) => {
         setPendingFilters(prev => ({
             ...prev,
@@ -78,7 +71,6 @@ const FilterNavbar = () => {
         router.push(`/jobs`);
     }, [defaultFilters, router]);
 
-    // Update URL parameters based on selected filters
     const updateUrlParams = useCallback((filters: Record<string, string>, easyapply: boolean) => {
         const searchParams = new URLSearchParams();
 

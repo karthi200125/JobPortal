@@ -1,37 +1,18 @@
 'use client';
 
-import { getUserById } from "@/actions/auth/getUserById";
 import { CheckOutSession } from "@/actions/stripe";
-import { loginRedux } from "@/app/Redux/AuthSlice";
 import Button from "@/components/Button";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import { subscriptionPlans } from "@/data";
 import Title from "@/lib/MetaTitle";
-import { useEffect, useTransition } from "react";
+import { useTransition } from "react";
 import { FaCrown } from "react-icons/fa";
 import { PiArrowCircleRightFill } from "react-icons/pi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function Subscription() {
-    const user = useSelector((state: any) => state.user.user);
-    const dispatch = useDispatch();
+    const user = useSelector((state: any) => state.user.user);    
     const [isLoading, startTransition] = useTransition();
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await getUserById(user?.id);
-                const data = await res.json();
-                if (data) {
-                    dispatch(loginRedux(data));
-                }
-            } catch (error) {
-                console.error("Failed to fetch updated user data:", error);
-            }
-        };
-
-        fetchUser();
-    }, [dispatch]);
 
     let selectedTab: "CANDIDATE" | "RECRUITER" | "ORGANIZATION" | null = null;
     if (user?.role === "RECRUITER") selectedTab = "RECRUITER";
@@ -66,7 +47,7 @@ export default function Subscription() {
             {user?.isPro ? (
                 <SubscriptionCard />
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {subscriptionPlans[selectedTab]?.map((plan, index) => (
                         <div
                             key={index}
