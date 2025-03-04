@@ -1,7 +1,8 @@
-import React from 'react';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { PiCrownFill, PiMedalFill } from 'react-icons/pi';
+'use client'
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { MdVerified } from "react-icons/md";
+import { PiCrownFill, PiMedalFill } from 'react-icons/pi';
 
 interface BatchProps {
     type?: 'premium' | 'RECRUITER' | 'CANDIDATE' | 'ORGANIZATION';
@@ -9,6 +10,7 @@ interface BatchProps {
 
 const Batch = ({ type }: BatchProps) => {
     let icon;
+    let clr;
     let title;
 
     switch (type) {
