@@ -9,7 +9,7 @@ const StatusSide = ({ job, user }: any) => {
 
     const jobApplication = user?.jobApplications?.find((ja: any) => ja?.jobId === job?.id);
 
-    const { data, isLoading } = useQuery({
+    const { data } = useQuery({
         queryKey: ['getTotalAndSelectedApplicants', job?.id],
         queryFn: async () => await getTotalAndSelectedApplicants(job?.id),
     });

@@ -20,13 +20,11 @@ import {
 } from "@/components/ui/select";
 import { useCustomToast } from "@/lib/CustomToast";
 import { RegisterSchema } from "@/lib/SchemaTypes";
-import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from 'react';
 import { FaLock } from "react-icons/fa";
 import { FaLockOpen } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
-
 
 const RegisterForm = ({ onRole }: { onRole: (role: string) => void }) => {
     const { showErrorToast } = useCustomToast();

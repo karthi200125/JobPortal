@@ -18,8 +18,6 @@ const allSkills: string[] = [
     "Firebase",
 ];
 
-const allComapanies = []
-const allJobTitles = []
 
 const SearchSkills: React.FC = () => {
     const [query, setQuery] = useState<string>('');

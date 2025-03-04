@@ -4,19 +4,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { CompanySchema } from "@/lib/SchemaTypes";
+import { createCompanyAction } from "@/actions/company/companyAction";
 import Button from '@/components/Button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import CustomFormField from "@/components/CustomFormField";
+import { Form } from "@/components/ui/form";
 import FormError from '@/components/ui/FormError';
 import FormSuccess from '@/components/ui/FormSuccess';
-import { Input } from '@/components/ui/input';
-import CustomFormField from "@/components/CustomFormField";
+import { getCities, getStates } from "@/getOptionsData";
+import { CompanySchema } from "@/lib/SchemaTypes";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from 'react';
-import { createCompanyAction } from "@/actions/company/companyAction";
 import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
-import { getCities, getStates } from "@/getOptionsData";
 
 const CompanyForm = () => {
     const user = useSelector((state: any) => state.user.user)

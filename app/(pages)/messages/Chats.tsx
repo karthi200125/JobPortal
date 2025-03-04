@@ -17,7 +17,7 @@ const Chats = ({ messages, currentUserId, user, isChatuser }: { messages: any, u
 
     return (
         <div className={`w-full overflow-y-auto p-3 flex flex-col gap-10 ${!isChatuser ? "h-[400px] mb-[80px]" : "chatsh"}`}>
-            {messages?.map((msg: any, index: number) => {
+            {messages?.map((msg: any) => {
                 const messageDate = moment(msg?.updatedAt).format("MMMM D, YYYY");
                 const showDateSeparator = messageDate !== lastDate;
                 lastDate = messageDate;

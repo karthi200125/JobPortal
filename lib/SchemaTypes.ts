@@ -1,5 +1,4 @@
 import { z } from "zod";
-const RoleEnum = z.enum(['CANDIDATE', 'RECRUITER', 'ORGANIZATION']);
 
 export const UserInfoSchema = z.object({
     username: z.string().min(1, {

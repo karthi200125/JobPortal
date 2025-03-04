@@ -1,21 +1,19 @@
 'use client'
 
 import { getUserEducation } from '@/actions/user/getUserEducation'
+import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
 import { UserEducationForm } from '@/app/Forms/UserEducationForm'
+import { openModal } from '@/app/Redux/ModalSlice'
 import Button from '@/components/Button'
 import Icon from '@/components/Icon'
 import Model from '@/components/Model/Model'
+import EducationsSkeleton from '@/Skeletons/EducationsSkeleton'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
-import React from 'react'
+import { CiTrash } from "react-icons/ci"
 import { GoPlus } from 'react-icons/go'
 import { LuPencil } from 'react-icons/lu'
-import { CiTrash } from "react-icons/ci";
-import DeleteEducationForm from '@/app/Forms/DeleteEducationForm'
-import EducationsSkeleton from '@/Skeletons/EducationsSkeleton'
 import { useDispatch, useSelector } from 'react-redux'
-import { openModal } from '@/app/Redux/ModalSlice'
 import noImage from '../../../public/noImage.webp'
 
 interface EducationsProps {

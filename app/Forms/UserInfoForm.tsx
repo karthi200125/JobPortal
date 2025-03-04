@@ -4,20 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { getCompanies } from "@/actions/company/getCompanies";
 import { UserUpdate } from "@/actions/user/UpdateUser";
 import Button from "@/components/Button";
 import CustomFormField from "@/components/CustomFormField";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/ui/FormError";
-import FormSuccess from "@/components/ui/FormSuccess";
+import { useCustomToast } from "@/lib/CustomToast";
 import { UserInfoSchema } from "@/lib/SchemaTypes";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../Redux/AuthSlice";
-import { usePathname } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCustomToast } from "@/lib/CustomToast";
-import { getCompanies } from "@/actions/company/getCompanies";
 import { closeModal } from "../Redux/ModalSlice";
 import UserAbout from "./UserAbout";
 

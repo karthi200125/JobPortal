@@ -2,15 +2,14 @@
 
 import { loginRedux } from "@/app/Redux/AuthSlice";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProtectedRoute = ({ children }: any) => {
     const { data: session, status } = useSession();
     const dispatch = useDispatch();
-    const router = useRouter();
-    const pathname = usePathname();
+    const router = useRouter();    
 
     useEffect(() => {
         if (status === "authenticated" && session?.user) {

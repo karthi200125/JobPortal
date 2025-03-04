@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button"
 import { useRouter } from "next/navigation"
-import m1 from '../../../public/mainimg.webp'
+import m1 from '../../../public/main.png'
 
 const LandingPage = () => {
     const router = useRouter()
@@ -17,7 +17,7 @@ const LandingPage = () => {
             </div>
 
             <div className="bg-white/10 w-full max-h-max overflow-hidden relative" style={{ borderTopRightRadius: '20px', borderTopLeftRadius: "20px" }}>
-                <img src={m1.src} alt="" className="w-full max-h-max object-cover" />
+                <img src={m1.src} alt="" className="w-full max-h-max object-contain" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black"></div>
             </div>
         </div>

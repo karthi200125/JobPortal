@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { AnyAaaaRecord } from "dns";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 

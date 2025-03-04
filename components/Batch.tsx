@@ -9,7 +9,6 @@ interface BatchProps {
 
 const Batch = ({ type }: BatchProps) => {
     let icon;
-    let clr;
     let title;
 
     switch (type) {

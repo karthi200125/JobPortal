@@ -9,15 +9,14 @@ import Button from "@/components/Button";
 import CustomFormField from "@/components/CustomFormField";
 import { Form } from "@/components/ui/form";
 import FormError from "@/components/ui/FormError";
-import FormSuccess from "@/components/ui/FormSuccess";
+import { education_levels, fields_of_study } from "@/data";
+import { useCustomToast } from "@/lib/CustomToast";
 import { UserEducationSchema } from "@/lib/SchemaTypes";
-import { useState, useTransition } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
-import { useCustomToast } from "@/lib/CustomToast";
+import { useState, useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../Redux/ModalSlice";
-import { education_levels, fields_of_study } from "@/data";
 
 interface EducationProps {
     education?: any,

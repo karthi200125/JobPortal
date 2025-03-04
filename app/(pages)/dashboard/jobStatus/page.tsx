@@ -4,13 +4,13 @@ import { getUserById } from "@/actions/auth/getUserById";
 import { getAppliedJobs } from "@/actions/jobapplication/getAppliedJobs";
 import BottomDrawer from "@/components/BottomDrawer";
 import Title from "@/lib/MetaTitle";
+import JobListsSkeleton from "@/Skeletons/JobListsSkeleten";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StatusSide from "./StatusSide";
-import JobListsSkeleton from "@/Skeletons/JobListsSkeleten";
 
 const JobStatus = () => {
     const user = useSelector((state: any) => state.user.user);
@@ -21,7 +21,7 @@ const JobStatus = () => {
         enabled: !!user?.id,
     });
 
-    const { data: userData, isLoading: userLoading } = useQuery({
+    const { data: userData, } = useQuery({
         queryKey: ['getUser', user?.id],
         queryFn: async () => await getUserById(user?.id),
         enabled: !!user?.id,

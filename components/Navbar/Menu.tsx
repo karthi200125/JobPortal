@@ -12,7 +12,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { BsFillBuildingsFill } from "react-icons/bs";
 import { FaCrown } from "react-icons/fa";
-import { RiMenu3Line, RiMessage3Fill } from "react-icons/ri";
+import { RiMenu3Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import noAvatar from '../../public/noProfile.webp';
 import Icon from "../Icon";

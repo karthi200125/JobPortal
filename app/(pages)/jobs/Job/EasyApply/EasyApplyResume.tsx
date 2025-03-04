@@ -5,7 +5,7 @@ import Button from '@/components/Button';
 import { Progress } from '@/components/ui/progress';
 import { useCustomToast } from '@/lib/CustomToast';
 import { useUpload } from '@/lib/Uploadfile';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoMdCloudUpload } from "react-icons/io";
 import { useSelector } from 'react-redux';
 
@@ -18,8 +18,7 @@ interface EasyApplyUserResumeProps {
 
 const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyApplyUserResumeProps) => {
 
-    const user = useSelector((state: any) => state.user.user);
-    const defaultResumeName = 'Resume'
+    const user = useSelector((state: any) => state.user.user);    
     const { showErrorToast, showSuccessToast } = useCustomToast()
 
     const [file, setFile] = useState<File | null>(null);

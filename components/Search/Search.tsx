@@ -1,16 +1,15 @@
 'use client';
 
-import { IoSearchOutline } from "react-icons/io5";
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
-import { useQuery } from "@tanstack/react-query";
 import { getJobTitles } from "@/actions/job/ApplyJob";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { IoSearchOutline } from "react-icons/io5";
 import { Skeleton } from "../ui/skeleton";
 
 const Search = () => {
 
-    const searchParams = useSearchParams()
-    const searchQuery = searchParams.get('q')
+    const searchParams = useSearchParams()    
 
     const [query, setQuery] = useState<string>('');
     const [debouncedQuery, setDebouncedQuery] = useState<string>('');

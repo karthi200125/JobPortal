@@ -5,7 +5,7 @@ import { useCustomToast } from '@/lib/CustomToast';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 import google from '../../public/google.png';
 
 const GoogleAuth = ({ role }: any) => {
