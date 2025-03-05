@@ -5,7 +5,7 @@ import { updateProfileViews } from "@/actions/user/profileViews"
 import Title from "@/lib/MetaTitle"
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from "next/navigation"
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSelector } from "react-redux"
 import AboutMe from "../AboutMe"
 import CompanySlides from "../CompanySlides/CompanySlides"
@@ -18,14 +18,17 @@ import UserInfo from "../UserInfo"
 const UserProfile = () => {
   const user = useSelector((state: any) => state.user.user)
   const params = useParams()
-  const userId = Number(params?.userId)
+
+  const userId = useMemo(() => Number(params?.userId), [params?.userId])
 
   const { data, isPending } = useQuery({
     queryKey: ['getuser', userId],
-    queryFn: async () => await getUserById(userId),
+    queryFn: () => getUserById(userId),
+    enabled: !!userId,  
   });
-  const company = data?.company[0]
-  const isOrg = data?.role === "ORGANIZATION" ? true : false
+
+  const company = useMemo(() => data?.company?.[0], [data?.company])
+  const isOrg = useMemo(() => data?.role === "ORGANIZATION", [data?.role])
 
   useEffect(() => {
     if (user?.id && userId && user?.id !== userId) {
@@ -44,19 +47,23 @@ const UserProfile = () => {
       />
 
       <div className="w-full md:w-[70%] h-full space-y-5">
-        <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />        
+        <UserInfo profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
         <AboutMe profileUser={data} isLoading={isPending} company={company} isOrg={isOrg} />
-        {!isOrg && <Education userId={userId} profileUser={data} />}
-        {!isOrg && <Projects userId={userId} profileUser={data} />}
-        {!isOrg && <Experiences userId={userId} profileUser={data} />}
-        {isOrg &&
-          <CompanySlides company={company} profileUser={data} />
-        }
+
+        {!isOrg && (
+          <>
+            <Education userId={userId} profileUser={data} />
+            <Projects userId={userId} profileUser={data} />
+            <Experiences userId={userId} profileUser={data} />
+          </>
+        )}
+
+        {isOrg && <CompanySlides company={company} profileUser={data} />}
       </div>
+
       <div className="hidden md:block md:w-[30%] h-full">
         <MoreProfiles userId={userId} />
       </div>
-
     </div>
   )
 }

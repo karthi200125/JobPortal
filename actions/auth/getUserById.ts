@@ -10,7 +10,7 @@ export const getUserById = async (id: any) => {
     }
 
     const user: any = await db.user.findUnique({
-        where: { id },
+        where: { id },        
         include: {
             jobApplications: true,
             postedJobs: true,
@@ -22,7 +22,7 @@ export const getUserById = async (id: any) => {
             educations: true,
             experiences: true,
             projects: true,
-        },
+        },        
     })
 
     return user

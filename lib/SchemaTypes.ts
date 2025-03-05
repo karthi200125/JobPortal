@@ -14,12 +14,7 @@ export const UserInfoSchema = z.object({
         message: "User Bio is required",
     }).max(100, {
         message: "Maximum 100 characters",
-    }),
-    userAbout: z.string().min(50, {
-        message: "User Bio is required",
-    }).max(1000, {
-        message: "Maximum 1000 characters",
-    }).optional(),
+    }),    
     website: z.string().url({
         message: "Invalid website URL",
     }).optional(),
@@ -32,10 +27,7 @@ export const UserInfoSchema = z.object({
     }),
     address: z.string().min(1, {
         message: "Address is required",
-    }),
-    // description: z.string().min(100, {
-    //     message: "description is required and Minimum 100 words required",
-    // }),
+    }),    
     city: z.string().min(1, {
         message: "City is required",
     }),
@@ -76,10 +68,7 @@ export const UserEducationSchema = z.object({
     }),
     percentage: z.string().min(1, {
         message: "Percentage Date is required",
-    }),
-    // educationDesc: z.string().min(1, {
-    //     message: "Percentage Date is required",
-    // }),
+    }),    
 })
 
 export const UserExperienceSchema = z.object({
@@ -115,10 +104,7 @@ export const UserProjectSchema = z.object({
 export const CreateJobSchema = z.object({
     jobTitle: z.string().min(1, {
         message: "Job Title is required",
-    }),
-    // jobDesc: z.string().min(1, {
-    //     message: "Job Desc required",
-    // }),
+    }),    
     experience: z.string().min(1, {
         message: "Job Experince required",
     }),
@@ -151,13 +137,7 @@ export const CreateJobSchema = z.object({
     }).optional(),
     vacancies: z.string().min(1, {
         message: "Give How many Vacnacies Your are Hiring",
-    }),
-    // skills: z.array(z.string()).min(1, {
-    //     message: "Please provide at least one skill.",
-    // }),
-    // questions: z.array(z.string()).min(1, {
-    //     message: "Please provide at least one skill.",
-    // }).optional(),
+    }),    
 })
 
 export const RegisterSchema = z.object({
@@ -184,13 +164,7 @@ export const LoginSchema = z.object({
 export const CompanySchema = z.object({
     companyName: z.string().min(1, {
         message: "Company Name is required",
-    }),
-    // companyImage: z.string().min(1, {
-    //     message: "Company Image URL is required",
-    // }),
-    // companyBackImage: z.string().min(1, {
-    //     message: "Company Back Image URL is required",
-    // }),
+    }),    
     companyAddress: z.string().min(1, {
         message: "Company Address is required",
     }),

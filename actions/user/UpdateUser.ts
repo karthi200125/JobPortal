@@ -4,7 +4,11 @@ import { UserInfoSchema } from '@/lib/SchemaTypes';
 import { db } from '@/lib/db';
 import * as z from 'zod';
 
-export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: number) => {
+export const UserUpdate = async (
+    values: z.infer<typeof UserInfoSchema>,
+    id: number,
+    userAbout?: string 
+) => {
     try {
         const validatedFields = UserInfoSchema.safeParse(values);
 
@@ -15,48 +19,30 @@ export const UserUpdate = async (values: z.infer<typeof UserInfoSchema>, id: num
 
         if (data?.currentCompany) {
             const company = await db.company.findUnique({
-                where: {
-                    companyName: data?.currentCompany
-                },
-                select: {
-                    userId: true
-                }
+                where: { companyName: data.currentCompany },
+                select: { userId: true }
             });
 
             if (company?.userId) {
                 const existingUser = await db.user.findUnique({
-                    where: {
-                        id: company.userId,
-                    },
-                    select: {
-                        verifyEmps: true,
-                        employees: true,
-                    },
+                    where: { id: company.userId },
+                    select: { verifyEmps: true, employees: true },
                 });
-
-                // Check if the ID is already in employees before pushing
+                
                 if (existingUser && !existingUser.employees?.includes(id)) {
                     await db.user.update({
-                        where: {
-                            id: company.userId,
-                        },
-                        data: {
-                            verifyEmps: {
-                                push: id,
-                            },
-                        },
+                        where: { id: company.userId },
+                        data: { verifyEmps: { push: id } },
                     });
                 }
             }
         }
 
-        // Update the user with the new information
         const updatedUser = await db.user.update({
-            where: {
-                id: id,
-            },
+            where: { id },
             data: {
                 ...data,
+                userAbout: JSON.parse(JSON.stringify(userAbout))
             },
         });
 

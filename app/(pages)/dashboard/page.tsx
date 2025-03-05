@@ -34,7 +34,7 @@ const Dashboard = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const paramValue = searchParams.keys().next().value;
-
+    
     const isRecruiter = user?.role === 'RECRUITER';
     const isCandidate = user?.role === 'CANDIDATE';
     const isORG = user?.role === 'ORGANIZATION';

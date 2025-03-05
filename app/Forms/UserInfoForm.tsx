@@ -50,8 +50,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
         resolver: zodResolver(UserInfoSchema),
         defaultValues: {
             username: user?.username || "",
-            userBio: user?.userBio || "",
-            userAbout: userAbout,
+            userBio: user?.userBio || "",            
             website: user?.website || "",
             email: user?.email || "",
             firstName: user?.firstName || "",
@@ -77,7 +76,7 @@ export function UserInfoForm({ currentStep = 1, onNext }: UserInfoFormProps) {
                 }
                 setErr('')
             }
-            UserUpdate(values, id)
+            UserUpdate(values, id , userAbout)
                 .then((data) => {
                     if (data?.success) {
                         dispatch(loginRedux(data?.data))
