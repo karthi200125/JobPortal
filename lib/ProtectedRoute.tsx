@@ -2,7 +2,7 @@
 
 import { loginRedux } from "@/app/Redux/AuthSlice";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,7 +21,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const currentPath = window.location.pathname;
-
         if (status === "loading") return;
 
         if (!user) {
@@ -30,12 +29,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             router.push(`/userProfile/${user.id}`);
         }
     }, [user, status, router]);
-
-    const firstName = user ? user?.firstName : session?.user?.firstName;
-
-    if (!firstName) {
-        router.push('/welcome');
-    }
+    
+    useEffect(() => {
+        if (user && !user.firstName) {
+            router.push('/welcome');
+        }
+    }, [user, router]);
 
     return <>{children}</>;
 };
