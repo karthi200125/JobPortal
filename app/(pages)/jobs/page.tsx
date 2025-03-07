@@ -18,13 +18,11 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
     const user = useSelector((state: any) => state.user.user);
 
     const { data, isPending } = useQuery({
-        queryKey: ['getJobs', user?.id, safeSearchParams],
+        queryKey: ['getFiltredJobs', user?.id, safeSearchParams],
         queryFn: () => getFilterAllJobs(user?.id, safeSearchParams),
         enabled: !!user?.id,
     });
-
-    console.log('React Query Data:', data);
-
+    
     const jobs = data?.jobs ?? []
     const count = data?.count ?? 0
 
@@ -33,9 +31,7 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
         const job = selectedJob ? jobs.find((job: any) => job?.id === selectedJob) : jobs[0];
         setJob(job)
     }, [selectedJob, jobs]);
-
-    console.log('React Query Data:', job);
-
+    
     const handleSelectedJob = useCallback((jobId: any) => {
         setSelectedJob(jobId);
     }, []);
@@ -50,6 +46,7 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
 
             <Jobb
                 count={count}
+                safeSearchParams={safeSearchParams}
                 currentPage={currentPage}
                 jobs={jobs}
                 job={job}

@@ -11,10 +11,11 @@ interface Props {
     isPending?: boolean,
     onSelectedJob?: any,
     count?: number,
-    currentPage?: number
+    currentPage?: number,
+    safeSearchParams?: any
 }
 
-export default function Jobb({ jobs, job, count, currentPage, isPending, onSelectedJob }: Props) {
+export default function Jobb({ jobs, job, count, currentPage, isPending, onSelectedJob , safeSearchParams }: Props) {
     return (
         <div>
             <FilterNavbar />
@@ -31,6 +32,7 @@ export default function Jobb({ jobs, job, count, currentPage, isPending, onSelec
                 <div className="hidden md:block w-full md:w-[60%] overflow-y-auto jobsh">
                     <JobDesc
                         job={job}
+                        safeSearchParams={safeSearchParams}
                     />
                 </div>
             </div>

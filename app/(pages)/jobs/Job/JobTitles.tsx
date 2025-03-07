@@ -22,7 +22,7 @@ import { checkSkills } from "@/actions/job/CompareSkills";
 import { openModal } from "@/app/Redux/ModalSlice";
 import Link from "next/link";
 
-const JobTitles = ({ job, company, isPending }: any) => {
+const JobTitles = ({ job, company, isPending , safeSearchParams }: any) => {
     const user = useSelector((state: any) => state.user?.user);
     const dispatch = useDispatch();
     const [isLoading, startTransition] = useTransition();
@@ -128,7 +128,7 @@ const JobTitles = ({ job, company, isPending }: any) => {
                         <>
                             {job?.isEasyApply ? (
                                 <Model
-                                    bodyContent={<EasyApply job={job} />}
+                                    bodyContent={<EasyApply job={job} safeSearchParams={safeSearchParams}/>}
                                     title={`Apply to ${company?.companyName || "Company"}`}
                                     className="w-full md:w-[1000px]"
                                     modalId="easyapplyModal"

@@ -1,30 +1,28 @@
 'use client'
 
+import { applyForJob } from '@/actions/job/ApplyJob'
+import { closeModal } from '@/app/Redux/ModalSlice'
+import Button from '@/components/Button'
+import { useCustomToast } from '@/lib/CustomToast'
+import { useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
-import React, { useTransition } from 'react'
+import { useTransition } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import noProfile from '../../../../../public/noProfile.webp'
-import Button from '@/components/Button'
-import { applyForJob } from '@/actions/job/ApplyJob'
-import { useQueryClient } from '@tanstack/react-query'
-import { useCustomToast } from '@/lib/CustomToast'
-import { closeModal } from '@/app/Redux/ModalSlice'
-import { useSearchParams } from 'next/navigation'
 
 interface EasyApplySubmitProps {
     job?: any;
     data?: any;
-    // refetchJobs?: any;
+    safeSearchParams?: any;
 }
 
-const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
+const EasyApplySubmit = ({ data, job ,safeSearchParams }: EasyApplySubmitProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
     const { showSuccessToast, showErrorToast } = useCustomToast();
 
-    const dispatch = useDispatch()
-    const safeSearchParams = useSearchParams()
+    const dispatch = useDispatch()    
 
     const joinedArray = job?.questions?.map((q: any) => ({
         id: q.id,
@@ -53,7 +51,9 @@ const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
                 .then((data: any) => {
                     if (data?.success) {
                         showSuccessToast(data?.success)
-                        queryClient.invalidateQueries({ queryKey: ['getJobs', user?.id, safeSearchParams] })
+                        queryClient.invalidateQueries({
+                            queryKey: ['getFiltredJobs', user?.id, safeSearchParams]
+                        });
                         dispatch(closeModal('easyapplyModal'))
                     }
                     if (data?.error) {

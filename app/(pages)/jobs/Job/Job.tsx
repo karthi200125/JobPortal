@@ -11,10 +11,11 @@ import JobRecruiter from "./JobRecruiter";
 import JobTitles from "./JobTitles";
 
 interface JobDescProps {
-    job: any;    
+    job: any;
+    safeSearchParams?: any;
 }
 
-const JobDesc = ({ job }: JobDescProps) => {
+const JobDesc = ({ job, safeSearchParams }: JobDescProps) => {
     const user = useSelector((state: any) => state.user.user);
     const cId = job?.companyId;
 
@@ -32,7 +33,8 @@ const JobDesc = ({ job }: JobDescProps) => {
             <JobTitles
                 job={job}
                 company={memoizedCompanyData}
-                isPending={isDataLoading}                
+                isPending={isDataLoading}
+                safeSearchParams={safeSearchParams}
             />
             <JobRecruiter
                 job={job}

@@ -7,7 +7,7 @@ import EasyApplyResume from './EasyApplyResume';
 import EasyApplySubmit from './EasyApplySubmit';
 import EasyApplyUserInfo from './EasyApplyUserInfo';
 
-const EasyApply = ({ job }: any) => {
+const EasyApply = ({ job , safeSearchParams}: any) => {
     const [step, setStep] = useState(0);
     const [userData, setUserData] = useState({});
     const [resume, setResume] = useState({});
@@ -60,7 +60,7 @@ const EasyApply = ({ job }: any) => {
                     <EasyApplySubmit
                         data={jobApplicationData}
                         job={job}
-                        // refetchJobs={refetchJobs}
+                        safeSearchParams={safeSearchParams}
                     />
                 )}
             </div>
