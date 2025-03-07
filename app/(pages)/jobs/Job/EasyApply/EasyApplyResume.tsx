@@ -18,14 +18,14 @@ interface EasyApplyUserResumeProps {
 
 const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyApplyUserResumeProps) => {
 
-    const user = useSelector((state: any) => state.user.user);    
+    const user = useSelector((state: any) => state.user.user);
     const { showErrorToast, showSuccessToast } = useCustomToast()
 
     const [file, setFile] = useState<File | null>(null);
 
     const { per, UploadFile, downloadUrl } = useUpload({ file });
 
-    const [resumeName, setResumeName] = useState('');
+    const [resumeName, setResumeName] = useState(user?.resume ? "Resume" : '');
     const [resumeUrl, setResumeUrl] = useState((user?.resume || downloadUrl) || '');
 
     const handleResumeUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
             return showErrorToast("select resume first")
         }
         if (onResume) {
-            onResume({ name: resumeName, url: downloadUrl });
+            onResume({ name: resumeName, url: resumeUrl });
         }
         if (onNext) {
             onNext(currentStep + 1);
@@ -104,7 +104,7 @@ const EasyApplyResume = ({ onResume, onNext, onBack, currentStep = 0 }: EasyAppl
 
             <div className="space-y-5">
                 <div className="w-full border rounded-md p-3">
-                    { resumeName || 'No resume uploaded'}
+                    {resumeName || 'No resume uploaded'}
                 </div>
 
                 {resumeUrl && (

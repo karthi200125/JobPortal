@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 
 export const getFilterAllJobs = async (userId: string, searchParams: any) => {
+
     const { easyApply, dateposted, experiencelevel, type, location, q, company, page = 1 } = searchParams;
 
     const ITEM_PER_PAGE = 10;
@@ -86,7 +87,7 @@ export const getFilterAllJobs = async (userId: string, searchParams: any) => {
             },
         });
         
-        const allJobs = await db.job.findMany({
+        const allJobs:any = await db.job.findMany({
             where: {
                 AND: [
                     { ...filters },
@@ -118,6 +119,7 @@ export const getFilterAllJobs = async (userId: string, searchParams: any) => {
 
         return { jobs: allJobs, count: totalCount };
     } catch (err) {
+        console.log(err)        
         return { error: "Failed to fetch jobs" };
     }
 };

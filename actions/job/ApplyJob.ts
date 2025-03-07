@@ -11,6 +11,7 @@ export async function applyForJob(
   questionAndAnswers: any
 ) {
   try {
+    
     await db.jobApplication.create({
       data: {
         userId,
@@ -24,6 +25,7 @@ export async function applyForJob(
 
     return { success: "Job applied successfully" };
   } catch (error) {
+    console.log(error)
     return { error: 'Error applying for job' }
   }
 }

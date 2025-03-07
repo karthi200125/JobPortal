@@ -25,11 +25,12 @@ const FilterNavbar = () => {
 
     const { data: states = [] } = useQuery({ queryKey: ['getStates'], queryFn: getStates });
 
-    const { data: companies = [] } = useQuery({
+    const { data } = useQuery({
         queryKey: ['getCompanies'],
         queryFn: async () => await getCompanies(),
     });
 
+    const companies = data ?? []
     const companiesOptions = companies?.map((company: any) => company?.companyName) || [];
     const locations = useMemo(() => states?.map((state: any) => state.name) || [], [states]);
 

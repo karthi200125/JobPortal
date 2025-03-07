@@ -1,55 +1,40 @@
 'use client';
 
 import { getFilterAllJobs } from '@/actions/job/getFilterAllJobs';
-import FilterNavbar from '@/components/FilterNavbar/FilterNavbar';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import JobDesc from './Job/Job';
-import JobLists from './JobLists/JobLists';
 import Title from '@/lib/MetaTitle';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Jobb from './Jobb';
 
 const Jobs = ({ searchParams }: { searchParams: any }) => {
 
     const safeSearchParams = searchParams ?? new URLSearchParams();
-
     const currentPage = Number(safeSearchParams.page) || 1;
 
-    const [jobs, setJobs] = useState<any[]>([]);
-    const [count, setCount] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState(true);
     const [selectedJob, setSelectedJob] = useState<string | null>(null);
+    const [job, setJob] = useState<any>(null);
 
     const user = useSelector((state: any) => state.user.user);
-    const userId = user?.id;
 
-    const fetchJobs = useCallback(async () => {
-        if (!userId || !safeSearchParams) return;
+    const { data, isPending } = useQuery({
+        queryKey: ['getJobs', user?.id, safeSearchParams],
+        queryFn: () => getFilterAllJobs(user?.id, safeSearchParams),
+        enabled: !!user?.id,
+    });
 
-        setIsLoading(true);
-        try {
-            const jobsData: any = await getFilterAllJobs(userId, safeSearchParams);
-            setJobs((prevJobs) => {
-                return JSON.stringify(prevJobs) === JSON.stringify(jobsData?.jobs) ? prevJobs : jobsData?.jobs;
-            });
-            setCount(jobsData?.count);
-        } catch (err) {
-            console.error('Error fetching jobs:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [userId, safeSearchParams]);
+    console.log('React Query Data:', data);
+
+    const jobs = data?.jobs ?? []
+    const count = data?.count ?? 0
 
 
     useEffect(() => {
-        if (userId && safeSearchParams) {
-            fetchJobs();
-        }
-    }, [userId, safeSearchParams]);
-
-
-    const job = useMemo(() => {
-        return selectedJob ? jobs.find((job) => job?.id === selectedJob) : jobs[0];
+        const job = selectedJob ? jobs.find((job: any) => job?.id === selectedJob) : jobs[0];
+        setJob(job)
     }, [selectedJob, jobs]);
+
+    console.log('React Query Data:', job);
 
     const handleSelectedJob = useCallback((jobId: any) => {
         setSelectedJob(jobId);
@@ -63,24 +48,14 @@ const Jobs = ({ searchParams }: { searchParams: any }) => {
                 keywords="jobs, job listings, hiring, careers, remote jobs, find jobs"
             />
 
-            <FilterNavbar />
-            <div className="w-full flex flex-row items-start">
-                <div className="w-full md:w-[40%] jobsh overflow-y-auto">
-                    <JobLists
-                        Jobs={jobs}
-                        isLoading={isLoading}
-                        onSelectedJob={handleSelectedJob}
-                        count={count}
-                        currentPage={currentPage}
-                    />
-                </div>
-                <div className="hidden md:block w-full md:w-[60%] overflow-y-auto jobsh">
-                    <JobDesc
-                        job={job}
-                        refetchJobs={fetchJobs}
-                    />
-                </div>
-            </div>
+            <Jobb
+                count={count}
+                currentPage={currentPage}
+                jobs={jobs}
+                job={job}
+                isPending={isPending}
+                onSelectedJob={handleSelectedJob}
+            />
         </div>
     );
 };

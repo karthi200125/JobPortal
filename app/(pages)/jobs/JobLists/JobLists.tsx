@@ -15,10 +15,10 @@ interface JobListsProps {
   currentPage?: number;
   isLoading?: boolean;
   fetchJobs?: any;
-  onSelectedJob?: (jobId: number) => void;
+  onSelectedJob?: any;
 }
 
-const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, currentPage = 1, fetchJobs }: JobListsProps) => {
+const JobLists = ({ Jobs = [], isLoading , onSelectedJob, count = 0, currentPage = 1, fetchJobs }: JobListsProps) => {
   const searchParams = useSearchParams();
 
   const query = useMemo(() => searchParams.get('q'), [searchParams]);
@@ -63,7 +63,7 @@ const JobLists = ({ Jobs = [], isLoading = true, onSelectedJob, count = 0, curre
     return Jobs.map((job) => (
       <div key={job.id} onClick={() => handleSelectJob(job.id)}>
         {isMobile ? (
-          <BottomDrawer body={<JobDesc job={job} refetchJobs={fetchJobs} />}>
+          <BottomDrawer body={<JobDesc job={job}  />}>
             <JobList isHover job={job} selectedJob={selectedJob} border />
           </BottomDrawer>
         ) : (

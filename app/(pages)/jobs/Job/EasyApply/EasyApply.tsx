@@ -7,7 +7,7 @@ import EasyApplyResume from './EasyApplyResume';
 import EasyApplySubmit from './EasyApplySubmit';
 import EasyApplyUserInfo from './EasyApplyUserInfo';
 
-const EasyApply = ({ job , refetchJobs }: any) => {
+const EasyApply = ({ job }: any) => {
     const [step, setStep] = useState(0);
     const [userData, setUserData] = useState({});
     const [resume, setResume] = useState({});
@@ -18,7 +18,7 @@ const EasyApply = ({ job , refetchJobs }: any) => {
         resume,
         answers,
     };
-
+    
     const isQuestions = job?.questions?.length > 0;
 
     const totalSteps = isQuestions ? 4 : 3;
@@ -60,7 +60,7 @@ const EasyApply = ({ job , refetchJobs }: any) => {
                     <EasyApplySubmit
                         data={jobApplicationData}
                         job={job}
-                        refetchJobs={refetchJobs}
+                        // refetchJobs={refetchJobs}
                     />
                 )}
             </div>

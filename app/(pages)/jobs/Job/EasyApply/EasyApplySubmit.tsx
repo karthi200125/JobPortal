@@ -9,20 +9,22 @@ import { applyForJob } from '@/actions/job/ApplyJob'
 import { useQueryClient } from '@tanstack/react-query'
 import { useCustomToast } from '@/lib/CustomToast'
 import { closeModal } from '@/app/Redux/ModalSlice'
+import { useSearchParams } from 'next/navigation'
 
 interface EasyApplySubmitProps {
     job?: any;
     data?: any;
-    refetchJobs?: any;
+    // refetchJobs?: any;
 }
 
-const EasyApplySubmit = ({ data, job, refetchJobs }: EasyApplySubmitProps) => {
+const EasyApplySubmit = ({ data, job }: EasyApplySubmitProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [isLoading, startTransition] = useTransition()
     const queryClient = useQueryClient();
     const { showSuccessToast, showErrorToast } = useCustomToast();
 
     const dispatch = useDispatch()
+    const safeSearchParams = useSearchParams()
 
     const joinedArray = job?.questions?.map((q: any) => ({
         id: q.id,
@@ -51,9 +53,8 @@ const EasyApplySubmit = ({ data, job, refetchJobs }: EasyApplySubmitProps) => {
                 .then((data: any) => {
                     if (data?.success) {
                         showSuccessToast(data?.success)
-                        queryClient.invalidateQueries({ queryKey: ['getFilterAllJobs'] })
+                        queryClient.invalidateQueries({ queryKey: ['getJobs', user?.id, safeSearchParams] })
                         dispatch(closeModal('easyapplyModal'))
-                        refetchJobs()
                     }
                     if (data?.error) {
                         showErrorToast(data?.error)
