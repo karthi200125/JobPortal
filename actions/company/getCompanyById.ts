@@ -18,7 +18,7 @@ export const getCompanyById = async (cId?: number) => {
 }
 
 export const getCompanyByUserId = async (userId?: any) => {
-    const company = await db.company.findFirst({
+    const company: any = await db.company.findFirst({
         where: { userId: userId }
     })
 

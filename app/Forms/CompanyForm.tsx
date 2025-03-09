@@ -49,7 +49,9 @@ const CompanyForm = ({ company, isPending }: CompanyFormProps) => {
     const onSubmit = (values: z.infer<typeof CompanySchema>) => {
         startTransition(() => {
             const userId = user?.id
-            createCompanyAction(values, userId)
+            const isEdit = company ? true : false
+            const companyId = company?.id
+            createCompanyAction(values, userId, isEdit, companyId)
                 .then((data) => {
                     console.log(data)
                     if (data?.success) {
