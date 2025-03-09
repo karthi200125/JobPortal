@@ -1,6 +1,8 @@
 "use client";
 
+import { getCompanyByUserId } from "@/actions/company/getCompanyById";
 import { loginRedux } from "@/app/Redux/AuthSlice";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -19,6 +21,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     const user = useSelector((state: any) => state.user.user);
 
+    const { data: company, isPending } = useQuery({
+        queryKey: ['getCompanyByUserId', user?.id],
+        queryFn: async () => await getCompanyByUserId(user?.id),
+        enabled: !!user?.id,
+    });
+
     useEffect(() => {
         const currentPath = window.location.pathname;
         if (status === "loading") return;
@@ -29,12 +37,19 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             router.push(`/userProfile/${user.id}`);
         }
     }, [user, status, router]);
-    
+
     useEffect(() => {
-        if (user && !user.firstName) {
+        if (user?.role === "ORGANIZATION") {
+            if (company) {
+                router.push(`/userProfile/${user?.id}`);
+            } else {
+                router.push('/welcome');
+            }
+        } else if (user && !user.firstName) {
             router.push('/welcome');
         }
-    }, [user, router]);
+    }, [user, company, router]);
+
 
     return <>{children}</>;
 };

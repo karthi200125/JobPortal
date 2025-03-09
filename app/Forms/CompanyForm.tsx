@@ -10,18 +10,20 @@ import CustomFormField from "@/components/CustomFormField";
 import { Form } from "@/components/ui/form";
 import FormError from '@/components/ui/FormError';
 import FormSuccess from '@/components/ui/FormSuccess';
-import { getCities, getStates } from "@/getOptionsData";
 import { CompanySchema } from "@/lib/SchemaTypes";
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from 'react';
 import { useSelector } from "react-redux";
 
-const CompanyForm = () => {
+interface CompanyFormProps {
+    company?: any,
+    isPending?: boolean;
+}
+
+const CompanyForm = ({ company, isPending }: CompanyFormProps) => {
     const user = useSelector((state: any) => state.user.user)
     const [err, setErr] = useState("");
-    const [success, setSuccess] = useState("");
-    const [state, setState] = useState('');
+    const [success, setSuccess] = useState("");    
     const router = useRouter();
     const [isLoading, startTransition] = useTransition();
 
@@ -29,14 +31,14 @@ const CompanyForm = () => {
         resolver: zodResolver(CompanySchema),
         defaultValues: {
             companyName: user?.username || "",
-            companyAddress: "",
-            companyCity: "",
-            companyState: "",
-            companyCountry: "",
-            companyWebsite: "",
-            companyTotalEmployees: "",
-            companyAbout: "",
-            companyBio: "",
+            companyAddress: company?.companyAddress || "",
+            companyCity: company?.companyCity || "",
+            companyState: company?.companyState || "",
+            companyCountry: company?.companyCountry || "",
+            companyWebsite: company?.companyWebsite || "",
+            companyTotalEmployees: company?.companyTotalEmployees || "",
+            companyAbout: company?.companyAbout || "",
+            companyBio: company?.companyBio || "",
         },
     });
 
@@ -57,10 +59,6 @@ const CompanyForm = () => {
         });
     };
 
-    const { data: states = [] } = useQuery({
-        queryKey: ['getStates'],
-        queryFn: async () => await getStates(),
-    });
 
     return (
         <Form {...form}>
@@ -71,28 +69,28 @@ const CompanyForm = () => {
                         form={form}
                         label="Company Name"
                         placeholder="Ex: Google"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                     <CustomFormField
                         name="companyAddress"
                         form={form}
                         label="Company Address"
                         placeholder="Ex: 123 Street"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                     <CustomFormField
                         name="companyCountry"
                         form={form}
                         label="Company Country"
                         placeholder="Ex: India"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                     <CustomFormField
                         name="companyState"
                         form={form}
                         label="Company State"
                         placeholder="Ex: TamilNadu"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                     {/* {state && ( */}
                     <CustomFormField
@@ -100,7 +98,7 @@ const CompanyForm = () => {
                         form={form}
                         label="Company City"
                         placeholder="Ex: Chennai"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                     {/* )} */}
                     <CustomFormField
@@ -108,14 +106,14 @@ const CompanyForm = () => {
                         form={form}
                         label="Company Website"
                         placeholder="Ex: https://google.com"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                     <CustomFormField
                         name="companyTotalEmployees"
                         form={form}
                         label="Company Total Employees"
                         placeholder="Ex: 100"
-                        isLoading={isLoading}
+                        isLoading={(isLoading || isPending)}
                     />
                 </div>
                 <CustomFormField
@@ -123,7 +121,7 @@ const CompanyForm = () => {
                     form={form}
                     label="About Company Bio"
                     placeholder="Ex:write about company Bio"
-                    isLoading={isLoading}
+                    isLoading={(isLoading || isPending)}
                     isTextarea
                 />
                 <CustomFormField
@@ -131,13 +129,13 @@ const CompanyForm = () => {
                     form={form}
                     label="About Company"
                     placeholder="Ex:write about company"
-                    isLoading={isLoading}
+                    isLoading={(isLoading || isPending)}
                     isTextarea
                 />
 
                 <FormError message={err} />
                 <FormSuccess message={success} />
-                <Button isLoading={isLoading} className="w-full">Submit</Button>
+                <Button isLoading={(isLoading || isPending)} className="w-full">Submit</Button>
             </form>
         </Form>
     );

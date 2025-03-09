@@ -7,12 +7,20 @@ import { useState } from "react"
 import { useSelector } from "react-redux"
 import WelcomeUserEducation from "./WelcomeUserEducation"
 import WelcomeUserExperince from "./WelcomeUserExperince"
+import { useQuery } from "@tanstack/react-query"
+import { getCompanyByUserId } from "@/actions/company/getCompanyById"
 
 const Welcome = () => {
     const user = useSelector((state: any) => state.user.user)
     const [step, setStep] = useState(1)
 
     const isOrg = user?.role === "ORGANIZATION"
+
+    const { data: company, isPending } = useQuery({
+        queryKey: ['getCompanyByUserId', user?.id],
+        queryFn: async () => await getCompanyByUserId(user?.id),
+        enabled: !!user?.id,
+    });
 
     const renderStepContent = () => {
         switch (step) {
@@ -38,8 +46,8 @@ const Welcome = () => {
             <div className="w-full h-full">
                 {isOrg ?
                     <div className={`${user?.role !== 'ORGANIZATION' && "hidden"} w-full h-full space-y-5`}>
-                        <h3 className="font-bold">Create Company</h3>
-                        <CompanyForm />
+                        <h3 className="font-bold">{company ? "Edit Company" : "Create Company"}</h3>
+                        <CompanyForm company={company} isPending={isPending} />
                     </div>
                     :
                     renderStepContent()}
