@@ -1,6 +1,7 @@
 'use client';
 
 import { UserFollowAction } from '@/actions/user/UserFollowAction';
+import CompanyForm from '@/app/Forms/CompanyForm';
 import UserBackImage from '@/app/Forms/UserBackImage';
 import { UserInfoForm } from '@/app/Forms/UserInfoForm';
 import { userFollow } from '@/app/Redux/AuthSlice';
@@ -105,8 +106,8 @@ const UserInfo = ({ profileUser, isLoading = false, isOrg = false, company }: Pr
 
     const renderCurrentUserActions = () => (
         <Model
-            bodyContent={<UserInfoForm />}
-            title="Edit Profile"
+            bodyContent={user?.role === 'ORGANIZATION' ? <CompanyForm company={company} isPending={isLoading} /> : <UserInfoForm />}
+            title={user?.role === 'ORGANIZATION' ? "Edit Company" : "Edit Profile"}
             className="min-w-[300px] lg:w-[800px]"
             triggerCls="absolute top-3 right-3"
             modalId="userInfoFormModal"

@@ -21,9 +21,13 @@ interface CompanyFormProps {
 }
 
 const CompanyForm = ({ company, isPending }: CompanyFormProps) => {
+
+
+    console.log("welcome form", company)
+
     const user = useSelector((state: any) => state.user.user)
     const [err, setErr] = useState("");
-    const [success, setSuccess] = useState("");    
+    const [success, setSuccess] = useState("");
     const router = useRouter();
     const [isLoading, startTransition] = useTransition();
 

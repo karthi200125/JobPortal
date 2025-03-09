@@ -21,7 +21,7 @@ const Welcome = () => {
         queryFn: async () => await getCompanyByUserId(user?.id),
         enabled: !!user?.id,
     });
-
+    
     const renderStepContent = () => {
         switch (step) {
             case 1:
