@@ -68,7 +68,7 @@ const LpJobs = () => {
 
                             {/* Job Skills */}
                             <div className="flex flex-wrap items-center gap-2 ">
-                                {job.skills?.slice(0, 5).map((skill: string, index: number) => (
+                                {job.skills?.slice(0, 4).map((skill: string, index: number) => (
                                     <div key={index} className="rounded-full px-5 py-2 bg-black text-white text-sm font-bold capitalize">
                                         {skill}
                                     </div>
